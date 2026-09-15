@@ -1,0 +1,792 @@
+<title>Aura Office</title>
+<meta name="description" content="Back-office Aura Business : commandes, production assistée, commissions du Crew.">
+<meta name="theme-color" content="#07050C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Archivo:wght@300..700&display=swap">
+
+<style>
+/* ============================================================================
+   AURA OFFICE — même langue visuelle que la vitrine, mode instrument :
+   plus dense, plus froid, fait pour être lu vite et utilisé tous les jours.
+   ========================================================================= */
+:root{
+  --ink:#07050C; --ink-2:#0B0812; --ink-3:#120E1C; --ink-4:#191327;
+  --paper:#F4F1EA; --muted:#A49CB6; --faint:#6E6784;
+  --brass:#D9B978; --brass-lo:#8A7440; --brass-hi:#F7E6BC;
+  --pink:#FF2E88; --cyan:#57E9FF; --violet:#7B3BFF; --green:#4ADE9B;
+  --rule:rgba(244,241,234,.11); --rule-soft:rgba(244,241,234,.06); --rule-brass:rgba(217,185,120,.34);
+  --gutter:clamp(1rem,3vw,2.2rem);
+  --t-micro:.64rem;
+  --ease:cubic-bezier(.16,.84,.3,1);
+  color-scheme:dark;
+}
+*{box-sizing:border-box;}
+html{background:var(--ink);}
+body{margin:0; background:var(--ink); color:var(--paper);
+  font-family:'Archivo',system-ui,sans-serif; font-size:.94rem; line-height:1.55;
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;}
+h1,h2,h3,.disp{font-family:'Bodoni Moda','Didot',serif; font-weight:400; margin:0; line-height:1.05; letter-spacing:-.01em;}
+p{margin:0;}
+button{font:inherit; color:inherit; background:none; border:none; cursor:pointer;}
+input,textarea,select{font:inherit;}
+a{color:var(--brass);}
+::selection{background:var(--brass); color:var(--ink);}
+:focus-visible{outline:1.5px solid var(--brass); outline-offset:2px;}
+.sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap;}
+.num{font-variant-numeric:tabular-nums;}
+.label{font-size:var(--t-micro); font-weight:600; letter-spacing:.22em; text-transform:uppercase; color:var(--faint);}
+.brass{color:var(--brass);}
+.shell{max-width:76rem; margin-inline:auto; padding-inline:var(--gutter);}
+
+/* ——— barre ——————————————————————————————————————————————— */
+header{position:sticky; top:0; z-index:20; background:rgba(7,5,12,.94); backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--rule);}
+header .row{display:flex; align-items:center; justify-content:space-between; gap:1rem; padding-block:.8rem; flex-wrap:wrap;}
+.mark{font-family:'Bodoni Moda',serif; font-size:1.15rem;}
+.mark em{font-style:italic; color:var(--brass);}
+.mark span{font-size:var(--t-micro); letter-spacing:.24em; text-transform:uppercase; color:var(--faint); margin-left:.6rem;}
+.tabs{display:flex; gap:.15rem; padding:.22rem; border:1px solid var(--rule-soft); border-radius:999px; background:rgba(244,241,234,.03); flex-wrap:wrap;}
+.tabs button{padding:.45rem .95rem; border-radius:999px; font-size:var(--t-micro); font-weight:600;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--muted); transition:.25s var(--ease);}
+.tabs button[aria-selected="true"]{background:var(--brass); color:var(--ink);}
+.tabs button:hover:not([aria-selected="true"]){color:var(--paper);}
+.conn{display:flex; align-items:center; gap:.45rem; font-size:var(--t-micro); letter-spacing:.14em;
+  text-transform:uppercase; color:var(--faint);}
+.dot{width:7px; height:7px; border-radius:50%; background:var(--faint);}
+.dot.ok{background:var(--green); box-shadow:0 0 10px rgba(74,222,155,.6);}
+.dot.ko{background:var(--pink);}
+
+main{padding-block:clamp(1.6rem,4vw,3rem) 5rem;}
+.panel[hidden]{display:none;}
+.panel-head{display:flex; align-items:flex-end; justify-content:space-between; gap:1rem; flex-wrap:wrap; margin-bottom:1.4rem;}
+.panel-head h1{font-size:clamp(1.8rem,4vw,2.6rem);}
+.panel-head p{color:var(--muted); font-size:.88rem; max-width:34rem; margin-top:.35rem;}
+
+/* ——— boutons ————————————————————————————————————————————— */
+.btn{display:inline-flex; align-items:center; justify-content:center; gap:.5rem; padding:.7rem 1.15rem;
+  background:var(--brass); color:var(--ink); border-radius:2px; font-size:var(--t-micro); font-weight:700;
+  letter-spacing:.16em; text-transform:uppercase; min-height:42px; transition:.25s var(--ease);}
+.btn:hover{transform:translateY(-1px); box-shadow:0 10px 26px -14px rgba(217,185,120,.9);}
+.btn:disabled{opacity:.42; cursor:not-allowed; transform:none; box-shadow:none;}
+.btn-ghost{background:transparent; color:var(--paper); box-shadow:inset 0 0 0 1px var(--rule);}
+.btn-ghost:hover{box-shadow:inset 0 0 0 1px var(--rule-brass); background:rgba(244,241,234,.04);}
+.btn-sm{padding:.42rem .7rem; min-height:34px; letter-spacing:.12em;}
+.btn-danger{background:transparent; color:var(--pink); box-shadow:inset 0 0 0 1px rgba(255,46,136,.35);}
+
+/* ——— tuiles ————————————————————————————————————————————— */
+.tiles{display:grid; grid-template-columns:repeat(auto-fit,minmax(11rem,1fr)); gap:1px;
+  background:var(--rule); border:1px solid var(--rule);}
+.tile{background:var(--ink-2); padding:1.1rem 1.2rem 1.25rem;}
+.tile .k{display:block; font-family:'Bodoni Moda',serif; font-size:clamp(1.7rem,3.4vw,2.4rem); line-height:1;}
+.tile .v{display:block; margin-top:.45rem; font-size:var(--t-micro); letter-spacing:.16em; text-transform:uppercase; color:var(--faint); line-height:1.5;}
+.tile .sub{display:block; margin-top:.35rem; font-size:.74rem; color:var(--muted);}
+.tile.accent .k{color:var(--brass);}
+
+/* ——— pipeline ————————————————————————————————————————————— */
+.pipe{display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--rule);
+  border:1px solid var(--rule); margin-top:1.4rem;}
+.pipe div{background:var(--ink-2); padding:.9rem 1rem;}
+.pipe .n{font-family:'Bodoni Moda',serif; font-size:1.5rem;}
+.pipe .s{font-size:var(--t-micro); letter-spacing:.16em; text-transform:uppercase; color:var(--faint); margin-top:.2rem;}
+.pipe .bar{height:2px; margin-top:.6rem; background:rgba(244,241,234,.1);}
+.pipe .bar i{display:block; height:100%; background:var(--brass); width:0; transition:width .7s var(--ease);}
+@media (max-width:640px){ .pipe{grid-template-columns:repeat(2,1fr);} }
+
+/* ——— cartes / listes ——————————————————————————————————————— */
+.card{border:1px solid var(--rule); background:var(--ink-2); padding:clamp(1.1rem,2.5vw,1.6rem);}
+.card + .card{margin-top:1rem;}
+.grid-2{display:grid; grid-template-columns:1fr; gap:1.2rem;}
+@media (min-width:900px){ .grid-2{grid-template-columns:1.05fr .95fr; align-items:start;} }
+
+.order{border:1px solid var(--rule); background:var(--ink-2); padding:1rem 1.1rem; display:grid;
+  grid-template-columns:1fr auto; gap:.7rem 1rem; align-items:start;}
+.order + .order{margin-top:.7rem;}
+.order .who{font-family:'Bodoni Moda',serif; font-size:1.2rem;}
+.order .meta{font-size:.78rem; color:var(--faint); margin-top:.2rem;}
+.order .amt{font-family:'Bodoni Moda',serif; font-size:1.45rem; color:var(--brass); text-align:right;}
+.order .acts{grid-column:1/-1; display:flex; gap:.4rem; flex-wrap:wrap; padding-top:.7rem; border-top:1px solid var(--rule-soft);}
+.pill{display:inline-flex; align-items:center; gap:.35rem; padding:.22rem .6rem; border-radius:999px;
+  font-size:.66rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; border:1px solid var(--rule);}
+.pill.nouveau{color:var(--cyan); border-color:rgba(87,233,255,.35);}
+.pill.confirme{color:var(--brass); border-color:var(--rule-brass);}
+.pill.production{color:var(--violet); border-color:rgba(123,59,255,.4);}
+.pill.livre{color:var(--green); border-color:rgba(74,222,155,.35);}
+.pill.annule{color:var(--faint);}
+
+.field{display:flex; flex-direction:column; gap:.4rem; margin-bottom:.9rem;}
+.field label{font-size:var(--t-micro); letter-spacing:.18em; text-transform:uppercase; color:var(--faint);}
+.field input,.field textarea,.field select{background:var(--ink); border:1px solid var(--rule); border-radius:2px;
+  padding:.7rem .8rem; color:var(--paper);}
+.field input:focus,.field textarea:focus,.field select:focus{outline:none; border-color:var(--brass);}
+.field textarea{min-height:9rem; resize:vertical; line-height:1.6; font-size:.86rem;}
+.row-2{display:grid; grid-template-columns:1fr 1fr; gap:.8rem;}
+
+.empty{border:1px dashed var(--rule); padding:2rem 1.4rem; text-align:center; color:var(--faint); font-size:.88rem;}
+.empty b{display:block; font-family:'Bodoni Moda',serif; font-size:1.3rem; color:var(--paper); margin-bottom:.4rem; font-weight:400;}
+
+.out{background:var(--ink); border:1px solid var(--rule); padding:1.1rem; white-space:pre-wrap;
+  font-size:.85rem; line-height:1.7; color:var(--muted); max-height:32rem; overflow:auto; border-radius:2px;}
+.out:empty{display:none;}
+.working{display:inline-flex; align-items:center; gap:.5rem; font-size:.8rem; color:var(--brass);}
+.working i{width:6px; height:6px; border-radius:50%; background:var(--brass); animation:blink 1s infinite;}
+@keyframes blink{0%,100%{opacity:.25;} 50%{opacity:1;}}
+
+.notice{border-left:2px solid var(--brass); background:rgba(217,185,120,.06); padding:.85rem 1rem;
+  font-size:.82rem; color:var(--muted); margin-bottom:1.2rem;}
+.notice b{color:var(--paper); font-weight:600;}
+
+table{width:100%; border-collapse:collapse; font-size:.85rem;}
+th,td{text-align:left; padding:.7rem .6rem; border-bottom:1px solid var(--rule);}
+th{font-size:var(--t-micro); letter-spacing:.16em; text-transform:uppercase; color:var(--faint); font-weight:600;}
+td.r,th.r{text-align:right;}
+.scroll-x{overflow-x:auto;}
+
+#toast{position:fixed; left:50%; bottom:1.6rem; transform:translate(-50%,12px); z-index:60;
+  background:var(--brass); color:var(--ink); padding:.8rem 1.2rem; font-size:.82rem; font-weight:600;
+  opacity:0; pointer-events:none; transition:.28s var(--ease); max-width:min(26rem,calc(100vw - 2rem)); text-align:center;}
+#toast.show{opacity:1; transform:translate(-50%,0);}
+
+@media (prefers-reduced-motion: reduce){ *{animation-duration:.001ms!important; transition-duration:.001ms!important;} }
+</style>
+
+<header>
+  <div class="shell row">
+    <div class="mark">AURA <em>Office</em><span>Back-office</span></div>
+    <div class="tabs" role="tablist">
+      <button role="tab" data-tab="board" aria-selected="true">Tableau</button>
+      <button role="tab" data-tab="orders" aria-selected="false">Commandes</button>
+      <button role="tab" data-tab="studio" aria-selected="false">Production</button>
+      <button role="tab" data-tab="crew" aria-selected="false">Crew</button>
+    </div>
+    <div class="conn"><span class="dot" id="db-dot"></span><span id="db-state">Connexion…</span></div>
+  </div>
+</header>
+
+<main class="shell">
+
+<!-- ═══════════ TABLEAU ═══════════ -->
+<section class="panel" id="panel-board" role="tabpanel">
+  <div class="panel-head">
+    <div>
+      <h1>Tableau</h1>
+      <p>Tout ce qui suit est calculé à partir de vos commandes réelles. Aucun chiffre n'est simulé : tant que rien n'est enregistré, tout affiche zéro.</p>
+    </div>
+    <button class="btn btn-ghost btn-sm" id="go-add">Enregistrer une commande</button>
+  </div>
+
+  <div class="tiles" id="tiles"></div>
+  <div class="pipe" id="pipe"></div>
+
+  <div class="grid-2" style="margin-top:1.6rem;">
+    <div class="card">
+      <p class="label">Dernières commandes</p>
+      <div id="recent" style="margin-top:.9rem;"></div>
+    </div>
+    <div class="card">
+      <p class="label">Commissions dues au Crew</p>
+      <div id="owed" style="margin-top:.9rem;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ COMMANDES ═══════════ -->
+<section class="panel" id="panel-orders" role="tabpanel" hidden>
+  <div class="panel-head">
+    <div>
+      <h1>Commandes</h1>
+      <p>Collez le message reçu en DM : il est lu automatiquement et converti en commande. Rien ne part d'ici vers Instagram — c'est un registre, pas un automate d'envoi.</p>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <p class="label">Nouvelle commande</p>
+      <div class="field" style="margin-top:.9rem;">
+        <label for="paste">Message reçu en message privé</label>
+        <textarea id="paste" placeholder="Bonjour, je souhaite le n°2 Signature à 90€.&#10;Total : 90€&#10;&#10;Je vends : pizzeria&#10;Je m'adresse à : les gens du quartier&#10;Mon Instagram : @bellanapoli&#10;Recommandé par : AURA-1234"></textarea>
+      </div>
+      <button class="btn btn-ghost btn-sm" id="parse-btn">Lire le message</button>
+
+      <div id="parsed" style="margin-top:1.2rem;" hidden>
+        <div class="row-2">
+          <div class="field"><label for="o-kind">Type</label>
+            <select id="o-kind"><option value="brief">Pack sur brief</option><option value="ready">Déjà prêt</option></select></div>
+          <div class="field"><label for="o-pack">Article</label>
+            <select id="o-pack"></select></div>
+        </div>
+        <div class="row-2">
+          <div class="field"><label for="o-total">Total encaissé (€)</label>
+            <input id="o-total" type="number" min="0" step="1"></div>
+        </div>
+        <div class="field"><label for="o-ig">Instagram client</label><input id="o-ig" type="text" placeholder="@compte"></div>
+        <div class="row-2">
+          <div class="field"><label for="o-sell">Vend</label><input id="o-sell" type="text"></div>
+          <div class="field"><label for="o-aud">Public</label><input id="o-aud" type="text"></div>
+        </div>
+        <div class="field"><label for="o-ref">Code Crew (parrainage)</label><input id="o-ref" type="text" placeholder="AURA-…"></div>
+        <button class="btn" id="save-order">Enregistrer la commande</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="label">Registre</p>
+      <div class="field" style="margin-top:.9rem;">
+        <label for="filter">Filtrer</label>
+        <select id="filter">
+          <option value="">Toutes</option>
+          <option value="nouveau">Nouvelles</option>
+          <option value="confirme">Confirmées / payées</option>
+          <option value="production">En production</option>
+          <option value="livre">Livrées</option>
+          <option value="annule">Annulées</option>
+        </select>
+      </div>
+      <div id="order-list"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ PRODUCTION ═══════════ -->
+<section class="panel" id="panel-studio" role="tabpanel" hidden>
+  <div class="panel-head">
+    <div>
+      <h1>Production</h1>
+      <p>L'assistant rédige la première version du fichier à partir du brief client. Vous relisez, vous corrigez, vous livrez. C'est ce qui réduit le temps passé par commande — le seul chiffre qui déplace votre plafond.</p>
+    </div>
+  </div>
+
+  <div class="notice" id="studio-notice" hidden></div>
+
+  <div class="grid-2">
+    <div class="card">
+      <p class="label">Brief</p>
+      <div class="field" style="margin-top:.9rem;">
+        <label for="s-order">Commande</label>
+        <select id="s-order"></select>
+      </div>
+      <div class="row-2">
+        <div class="field"><label for="s-sell">Activité</label><input id="s-sell" type="text" placeholder="pizzeria napolitaine"></div>
+        <div class="field"><label for="s-aud">Public</label><input id="s-aud" type="text" placeholder="familles du quartier"></div>
+      </div>
+      <div class="row-2">
+        <div class="field"><label for="s-pack">Pack</label><select id="s-pack"></select></div>
+        <div class="field"><label for="s-lang">Langue du livrable</label>
+          <select id="s-lang"><option value="français">Français</option><option value="anglais">Anglais</option><option value="espagnol">Espagnol</option><option value="italien">Italien</option></select></div>
+      </div>
+      <div class="field"><label for="s-tone">Ton particulier (facultatif)</label><input id="s-tone" type="text" placeholder="chaleureux, tutoiement, humour sec…"></div>
+      <div style="display:flex; gap:.5rem; flex-wrap:wrap;">
+        <button class="btn" id="gen-btn">Rédiger le fichier</button>
+        <button class="btn btn-ghost" id="stop-btn" hidden>Arrêter</button>
+      </div>
+      <p class="label" style="margin-top:.9rem; letter-spacing:.1em; text-transform:none; font-size:.74rem; color:var(--faint);">
+        La rédaction est faite par Claude depuis cette page, avec votre compte. Les visuels ne sont pas générés ici : ce module écrit les textes, légendes, messages et bio.</p>
+    </div>
+
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:baseline; gap:1rem;">
+        <p class="label">Fichier</p>
+        <div style="display:flex; gap:.4rem;">
+          <button class="btn btn-ghost btn-sm" id="copy-out" hidden>Copier</button>
+          <button class="btn btn-ghost btn-sm" id="dl-out" hidden>Télécharger</button>
+        </div>
+      </div>
+      <div id="gen-status" style="margin-top:.8rem;"></div>
+      <div class="out" id="out" style="margin-top:.8rem;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CREW ═══════════ -->
+<section class="panel" id="panel-crew" role="tabpanel" hidden>
+  <div class="panel-head">
+    <div>
+      <h1>Crew</h1>
+      <p>Chaque code de parrainage arrivé sur une commande est comptabilisé ici. La part due est calculée sur les commandes effectivement livrées.</p>
+    </div>
+  </div>
+  <div class="card scroll-x" id="crew-wrap"></div>
+</section>
+
+</main>
+
+<div id="toast" role="status" aria-live="polite"></div>
+<textarea id="clip" class="sr" readonly tabindex="-1" aria-hidden="true"></textarea>
+
+<script>
+(function(){
+"use strict";
+
+/* ════════════════════════════════════════════════════════════════════
+   Catalogue — doit rester aligné avec la vitrine.
+   ════════════════════════════════════════════════════════════════════ */
+var PACKS = [
+  {id:1, name:"Essentiel", price:50,  visuals:8,  texts:8,  messages:4,  bio:false, stories:false},
+  {id:2, name:"Signature", price:90,  visuals:12, texts:12, messages:6,  bio:true,  stories:false},
+  {id:3, name:"Atelier",   price:150, visuals:18, texts:18, messages:10, bio:true,  stories:false},
+  {id:4, name:"Maison",    price:250, visuals:24, texts:24, messages:12, bio:true,  stories:true}
+];
+var SHARE = {1:25, 2:45, 3:75, 4:125};      /* part Crew par pack sur brief, 50 % arrondi */
+/* Collections « Déjà prêt ». Elles manquaient au registre : une vente Night à
+   80€ était soit refusée, soit enregistrée comme un Signature à 90€. Deux
+   catalogues distincts, deux numérotations, un champ `kind` pour trancher. */
+var READY = [
+  {id:1, name:"Street", price:40},
+  {id:2, name:"Night",  price:80},
+  {id:3, name:"Heat",   price:120},
+  {id:4, name:"House",  price:200}
+];
+var readyById = function(id){ return READY.filter(function(p){ return p.id === Number(id); })[0] || READY[1]; };
+function catalogue(kind){ return kind === "ready" ? READY : PACKS; }
+function itemOf(o){ return (o.kind === "ready" ? readyById : packById)(o.packId); }
+function shareOf(o){ return o.kind === "ready" ? Math.round((readyById(o.packId).price)/2) : (SHARE[o.packId] || Math.round((Number(o.total)||0)/2)); }
+var STATUS = [
+  {k:"nouveau",    label:"Nouvelle"},
+  {k:"confirme",   label:"Confirmée"},
+  {k:"production", label:"En production"},
+  {k:"livre",      label:"Livrée"}
+];
+var packById = function(id){ return PACKS.filter(function(p){ return p.id === Number(id); })[0] || PACKS[1]; };
+
+var $ = function(s){ return document.querySelector(s); };
+var $$ = function(s){ return Array.prototype.slice.call(document.querySelectorAll(s)); };
+function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(m){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]; }); }
+function eur(n){ return (Math.round(Number(n) || 0)) + "€"; }
+function dt(ts){ try{ return new Date(ts).toLocaleDateString("fr-FR", {day:"2-digit", month:"short", year:"2-digit"}); }catch(e){ return ""; } }
+var toastT = null;
+function toast(m){ var e = $("#toast"); e.textContent = m; e.classList.add("show"); clearTimeout(toastT); toastT = setTimeout(function(){ e.classList.remove("show"); }, 3200); }
+
+/* ════════════════════════════════════════════════════════════════════
+   Base de données — capacité `db` de l'artifact.
+   Une page qui déclare `db` est interne à l'organisation : ce back-office
+   n'est ouvrable que par vous (et les membres que vous autorisez). C'est
+   la raison pour laquelle il est séparé de la vitrine publique.
+   ════════════════════════════════════════════════════════════════════ */
+var db = null, orders = [], unsub = null;
+
+async function connect(){
+  try{
+    if(window.claude && window.claude.use) db = await window.claude.use("db");
+  }catch(e){ db = null; }
+  var dot = $("#db-dot"), st = $("#db-state");
+  if(!db){
+    dot.className = "dot ko";
+    st.textContent = "Hors ligne";
+    renderAll();
+    return;
+  }
+  dot.className = "dot ok";
+  st.textContent = "Registre connecté";
+  /* flux temps réel : deux onglets ouverts restent d'accord */
+  try{
+    unsub = db.collection("orders").onSnapshot(function(snap){
+      orders = snap.docs.map(function(d){ var o = d.data() || {}; o.id = d.id; return o; })
+        .sort(function(a, b){ return (b.created || 0) - (a.created || 0); });
+      renderAll();
+    }, function(err){
+      $("#db-dot").className = "dot ko";
+      $("#db-state").textContent = "Registre indisponible";
+      if(err && err.code === "resource_exhausted") toast("Trop de requêtes — réessayez dans un instant.");
+    });
+  }catch(e){
+    $("#db-dot").className = "dot ko";
+    $("#db-state").textContent = "Registre indisponible";
+  }
+}
+
+async function putOrder(o){
+  if(!db){ toast("Registre non disponible : rien n'a été enregistré."); return false; }
+  try{
+    await db.collection("orders").doc(o.id).set(o);
+    return true;
+  }catch(e){
+    toast(e && e.code === "quota_exceeded" ? "Registre plein — archivez d'anciennes commandes." : "Enregistrement refusé.");
+    return false;
+  }
+}
+async function patchOrder(id, fields){
+  if(!db) return;
+  try{ await db.collection("orders").doc(id).update(fields); }
+  catch(e){ toast("Mise à jour refusée."); }
+}
+async function dropOrder(id){
+  if(!db) return;
+  try{ await db.collection("orders").doc(id).delete(); toast("Commande supprimée."); }
+  catch(e){ toast("Suppression refusée."); }
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   Lecture du message reçu — la vitrine écrit un format connu, on le relit.
+   Tolérant aux quatre langues et aux retours à la ligne fantaisistes.
+   ════════════════════════════════════════════════════════════════════ */
+var LABELS = {
+  sell:     ["je vends", "i sell", "vendo", "vendo"],
+  audience: ["je m'adresse à", "je m’adresse à", "my audience", "i speak to", "me dirijo a", "mi rivolgo a"],
+  ig:       ["mon instagram", "my instagram", "mi instagram", "il mio instagram", "instagram"],
+  ref:      ["recommandé par", "referred by", "recomendado por", "segnalato da"],
+  total:    ["total", "totale"]
+};
+var READY_WORDS = /d[ée]j[àa] pr[êe]t|ready now|ya listo|gi[àa] pronto/i;
+function parseMessage(text){
+  var out = {kind:"brief", packId:null, total:null, sell:"", audience:"", ig:"", ref:""};
+  var lines = String(text || "").split(/\r?\n/);
+
+  /* Format actuel de la vitrine : READY-2. Ancien format encore en circulation
+     chez les clients : « AURA — n°2 Night » avec la mention « Déjà prêt ».
+     Les deux doivent aboutir au même enregistrement. */
+  var readyMatch = String(text).match(/READY[-\s]?([1-4])/i);
+  if(readyMatch){ out.kind = "ready"; out.packId = Number(readyMatch[1]); }
+  else {
+    var packMatch = String(text).match(/n[°ºo]\s*([1-4])/i);
+    if(packMatch) out.packId = Number(packMatch[1]);
+    var namedReady = READY.filter(function(p){ return new RegExp("\\b" + p.name + "\\b", "i").test(text); })[0];
+    if(READY_WORDS.test(text) || namedReady){
+      out.kind = "ready";
+      if(namedReady) out.packId = namedReady.id;
+    }
+  }
+  if(!out.packId){
+    catalogue(out.kind).forEach(function(p){ if(new RegExp("\\b" + p.name + "\\b", "i").test(text)) out.packId = p.id; });
+  }
+  lines.forEach(function(raw){
+    var line = raw.trim();
+    if(!line) return;
+    var m = line.match(/^([^:]{2,40})\s*:\s*(.+)$/);
+    if(!m) return;
+    var key = m[1].trim().toLowerCase(), val = m[2].trim();
+    function hit(list){ return list.some(function(l){ return key === l || key.indexOf(l) === 0; }); }
+    if(hit(LABELS.total)){ var t = val.match(/(\d+([.,]\d+)?)/); if(t) out.total = Math.round(parseFloat(t[1].replace(",", "."))); }
+    else if(hit(LABELS.sell)) out.sell = val;
+    else if(hit(LABELS.audience)) out.audience = val;
+    else if(hit(LABELS.ref)) out.ref = val.replace(/[^A-Za-z0-9\-_]/g, "");
+    else if(hit(LABELS.ig)) out.ig = val;
+  });
+  if(!out.ig){ var ig = String(text).match(/@([A-Za-z0-9._]{2,30})/); if(ig) out.ig = "@" + ig[1]; }
+  if(out.total == null && out.packId) out.total = (out.kind === "ready" ? readyById : packById)(out.packId).price;
+  return out;
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   Chiffres — uniquement à partir des commandes réelles.
+   ════════════════════════════════════════════════════════════════════ */
+function stats(){
+  var s = {count:orders.length, cashed:0, pending:0, delivered:0, aov:0, byStatus:{}, owed:{}, repeat:0};
+  STATUS.forEach(function(x){ s.byStatus[x.k] = 0; });
+  s.byStatus.annule = 0;
+  var clients = {}, totals = [];
+  orders.forEach(function(o){
+    var st = o.status || "nouveau";
+    s.byStatus[st] = (s.byStatus[st] || 0) + 1;
+    if(st === "annule") return;
+    var total = Number(o.total) || 0;
+    totals.push(total);
+    if(st === "livre" || st === "production" || st === "confirme") s.cashed += total;
+    else s.pending += total;
+    if(st === "livre"){
+      s.delivered += 1;
+      if(o.ref) s.owed[o.ref] = (s.owed[o.ref] || 0) + shareOf(o);
+    }
+    var key = (o.ig || "").toLowerCase().trim();
+    if(key){ clients[key] = (clients[key] || 0) + 1; }
+  });
+  s.aov = totals.length ? Math.round(totals.reduce(function(a, b){ return a + b; }, 0) / totals.length) : 0;
+  s.repeat = Object.keys(clients).filter(function(k){ return clients[k] > 1; }).length;
+  s.clients = Object.keys(clients).length;
+  return s;
+}
+
+function renderTiles(){
+  var s = stats();
+  $("#tiles").innerHTML = [
+    {k:eur(s.cashed), v:"Encaissé ou confirmé", sub:s.count ? s.delivered + " livrée(s)" : "aucune commande", accent:true},
+    {k:eur(s.pending), v:"En attente de confirmation", sub:"commandes non confirmées"},
+    {k:eur(s.aov), v:"Panier moyen", sub:s.count ? "sur " + s.count + " commande(s)" : "—"},
+    {k:String(s.clients), v:"Clients", sub:s.repeat + " revenu(s) au moins deux fois"},
+    {k:eur(Object.keys(s.owed).reduce(function(a, k){ return a + s.owed[k]; }, 0)), v:"Commissions dues", sub:"sur commandes livrées"}
+  ].map(function(t){
+    return '<div class="tile' + (t.accent ? " accent" : "") + '"><span class="k num">' + esc(t.k) + '</span>'
+      + '<span class="v">' + esc(t.v) + '</span><span class="sub">' + esc(t.sub) + '</span></div>';
+  }).join("");
+
+  var max = Math.max(1, s.count);
+  $("#pipe").innerHTML = STATUS.map(function(x){
+    var n = s.byStatus[x.k] || 0;
+    return '<div><div class="n num">' + n + '</div><div class="s">' + esc(x.label) + '</div>'
+      + '<div class="bar"><i style="width:' + Math.round(n / max * 100) + '%"></i></div></div>';
+  }).join("");
+}
+
+function statusPill(st){
+  var m = {nouveau:"Nouvelle", confirme:"Confirmée", production:"En production", livre:"Livrée", annule:"Annulée"};
+  return '<span class="pill ' + esc(st) + '">' + esc(m[st] || st) + '</span>';
+}
+function orderCard(o, compact){
+  var p = itemOf(o);
+  var tag = o.kind === "ready" ? "Déjà prêt " : "n°";
+  return '<div class="order" data-id="' + esc(o.id) + '">'
+    + '<div><div class="who">' + esc(o.ig || "—") + '</div>'
+      + '<div class="meta">' + tag + p.id + " " + esc(p.name) + " · " + esc(o.sell || "—") + " · " + dt(o.created) + (o.ref ? " · " + esc(o.ref) : "") + '</div>'
+      + '<div style="margin-top:.5rem;">' + statusPill(o.status || "nouveau") + '</div></div>'
+    + '<div class="amt num">' + eur(o.total) + '</div>'
+    + (compact ? "" : '<div class="acts">'
+        + STATUS.map(function(x){ return '<button class="btn btn-ghost btn-sm" data-set="' + x.k + '">' + esc(x.label) + '</button>'; }).join("")
+        + (o.kind === "ready" ? "" : '<button class="btn btn-ghost btn-sm" data-studio="1">Produire</button>')
+        + '<button class="btn btn-sm btn-danger" data-del="1">Supprimer</button>'
+      + '</div>')
+  + '</div>';
+}
+function renderRecent(){
+  var el = $("#recent");
+  if(!orders.length){ el.innerHTML = '<div class="empty"><b>Registre vide</b>Collez votre premier message reçu dans l\'onglet Commandes.</div>'; return; }
+  el.innerHTML = orders.slice(0, 4).map(function(o){ return orderCard(o, true); }).join("");
+}
+function renderOwed(){
+  var s = stats(), keys = Object.keys(s.owed);
+  var el = $("#owed");
+  if(!keys.length){ el.innerHTML = '<div class="empty"><b>Rien à verser</b>Aucune commande livrée portant un code de parrainage.</div>'; return; }
+  el.innerHTML = '<table><thead><tr><th>Code</th><th class="r">Dû</th></tr></thead><tbody>'
+    + keys.sort(function(a, b){ return s.owed[b] - s.owed[a]; }).map(function(k){
+        return '<tr><td>' + esc(k) + '</td><td class="r num brass">' + eur(s.owed[k]) + '</td></tr>';
+      }).join("")
+    + '</tbody></table>';
+}
+function renderOrders(){
+  var f = $("#filter").value, list = orders.filter(function(o){ return !f || (o.status || "nouveau") === f; });
+  var el = $("#order-list");
+  if(!orders.length){ el.innerHTML = '<div class="empty"><b>Aucune commande</b>Le registre se remplit à partir des messages que vous collez.</div>'; return; }
+  if(!list.length){ el.innerHTML = '<div class="empty"><b>Aucune commande dans ce filtre</b></div>'; return; }
+  el.innerHTML = list.map(function(o){ return orderCard(o, false); }).join("");
+}
+function renderCrew(){
+  var s = stats();
+  var byCode = {};
+  orders.forEach(function(o){
+    if(!o.ref) return;
+    var c = byCode[o.ref] || (byCode[o.ref] = {code:o.ref, orders:0, revenue:0, delivered:0, owed:0});
+    c.orders += 1;
+    if((o.status || "") !== "annule") c.revenue += Number(o.total) || 0;
+    if(o.status === "livre"){ c.delivered += 1; c.owed += shareOf(o); }
+  });
+  var codes = Object.keys(byCode);
+  var el = $("#crew-wrap");
+  if(!codes.length){
+    el.innerHTML = '<div class="empty"><b>Aucun apport enregistré</b>Les codes arrivent tout seuls : ils sont inscrits dans le message quand le client passe par le lien personnel d\'un membre du Crew.</div>';
+    return;
+  }
+  el.innerHTML = '<table><thead><tr><th>Code</th><th class="r">Commandes</th><th class="r">Livrées</th><th class="r">CA apporté</th><th class="r">Part due</th></tr></thead><tbody>'
+    + codes.sort(function(a, b){ return byCode[b].revenue - byCode[a].revenue; }).map(function(k){
+        var c = byCode[k];
+        return '<tr><td>' + esc(c.code) + '</td><td class="r num">' + c.orders + '</td><td class="r num">' + c.delivered
+          + '</td><td class="r num">' + eur(c.revenue) + '</td><td class="r num brass">' + eur(c.owed) + '</td></tr>';
+      }).join("")
+    + '</tbody></table>';
+}
+function renderStudioSelect(){
+  var sel = $("#s-order");
+  var open = orders.filter(function(o){ return (o.status || "nouveau") !== "annule" && o.kind !== "ready"; });
+  sel.innerHTML = '<option value="">— saisie libre —</option>' + open.map(function(o){
+    return '<option value="' + esc(o.id) + '">' + esc((o.ig || "sans compte") + " · n°" + o.packId + " · " + eur(o.total)) + '</option>';
+  }).join("");
+}
+function renderAll(){ renderTiles(); renderRecent(); renderOwed(); renderOrders(); renderCrew(); renderStudioSelect(); }
+
+/* ════════════════════════════════════════════════════════════════════
+   Onglets
+   ════════════════════════════════════════════════════════════════════ */
+function showTab(name){
+  $$(".tabs button").forEach(function(b){ b.setAttribute("aria-selected", String(b.getAttribute("data-tab") === name)); });
+  ["board","orders","studio","crew"].forEach(function(k){ $("#panel-" + k).hidden = k !== name; });
+  try{ location.hash = name; }catch(e){}
+}
+$$(".tabs button").forEach(function(b){ b.addEventListener("click", function(){ showTab(b.getAttribute("data-tab")); }); });
+$("#go-add").addEventListener("click", function(){ showTab("orders"); $("#paste").focus(); });
+
+/* ════════════════════════════════════════════════════════════════════
+   Commandes — lecture, enregistrement, cycle de vie
+   ════════════════════════════════════════════════════════════════════ */
+function packOptions(kind){
+  return catalogue(kind).map(function(p){
+    return '<option value="' + p.id + '">' + (kind === "ready" ? "Déjà prêt " : "n°") + p.id + " " + p.name + " · " + eur(p.price) + '</option>';
+  }).join("");
+}
+function fillPackSelects(){
+  $("#o-pack").innerHTML = packOptions($("#o-kind").value);
+  $("#s-pack").innerHTML = packOptions("brief");   /* la production ne concerne que les briefs */
+  $("#o-pack").value = "2"; $("#s-pack").value = "2";
+}
+$("#o-kind").addEventListener("change", function(){
+  var kind = $("#o-kind").value;
+  $("#o-pack").innerHTML = packOptions(kind);
+  $("#o-total").value = catalogue(kind)[1].price;
+});
+$("#o-pack").addEventListener("change", function(){
+  var kind = $("#o-kind").value;
+  $("#o-total").value = (kind === "ready" ? readyById : packById)($("#o-pack").value).price;
+});
+$("#parse-btn").addEventListener("click", function(){
+  var d = parseMessage($("#paste").value);
+  if(!d.packId && !d.ig && !d.sell){ toast("Message illisible — remplissez les champs à la main."); }
+  $("#parsed").hidden = false;
+  $("#o-kind").value = d.kind;
+  $("#o-pack").innerHTML = packOptions(d.kind);
+  $("#o-pack").value = String(d.packId || 2);
+  $("#o-total").value = d.total != null ? d.total : (d.kind === "ready" ? readyById : packById)(d.packId || 2).price;
+  $("#o-ig").value = d.ig || "";
+  $("#o-sell").value = d.sell || "";
+  $("#o-aud").value = d.audience || "";
+  $("#o-ref").value = d.ref || "";
+  $("#o-ig").focus();
+});
+$("#save-order").addEventListener("click", async function(){
+  var btn = this;
+  var o = {
+    id: "o" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+    created: Date.now(),
+    kind: $("#o-kind").value,
+    packId: Number($("#o-pack").value),
+    total: Number($("#o-total").value) || catalogue($("#o-kind").value).filter(function(x){ return x.id === Number($("#o-pack").value); })[0].price,
+    ig: $("#o-ig").value.trim(),
+    sell: $("#o-sell").value.trim(),
+    audience: $("#o-aud").value.trim(),
+    ref: $("#o-ref").value.trim().replace(/[^A-Za-z0-9\-_]/g, ""),
+    status: "nouveau"
+  };
+  btn.disabled = true;
+  var ok = await putOrder(o);
+  btn.disabled = false;
+  if(ok){
+    toast("Commande enregistrée.");
+    $("#paste").value = ""; $("#parsed").hidden = true;
+  }
+});
+$("#filter").addEventListener("change", renderOrders);
+$("#order-list").addEventListener("click", function(e){
+  var card = e.target.closest(".order"); if(!card) return;
+  var id = card.getAttribute("data-id");
+  var set = e.target.closest("[data-set]");
+  if(set){ patchOrder(id, {status:set.getAttribute("data-set")}); return; }
+  if(e.target.closest("[data-del]")){ if(confirm("Supprimer définitivement cette commande du registre ?")) dropOrder(id); return; }
+  if(e.target.closest("[data-studio]")){
+    var o = orders.filter(function(x){ return x.id === id; })[0];
+    if(!o) return;
+    showTab("studio");
+    $("#s-order").value = o.id;
+    loadOrderIntoStudio(o);
+    return;
+  }
+});
+
+/* ════════════════════════════════════════════════════════════════════
+   Production — rédaction assistée (capacité `sample`) + téléchargement
+   ════════════════════════════════════════════════════════════════════ */
+var ask = null, dl = null, currentRun = null, lastOutput = "";
+
+async function connectStudio(){
+  try{ if(window.claude && window.claude.use) ask = await window.claude.use("sample"); }catch(e){ ask = null; }
+  try{ if(window.claude && window.claude.use) dl = await window.claude.use("downloads"); }catch(e){ dl = null; }
+  var n = $("#studio-notice");
+  if(!ask){
+    $("#gen-btn").disabled = true;
+    n.hidden = false;
+    n.innerHTML = "<b>Rédaction indisponible dans cette vue.</b> Le module d'écriture n'a pas été accordé à cette page. Le reste du back-office fonctionne normalement.";
+  }
+  if(!dl) $("#dl-out").hidden = true;
+}
+function loadOrderIntoStudio(o){
+  $("#s-sell").value = o.sell || "";
+  $("#s-aud").value = o.audience || "";
+  $("#s-pack").value = String(o.packId || 2);
+}
+$("#s-order").addEventListener("change", function(){
+  var o = orders.filter(function(x){ return x.id === $("#s-order").value; })[0];
+  if(o) loadOrderIntoStudio(o);
+});
+
+function buildPrompt(){
+  var p = packById($("#s-pack").value);
+  var sell = $("#s-sell").value.trim(), aud = $("#s-aud").value.trim();
+  var lang = $("#s-lang").value, tone = $("#s-tone").value.trim();
+  return [
+    "Tu écris pour Aura Business, une maison de contenu Instagram. Tu produis le fichier livrable d'un client.",
+    "",
+    "CLIENT",
+    "- Activité : " + (sell || "non précisée"),
+    "- Public visé : " + (aud || "non précisé"),
+    "- Langue du livrable : " + lang,
+    tone ? "- Ton demandé : " + tone : "",
+    "",
+    "À PRODUIRE",
+    "1. " + p.texts + " légendes Instagram, numérotées, prêtes à coller. Chacune : une accroche courte, deux ou trois lignes de corps, un appel à l'action simple. Varie les angles (produit, coulisses, preuve, offre, histoire, conseil).",
+    "2. " + p.messages + " messages privés de vente, numérotés, avec un [PRÉNOM] à remplacer. Courts, humains, jamais agressifs.",
+    p.bio ? "3. Une bio Instagram en trois lignes, moins de 150 caractères au total." : "",
+    p.stories ? "4. Cinq idées de stories, une ligne chacune." : "",
+    "",
+    "RÈGLES",
+    "- Écris uniquement en " + lang + ".",
+    "- Aucun emoji sauf si le ton demandé l'exige.",
+    "- Pas de promesse de résultat chiffré, pas de faux témoignage, pas de fausse urgence.",
+    "- Pas de hashtags génériques en pagaille : cinq maximum par légende, pertinents.",
+    "- Texte brut, titres en majuscules, numérotation simple. Pas de tableau, pas de balisage."
+  ].filter(Boolean).join("\n");
+}
+
+$("#gen-btn").addEventListener("click", async function(){
+  if(!ask) return;
+  if(!$("#s-sell").value.trim()){ $("#s-sell").focus(); toast("Indiquez au moins l'activité du client."); return; }
+  var out = $("#out"), status = $("#gen-status");
+  out.textContent = ""; lastOutput = "";
+  $("#copy-out").hidden = true; $("#dl-out").hidden = true;
+  $("#gen-btn").disabled = true; $("#stop-btn").hidden = false;
+  status.innerHTML = '<span class="working"><i></i>Rédaction en cours…</span>';
+  currentRun = new AbortController();
+  try{
+    var res = await ask(buildPrompt(), {
+      modelTier: "complex",
+      signal: currentRun.signal,
+      onText: function(e){ out.textContent = e.text; lastOutput = e.text; out.scrollTop = out.scrollHeight; }
+    });
+    lastOutput = (res && res.text) || lastOutput;
+    out.textContent = lastOutput;
+    status.innerHTML = '<span class="label" style="color:var(--green)">Première version prête — à relire avant livraison</span>';
+    $("#copy-out").hidden = false;
+    if(dl) $("#dl-out").hidden = false;
+  }catch(err){
+    var code = err && err.code;
+    if(code === "cancelled"){ status.innerHTML = '<span class="label">Arrêté</span>'; if(err.text){ out.textContent = err.text; lastOutput = err.text; $("#copy-out").hidden = false; } }
+    else if(code === "rate_limited") status.innerHTML = '<span class="label" style="color:var(--pink)">Trop de demandes — patientez une minute</span>';
+    else if(code === "not_granted") status.innerHTML = '<span class="label" style="color:var(--pink)">Accès refusé pour cette vue</span>';
+    else status.innerHTML = '<span class="label" style="color:var(--pink)">Rédaction interrompue</span>';
+  }finally{
+    $("#gen-btn").disabled = false; $("#stop-btn").hidden = true; currentRun = null;
+  }
+});
+$("#stop-btn").addEventListener("click", function(){ if(currentRun) currentRun.abort(); });
+$("#copy-out").addEventListener("click", function(){
+  try{
+    var ta = $("#clip"); ta.value = lastOutput;
+    ta.style.cssText = "position:fixed;top:0;left:0;opacity:0;"; ta.focus(); ta.select();
+    document.execCommand("copy"); ta.style.cssText = "";
+    if(navigator.clipboard) navigator.clipboard.writeText(lastOutput).catch(function(){});
+    toast("Fichier copié.");
+  }catch(e){ toast("Copie impossible."); }
+});
+$("#dl-out").addEventListener("click", async function(){
+  if(!dl || !lastOutput) return;
+  var who = ($("#s-sell").value.trim() || "client").toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 24);
+  try{
+    await dl.save({filename:"aura-" + who + "-" + new Date().toISOString().slice(0, 10) + ".txt", data:lastOutput});
+  }catch(e){ toast("Téléchargement refusé."); }
+});
+
+/* ════════════════════════════════════════════════════════════════════
+   Démarrage
+   ════════════════════════════════════════════════════════════════════ */
+fillPackSelects();
+renderAll();
+connect();
+connectStudio();
+var h = (location.hash || "").replace("#", "");
+if(["board","orders","studio","crew"].indexOf(h) >= 0) showTab(h);
+
+})();
+</script>

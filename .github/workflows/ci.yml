@@ -1,0 +1,13 @@
+name: recette
+on: [push, pull_request]
+jobs:
+  recette:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - run: npm ci || npm install
+      - run: npx playwright install --with-deps chromium
+      # Le job échoue si une assertion échoue : les scripts sortent en code 1.
+      - run: npm test
