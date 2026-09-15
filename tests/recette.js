@@ -86,5 +86,8 @@ const R=[]; const ck=(n,c,x)=>R.push((c?'PASS ':'ÉCHEC')+' — '+n+(x!==undefin
  const f=R.filter(x=>x.startsWith('ÉCHEC')).length;
  console.log(`\n${R.length} contrôles — ${R.length-f} PASS, ${f} ÉCHEC`);
  console.log('ERREURS JS : '+(errs.length?JSON.stringify(errs,null,1):'aucune'));
- await b.close(); process.exit(0);
+ await b.close();
+ /* EXIT_ON_FAIL : un test rouge doit faire échouer le processus, sinon une CI passe au vert sur un défaut */
+ const failed=R.filter(x=>/^(ÉCHEC|FAIL)/.test(x)).length;
+ process.exit(failed>0?1:0);
 })();
