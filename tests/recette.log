@@ -1,16 +1,26 @@
-════════════════════════════════════════════════════════════════
- AURA BUSINESS — JOURNAL DE RECETTE
- commit : f29794f8c2eca53f5ccf762d95246fb0950e3baf
- date   : 2026-09-15 20:16 UTC
- node   : v22.22.2 | playwright 1.56.0 | chromium 141.0.7390.37
- npm test = catalogue.js + recette.js + registre-avec-runtime-simule.js
-════════════════════════════════════════════════════════════════
+=== Journal de recette ===
+Date UTC : 2026-09-15 21:02:24
+Commit   : c4a058abd4bade6c9ccfb3b85d18db2c6525573a
+Node     : v22.22.2
+Chromium : Chromium 141.0.7390.37 
 
-── tests/catalogue.js ──
+--- empreintes SHA-256 des sources testées ---
+0268c47245554e5c34adb9c3dca0a3147652c8fa9f4e666d260dcd985c82899c  src/vitrine.html
+6a5216e3df2d07dc4edce30bb72438cf1e8aedb9b085cac507b2481e4d261d54  src/back-office.html
+c298cc5ffdc6d2e418c64fbb7f75f14f2d29a92645f3dc458e96afc1df3f7ae9  src/catalog.json
+a1e8d5dbd9212fb510aa194f9ed31c4e532e84bbc2ff08a615161325fabd74c7  src/hero.webp
+
+--- npm test ---
+
+> aura-business@0.4.0 test
+> npm run build:preview && node tests/catalogue.js && node tests/recette.js && node tests/registre-avec-runtime-simule.js
+
+
+> aura-business@0.4.0 build:preview
+> node scripts/build-preview.js
+
+preview/ régénéré depuis src/ (image incluse)
 PASS  — catalogue cohérent : 4 packs sur brief + 4 collections, prix identiques dans les deux pages
-code : 0
-
-── tests/recette.js ──
 PASS  — image d'ambiance chargée
 PASS  — contenu complet rendu
 PASS  — lien d'évitement présent (a11y)
@@ -27,6 +37,7 @@ PASS  — code cryptographique
 PASS  — aucune injection depuis le champ client
 PASS  — desktop : aucun débordement
 PASS  — mobile : aucun débordement
+PASS  — mobile : aucun débordement RÉEL (clip neutralisé, 390 px)
 PASS  — mobile : menu ouvrable et langues accessibles
 PASS  — mobile : navigation ferme le menu et navigue
 PASS  — mouvement réduit : tout le contenu visible
@@ -38,11 +49,8 @@ N/A   — enregistrement réel : registre hors ligne hors plateforme (testé sé
 PASS  — mode hors ligne annoncé sans erreur silencieuse
 PASS  — back-office : aucun débordement
 
-26 contrôles — 26 PASS, 0 ÉCHEC
+27 contrôles — 27 PASS, 0 ÉCHEC
 ERREURS JS : aucune
-code : 0
-
-── tests/registre-avec-runtime-simule.js ──
 registre : Registre connecté
   enregistré : Night 80€ (déjà prêt)
   enregistré : House 200€ (déjà prêt)
@@ -53,6 +61,5 @@ tuiles : 370€ | 0€ | 123€ | 1 | 45€
   attendu commission (Signature parrainé) = 45€ → OK
   Crew : CodeCommandesLivréesCA apportéPart dueAURA-40211190€45€
 erreurs JS : aucune
-code : 0
 
-RÉSULTAT : VERT
+code de sortie = 0
