@@ -1,5 +1,5 @@
 const { chromium } = require('playwright');
-const V='file://'+__dirname+'/v3_vitrine_preview.html', O='file://'+__dirname+'/v3_office_preview.html';
+const V='file://'+__dirname+'/../preview/vitrine.html', O='file://'+__dirname+'/../preview/back-office.html';
 const R=[]; const ck=(n,c,x)=>R.push((c?'PASS ':'ÉCHEC')+' — '+n+(x!==undefined?'  ['+x+']':''));
 (async()=>{
  const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'}); const errs=[];
@@ -53,6 +53,22 @@ const R=[]; const ck=(n,c,x)=>R.push((c?'PASS ':'ÉCHEC')+' — '+n+(x!==undefin
  const mp=await m.newPage(); mp.on('pageerror',e=>errs.push('MOBILE: '+e.message));
  await mp.goto(V,{timeout:20000}).catch(()=>{}); await mp.waitForTimeout(1100);
  ck('mobile : aucun débordement', await mp.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth)<=1);
+ /* Le test ci-dessus peut passer alors que la page déborde, parce que html,body ont overflow-x:clip.
+    Celui-ci neutralise le clip d'abord : c'est le seul qui voit un vrai débordement.
+    Sur un contexte isMobile, un débordement élargit aussi le viewport de mise en page,
+    ce qui étire les éléments position:fixed — d'où la vérification de innerWidth. */
+ /* Page jetable : le style injecté ne doit pas fuir dans les contrôles suivants. */
+ const nuCtx = await b.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
+ const nuPage = await nuCtx.newPage();
+ await nuPage.goto(V); await nuPage.waitForTimeout(900);
+ const nu = await nuPage.evaluate(()=>{
+   const s=document.createElement('style');
+   s.textContent='html,body{overflow-x:visible !important}';
+   document.head.appendChild(s);
+   return {sw:document.documentElement.scrollWidth, iw:window.innerWidth};
+ });
+ await nuCtx.close();
+ ck('mobile : aucun débordement RÉEL (clip neutralisé, 390 px)', nu.sw<=391 && nu.iw<=391);
  await mp.click('#mobile-menu-btn'); await mp.waitForTimeout(300);
  ck('mobile : menu ouvrable et langues accessibles', await mp.evaluate(()=>document.getElementById('main-nav').classList.contains('mobile-open') && document.querySelectorAll('#main-nav .langset button').length===4));
  await mp.click('#main-nav a[href="#club"]'); await mp.waitForTimeout(500);
