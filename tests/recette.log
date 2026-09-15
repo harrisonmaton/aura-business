@@ -1,0 +1,58 @@
+════════════════════════════════════════════════════════════════
+ AURA BUSINESS — JOURNAL DE RECETTE
+ commit : f29794f8c2eca53f5ccf762d95246fb0950e3baf
+ date   : 2026-09-15 20:16 UTC
+ node   : v22.22.2 | playwright 1.56.0 | chromium 141.0.7390.37
+ npm test = catalogue.js + recette.js + registre-avec-runtime-simule.js
+════════════════════════════════════════════════════════════════
+
+── tests/catalogue.js ──
+PASS  — catalogue cohérent : 4 packs sur brief + 4 collections, prix identiques dans les deux pages
+code : 0
+
+── tests/recette.js ──
+PASS  — image d'ambiance chargée
+PASS  — contenu complet rendu
+PASS  — lien d'évitement présent (a11y)
+PASS  — miniatures Déjà prêt : fond réellement chargé
+PASS  — feuille de commande ouverte
+PASS  — brief vide bloqué
+PASS  — identifiant Instagram invalide refusé
+PASS  — total 90+25
+PASS  — retour arrière possible
+PASS  — remise = dialogue explicite, pas de redirection silencieuse
+PASS  — message complet dans le dialogue
+PASS  — carte de club créée
+PASS  — code cryptographique
+PASS  — aucune injection depuis le champ client
+PASS  — desktop : aucun débordement
+PASS  — mobile : aucun débordement
+PASS  — mobile : menu ouvrable et langues accessibles
+PASS  — mobile : navigation ferme le menu et navigue
+PASS  — mouvement réduit : tout le contenu visible
+PASS  — registre lit : Déjà prêt (format actuel)  [ready/2/80]
+PASS  — registre lit : Déjà prêt (ancien format en circulation)  [ready/2/80]
+PASS  — registre lit : Pack sur brief  [brief/2/90]
+PASS  — registre lit : Pack n°4  [brief/4/250]
+N/A   — enregistrement réel : registre hors ligne hors plateforme (testé séparément avec runtime simulé)
+PASS  — mode hors ligne annoncé sans erreur silencieuse
+PASS  — back-office : aucun débordement
+
+26 contrôles — 26 PASS, 0 ÉCHEC
+ERREURS JS : aucune
+code : 0
+
+── tests/registre-avec-runtime-simule.js ──
+registre : Registre connecté
+  enregistré : Night 80€ (déjà prêt)
+  enregistré : House 200€ (déjà prêt)
+  enregistré : Signature 90€ (brief, parrainé)
+commandes au registre : 3
+tuiles : 370€ | 0€ | 123€ | 1 | 45€
+  attendu CA = 80+200+90 = 370€  → OK
+  attendu commission (Signature parrainé) = 45€ → OK
+  Crew : CodeCommandesLivréesCA apportéPart dueAURA-40211190€45€
+erreurs JS : aucune
+code : 0
+
+RÉSULTAT : VERT
