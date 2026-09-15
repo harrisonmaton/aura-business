@@ -1,10 +1,10 @@
-=== Journal de recette ===
-Date UTC : 2026-09-15 21:02:24
-Commit   : c4a058abd4bade6c9ccfb3b85d18db2c6525573a
+=== Journal de recette — Aura Business ===
+Date UTC : 2026-09-15 21:44:56
+Commit   : d9e2d1107ed438ab867cfb30f2e23dd3b8346d6f
 Node     : v22.22.2
 Chromium : Chromium 141.0.7390.37 
 
---- empreintes SHA-256 des sources testées ---
+--- SHA-256 des sources testées ---
 0268c47245554e5c34adb9c3dca0a3147652c8fa9f4e666d260dcd985c82899c  src/vitrine.html
 6a5216e3df2d07dc4edce30bb72438cf1e8aedb9b085cac507b2481e4d261d54  src/back-office.html
 c298cc5ffdc6d2e418c64fbb7f75f14f2d29a92645f3dc458e96afc1df3f7ae9  src/catalog.json
