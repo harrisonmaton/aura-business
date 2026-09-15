@@ -1,5 +1,5 @@
 const { chromium } = require('playwright');
-const O='file://'+__dirname+'/v3_office_preview.html';
+const O='file://'+__dirname+'/../preview/back-office.html';
 const MOCK=`(function(){const docs=new Map(),subs=[];
 function fire(){const s={docs:[...docs.entries()].map(([id,d])=>({id,exists:true,data:()=>d}))};subs.forEach(f=>{try{f(s)}catch(e){}});}
 const coll=()=>({doc:id=>({set:async d=>{docs.set(id,d);fire();},update:async f=>{docs.set(id,Object.assign({},docs.get(id)||{},f));fire();},delete:async()=>{docs.delete(id);fire();},get:async()=>({exists:docs.has(id),data:()=>docs.get(id)})}),onSnapshot:n=>{subs.push(n);setTimeout(fire,0);return()=>{}}});

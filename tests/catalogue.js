@@ -1,9 +1,9 @@
 /* Le catalogue est écrit dans deux fichiers distincts (vitrine et back-office).
    Ce test rend la divergence impossible sans faire rougir la recette. */
 const fs=require('fs');
-const cat=JSON.parse(fs.readFileSync(__dirname+'/catalog.json','utf8'));
-const src={vitrine:fs.readFileSync(__dirname+'/storefront-v3.html','utf8'),
-           office:fs.readFileSync(__dirname+'/office-v3.html','utf8')};
+const cat=JSON.parse(fs.readFileSync(__dirname+'/../src/catalog.json','utf8'));
+const src={vitrine:fs.readFileSync(__dirname+'/../src/vitrine.html','utf8'),
+           office:fs.readFileSync(__dirname+'/../src/back-office.html','utf8')};
 const err=[];
 for(const p of cat.brief){
   for(const [f,t] of Object.entries(src)){
