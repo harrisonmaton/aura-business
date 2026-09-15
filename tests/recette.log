@@ -1,14 +1,20 @@
 === Journal de recette — Aura Business ===
-Date UTC : 2026-09-15 21:44:56
-Commit   : d9e2d1107ed438ab867cfb30f2e23dd3b8346d6f
+Date UTC : 2026-09-15 22:11:08
+Commit   : arbre de travail — correctifs assets, droits et polices, avant commit
 Node     : v22.22.2
-Chromium : Chromium 141.0.7390.37 
+Playwright : 1.63.0  |  Chromium : 141.0.7390.37
 
 --- SHA-256 des sources testées ---
-0268c47245554e5c34adb9c3dca0a3147652c8fa9f4e666d260dcd985c82899c  src/vitrine.html
-6a5216e3df2d07dc4edce30bb72438cf1e8aedb9b085cac507b2481e4d261d54  src/back-office.html
-c298cc5ffdc6d2e418c64fbb7f75f14f2d29a92645f3dc458e96afc1df3f7ae9  src/catalog.json
+c581aabb795c21038d187bdf86a4797f98c9052800603dd612f844d1c494b7fe  src/vitrine.html
+b31341f5f92507674341dcaefc1665cfa91bfba42e4f2641409baf07e31f5fa7  src/back-office.html
+2209b4b265d7be9c06cc8b6627101159e85bc70311fb13b83349d4dd20aa198d  src/catalog.json
 a1e8d5dbd9212fb510aa194f9ed31c4e532e84bbc2ff08a615161325fabd74c7  src/hero.webp
+ff4f17d21930e36d6d93baba663e624cb767afc3feebf7adaebd82242638de05  src/fonts/archivo-latin-ext.woff2
+8f704806dbedeaaeca334b11ec348bc3ac3a439d6431544b3afb54f534ee4967  src/fonts/archivo-latin.woff2
+4800c2afa7e500da381b6a23fcc843060284f092575b58410068b3598c1bdc7e  src/fonts/bodoni-moda-italic-latin-ext.woff2
+b737328c13b92784ee78d99e62e3bcc38eeef0f2dba41d107637b3acea46781f  src/fonts/bodoni-moda-italic-latin.woff2
+f156e4a7cef0928383fe259021b1f1d715a88d593565d0fc824704e54d07f6fd  src/fonts/bodoni-moda-latin-ext.woff2
+c032219ef636f7b4932f7d1dc91bdab602c970f090770b546bea4effaab3463c  src/fonts/bodoni-moda-latin.woff2
 
 --- npm test ---
 
@@ -19,12 +25,21 @@ a1e8d5dbd9212fb510aa194f9ed31c4e532e84bbc2ff08a615161325fabd74c7  src/hero.webp
 > aura-business@0.4.0 build:preview
 > node scripts/build-preview.js
 
-preview/ régénéré depuis src/ (image incluse)
-PASS  — catalogue cohérent : 4 packs sur brief + 4 collections, prix identiques dans les deux pages
+preview/ régénéré depuis src/ (image et polices incluses)
+PASS  — catalogue cohérent : 4 packs sur brief + 4 collections, prix et fichiers identiques dans les deux pages
+PASS  — collections livrables : 0/4 (les autres sont en assets_missing)
 PASS  — image d'ambiance chargée
 PASS  — contenu complet rendu
 PASS  — lien d'évitement présent (a11y)
 PASS  — miniatures Déjà prêt : fond réellement chargé
+PASS  — aucune requête vers un tiers  [0]
+PASS  — polices auto-hébergées réellement chargées
+PASS  — collection sans fichier : aucun chemin de commande  [sans fichier [1,2,3,4] commandables []]
+PASS  — collection sans fichier : pas de bouton cliquable  [0 bouton(s)]
+PASS  — section annoncée dans l'état correspondant au catalogue  [soon/soon attendu soon]
+PASS  — aucune promesse de livraison immédiate sans fichier
+PASS  — état « en préparation » affiché au visiteur
+PASS  — mention légale : aucune affirmation sur l'origine de l'image d'accueil
 PASS  — feuille de commande ouverte
 PASS  — brief vide bloqué
 PASS  — identifiant Instagram invalide refusé
@@ -48,8 +63,10 @@ PASS  — registre lit : Pack n°4  [brief/4/250]
 N/A   — enregistrement réel : registre hors ligne hors plateforme (testé séparément avec runtime simulé)
 PASS  — mode hors ligne annoncé sans erreur silencieuse
 PASS  — back-office : aucun débordement
+PASS  — back-office : collections sans fichier signalées assets_missing  [4/4]
+PASS  — back-office : alerte visible et nommant les collections
 
-27 contrôles — 27 PASS, 0 ÉCHEC
+37 contrôles — 37 PASS, 0 ÉCHEC
 ERREURS JS : aucune
 registre : Registre connecté
   enregistré : Night 80€ (déjà prêt)
@@ -63,3 +80,18 @@ tuiles : 370€ | 0€ | 123€ | 1 | 45€
 erreurs JS : aucune
 
 code de sortie = 0
+
+--- preuve que la recette rougit réellement ---
+Régression simulée : readyAvailable() forcée à true, les 4 collections
+redeviennent commandables alors que catalog.json les donne à assets:0.
+  → 37 contrôles — 32 PASS, 5 ÉCHEC — code de sortie = 1
+  ÉCHEC — collection sans fichier : aucun chemin de commande
+  ÉCHEC — collection sans fichier : pas de bouton cliquable
+  ÉCHEC — section annoncée dans l'état correspondant au catalogue
+  ÉCHEC — aucune promesse de livraison immédiate sans fichier
+  ÉCHEC — état « en préparation » affiché au visiteur
+Divergence simulée : catalog.json passé à assets:4 pour Street, pages inchangées.
+  → tests/catalogue.js — code de sortie = 1
+  ÉCHEC — vitrine : Street annonce 0 fichier(s) au lieu de 4
+  ÉCHEC — back-office : Street annonce 0 fichier(s) au lieu de 4
+Source restaurée dans les deux cas, recette revenue à 0.

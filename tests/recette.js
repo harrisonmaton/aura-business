@@ -1,4 +1,5 @@
 const { chromium } = require('playwright');
+const CAT=JSON.parse(require('fs').readFileSync(__dirname+'/../src/catalog.json','utf8'));
 const V='file://'+__dirname+'/../preview/vitrine.html', O='file://'+__dirname+'/../preview/back-office.html';
 const R=[]; const ck=(n,c,x)=>R.push((c?'PASS ':'ÉCHEC')+' — '+n+(x!==undefined?'  ['+x+']':''));
 (async()=>{
@@ -7,7 +8,11 @@ const R=[]; const ck=(n,c,x)=>R.push((c?'PASS ':'ÉCHEC')+' — '+n+(x!==undefin
  await c.route('**://ig.me/**',r=>r.abort());
  const p=await c.newPage();
  p.on('pageerror',e=>errs.push('JS: '+e.message));
- p.on('console',m=>{if(m.type()==='error'&&!/ERR_TUNNEL|fonts.googleapis/.test(m.text()))errs.push('CONSOLE: '+m.text());});
+ /* Plus d'exemption pour fonts.googleapis : les polices sont auto-hébergées.
+    Si quelqu'un réintroduit un appel tiers, la recette doit le voir. */
+ p.on('console',m=>{if(m.type()==='error'&&!/ERR_TUNNEL/.test(m.text()))errs.push('CONSOLE: '+m.text());});
+ const tiers=[];
+ p.on('request',r=>{const u=r.url();if(!/^(file:|data:|blob:)/.test(u))tiers.push(u);});
  await p.goto(V,{timeout:20000}).catch(()=>{}); await p.waitForTimeout(1200);
 
  ck('image d\'ambiance chargée', await p.evaluate(()=>{const i=document.getElementById('cinema-image');return i&&i.naturalWidth>1000;}));
@@ -19,6 +24,49 @@ const R=[]; const ck=(n,c,x)=>R.push((c?'PASS ':'ÉCHEC')+' — '+n+(x!==undefin
    const els=[...document.querySelectorAll('.ready-thumb')];
    return els.length===4 && els.every(e=>{const b=getComputedStyle(e).backgroundImage;return b&&b!=='none';});
  }));
+ /* La page ne doit dépendre d'aucun tiers : polices comprises, elle doit
+    s'afficher entière hors ligne. */
+ ck('aucune requête vers un tiers', tiers.length===0, tiers.length?tiers.join(' '):'0');
+ ck('polices auto-hébergées réellement chargées', await p.evaluate(async()=>{
+   await document.fonts.ready;
+   const f=[...document.fonts].filter(x=>x.status==='loaded').map(x=>x.family);
+   return f.includes('Archivo') && f.includes('Bodoni Moda');
+ }));
+ /* Assets manquants : une collection sans fichier livrable ne doit être ni
+    commandable, ni annoncée en livraison immédiate. Sinon le site encaisse
+    pour un fichier qui n'existe pas. */
+ const sansFichier = CAT.ready.filter(r=>!(r.assets>0)).map(r=>r.id);
+ const etatReady = Object.assign({sansFichier}, await p.evaluate(()=>({
+   commandables: [...document.querySelectorAll('[data-ready]')].map(e=>Number(e.getAttribute('data-ready'))),
+   boutons     : [...document.querySelectorAll('.ready-row')].filter(e=>e.tagName==='BUTTON').length,
+   texte       : document.getElementById('ready').textContent,
+   etatHint    : document.getElementById('ready-hint').getAttribute('data-state'),
+   etatLede    : document.getElementById('ready-lede').getAttribute('data-state')
+ })));
+ ck('collection sans fichier : aucun chemin de commande',
+    etatReady.sansFichier.every(id=>!etatReady.commandables.includes(id)),
+    'sans fichier ['+etatReady.sansFichier+'] commandables ['+etatReady.commandables+']');
+ ck('collection sans fichier : pas de bouton cliquable',
+    etatReady.boutons===CAT.ready.length-etatReady.sansFichier.length, etatReady.boutons+' bouton(s)');
+ /* Deux angles : l'état déclaré de la section, et l'absence de la formule
+    commerciale. Le premier tient quelle que soit la langue ou la rédaction. */
+ const attendu = etatReady.sansFichier.length===CAT.ready.length ? 'soon' : 'available';
+ ck('section annoncée dans l\'état correspondant au catalogue',
+    etatReady.etatHint===attendu && etatReady.etatLede===attendu,
+    etatReady.etatHint+'/'+etatReady.etatLede+' attendu '+attendu);
+ ck('aucune promesse de livraison immédiate sans fichier',
+    attendu==='available' ||
+    !/livraison directe|entrega directa|consegna diretta|direct delivery|fichier part|file ships|archivo sale|file parte/i.test(etatReady.texte));
+ ck('état « en préparation » affiché au visiteur',
+    (await p.locator('.ready-row.is-soon').count())===etatReady.sansFichier.length);
+ /* La mention légale affirmait que tous les visuels étaient générés. C'est vrai
+    des compositions SVG, pas de hero.webp dont la provenance n'est pas établie. */
+ ck('mention légale : aucune affirmation sur l\'origine de l\'image d\'accueil',
+    await p.evaluate(()=>{
+      const l=document.querySelector('.legal').textContent;
+      return !/compositions générées, pas des photographies/i.test(l)
+          && !/illustrations d.ambiance du site sont générées/i.test(l);
+    }));
  // commande
  await p.click('#kiosk button[data-order="2"]'); await p.waitForTimeout(400);
  ck('feuille de commande ouverte', await p.isVisible('#sheet'));
@@ -103,6 +151,19 @@ const R=[]; const ck=(n,c,x)=>R.push((c?'PASS ':'ÉCHEC')+' — '+n+(x!==undefin
         ck('mode hors ligne annoncé sans erreur silencieuse', (await op.textContent('#db-state')).includes('Hors ligne')); }
  await op.screenshot({path:'v3_office.png'});
  ck('back-office : aucun débordement', await op.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth)<=1);
+ /* Le défaut commercial doit être visible par l'exploitant, pas seulement
+    masqué côté public. */
+ await op.click('.tabs button[data-tab="board"]'); await op.waitForTimeout(250);
+ const etatOffice = Object.assign({sansFichier:sansFichier.length}, await op.evaluate(()=>({
+   pastilles: document.querySelectorAll('#assets-state .pill.assets-missing').length,
+   alerte   : document.getElementById('assets-card').classList.contains('alert'),
+   note     : document.getElementById('assets-note').textContent
+ })));
+ ck('back-office : collections sans fichier signalées assets_missing',
+    etatOffice.pastilles===etatOffice.sansFichier,
+    etatOffice.pastilles+'/'+etatOffice.sansFichier);
+ ck('back-office : alerte visible et nommant les collections',
+    etatOffice.sansFichier===0 || (etatOffice.alerte && /Street|Night|Heat|House/.test(etatOffice.note)));
 
  console.log(R.join('\n'));
  const f=R.filter(x=>x.startsWith('ÉCHEC')).length;

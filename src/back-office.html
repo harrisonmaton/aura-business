@@ -1,11 +1,14 @@
 <title>Aura Office</title>
 <meta name="description" content="Back-office Aura Business : commandes, production assistée, commissions du Crew.">
 <meta name="theme-color" content="#07050C">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Archivo:wght@300..700&display=swap">
-
 <style>
+/* Polices auto-hébergées (SIL Open Font License 1.1, voir fonts/OFL.txt). */
+@font-face{font-family:'Archivo';font-style:normal;font-weight:300 700;font-display:swap;src:url(fonts/archivo-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;}
+@font-face{font-family:'Archivo';font-style:normal;font-weight:300 700;font-display:swap;src:url(fonts/archivo-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
+@font-face{font-family:'Bodoni Moda';font-style:italic;font-weight:400 700;font-display:swap;src:url(fonts/bodoni-moda-italic-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;}
+@font-face{font-family:'Bodoni Moda';font-style:italic;font-weight:400 700;font-display:swap;src:url(fonts/bodoni-moda-italic-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
+@font-face{font-family:'Bodoni Moda';font-style:normal;font-weight:400 700;font-display:swap;src:url(fonts/bodoni-moda-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;}
+@font-face{font-family:'Bodoni Moda';font-style:normal;font-weight:400 700;font-display:swap;src:url(fonts/bodoni-moda-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
 /* ============================================================================
    AURA OFFICE — même langue visuelle que la vitrine, mode instrument :
    plus dense, plus froid, fait pour être lu vite et utilisé tous les jours.
@@ -113,6 +116,15 @@ main{padding-block:clamp(1.6rem,4vw,3rem) 5rem;}
 .pill.production{color:var(--violet); border-color:rgba(123,59,255,.4);}
 .pill.livre{color:var(--green); border-color:rgba(74,222,155,.35);}
 .pill.annule{color:var(--faint);}
+.pill.assets-missing{color:var(--pink); border-color:rgba(255,46,136,.45);}
+.pill.assets-ok{color:var(--green); border-color:rgba(74,222,155,.35);}
+.assets-row{display:grid; grid-template-columns:1fr auto auto; align-items:center; gap:.8rem;
+  padding:.6rem 0; border-bottom:1px solid var(--rule-soft);}
+.assets-row:last-child{border-bottom:0;}
+.assets-row .an{font-family:'Bodoni Moda',serif; font-size:1.1rem;}
+.assets-row .ap{color:var(--faint); font-size:.8rem;}
+.card.alert{border-color:rgba(255,46,136,.45);}
+.card.alert .label{color:var(--pink);}
 
 .field{display:flex; flex-direction:column; gap:.4rem; margin-bottom:.9rem;}
 .field label{font-size:var(--t-micro); letter-spacing:.18em; text-transform:uppercase; color:var(--faint);}
@@ -177,6 +189,12 @@ td.r,th.r{text-align:right;}
 
   <div class="tiles" id="tiles"></div>
   <div class="pipe" id="pipe"></div>
+
+  <div class="card" id="assets-card" style="margin-top:1.6rem;">
+    <p class="label" id="assets-title">État des collections « Déjà prêt »</p>
+    <div id="assets-state" style="margin-top:.9rem;"></div>
+    <p class="ap" id="assets-note" style="margin-top:.9rem;"></p>
+  </div>
 
   <div class="grid-2" style="margin-top:1.6rem;">
     <div class="card">
@@ -330,11 +348,14 @@ var SHARE = {1:25, 2:45, 3:75, 4:125};      /* part Crew par pack sur brief, 50 
 /* Collections « Déjà prêt ». Elles manquaient au registre : une vente Night à
    80€ était soit refusée, soit enregistrée comme un Signature à 90€. Deux
    catalogues distincts, deux numérotations, un champ `kind` pour trancher. */
+/* assets = fichiers livrables réellement présents dans le dépôt. À 0, la
+   collection est en assets_missing : rien à envoyer si quelqu'un paie.
+   Source unique : src/catalog.json, cohérence vérifiée par tests/catalogue.js. */
 var READY = [
-  {id:1, name:"Street", price:40},
-  {id:2, name:"Night",  price:80},
-  {id:3, name:"Heat",   price:120},
-  {id:4, name:"House",  price:200}
+  {id:1, name:"Street", price:40,  assets:0},
+  {id:2, name:"Night",  price:80,  assets:0},
+  {id:3, name:"Heat",   price:120, assets:0},
+  {id:4, name:"House",  price:200, assets:0}
 ];
 var readyById = function(id){ return READY.filter(function(p){ return p.id === Number(id); })[0] || READY[1]; };
 function catalogue(kind){ return kind === "ready" ? READY : PACKS; }
@@ -588,7 +609,27 @@ function renderStudioSelect(){
     return '<option value="' + esc(o.id) + '">' + esc((o.ig || "sans compte") + " · n°" + o.packId + " · " + eur(o.total)) + '</option>';
   }).join("");
 }
-function renderAll(){ renderTiles(); renderRecent(); renderOwed(); renderOrders(); renderCrew(); renderStudioSelect(); }
+/* Un pack vendable sans fichier livrable est un défaut commercial, pas un
+   détail d'affichage : il est donc montré au tableau, pas enfoui ailleurs. */
+function renderAssetsState(){
+  var manquantes = READY.filter(function(r){ return !(r.assets > 0); });
+  $("#assets-state").innerHTML = READY.map(function(r){
+    var ko = !(r.assets > 0);
+    return '<div class="assets-row">'
+      + '<span class="an">' + esc(r.name) + '</span>'
+      + '<span class="ap">' + r.price + '€ · ' + (ko ? '0 fichier' : r.assets + ' fichiers') + '</span>'
+      + '<span class="pill ' + (ko ? 'assets-missing">assets_missing' : 'assets-ok">livrable') + '</span>'
+    + '</div>';
+  }).join("");
+  $("#assets-card").className = manquantes.length ? "card alert" : "card";
+  $("#assets-note").textContent = manquantes.length
+    ? manquantes.length + ' collection(s) sans aucun fichier livrable : '
+      + manquantes.map(function(r){ return r.name; }).join(", ")
+      + '. La vitrine les affiche « en préparation » et n\'accepte aucune commande pour elles. '
+      + 'Reprendre la vente suppose de produire les fichiers, puis de porter le compte dans src/catalog.json.'
+    : 'Toutes les collections ont des fichiers livrables.';
+}
+function renderAll(){ renderTiles(); renderRecent(); renderOwed(); renderOrders(); renderCrew(); renderStudioSelect(); renderAssetsState(); }
 
 /* ════════════════════════════════════════════════════════════════════
    Onglets

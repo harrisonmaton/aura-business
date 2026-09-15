@@ -1,5 +1,6 @@
 {
   "_comment": "Source unique. Toute divergence entre la vitrine et le back-office fait échouer la recette.",
+  "_assets": "ready[].assets = nombre de fichiers livrables réellement présents dans le dépôt. À 0, la collection ne peut pas être vendue en livraison immédiate : la vitrine la marque « en préparation » et le back-office la signale assets_missing. Vérifié par tests/catalogue.js.",
   "brief": [
     {"id":1,"name":"Essentiel","price":50,"visuals":8,"texts":8,"messages":4,"bio":false,"stories":false},
     {"id":2,"name":"Signature","price":90,"visuals":12,"texts":12,"messages":6,"bio":true,"stories":false},
@@ -7,9 +8,9 @@
     {"id":4,"name":"Maison","price":250,"visuals":24,"texts":24,"messages":12,"bio":true,"stories":true}
   ],
   "ready": [
-    {"id":1,"name":"Street","price":40},
-    {"id":2,"name":"Night","price":80},
-    {"id":3,"name":"Heat","price":120},
-    {"id":4,"name":"House","price":200}
+    {"id":1,"name":"Street","price":40,"assets":0},
+    {"id":2,"name":"Night","price":80,"assets":0},
+    {"id":3,"name":"Heat","price":120,"assets":0},
+    {"id":4,"name":"House","price":200,"assets":0}
   ]
 }

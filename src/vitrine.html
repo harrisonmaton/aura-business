@@ -4,11 +4,16 @@
 <meta property="og:description" content="Des images. Des textes. Prêts à publier.">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#07050C">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Archivo:wght@300..700&display=swap">
-
 <style>
+/* Polices auto-hébergées (SIL Open Font License 1.1, voir fonts/OFL.txt).
+   Servies depuis le dépôt et non depuis fonts.googleapis.com : la page ne
+   dépend d'aucun tiers pour son rendu et fonctionne hors ligne. */
+@font-face{font-family:'Archivo';font-style:normal;font-weight:300 700;font-display:swap;src:url(fonts/archivo-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;}
+@font-face{font-family:'Archivo';font-style:normal;font-weight:300 700;font-display:swap;src:url(fonts/archivo-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
+@font-face{font-family:'Bodoni Moda';font-style:italic;font-weight:400 700;font-display:swap;src:url(fonts/bodoni-moda-italic-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;}
+@font-face{font-family:'Bodoni Moda';font-style:italic;font-weight:400 700;font-display:swap;src:url(fonts/bodoni-moda-italic-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
+@font-face{font-family:'Bodoni Moda';font-style:normal;font-weight:400 700;font-display:swap;src:url(fonts/bodoni-moda-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;}
+@font-face{font-family:'Bodoni Moda';font-style:normal;font-weight:400 700;font-display:swap;src:url(fonts/bodoni-moda-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}
 /* ============================================================================
    AURA BUSINESS — DESIGN SYSTEM
    Direction : maison de nuit. Un lookbook de maison de couture qui travaille
@@ -536,6 +541,12 @@ html{scroll-behavior:smooth;scroll-padding-top:90px}[hidden]{display:none!import
 .feature{background:var(--ink-2);border:1px solid var(--rule);grid-template-columns:1.15fr 1fr}.feature-body{padding:3rem}.feature-body h3{font-size:3.4rem}.feature-body .lede{font-size:.95rem}.feature-body .btn{margin-top:auto}.feature-art{min-height:560px;background:radial-gradient(ellipse at 35% 40%,#3b4341,#121a1c 75%)}.feature-tag{top:1.4rem;right:1.4rem;letter-spacing:.13em}.feature-art .plate{display:none}.editorial-preview{position:absolute;inset:3.8rem 3rem 4rem;perspective:1000px}.editorial-post{position:absolute;left:0;top:0;width:74%;height:94%;background:linear-gradient(0deg,rgba(4,9,13,.7),transparent),var(--cinema) center/cover;transform:rotate(-7deg);box-shadow:0 25px 55px #0008;border:7px solid #e5dccb;padding:1.2rem;display:flex;flex-direction:column;justify-content:space-between;z-index:2;color:#f6efdf}.editorial-post>span{font-size:.5rem;letter-spacing:.26em}.editorial-post>strong{font-family:'Bodoni Moda',Georgia,serif;font-size:clamp(2rem,3.7vw,4rem);line-height:.94;font-weight:400;white-space:normal}.editorial-post>small{font-size:.62rem;max-width:10rem}.editorial-swatch{position:absolute;right:0;bottom:0;height:70%;width:55%;transform:rotate(8deg);border:1px solid #c5b08c;background:#d6c7a9;color:#192422;padding:1.5rem;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 20px 60px #0007}.editorial-swatch span{font-size:.57rem;letter-spacing:.2em;line-height:1.6}.editorial-swatch b{font:5rem 'Bodoni Moda',Georgia,serif;align-self:flex-end}.study-label{position:absolute;left:1.4rem;right:1.4rem;bottom:1.4rem;color:#c4bcb0;font-size:.64rem;line-height:1.4}
 .menu-rows{margin-top:1.5rem!important}.menu-row{padding:1.6rem .5rem}.menu-row .rt strong{font-size:1.8rem}.menu-row .rt span{line-height:1.7}.menu-row .rp b{font-size:2rem}.menu-row .rn{color:var(--brass)}
 #ready{background:#0d1316}.ready-list{grid-template-columns:repeat(4,1fr);gap:1.2rem;border:0}.ready-row{display:flex;flex-direction:column;align-items:stretch;gap:1rem;padding:0 0 1.2rem;border:1px solid var(--rule);background:var(--ink-2);overflow:hidden}.ready-thumb{width:100%;height:230px;background:var(--cinema) center/cover;transition:filter .3s}.ready-thumb .art{opacity:.2;mix-blend-mode:screen}.ready-row:nth-child(2) .ready-thumb{background-position:70% center;filter:hue-rotate(310deg)}.ready-row:nth-child(3) .ready-thumb{background-position:30% center;filter:sepia(.4)}.ready-row:nth-child(4) .ready-thumb{background-position:80% center;filter:saturate(.4)}.ready-row .rt{padding:0 1.2rem}.ready-row .rt strong{font-size:1.8rem}.ready-row .rt span{font-size:.74rem;display:block;min-height:2.8rem;margin-top:.5rem}.ready-row .rv{padding:0 1.2rem;font-size:1.6rem}.ready-row:hover{border-color:var(--brass);background:#171e20}
+/* Collection annoncée mais sans fichier livrable : lisible, jamais cliquable. */
+.ready-row.is-soon{cursor:default;border-style:dashed;border-color:var(--rule)}
+.ready-row.is-soon:hover{border-color:var(--rule);background:var(--ink-2)}
+.ready-row.is-soon .ready-thumb{filter:grayscale(.85) brightness(.62)}
+.ready-row.is-soon .rv{color:var(--faint)}
+.soon-flag{display:inline-block;margin-left:.5rem;padding:.2rem .5rem;border:1px solid var(--rule-brass);font-family:'Archivo',sans-serif;font-size:.58rem;font-weight:600;font-style:normal;letter-spacing:.12em;text-transform:uppercase;color:var(--brass);vertical-align:middle}
 #club{background:radial-gradient(ellipse at 90% 20%,#17363877,transparent 65%),#090d0f}.pass{background:linear-gradient(135deg,#25372f,#101b1e 65%,#303020);border-color:#9a845e}.missions{border-color:var(--rule)}.mission{background:#11191b}.mission .ms{color:var(--brass)}
 #kiosk{backdrop-filter:blur(20px);background:#0b1016eF;border-color:#8c7855;border-radius:4px;bottom:18px}#kiosk button{min-height:54px;min-width:100px}.sheet-card{background:#10171a}.sheet-close{min-width:44px;min-height:44px}.field input{font-size:16px}.chip{min-height:44px}.copyfield input{font-size:16px}#amb-btn{background:#101619;bottom:25px;top:auto;left:20px}#amb-panel{background:#101619}.qa-q{font-size:1.55rem}.legal{font-size:.78rem}
 #handoff{color:var(--paper);background:#11191d;border:1px solid var(--rule-brass);padding:2.5rem;width:min(640px,calc(100% - 2rem));max-height:90dvh;overflow:auto}#handoff::backdrop{background:#030609d9;backdrop-filter:blur(10px)}#handoff h2{font-size:2.8rem;margin:1.5rem 0 1rem}#handoff .lede{font-size:.92rem}#handoff textarea{display:block;width:100%;margin-top:1.4rem;padding:1rem;background:#080e11;color:#e8e2d7;border:1px solid var(--rule);resize:vertical;line-height:1.6;font-size:14px}#copy-status{min-height:2.5rem;font-size:.8rem;color:var(--brass);margin:.6rem 0}.handoff-actions{display:flex;flex-wrap:wrap;gap:.6rem}
@@ -666,9 +677,9 @@ html,body{max-width:100%;overflow-x:clip}
       <div class="hair"></div>
       <div class="display-row">
         <span class="section-no">02 /</span><h2 data-i18n="ready.title">Déjà prêt</h2>
-        <p class="label" data-i18n="ready.hint">Sans brief · livraison directe</p>
+        <p class="label" id="ready-hint">En préparation · pas encore disponible</p>
       </div>
-      <p class="lede" data-i18n="ready.lede">Des fichiers déjà composés. Vous prenez, vous payez la maison, le fichier part.</p>
+      <p class="lede" id="ready-lede">Ces collections ne sont pas encore composées. Aucune n'est commandable pour l'instant : les packs sur brief ci-dessus, eux, sont ouverts.</p>
     </div>
     <div class="ready-list reveal" data-d="1" id="ready-list"></div>
   </div>
@@ -772,7 +783,7 @@ html,body{max-width:100%;overflow-x:clip}
         </button>
       </div>
     </div>
-    <p class="legal" data-i18n="footer.legal">Maison de création de contenu Instagram via @polakpl_f44. Visuels, textes et messages produits avec l'aide de l'intelligence artificielle. Aucun résultat commercial garanti. Prix en euros, toutes taxes comprises. Commande confirmée en message privé avant production. Les visuels présentés sur ce site sont des compositions générées, pas des photographies. Les marques éventuellement visibles ne nous appartiennent pas.</p>
+    <p class="legal" data-i18n="footer.legal">Création de contenu Instagram via @polakpl_f44. Prix affichés en euros TTC. Prix, délai et conditions confirmés en message privé avant paiement. Les vignettes et compositions décoratives sont générées par le code de la page. L'image d'accueil est une image d'ambiance : elle ne représente ni un client réel, ni les fichiers d'un pack. Aucun résultat commercial garanti. Paiement, production et livraison sont traités par la maison, hors de ce site.</p>
   </div>
 </footer>
 
@@ -1118,6 +1129,35 @@ it:{
 var REVISED_COPY={"fr": {"manifesto.eyebrow": "Packs de contenu Instagram", "manifesto.line1": "Votre Instagram.", "manifesto.line2": "Une autre allure.", "manifesto.lede": "Des visuels et des textes prêts à publier pour votre commerce. Choisissez votre pack. On s’occupe de la création.", "manifesto.cta": "Choisir mon pack · dès 50 €", "manifesto.cta2": "Parler de mon projet ↗", "carte.hint": "Sur brief · de 50 à 250 €", "ready.hint": "Collections composées · de 40 à 200 €", "v2.edition": "Studio de contenu indépendant", "v2.focus": "La sélection de la maison", "v2.recipe": "12 visuels · 12 textes · 6 messages · bio", "v2.discover": "Découvrir le pack", "v2.bottom": "Pensé pour votre activité. Prêt pour Instagram.", "v2.noSub": "Un achat. Aucun abonnement.", "v2.strip1": "Visuels + textes", "v2.strip2": "Sur brief ou déjà prêt", "v2.strip3": "Pour commerces & indépendants", "v2.handoffTitle": "Votre message est prêt.", "v2.handoffHelp": "Copiez-le, ouvrez Instagram puis collez-le dans la conversation. Rien n’est envoyé automatiquement.", "v2.copy": "Copier le message", "v2.open": "Ouvrir Instagram ↗", "v2.handoffNote": "La maison confirme le prix et le délai en message privé avant tout paiement.", "v2.copyOk": "Message copié. Vous pouvez le coller dans Instagram.", "v2.copyFailed": "Copie bloquée : sélectionnez le texte ci-dessus, puis copiez-le manuellement.", "v2.refLocal": "Lien disponible une fois le site hébergé. Votre code :", "v2.demo": "Étude de style · illustration, hors pack livré", "v2.demoTitle": "LA NUIT\nÀ LA CARTE", "v2.demoSmall": "Une présence qui se remarque.", "club.linkNote": "Votre code est ajouté au message. La maison doit confirmer l’apport et la commission ; ce lien ne constitue pas une preuve de vente.", "club.localNote": "Carte locale sur cet appareil. Aucun compte ni commission validée ici. La maison confirme chaque apport.", "club.pending": "À confirmer par la maison", "club.toNext": "ventes validées avant", "sheet.previewLabel": "Étude d’ambiance", "sheet.previewHint": "Illustration générée à titre d’exemple. Elle ne lit pas votre profil Instagram et ne représente pas votre pack final.", "sheet.required": "Complétez les trois lignes avec un compte Instagram valide (@nom, sans lien).", "sheet.helpNote": "Préparez le message, puis copiez-le dans Instagram. La maison confirme prix et délai avant tout paiement.", "sheet.copyOpen": "Préparer l’envoi Instagram", "footer.legal": "Création de contenu Instagram via @polakpl_f44. Prix affichés en euros TTC. Prix, délai et conditions confirmés en message privé avant paiement. Les illustrations d’ambiance du site sont générées ; elles ne représentent ni un client réel ni les fichiers d’un pack. Aucun résultat commercial garanti. Paiement, production et livraison sont traités par la maison, hors de ce site."}, "en": {"manifesto.eyebrow": "Instagram content packs", "manifesto.line1": "Your Instagram.", "manifesto.line2": "A different presence.", "manifesto.lede": "Ready-to-post visuals and copy for your business. Choose your pack. We take care of the creative work.", "manifesto.cta": "Choose my pack · from €50", "manifesto.cta2": "Discuss my project ↗", "carte.hint": "Custom packs · €50 to €250", "ready.hint": "Prepared collections · €40 to €200", "v2.edition": "Independent content studio", "v2.focus": "The house selection", "v2.recipe": "12 visuals · 12 captions · 6 messages · bio", "v2.discover": "Explore the pack", "v2.bottom": "Made for your business. Ready for Instagram.", "v2.noSub": "One purchase. No subscription.", "v2.strip1": "Visuals + copy", "v2.strip2": "Custom or ready-made", "v2.strip3": "For local businesses & independents", "v2.handoffTitle": "Your message is ready.", "v2.handoffHelp": "Copy it, open Instagram and paste it into the conversation. Nothing is sent automatically.", "v2.copy": "Copy message", "v2.open": "Open Instagram ↗", "v2.handoffNote": "We confirm price and timing in a private message before payment.", "v2.copyOk": "Copied. You can paste this message into Instagram.", "v2.copyFailed": "Copy blocked: select the text above and copy it manually.", "v2.refLocal": "A link is available once hosted. Your code:", "v2.demo": "Style study · illustration, not a delivered pack", "v2.demoTitle": "AFTER\nHOURS", "v2.demoSmall": "A presence worth noticing.", "club.linkNote": "Your code is added to the message. The house must confirm the referral and commission; this link is not proof of a sale.", "club.localNote": "Local card on this device. No account or validated commission. The house confirms each referral.", "club.pending": "Awaiting house confirmation", "club.toNext": "verified sales until", "sheet.previewLabel": "Mood study", "sheet.previewHint": "Generated illustration only. It does not read your Instagram profile or represent your final pack.", "sheet.required": "Complete all three fields with a valid Instagram handle (@name, not a link).", "sheet.helpNote": "Prepare your message, then copy it into Instagram. Price and timing are confirmed before payment.", "sheet.copyOpen": "Prepare Instagram message", "footer.legal": "Instagram content studio via @polakpl_f44. Displayed prices in euros, tax inclusive. Price, timing and terms confirmed in private messages before payment. Generated mood illustrations do not depict real clients or actual pack files. No business results guaranteed. Payment, production and delivery are handled by the house outside this site."}, "es": {"manifesto.eyebrow": "Packs de contenido Instagram", "manifesto.line1": "Tu Instagram.", "manifesto.line2": "Otra presencia.", "manifesto.lede": "Imágenes y textos listos para publicar para tu negocio. Elige tu pack. Nosotros creamos el contenido.", "manifesto.cta": "Elegir mi pack · desde 50 €", "manifesto.cta2": "Hablar de mi proyecto ↗", "carte.hint": "A medida · de 50 a 250 €", "ready.hint": "Colecciones preparadas · de 40 a 200 €", "v2.edition": "Estudio independiente de contenido", "v2.focus": "La selección de la casa", "v2.recipe": "12 imágenes · 12 textos · 6 mensajes · bio", "v2.discover": "Descubrir el pack", "v2.bottom": "Para tu negocio. Listo para Instagram.", "v2.noSub": "Una compra. Sin suscripción.", "v2.strip1": "Imágenes + textos", "v2.strip2": "A medida o preparado", "v2.strip3": "Para negocios e independientes", "v2.handoffTitle": "Tu mensaje está listo.", "v2.handoffHelp": "Cópialo, abre Instagram y pégalo en la conversación. No se envía nada automáticamente.", "v2.copy": "Copiar mensaje", "v2.open": "Abrir Instagram ↗", "v2.handoffNote": "La casa confirma precio y plazo por mensaje antes del pago.", "v2.copyOk": "Copiado. Puedes pegarlo en Instagram.", "v2.copyFailed": "Copia bloqueada: selecciona el texto y cópialo manualmente.", "v2.refLocal": "Enlace disponible al publicar el sitio. Tu código:", "v2.demo": "Estudio de estilo · ilustración, no pack entregado", "v2.demoTitle": "LA NOCHE\nA LA CARTA", "v2.demoSmall": "Una presencia que destaca.", "club.linkNote": "El código se añade al mensaje. La casa debe confirmar la recomendación y comisión; el enlace no prueba una venta.", "club.localNote": "Tarjeta local en este dispositivo. No es una cuenta ni confirma comisiones. La casa valida cada recomendación.", "club.pending": "Pendiente de confirmación", "club.toNext": "ventas confirmadas hasta", "sheet.previewLabel": "Estudio visual", "sheet.previewHint": "Ilustración generada de ejemplo. No lee tu perfil Instagram ni representa el pack final.", "sheet.required": "Completa los tres campos con un usuario válido (@nombre, sin enlace).", "sheet.helpNote": "Prepara el mensaje y cópialo en Instagram. Confirmamos precio y plazo antes del pago.", "sheet.copyOpen": "Preparar mensaje Instagram", "footer.legal": "Contenido Instagram vía @polakpl_f44. Precios en euros, impuestos incluidos. Precio, plazo y condiciones confirmados por mensaje antes del pago. Ilustraciones generadas, no clientes reales ni archivos del pack. Sin garantía de resultados comerciales. Pago, producción y entrega gestionados fuera del sitio."}, "it": {"manifesto.eyebrow": "Pack di contenuti Instagram", "manifesto.line1": "Il tuo Instagram.", "manifesto.line2": "Un’altra presenza.", "manifesto.lede": "Immagini e testi pronti da pubblicare per la tua attività. Scegli il pack. Alla creazione pensiamo noi.", "manifesto.cta": "Scegli il pack · da 50 €", "manifesto.cta2": "Parliamo del progetto ↗", "carte.hint": "Su misura · da 50 a 250 €", "ready.hint": "Collezioni pronte · da 40 a 200 €", "v2.edition": "Studio indipendente di contenuti", "v2.focus": "La selezione della casa", "v2.recipe": "12 immagini · 12 testi · 6 messaggi · bio", "v2.discover": "Scopri il pack", "v2.bottom": "Per la tua attività. Pronto per Instagram.", "v2.noSub": "Un acquisto. Nessun abbonamento.", "v2.strip1": "Immagini + testi", "v2.strip2": "Su misura o già pronto", "v2.strip3": "Per attività e indipendenti", "v2.handoffTitle": "Il tuo messaggio è pronto.", "v2.handoffHelp": "Copialo, apri Instagram e incollalo nella conversazione. Nulla viene inviato automaticamente.", "v2.copy": "Copia messaggio", "v2.open": "Apri Instagram ↗", "v2.handoffNote": "La casa conferma prezzo e tempi in privato prima del pagamento.", "v2.copyOk": "Copiato. Puoi incollarlo su Instagram.", "v2.copyFailed": "Copia bloccata: seleziona il testo e copialo manualmente.", "v2.refLocal": "Link disponibile quando il sito è online. Codice:", "v2.demo": "Studio di stile · illustrazione, non pack consegnato", "v2.demoTitle": "LA NOTTE\nÀ LA CARTE", "v2.demoSmall": "Una presenza che si nota.", "club.linkNote": "Il codice viene aggiunto al messaggio. La casa deve confermare segnalazione e commissione; il link non prova una vendita.", "club.localNote": "Tessera locale sul dispositivo. Nessun account o commissione convalidata. La casa conferma ogni segnalazione.", "club.pending": "Da confermare dalla casa", "club.toNext": "vendite confermate al", "sheet.previewLabel": "Studio visivo", "sheet.previewHint": "Illustrazione generata di esempio. Non legge il profilo Instagram e non rappresenta il pack finale.", "sheet.required": "Completa i tre campi con un account valido (@nome, senza link).", "sheet.helpNote": "Prepara il messaggio e copialo su Instagram. Prezzo e tempi confermati prima del pagamento.", "sheet.copyOpen": "Prepara messaggio Instagram", "footer.legal": "Contenuti Instagram via @polakpl_f44. Prezzi in euro IVA inclusa. Prezzo, tempi e condizioni confermati in privato prima del pagamento. Illustrazioni generate, non clienti reali né file del pack. Nessun risultato commerciale garantito. Pagamento, produzione e consegna gestiti fuori dal sito."}};
 Object.keys(STR).forEach(function(l){STR[l]["sheet.backPack"]="Pack";});
 Object.keys(REVISED_COPY).forEach(function(l){Object.assign(STR[l],REVISED_COPY[l]);});
+
+/* Collections sans fichier livrable, et mention légale rectifiée.
+   L'ancienne formule affirmait que tous les visuels du site étaient générés.
+   C'est vrai des compositions SVG, qui sont produites par le code de la page ;
+   ce n'est pas établi pour hero.webp, dont la provenance n'est pas documentée
+   (voir ASSETS.md). La mention ne dit donc plus que cette image est générée. */
+var ASSETS_COPY = {
+ fr:{"ready.hint.soon":"En préparation · pas encore disponible",
+     "ready.lede.soon":"Ces collections ne sont pas encore composées. Aucune n'est commandable pour l'instant : les packs sur brief ci-dessus, eux, sont ouverts.",
+     "ready.soon.tag":"Fichiers non encore composés. Collection annoncée, pas encore livrable.",
+     "ready.soon.flag":"en préparation",
+     "footer.legal":"Création de contenu Instagram via @polakpl_f44. Prix affichés en euros TTC. Prix, délai et conditions confirmés en message privé avant paiement. Les vignettes et compositions décoratives sont générées par le code de la page. L'image d'accueil est une image d'ambiance : elle ne représente ni un client réel, ni les fichiers d'un pack. Aucun résultat commercial garanti. Paiement, production et livraison sont traités par la maison, hors de ce site."},
+ en:{"ready.hint.soon":"In preparation · not yet available",
+     "ready.lede.soon":"These collections are not composed yet. None can be ordered for now — the custom packs above are open.",
+     "ready.soon.tag":"Files not composed yet. Announced collection, not yet deliverable.",
+     "ready.soon.flag":"in preparation",
+     "footer.legal":"Instagram content studio via @polakpl_f44. Displayed prices in euros, tax inclusive. Price, timing and terms confirmed in private messages before payment. Thumbnails and decorative compositions are generated by the page's own code. The home image is a mood image: it depicts neither a real client nor the files of a pack. No business results guaranteed. Payment, production and delivery are handled by the house outside this site."},
+ es:{"ready.hint.soon":"En preparación · aún no disponible",
+     "ready.lede.soon":"Estas colecciones aún no están compuestas. Ninguna se puede pedir por ahora: los packs a medida de arriba sí están abiertos.",
+     "ready.soon.tag":"Archivos aún no compuestos. Colección anunciada, todavía no entregable.",
+     "ready.soon.flag":"en preparación",
+     "footer.legal":"Contenido Instagram vía @polakpl_f44. Precios en euros, impuestos incluidos. Precio, plazo y condiciones confirmados por mensaje antes del pago. Las miniaturas y composiciones decorativas las genera el código de la página. La imagen de portada es una imagen de ambiente: no representa ni a un cliente real ni los archivos de un pack. Sin garantía de resultados comerciales. Pago, producción y entrega gestionados fuera del sitio."},
+ it:{"ready.hint.soon":"In preparazione · non ancora disponibile",
+     "ready.lede.soon":"Queste collezioni non sono ancora composte. Nessuna è ordinabile per ora: i pack su misura qui sopra sono aperti.",
+     "ready.soon.tag":"File non ancora composti. Collezione annunciata, non ancora consegnabile.",
+     "ready.soon.flag":"in preparazione",
+     "footer.legal":"Contenuti Instagram via @polakpl_f44. Prezzi in euro IVA inclusa. Prezzo, tempi e condizioni confermati in privato prima del pagamento. Le miniature e le composizioni decorative sono generate dal codice della pagina. L'immagine di copertina è un'immagine d'atmosfera: non rappresenta né un cliente reale né i file di un pack. Nessun risultato commerciale garantito. Pagamento, produzione e consegna gestiti fuori dal sito."}
+};
+Object.keys(ASSETS_COPY).forEach(function(l){Object.assign(STR[l],ASSETS_COPY[l]);});
 var LANG = "fr";
 function t(k){ var d = STR[LANG] || STR.fr; return d[k] !== undefined ? d[k] : (STR.fr[k] !== undefined ? STR.fr[k] : k); }
 function eur(n){ return n + "€"; }
@@ -1131,12 +1171,17 @@ var PACKS = [
   {id:3, price:150, visuals:18, texts:18, messages:10, bio:true,  stories:false, delay:"48–72 h", tone:"cyan",   featured:false},
   {id:4, price:250, visuals:24, texts:24, messages:12, bio:true,  stories:true,  delay:"72 h",    tone:"violet", featured:false}
 ];
+/* assets = fichiers livrables réellement présents dans le dépôt. À 0, la
+   collection ne peut pas être annoncée en livraison immédiate ni commandée :
+   il n'y aurait rien à envoyer. Voir src/catalog.json et ASSETS.md. */
 var READY = [
-  {id:1, price:40,  tone:"cyan"},
-  {id:2, price:80,  tone:"pink"},
-  {id:3, price:120, tone:"violet"},
-  {id:4, price:200, tone:"brass"}
+  {id:1, price:40,  tone:"cyan",   assets:0},
+  {id:2, price:80,  tone:"pink",   assets:0},
+  {id:3, price:120, tone:"violet", assets:0},
+  {id:4, price:200, tone:"brass",  assets:0}
 ];
+function readyAvailable(r){ return r.assets > 0; }
+function anyReadyAvailable(){ return READY.some(readyAvailable); }
 var MISSIONS = [
   {code:"NIGHT SHIFT",  packId:1, share:25},
   {code:"HEAT SERVICE", packId:2, share:45},
@@ -1443,13 +1488,26 @@ function renderMenuRows(){
 }
 function renderReady(){
   $("#ready-list").innerHTML = READY.map(function(r){
-    return '<button class="ready-row" data-ready="' + r.id + '">'
-      + '<span class="ready-thumb" id="ready-art-' + r.id + '"></span>'
-      + '<span class="rt"><strong>' + esc(t("ready." + r.id + ".name")) + '</strong><span>' + esc(t("ready." + r.id + ".tag")) + '</span></span>'
-      + '<span class="rv num">' + eur(r.price) + '</span>'
-    + '</button>';
+    /* Sans fichier livrable, la carte reste visible mais n'est pas commandable :
+       pas de bouton, pas de promesse de livraison, état affiché en clair. */
+    var dispo = readyAvailable(r);
+    var tag   = '<span class="rt"><strong>' + esc(t("ready." + r.id + ".name")) + '</strong>'
+              + '<span>' + esc(dispo ? t("ready." + r.id + ".tag") : t("ready.soon.tag")) + '</span></span>';
+    var art   = '<span class="ready-thumb" id="ready-art-' + r.id + '"></span>';
+    if(dispo){
+      return '<button class="ready-row" data-ready="' + r.id + '">'
+        + art + tag + '<span class="rv num">' + eur(r.price) + '</span></button>';
+    }
+    return '<div class="ready-row is-soon" data-ready-soon="' + r.id + '">'
+      + art + tag
+      + '<span class="rv num">' + eur(r.price) + ' <b class="soon-flag">' + esc(t("ready.soon.flag")) + '</b></span></div>';
   }).join("");
   READY.forEach(function(r){ paint($("#ready-art-" + r.id), "ready-" + r.id, {tone:r.tone, h:150, palms:1}); });
+  /* data-state rend l'état lisible par la recette sans dépendre de la formulation. */
+  var dispo = anyReadyAvailable(), etat = dispo ? "available" : "soon";
+  var head = $("#ready-hint"), lede = $("#ready-lede");
+  if(head){ head.textContent = t(dispo ? "ready.hint" : "ready.hint.soon"); head.setAttribute("data-state", etat); }
+  if(lede){ lede.textContent = t(dispo ? "ready.lede" : "ready.lede.soon"); lede.setAttribute("data-state", etat); }
 }
 function renderSteps(){
   $("#steps").innerHTML = [1,2,3].map(function(n){
@@ -1855,6 +1913,9 @@ document.addEventListener("click", function(e){
   if((el = e.target.closest("[data-ready]"))){
     var r = READY.filter(function(x){ return x.id === Number(el.getAttribute("data-ready")); })[0];
     if(!r) return;
+    /* Dernier garde-fou : même si une carte non commandable réapparaissait,
+       aucune demande « livraison directe » ne part sans fichier à envoyer. */
+    if(!readyAvailable(r)) return;
     var msg = ["AURA — READY-" + r.id + " " + t("ready." + r.id + ".name") + " · " + eur(r.price), t("brief.ready"), "Total : " + eur(r.price)];
     if(refCode) msg.push(t("brief.ref") + " : " + refCode);
     toInstagram(msg.join("\n"));
