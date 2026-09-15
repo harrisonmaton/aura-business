@@ -13,6 +13,12 @@ const R=[]; const ck=(n,c,x)=>R.push((c?'PASS ':'ÉCHEC')+' — '+n+(x!==undefin
  ck('image d\'ambiance chargée', await p.evaluate(()=>{const i=document.getElementById('cinema-image');return i&&i.naturalWidth>1000;}));
  ck('contenu complet rendu', await p.locator('.menu-row').count()===3 && await p.locator('.ready-row').count()===4 && await p.locator('.qa-item').count()===5);
  ck('lien d\'évitement présent (a11y)', await p.locator('.skip-link').count()===1);
+ /* angle mort de la recette précédente : l'externalisation de l'image avait vidé
+    le fond des 4 miniatures « Déjà prêt » sans qu'aucune assertion ne rougisse. */
+ ck('miniatures Déjà prêt : fond réellement chargé', await p.evaluate(()=>{
+   const els=[...document.querySelectorAll('.ready-thumb')];
+   return els.length===4 && els.every(e=>{const b=getComputedStyle(e).backgroundImage;return b&&b!=='none';});
+ }));
  // commande
  await p.click('#kiosk button[data-order="2"]'); await p.waitForTimeout(400);
  ck('feuille de commande ouverte', await p.isVisible('#sheet'));
@@ -88,6 +94,9 @@ const R=[]; const ck=(n,c,x)=>R.push((c?'PASS ':'ÉCHEC')+' — '+n+(x!==undefin
  console.log('ERREURS JS : '+(errs.length?JSON.stringify(errs,null,1):'aucune'));
  await b.close();
  /* EXIT_ON_FAIL : un test rouge doit faire échouer le processus, sinon une CI passe au vert sur un défaut */
+ /* Une erreur JS ou console critique doit faire échouer la recette, pas
+    seulement s'afficher en bas du journal : sinon une page cassée passe au vert. */
+ if(errs.length) R.push('ÉCHEC — '+errs.length+' erreur(s) JS/console pendant la recette');
  const failed=R.filter(x=>/^(ÉCHEC|FAIL)/.test(x)).length;
  process.exit(failed>0?1:0);
 })();

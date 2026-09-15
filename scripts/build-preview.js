@@ -11,4 +11,5 @@ for (const [src,out] of [['vitrine.html','vitrine.html'],['back-office.html','ba
   const body = fs.readFileSync(path.join(__dirname,'..','src',src),'utf8');
   fs.writeFileSync(path.join(__dirname,'..','preview',out), SK + body + '</body></html>');
 }
-console.log('preview/ régénéré depuis src/');
+fs.copyFileSync(path.join(__dirname,'..','src','hero.webp'), path.join(__dirname,'..','preview','hero.webp'));
+console.log('preview/ régénéré depuis src/ (image incluse)');

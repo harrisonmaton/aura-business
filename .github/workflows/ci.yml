@@ -10,4 +10,4 @@ jobs:
       - run: npm ci || npm install
       - run: npx playwright install --with-deps chromium
       # Le job échoue si une assertion échoue : les scripts sortent en code 1.
-      - run: npm test
+      - run: npm test   # catalogue + recette + registre ; code 1 si un seul contrôle échoue
