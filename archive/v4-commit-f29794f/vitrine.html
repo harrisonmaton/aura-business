@@ -1,0 +1,1998 @@
+<title>Aura Business</title>
+<meta name="description" content="Maison de contenu Instagram. Vous choisissez un numéro, nous préparons le fichier, vous publiez. Packs sur brief dès 50 €, collections déjà composées dès 40 €. Commande par message Instagram.">
+<meta property="og:title" content="Aura Business — Maison de contenu Instagram">
+<meta property="og:description" content="Des images. Des textes. Prêts à publier.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#07050C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Archivo:wght@300..700&display=swap">
+
+<style>
+/* ============================================================================
+   AURA BUSINESS — DESIGN SYSTEM
+   Direction : maison de nuit. Un lookbook de maison de couture qui travaille
+   après minuit. Le luxe vend (bodoni, filets laiton, vide, angles vifs) ;
+   le néon ne sert que de SOURCE DE LUMIÈRE dans l'imagerie, jamais de
+   décoration d'interface.
+   ========================================================================= */
+:root{
+  /* — encres ------------------------------------------------------------ */
+  --ink:#07050C;          /* fond profond, biais violet */
+  --ink-2:#0B0812;        /* surface */
+  --ink-3:#120E1C;        /* surface haute */
+  --ink-4:#1A1428;        /* survol / champ */
+
+  /* — papier ------------------------------------------------------------ */
+  --paper:#F4F1EA;        /* texte principal, blanc chaud */
+  --muted:#A49CB6;        /* secondaire */
+  --faint:#6E6784;        /* tertiaire */
+
+  /* — laiton (le « or » de la maison, marqué à chaud, jamais jaune vif) - */
+  --brass:#D9B978;
+  --brass-lo:#8A7440;
+  --brass-hi:#F7E6BC;
+
+  /* — néons (imagerie surtout) ----------------------------------------- */
+  --pink:#FF2E88;
+  --cyan:#57E9FF;
+  --violet:#7B3BFF;
+
+  /* — filets ------------------------------------------------------------ */
+  --rule:rgba(244,241,234,.11);
+  --rule-soft:rgba(244,241,234,.06);
+  --rule-brass:rgba(217,185,120,.34);
+
+  /* — mesures ----------------------------------------------------------- */
+  --s1:.25rem; --s2:.5rem; --s3:.75rem; --s4:1rem; --s5:1.5rem;
+  --s6:2rem; --s7:3rem; --s8:4rem; --s9:6rem; --s10:8rem;
+  --gutter:clamp(1.15rem, 4vw, 3rem);
+  --measure:34rem;
+  --shell:78rem;
+  --safe-b:env(safe-area-inset-bottom, 0px);
+
+  /* — échelle typographique fluide -------------------------------------- */
+  --t-display:clamp(3.4rem, 15vw, 10rem);
+  --t-h1:clamp(2.4rem, 7.2vw, 5.4rem);
+  --t-h2:clamp(1.9rem, 4.4vw, 3.2rem);
+  --t-h3:clamp(1.25rem, 2.2vw, 1.7rem);
+  --t-body:clamp(.95rem, .3vw + .9rem, 1.06rem);
+  --t-small:.86rem;
+  --t-micro:.66rem;
+
+  /* — mouvement --------------------------------------------------------- */
+  --ease:cubic-bezier(.16,.84,.3,1);
+  --ease-out:cubic-bezier(.22,1,.36,1);
+  --dur:.55s;
+
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box;}
+html{background:var(--ink); -webkit-text-size-adjust:100%;}
+body{
+  margin:0; background:var(--ink); color:var(--paper);
+  font-family:'Archivo',system-ui,-apple-system,'Segoe UI',sans-serif;
+  font-size:var(--t-body); line-height:1.6;
+  font-variation-settings:'wdth' 100;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+body.is-locked{overflow:hidden; height:100dvh;}
+img,svg{max-width:100%;}
+a{color:inherit; text-decoration:none;}
+button{font:inherit; color:inherit; background:none; border:none; cursor:pointer;}
+input,textarea{font:inherit;}
+::selection{background:var(--brass); color:var(--ink);}
+:focus-visible{outline:1.5px solid var(--brass); outline-offset:3px;}
+.sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap;}
+
+/* ——— typographie ——————————————————————————————————————————————— */
+.display,h1,h2,h3{
+  font-family:'Bodoni Moda','Didot','Times New Roman',serif;
+  font-weight:400; margin:0; line-height:.94;
+  letter-spacing:-.015em; text-wrap:balance;
+}
+.display{font-size:var(--t-display); font-optical-sizing:auto;}
+h1{font-size:var(--t-h1);}
+h2{font-size:var(--t-h2);}
+h3{font-size:var(--t-h3); line-height:1.12;}
+.italic{font-style:italic;}
+p{margin:0;}
+
+.label{
+  font-family:'Archivo',sans-serif; font-size:var(--t-micro); font-weight:600;
+  letter-spacing:.26em; text-transform:uppercase; color:var(--faint);
+  font-variation-settings:'wdth' 92;
+}
+.label-brass{color:var(--brass);}
+.lede{color:var(--muted); font-size:clamp(1rem,.5vw + .9rem,1.15rem); line-height:1.65; max-width:var(--measure);}
+.num{font-variant-numeric:tabular-nums; font-feature-settings:'tnum' 1;}
+
+/* ——— structure ——————————————————————————————————————————————— */
+.shell{max-width:var(--shell); margin-inline:auto; padding-inline:var(--gutter);}
+.band{padding-block:clamp(3.5rem, 9vw, 7.5rem); position:relative;}
+.band + .band{border-top:1px solid var(--rule);}
+.band-head{display:flex; flex-direction:column; gap:var(--s4); margin-bottom:clamp(2rem,5vw,3.5rem);}
+.band-head .display-row{display:flex; align-items:flex-end; justify-content:space-between; gap:var(--s5); flex-wrap:wrap;}
+.hair{height:1px; background:var(--rule-brass); transform-origin:left center;}
+
+/* filet qui se trace à l'apparition */
+.reveal .hair{transform:scaleX(0); transition:transform 1.1s var(--ease-out) .1s;}
+.reveal.in .hair{transform:scaleX(1);}
+.reveal{opacity:0; transform:translateY(18px); transition:opacity .7s var(--ease-out), transform .7s var(--ease-out);}
+.reveal.in{opacity:1; transform:none;}
+.reveal[data-d="1"]{transition-delay:.07s;} .reveal[data-d="2"]{transition-delay:.14s;}
+.reveal[data-d="3"]{transition-delay:.21s;} .reveal[data-d="4"]{transition-delay:.28s;}
+
+/* ——— boutons ————————————————————————————————————————————————— */
+.btn{
+  --btn-bg:var(--brass); --btn-fg:var(--ink);
+  position:relative; display:inline-flex; align-items:center; justify-content:center; gap:.7rem;
+  padding:1.05rem 1.9rem; background:var(--btn-bg); color:var(--btn-fg);
+  font-size:var(--t-micro); font-weight:700; letter-spacing:.2em; text-transform:uppercase;
+  font-variation-settings:'wdth' 95;
+  border-radius:1px; overflow:hidden; isolation:isolate;
+  transition:transform .35s var(--ease), box-shadow .35s var(--ease), background .25s var(--ease);
+  min-height:48px;
+}
+.btn::after{ /* balayage de lumière au survol */
+  content:''; position:absolute; inset:0; z-index:-1;
+  background:linear-gradient(105deg, transparent 20%, rgba(255,255,255,.55) 50%, transparent 80%);
+  transform:translateX(-110%); transition:transform .75s var(--ease-out);
+}
+.btn:hover::after{transform:translateX(110%);}
+.btn:hover{transform:translateY(-2px); box-shadow:0 14px 34px -18px rgba(217,185,120,.9);}
+.btn:active{transform:translateY(0); transition-duration:.08s;}
+.btn:disabled{opacity:.45; cursor:not-allowed; transform:none; box-shadow:none;}
+.btn-ghost{--btn-bg:transparent; --btn-fg:var(--paper); box-shadow:inset 0 0 0 1px var(--rule);}
+.btn-ghost:hover{--btn-bg:rgba(244,241,234,.05); box-shadow:inset 0 0 0 1px var(--rule-brass);}
+.btn-ghost::after{display:none;}
+.btn-block{width:100%;}
+.btn-sm{padding:.7rem 1.1rem; min-height:40px;}
+
+/* lien-flèche éditorial */
+.arrow-link{
+  display:inline-flex; align-items:center; gap:.6rem; color:var(--brass);
+  font-size:var(--t-micro); font-weight:600; letter-spacing:.22em; text-transform:uppercase;
+  padding-block:.5rem;
+}
+.arrow-link svg{transition:transform .4s var(--ease-out);}
+.arrow-link:hover svg{transform:translateX(5px);}
+
+/* ——— seuil (intro) ———————————————————————————————————————————— */
+#threshold{
+  position:fixed; inset:0; z-index:200; background:var(--ink);
+  display:grid; place-items:center; text-align:center; overflow:hidden;
+  transition:opacity .9s var(--ease-out), visibility .9s;
+}
+#threshold.out{opacity:0; visibility:hidden; pointer-events:none;}
+#threshold .scene{position:absolute; inset:0;}
+#threshold .scene svg{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;}
+#threshold .veil{position:absolute; inset:0; background:
+  radial-gradient(64% 42% at 50% 45%, rgba(7,5,12,.78), rgba(7,5,12,.35) 62%, transparent 82%),
+  radial-gradient(125% 85% at 50% 64%, transparent 8%, rgba(7,5,12,.5) 52%, var(--ink) 100%);}
+#threshold .bars{position:absolute; inset:0; pointer-events:none;}
+#threshold .bars i{position:absolute; left:0; right:0; height:8.5vh; background:var(--ink); transition:height 1s var(--ease-out);}
+#threshold .bars i:first-child{top:0;} #threshold .bars i:last-child{bottom:0;}
+#threshold.opening .bars i{height:0;}
+#threshold .inner{position:relative; z-index:2; padding-inline:var(--gutter);}
+#threshold .house{
+  font-family:'Bodoni Moda',serif; font-size:var(--t-display); line-height:.88;
+  letter-spacing:-.02em; color:var(--paper);
+}
+#threshold .house em{font-style:italic; color:var(--brass);}
+#threshold .sub{margin-top:var(--s4); display:flex; align-items:center; justify-content:center; gap:var(--s4);}
+#threshold .sub span{font-size:var(--t-micro); letter-spacing:.42em; text-transform:uppercase; color:var(--muted);}
+#threshold .sub i{display:block; width:clamp(2rem,8vw,5rem); height:1px; background:var(--rule-brass);}
+#threshold .enter{margin-top:clamp(2rem,5vw,3rem);}
+#threshold .whisper{margin-top:var(--s4); font-size:var(--t-small); color:var(--faint);}
+.flash{position:fixed; inset:0; z-index:210; pointer-events:none; opacity:0; mix-blend-mode:screen;}
+
+/* ——— barre de navigation ——————————————————————————————————————— */
+#topbar{
+  position:fixed; top:0; left:0; right:0; z-index:90; height:60px;
+  display:flex; align-items:center;
+  background:linear-gradient(to bottom, rgba(7,5,12,.92), rgba(7,5,12,.6) 70%, transparent);
+  backdrop-filter:blur(14px) saturate(1.2);
+  transition:transform .45s var(--ease), background .3s;
+}
+#topbar.hidden{transform:translateY(-100%);}
+#topbar .row{width:100%; max-width:var(--shell); margin-inline:auto; padding-inline:var(--gutter);
+  display:flex; align-items:center; justify-content:space-between; gap:var(--s4);}
+.wordmark{font-family:'Bodoni Moda',serif; font-size:1.18rem; letter-spacing:.02em; white-space:nowrap;}
+.wordmark em{font-style:italic; color:var(--brass);}
+.navset{display:flex; align-items:center; gap:var(--s2);}
+.navlinks{display:flex; gap:var(--s1); padding:.25rem; border:1px solid var(--rule-soft); border-radius:999px; background:rgba(244,241,234,.03);}
+.navlinks a{
+  padding:.45rem .85rem; border-radius:999px; font-size:var(--t-micro); font-weight:600;
+  letter-spacing:.18em; text-transform:uppercase; color:var(--muted);
+  transition:color .25s, background .25s;
+}
+.navlinks a:hover,.navlinks a.active{color:var(--ink); background:var(--brass);}
+.langset{display:flex; gap:2px;}
+.langset button{
+  padding:.35rem .45rem; font-size:var(--t-micro); font-weight:600; letter-spacing:.08em;
+  color:var(--faint); border-radius:2px; transition:color .2s, background .2s;
+}
+.langset button[aria-pressed="true"]{color:var(--brass);}
+.langset button:hover{color:var(--paper);}
+@media (max-width:760px){ .navlinks{display:none;} }
+
+/* ——— manifeste ———————————————————————————————————————————————— */
+#manifesto{padding-top:calc(60px + clamp(2.5rem,7vw,5rem)); position:relative; isolation:isolate;}
+/* la ville continue derrière le manifeste, très en retrait : le monde de la
+   page ne s'arrête pas au seuil, mais le texte reste prioritaire */
+#manifesto-bg{position:absolute; inset:0; z-index:-1; overflow:hidden; opacity:.42;
+  -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,.9) 0%, rgba(0,0,0,.55) 55%, transparent 96%);
+  mask-image:linear-gradient(to bottom, rgba(0,0,0,.9) 0%, rgba(0,0,0,.55) 55%, transparent 96%);}
+#manifesto-bg .art::after{opacity:.3;}
+@media (max-width:900px){ #manifesto-bg{opacity:.3;} }
+.manifesto-grid{display:grid; gap:clamp(2rem,5vw,3.5rem); grid-template-columns:1fr;}
+@media (min-width:900px){ .manifesto-grid{grid-template-columns:1.15fr .85fr; align-items:end;} }
+.statement{font-size:var(--t-h1); line-height:1.02; letter-spacing:-.02em;
+  font-family:'Bodoni Moda',serif;}
+.statement em{font-style:italic; color:var(--brass);}
+.manifesto-aside{display:flex; flex-direction:column; gap:var(--s5);}
+.facts{display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--rule); border:1px solid var(--rule);}
+.facts div{background:var(--ink); padding:var(--s4) var(--s4) var(--s5);}
+.facts .k{display:block; font-family:'Bodoni Moda',serif; font-size:1.7rem; color:var(--brass); line-height:1;}
+.facts .v{display:block; margin-top:.45rem; font-size:var(--t-micro); letter-spacing:.16em; text-transform:uppercase; color:var(--faint); line-height:1.5;}
+
+/* ——— la carte (menu) ————————————————————————————————————————— */
+.feature{display:grid; gap:0; grid-template-columns:1fr; border:1px solid var(--rule-brass); background:var(--ink-2);}
+@media (min-width:880px){ .feature{grid-template-columns:1.05fr 1fr;} }
+.feature-art{position:relative; aspect-ratio:4/3; overflow:hidden;}
+@media (min-width:880px){ .feature-art{aspect-ratio:auto; min-height:30rem;} }
+.feature-art .plate{position:absolute; left:var(--s5); bottom:var(--s5); z-index:2;}
+.feature-art .plate .n{font-size:var(--t-micro); letter-spacing:.3em; text-transform:uppercase; color:var(--brass);}
+.feature-art .plate .p{font-family:'Bodoni Moda',serif; font-size:clamp(2.6rem,6vw,4rem); line-height:1; color:var(--paper);}
+.feature-tag{position:absolute; top:var(--s4); right:var(--s4); z-index:2;
+  padding:.4rem .8rem; background:var(--brass); color:var(--ink);
+  font-size:var(--t-micro); font-weight:700; letter-spacing:.2em; text-transform:uppercase;}
+.feature-body{padding:clamp(1.6rem,4vw,2.8rem); display:flex; flex-direction:column; gap:var(--s4);}
+.recipe{list-style:none; margin:0; padding:0; display:flex; flex-direction:column;}
+.recipe li{display:flex; align-items:baseline; gap:.75rem; padding:.62rem 0; border-bottom:1px dotted var(--rule); color:var(--muted); font-size:var(--t-small);}
+.recipe li::before{content:''; width:4px; height:4px; background:var(--brass); flex:none; transform:translateY(-2px);}
+.recipe li:last-child{border-bottom:none;}
+
+.menu-rows{display:grid; grid-template-columns:1fr; gap:0; border-top:1px solid var(--rule);}
+.menu-row{
+  display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:var(--s4);
+  padding:var(--s5) 0; border-bottom:1px solid var(--rule); cursor:pointer;
+  transition:padding-inline .4s var(--ease), background .4s var(--ease);
+  width:100%; text-align:left;
+}
+.menu-row:hover{background:linear-gradient(90deg, rgba(217,185,120,.07), transparent 60%); padding-inline:var(--s4);}
+.menu-row .rn{font-family:'Bodoni Moda',serif; font-size:1.6rem; color:var(--brass-lo); min-width:2.2rem;}
+.menu-row:hover .rn{color:var(--brass);}
+.menu-row .rt{display:flex; flex-direction:column; gap:.25rem; min-width:0;}
+.menu-row .rt strong{font-family:'Bodoni Moda',serif; font-weight:400; font-size:1.45rem; letter-spacing:-.01em;}
+.menu-row .rt span{font-size:var(--t-small); color:var(--faint);}
+.menu-row .rp{display:flex; align-items:center; gap:var(--s4);}
+.menu-row .rp b{font-family:'Bodoni Moda',serif; font-weight:400; font-size:1.7rem; color:var(--paper);}
+.menu-row .rp i{display:grid; place-items:center; width:38px; height:38px; border:1px solid var(--rule); border-radius:50%; transition:border-color .3s, background .3s, transform .3s var(--ease);}
+.menu-row:hover .rp i{border-color:var(--brass); background:var(--brass); transform:translateX(3px);}
+.menu-row:hover .rp i svg path{stroke:var(--ink);}
+@media (max-width:620px){
+  .menu-row{grid-template-columns:auto 1fr; row-gap:var(--s3);}
+  .menu-row .rp{grid-column:1/-1; justify-content:space-between;}
+}
+
+/* ——— déjà prêt ————————————————————————————————————————————— */
+.ready-list{display:grid; grid-template-columns:1fr; border-top:1px solid var(--rule);}
+@media (min-width:820px){ .ready-list{grid-template-columns:repeat(2,1fr); column-gap:clamp(2rem,4vw,4rem);} }
+.ready-row{display:grid; grid-template-columns:5.5rem 1fr auto; align-items:center; gap:var(--s4);
+  padding:var(--s4) 0; border-bottom:1px solid var(--rule); text-align:left; width:100%;
+  transition:background .35s var(--ease);}
+.ready-row:hover{background:rgba(244,241,234,.03);}
+.ready-thumb{display:block; position:relative; width:5.5rem; height:3.6rem; overflow:hidden; flex:none;}
+.ready-row .rt strong{display:block; font-family:'Bodoni Moda',serif; font-weight:400; font-size:1.15rem;}
+.ready-row .rt span{font-size:var(--t-small); color:var(--faint);}
+.ready-row .rv{font-family:'Bodoni Moda',serif; font-size:1.3rem; color:var(--brass);}
+
+/* ——— protocole ————————————————————————————————————————————— */
+.steps{display:grid; grid-template-columns:1fr; gap:0; counter-reset:step;}
+@media (min-width:820px){ .steps{grid-template-columns:repeat(3,1fr); gap:1px; background:var(--rule);} }
+.step{background:var(--ink); padding:var(--s6) 0; display:flex; flex-direction:column; gap:var(--s3);
+  border-bottom:1px solid var(--rule);}
+@media (min-width:820px){ .step{padding:var(--s6) var(--s5); border-bottom:none;} .step:first-child{padding-left:0;} }
+.step .sn{font-family:'Bodoni Moda',serif; font-size:2.6rem; line-height:1; color:var(--brass-lo);}
+.step h3{font-size:1.35rem;}
+.step p{color:var(--muted); font-size:var(--t-small);}
+
+/* ——— club ————————————————————————————————————————————————— */
+#club{background:
+  radial-gradient(90% 60% at 15% 0%, rgba(123,59,255,.10), transparent 60%),
+  radial-gradient(70% 50% at 95% 100%, rgba(255,46,136,.07), transparent 60%);}
+.club-grid{display:grid; grid-template-columns:1fr; gap:clamp(2rem,4vw,3.5rem);}
+@media (min-width:960px){ .club-grid{grid-template-columns:.95fr 1.05fr;} }
+.protocol{list-style:none; margin:0; padding:0; display:flex; flex-direction:column;}
+.protocol li{display:grid; grid-template-columns:auto 1fr; gap:var(--s4); padding:var(--s4) 0;
+  border-bottom:1px solid var(--rule); color:var(--muted); font-size:var(--t-small);}
+.protocol li b{font-family:'Bodoni Moda',serif; font-weight:400; font-size:1.1rem; color:var(--brass);}
+
+/* carte de membre — objet physique, tranche laiton */
+.pass{
+  position:relative; border:1px solid var(--rule-brass); background:
+    linear-gradient(155deg, rgba(217,185,120,.14), rgba(123,59,255,.10) 45%, rgba(11,8,18,.9) 100%), var(--ink-2);
+  padding:clamp(1.3rem,3vw,1.9rem); overflow:hidden;
+}
+.pass::before{content:''; position:absolute; inset:0;
+  background:linear-gradient(115deg, transparent 35%, rgba(247,230,188,.14) 48%, transparent 60%);
+  pointer-events:none;}
+.pass-top{display:flex; justify-content:space-between; align-items:flex-start; gap:var(--s4);}
+.pass-code{font-family:'Archivo',sans-serif; font-weight:600; letter-spacing:.22em; font-size:var(--t-micro); color:var(--brass);}
+.pass-name{font-family:'Bodoni Moda',serif; font-size:clamp(1.7rem,4vw,2.3rem); line-height:1.05; margin-top:.25rem; word-break:break-word;}
+.pass-rank{flex:none; padding:.3rem .65rem; border:1px solid var(--rule-brass); color:var(--brass);
+  font-size:var(--t-micro); font-weight:600; letter-spacing:.18em; text-transform:uppercase;}
+.meter{height:2px; background:rgba(244,241,234,.12); margin:var(--s4) 0 .5rem; overflow:hidden;}
+.meter i{display:block; height:100%; width:0; background:linear-gradient(90deg,var(--brass-lo),var(--brass-hi)); transition:width .9s var(--ease-out);}
+.pass-next{font-size:var(--t-micro); letter-spacing:.14em; text-transform:uppercase; color:var(--faint);}
+.pass-section{margin-top:var(--s5); padding-top:var(--s4); border-top:1px solid var(--rule);}
+.copyfield{display:flex; gap:var(--s2); margin-top:.6rem;}
+.copyfield input{flex:1; min-width:0; background:rgba(7,5,12,.6); border:1px solid var(--rule);
+  padding:.65rem .75rem; color:var(--muted); font-size:.76rem; border-radius:1px;}
+.ledger{display:flex; flex-direction:column; gap:.45rem; margin-top:.6rem;}
+.ledger-row{display:flex; justify-content:space-between; gap:var(--s3); font-size:var(--t-small); color:var(--muted);}
+.ledger-row b{font-weight:500; color:var(--paper);}
+.ledger-row span{color:var(--brass); font-variant-numeric:tabular-nums;}
+.ledger-empty{font-size:var(--t-small); color:var(--faint);}
+.note{font-size:.74rem; color:var(--faint); line-height:1.5; margin-top:var(--s3);}
+
+.missions{display:grid; grid-template-columns:1fr; gap:1px; background:var(--rule); border:1px solid var(--rule); margin-top:var(--s6);}
+@media (min-width:680px){ .missions{grid-template-columns:repeat(2,1fr);} }
+.mission{background:var(--ink-2); padding:var(--s5); display:flex; flex-direction:column; gap:var(--s3);
+  transition:background .35s var(--ease);}
+.mission:hover{background:var(--ink-3);}
+.mission .mc{font-size:var(--t-micro); letter-spacing:.24em; text-transform:uppercase; color:var(--cyan);}
+.mission h3{font-size:1.25rem;}
+.mission .mw{font-size:var(--t-small); color:var(--faint);}
+.mission .ms{font-family:'Bodoni Moda',serif; font-size:1.5rem; color:var(--brass);}
+
+/* ——— questions ————————————————————————————————————————————— */
+.qa{border-top:1px solid var(--rule);}
+.qa-item{border-bottom:1px solid var(--rule);}
+.qa-q{display:flex; width:100%; align-items:center; justify-content:space-between; gap:var(--s4);
+  padding:var(--s5) 0; text-align:left; font-family:'Bodoni Moda',serif; font-size:1.2rem;
+  transition:color .3s;}
+.qa-q:hover{color:var(--brass);}
+.qa-q i{flex:none; position:relative; width:14px; height:14px;}
+.qa-q i::before,.qa-q i::after{content:''; position:absolute; background:var(--brass); transition:transform .4s var(--ease);}
+.qa-q i::before{left:0; top:6px; width:14px; height:1.5px;}
+.qa-q i::after{left:6px; top:0; width:1.5px; height:14px;}
+.qa-item.open .qa-q i::after{transform:rotate(90deg);}
+.qa-a{display:grid; grid-template-rows:0fr; transition:grid-template-rows .45s var(--ease-out);}
+.qa-item.open .qa-a{grid-template-rows:1fr;}
+.qa-a > div{overflow:hidden;}
+.qa-a p{color:var(--muted); font-size:var(--t-small); padding-bottom:var(--s5); max-width:var(--measure);}
+
+/* ——— pied ———————————————————————————————————————————————— */
+footer{padding-block:clamp(3rem,7vw,5rem) calc(6.5rem + var(--safe-b)); border-top:1px solid var(--rule);}
+.foot-top{display:flex; flex-wrap:wrap; justify-content:space-between; gap:var(--s5); align-items:flex-end;}
+.foot-mark{font-family:'Bodoni Moda',serif; font-size:clamp(2rem,6vw,3.2rem); line-height:1;}
+.foot-mark em{font-style:italic; color:var(--brass);}
+.legal{margin-top:var(--s6); font-size:.72rem; color:var(--faint); line-height:1.7; max-width:44rem;}
+
+/* ——— feuille de commande ————————————————————————————————————— */
+#sheet{position:fixed; inset:0; z-index:150; display:none; align-items:flex-end; justify-content:center;
+  background:rgba(4,3,8,.72); backdrop-filter:blur(10px);}
+#sheet.open{display:flex;}
+@media (min-width:840px){ #sheet{align-items:center;} }
+.sheet-card{
+  position:relative; width:100%; max-width:60rem; max-height:94dvh; overflow:auto; overscroll-behavior:contain;
+  background:var(--ink-2); border:1px solid var(--rule-brass); border-bottom:none;
+  animation:sheet-up .5s var(--ease-out);
+}
+@media (min-width:840px){ .sheet-card{border-bottom:1px solid var(--rule-brass); display:grid; grid-template-columns:.85fr 1.15fr; max-height:88dvh; animation:sheet-in .45s var(--ease-out);} }
+@keyframes sheet-up{from{transform:translateY(6%); opacity:0;} to{transform:none; opacity:1;}}
+@keyframes sheet-in{from{transform:scale(.985); opacity:0;} to{transform:none; opacity:1;}}
+.sheet-grab{display:block; width:36px; height:3px; border-radius:2px; background:var(--rule); margin:.7rem auto 0;}
+@media (min-width:840px){ .sheet-grab{display:none;} }
+.sheet-art{position:relative; min-height:13rem; overflow:hidden;}
+@media (min-width:840px){ .sheet-art{min-height:100%;} }
+.sheet-close{position:absolute; top:var(--s4); right:var(--s4); z-index:5; width:40px; height:40px;
+  display:grid; place-items:center; border:1px solid var(--rule); background:rgba(7,5,12,.72); border-radius:50%;
+  transition:background .3s, border-color .3s;}
+.sheet-close:hover{background:var(--brass); border-color:var(--brass); color:var(--ink);}
+.sheet-body{padding:clamp(1.4rem,3.5vw,2.4rem); display:flex; flex-direction:column; gap:var(--s5);}
+.rail{display:flex; gap:.4rem;}
+.rail i{flex:1; height:2px; background:var(--rule); transition:background .45s var(--ease);}
+.rail i.on{background:var(--brass);}
+.field{display:flex; flex-direction:column; gap:.45rem;}
+.field label{font-size:var(--t-micro); letter-spacing:.2em; text-transform:uppercase; color:var(--faint);}
+.field input{background:var(--ink); border:1px solid var(--rule); padding:.9rem .95rem; color:var(--paper);
+  border-radius:1px; transition:border-color .25s, background .25s;}
+.field input:focus{outline:none; border-color:var(--brass); background:var(--ink-3);}
+.field input.bad{border-color:var(--pink);}
+.form-error{color:var(--pink); font-size:var(--t-small);}
+.chips{display:flex; flex-wrap:wrap; gap:.5rem;}
+.chip{padding:.55rem .9rem; border:1px solid var(--rule); font-size:.78rem; color:var(--muted);
+  border-radius:999px; transition:all .25s var(--ease);}
+.chip:hover{border-color:var(--rule-brass); color:var(--paper);}
+.chip[aria-pressed="true"]{background:var(--brass); color:var(--ink); border-color:var(--brass); font-weight:600;}
+.total{display:flex; align-items:baseline; justify-content:space-between; padding-top:var(--s4); border-top:1px solid var(--rule);}
+.total b{font-family:'Bodoni Moda',serif; font-weight:400; font-size:2.1rem; color:var(--brass);}
+.preview{display:flex; gap:var(--s4); align-items:center; padding:var(--s4); border:1px solid var(--rule); background:var(--ink);}
+.preview-art{position:relative; width:4.6rem; height:4.6rem; flex:none; overflow:hidden;}
+.preview p{font-size:.76rem; color:var(--faint); line-height:1.5; margin-top:.25rem;}
+.brief{width:100%; min-height:11rem; resize:vertical; background:var(--ink); border:1px solid var(--rule);
+  padding:var(--s4); color:var(--muted); font-size:.87rem; line-height:1.75; border-radius:1px; font-family:inherit;}
+.hint{font-size:.76rem; color:var(--faint); line-height:1.6;}
+
+/* ——— HUD ————————————————————————————————————————————————— */
+#kiosk{position:fixed; left:0; right:0; bottom:0; z-index:80; display:flex;
+  background:rgba(7,5,12,.9); backdrop-filter:blur(16px); border-top:1px solid var(--rule);
+  padding-bottom:var(--safe-b); transform:translateY(105%); transition:transform .5s var(--ease-out);}
+#kiosk.up{transform:none;}
+#kiosk button{flex:1; padding:.75rem .3rem; display:flex; flex-direction:column; align-items:center; gap:.1rem;
+  border-right:1px solid var(--rule-soft); min-height:56px; transition:background .25s;}
+#kiosk button:last-child{border-right:none;}
+#kiosk button:hover,#kiosk button:focus-visible{background:rgba(217,185,120,.09);}
+#kiosk .kn{font-size:.58rem; letter-spacing:.2em; text-transform:uppercase; color:var(--faint);}
+#kiosk .kp{font-family:'Bodoni Moda',serif; font-size:1.08rem; color:var(--brass);}
+/* sur grand écran, la barre pleine largeur écrase la page : elle devient une
+   pilule flottante centrée, présente sans peser */
+@media (min-width:900px){
+  #kiosk{left:50%; right:auto; bottom:1.6rem; width:min(36rem, 90vw); transform:translate(-50%, 160%);
+    border:1px solid var(--rule-brass); border-radius:999px; overflow:hidden;
+    box-shadow:0 22px 60px -24px rgba(0,0,0,.95);}
+  #kiosk.up{transform:translate(-50%, 0);}
+  #kiosk button{padding:.6rem .3rem; min-height:52px;}
+}
+
+.hud-clock{position:fixed; right:var(--gutter); top:74px; z-index:70; text-align:right; pointer-events:none;
+  opacity:0; transition:opacity .6s var(--ease) .2s;}
+.hud-clock.show{opacity:1;}
+.hud-clock .hd{font-size:var(--t-micro); letter-spacing:.24em; text-transform:uppercase; color:var(--faint);}
+.hud-clock .ht{font-family:'Bodoni Moda',serif; font-size:1.35rem; line-height:1.1; color:var(--paper); font-variant-numeric:tabular-nums;}
+.hud-clock .hs{font-size:.58rem; letter-spacing:.24em; text-transform:uppercase; margin-top:.15rem;}
+@media (max-width:520px){ .hud-clock{display:none;} }
+
+.amb-btn{position:fixed; left:var(--gutter); top:74px; z-index:70; width:44px; height:44px; border-radius:50%;
+  display:grid; place-items:center; border:1px solid var(--rule-brass); background:rgba(7,5,12,.8);
+  backdrop-filter:blur(8px); opacity:0; transition:opacity .6s var(--ease) .2s, border-color .3s, background .3s;}
+.amb-btn.show{opacity:1;}
+.amb-btn:hover{background:rgba(217,185,120,.14);}
+.amb-bars{display:flex; align-items:flex-end; gap:2px; height:14px;}
+.amb-bars i{width:2px; background:var(--brass); height:4px; border-radius:1px;}
+.amb-btn.on .amb-bars i{animation:eq .9s ease-in-out infinite;}
+.amb-btn.on .amb-bars i:nth-child(2){animation-delay:.15s;}
+.amb-btn.on .amb-bars i:nth-child(3){animation-delay:.3s;}
+.amb-btn.on .amb-bars i:nth-child(4){animation-delay:.45s;}
+@keyframes eq{0%,100%{height:4px;} 50%{height:14px;}}
+.amb-panel{position:fixed; left:var(--gutter); top:128px; z-index:71; width:min(20rem, calc(100vw - 2*var(--gutter)));
+  background:rgba(7,5,12,.97); border:1px solid var(--rule); backdrop-filter:blur(16px);
+  padding:var(--s4); display:none; max-height:66dvh; overflow:auto;}
+.amb-panel.open{display:block;}
+/* sur mobile la commande d'ambiance passe en bas à gauche, au-dessus du
+   kiosque : en haut elle recouvrait le contenu au défilement */
+@media (max-width:899px){
+  .amb-btn{top:auto; bottom:calc(72px + var(--safe-b));}
+  .amb-panel{top:auto; bottom:calc(126px + var(--safe-b));}
+}
+.amb-head{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:var(--s3);}
+.amb-head b{font-family:'Bodoni Moda',serif; font-weight:400; font-size:1rem;}
+.amb-head span{font-size:var(--t-micro); letter-spacing:.16em; color:var(--faint); text-transform:uppercase;}
+.station{display:flex; width:100%; align-items:center; gap:.7rem; padding:.55rem .4rem; text-align:left;
+  font-size:.84rem; transition:background .25s;}
+.station:hover{background:rgba(244,241,234,.05);}
+.station .sf{width:3rem; font-size:.72rem; color:var(--faint); font-variant-numeric:tabular-nums;}
+.station .sn{flex:1; min-width:0;}
+.station .sm{font-size:.66rem; color:var(--faint);}
+.station[aria-pressed="true"] .sn{color:var(--brass);}
+.amb-note{font-size:.68rem; color:var(--faint); line-height:1.5; margin-top:var(--s3); padding-top:var(--s3); border-top:1px solid var(--rule-soft);}
+
+.summons{position:fixed; left:50%; top:74px; transform:translate(-50%,-14px); z-index:95;
+  width:min(23rem, calc(100vw - 2*var(--gutter)));
+  background:rgba(11,8,18,.97); border:1px solid var(--rule-brass); backdrop-filter:blur(14px);
+  padding:var(--s4); opacity:0; pointer-events:none; transition:opacity .45s var(--ease), transform .45s var(--ease);}
+.summons.show{opacity:1; transform:translate(-50%,0); pointer-events:auto;}
+.summons .from{font-size:var(--t-micro); letter-spacing:.22em; text-transform:uppercase; color:var(--faint);}
+.summons h3{font-size:1.25rem; margin:.25rem 0 .3rem;}
+.summons p{font-size:var(--t-small); color:var(--muted); margin-bottom:var(--s4);}
+.summons .row{display:flex; gap:.5rem;}
+.summons .row .btn{flex:1;}
+
+#toast{position:fixed; left:50%; bottom:calc(72px + var(--safe-b)); transform:translate(-50%,12px); z-index:160;
+  background:var(--brass); color:var(--ink); padding:.85rem 1.3rem; font-size:.82rem; font-weight:600;
+  letter-spacing:.04em; max-width:min(26rem, calc(100vw - 2rem)); text-align:center;
+  opacity:0; pointer-events:none; transition:opacity .3s var(--ease), transform .3s var(--ease);}
+#toast.show{opacity:1; transform:translate(-50%,0);}
+
+/* ——— imagerie générée ——————————————————————————————————————— */
+.art{position:absolute; inset:0; background:var(--ink);}
+.art svg{position:absolute; inset:0; width:100%; height:100%; display:block;}
+.art::after{content:''; position:absolute; inset:0; pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.36'/%3E%3C/svg%3E");
+  mix-blend-mode:overlay; opacity:.5;}
+.art-vig{position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(115% 85% at 50% 45%, transparent 40%, rgba(5,3,10,.72) 100%);}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.001ms !important; animation-iteration-count:1 !important;
+    transition-duration:.001ms !important; scroll-behavior:auto !important;}
+  .reveal{opacity:1; transform:none;} .reveal .hair{transform:scaleX(1);}
+}
+
+
+/* AURA / AFTER HOURS — revision grounded in the original night/Miami/brass brief. */
+:root{--ink:#080b0e;--ink-2:#101416;--ink-3:#1a2023;--ink-4:#252b2d;--muted:#bcbab6;--faint:#aaa69d;--brass:#dfbd83;--brass-lo:#b39767;--rule:rgba(225,215,198,.18);--shell:88rem;--gutter:clamp(1.25rem,4.8vw,5rem)}
+html{scroll-behavior:smooth;scroll-padding-top:90px}[hidden]{display:none!important}
+.skip-link{position:fixed;left:1rem;top:-100px;z-index:300;background:var(--brass);color:var(--ink);padding:1rem}.skip-link:focus{top:1rem}
+#threshold,.flash,#hud-clock,#summons{display:none!important}
+#topbar{height:78px;background:linear-gradient(180deg,rgba(8,11,14,.95),rgba(8,11,14,.62));border-bottom:1px solid rgba(255,255,255,.13);backdrop-filter:blur(14px)}
+#topbar.hidden{transform:none}.wordmark{font-size:1.5rem;letter-spacing:.05em}.navlinks{border:0;background:none;padding:0;border-radius:0;gap:1.2rem}.navlinks a{border-radius:0;padding:.75rem .1rem;letter-spacing:.12em;font-size:.68rem}.navlinks a:hover,.navlinks a.active{background:none;color:var(--brass)}
+.langset button{min-width:36px;min-height:44px;color:#c6c1b6}#mobile-menu-btn{display:none}
+#manifesto{padding:0;min-height:850px;min-height:max(800px,95svh);display:flex;align-items:flex-end;padding-bottom:110px;overflow:hidden;border-bottom:1px solid var(--rule)}
+#manifesto>.shell{width:100%;position:relative;z-index:2}#manifesto-bg{opacity:1;mask-image:none;-webkit-mask-image:none;inset:0;z-index:-2}#manifesto-bg img{height:100%;width:100%;object-fit:cover;object-position:center;transform:scale(1.04);will-change:transform}
+#manifesto:after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(5,9,12,.66),transparent 78%),linear-gradient(0deg,#080b0e 0%,rgba(8,11,14,.66) 25%,transparent 72%)}
+.hero-edition{position:absolute;left:var(--gutter);right:var(--gutter);top:108px;display:flex;justify-content:space-between;font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:#e5d7bd}
+.hero-masthead{position:absolute;top:126px;left:var(--gutter);font-family:'Bodoni Moda',Georgia,serif;font-size:clamp(130px,19vw,290px);font-weight:400;line-height:.9;letter-spacing:-.045em;color:#eee8da;text-shadow:0 8px 70px #080b0e33}.hero-masthead span{font-family:'Archivo',sans-serif;font-size:.65rem;letter-spacing:.65em;display:block;margin:1.1rem 0 0 .4rem}
+.manifesto-grid{grid-template-columns:1.5fr .65fr;align-items:end;gap:6rem}.statement{font-size:clamp(2.6rem,4.1vw,4.7rem);line-height:1.02;letter-spacing:-.035em}.statement em{color:#e4bf88}.manifesto-grid .lede{font-size:.95rem;max-width:29rem;color:#d0ceca;line-height:1.75}.manifesto-grid .label{font-size:.6rem}.manifesto-aside{border-top:1px solid var(--brass);padding:1.3rem 0 0;gap:.8rem;margin-bottom:.2rem}.hero-offer{display:flex;align-items:center;justify-content:space-between;gap:2rem}.hero-offer h2{font-size:2.3rem;margin-top:.4rem}.hero-offer strong{font:3.4rem 'Bodoni Moda',Georgia,serif;font-weight:400}.hero-offer strong span{font-size:1.4rem;color:var(--brass)}.hero-recipe{font-size:.75rem;color:#d0ccc3}.manifesto-aside .arrow-link{border-top:1px solid var(--rule);padding-top:1rem;justify-content:space-between}
+.hero-bottom{position:absolute;bottom:30px;left:var(--gutter);right:var(--gutter);display:flex;align-items:center;justify-content:space-between;font-size:.62rem;color:#bcb7ad;letter-spacing:.04em}.hero-bottom a{font-size:1.4rem;width:42px;height:42px;display:grid;place-items:center;border:1px solid var(--rule);border-radius:50%}
+.btn{font-size:.64rem;letter-spacing:.1em;border-radius:0;padding:1rem 1.4rem;min-height:50px}.btn-ghost{--btn-bg:rgba(8,11,14,.32)}.value-strip{display:flex;align-items:center;justify-content:center;gap:clamp(1rem,4vw,4rem);padding:1.5rem var(--gutter);border-bottom:1px solid var(--rule);font-size:.64rem;letter-spacing:.14em;text-transform:uppercase}.value-strip i{font-style:normal;color:var(--brass);font-size:1rem}
+.band{padding-block:6rem}.band-head .display-row{justify-content:flex-start;gap:1.4rem;align-items:baseline}.band-head .display-row>.label{margin-left:auto}.band-head h2{font-size:clamp(2.6rem,5vw,4.8rem)}.section-no{font-size:.72rem;color:var(--brass);letter-spacing:.12em}.band-head .hair{display:none}
+.feature{background:var(--ink-2);border:1px solid var(--rule);grid-template-columns:1.15fr 1fr}.feature-body{padding:3rem}.feature-body h3{font-size:3.4rem}.feature-body .lede{font-size:.95rem}.feature-body .btn{margin-top:auto}.feature-art{min-height:560px;background:radial-gradient(ellipse at 35% 40%,#3b4341,#121a1c 75%)}.feature-tag{top:1.4rem;right:1.4rem;letter-spacing:.13em}.feature-art .plate{display:none}.editorial-preview{position:absolute;inset:3.8rem 3rem 4rem;perspective:1000px}.editorial-post{position:absolute;left:0;top:0;width:74%;height:94%;background:linear-gradient(0deg,rgba(4,9,13,.7),transparent),var(--cinema) center/cover;transform:rotate(-7deg);box-shadow:0 25px 55px #0008;border:7px solid #e5dccb;padding:1.2rem;display:flex;flex-direction:column;justify-content:space-between;z-index:2;color:#f6efdf}.editorial-post>span{font-size:.5rem;letter-spacing:.26em}.editorial-post>strong{font-family:'Bodoni Moda',Georgia,serif;font-size:clamp(2rem,3.7vw,4rem);line-height:.94;font-weight:400;white-space:normal}.editorial-post>small{font-size:.62rem;max-width:10rem}.editorial-swatch{position:absolute;right:0;bottom:0;height:70%;width:55%;transform:rotate(8deg);border:1px solid #c5b08c;background:#d6c7a9;color:#192422;padding:1.5rem;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 20px 60px #0007}.editorial-swatch span{font-size:.57rem;letter-spacing:.2em;line-height:1.6}.editorial-swatch b{font:5rem 'Bodoni Moda',Georgia,serif;align-self:flex-end}.study-label{position:absolute;left:1.4rem;right:1.4rem;bottom:1.4rem;color:#c4bcb0;font-size:.64rem;line-height:1.4}
+.menu-rows{margin-top:1.5rem!important}.menu-row{padding:1.6rem .5rem}.menu-row .rt strong{font-size:1.8rem}.menu-row .rt span{line-height:1.7}.menu-row .rp b{font-size:2rem}.menu-row .rn{color:var(--brass)}
+#ready{background:#0d1316}.ready-list{grid-template-columns:repeat(4,1fr);gap:1.2rem;border:0}.ready-row{display:flex;flex-direction:column;align-items:stretch;gap:1rem;padding:0 0 1.2rem;border:1px solid var(--rule);background:var(--ink-2);overflow:hidden}.ready-thumb{width:100%;height:230px;background:var(--cinema) center/cover;transition:filter .3s}.ready-thumb .art{opacity:.2;mix-blend-mode:screen}.ready-row:nth-child(2) .ready-thumb{background-position:70% center;filter:hue-rotate(310deg)}.ready-row:nth-child(3) .ready-thumb{background-position:30% center;filter:sepia(.4)}.ready-row:nth-child(4) .ready-thumb{background-position:80% center;filter:saturate(.4)}.ready-row .rt{padding:0 1.2rem}.ready-row .rt strong{font-size:1.8rem}.ready-row .rt span{font-size:.74rem;display:block;min-height:2.8rem;margin-top:.5rem}.ready-row .rv{padding:0 1.2rem;font-size:1.6rem}.ready-row:hover{border-color:var(--brass);background:#171e20}
+#club{background:radial-gradient(ellipse at 90% 20%,#17363877,transparent 65%),#090d0f}.pass{background:linear-gradient(135deg,#25372f,#101b1e 65%,#303020);border-color:#9a845e}.missions{border-color:var(--rule)}.mission{background:#11191b}.mission .ms{color:var(--brass)}
+#kiosk{backdrop-filter:blur(20px);background:#0b1016eF;border-color:#8c7855;border-radius:4px;bottom:18px}#kiosk button{min-height:54px;min-width:100px}.sheet-card{background:#10171a}.sheet-close{min-width:44px;min-height:44px}.field input{font-size:16px}.chip{min-height:44px}.copyfield input{font-size:16px}#amb-btn{background:#101619;bottom:25px;top:auto;left:20px}#amb-panel{background:#101619}.qa-q{font-size:1.55rem}.legal{font-size:.78rem}
+#handoff{color:var(--paper);background:#11191d;border:1px solid var(--rule-brass);padding:2.5rem;width:min(640px,calc(100% - 2rem));max-height:90dvh;overflow:auto}#handoff::backdrop{background:#030609d9;backdrop-filter:blur(10px)}#handoff h2{font-size:2.8rem;margin:1.5rem 0 1rem}#handoff .lede{font-size:.92rem}#handoff textarea{display:block;width:100%;margin-top:1.4rem;padding:1rem;background:#080e11;color:#e8e2d7;border:1px solid var(--rule);resize:vertical;line-height:1.6;font-size:14px}#copy-status{min-height:2.5rem;font-size:.8rem;color:var(--brass);margin:.6rem 0}.handoff-actions{display:flex;flex-wrap:wrap;gap:.6rem}
+@media(min-width:1800px){.hero-masthead{left:calc((100vw - 88rem)/2 + var(--gutter))}#manifesto{min-height:1000px}}
+@media(max-width:1000px){.manifesto-grid{gap:2rem;grid-template-columns:1.2fr .8fr}.feature-body{padding:2rem}.feature-art{min-height:510px}.ready-list{grid-template-columns:repeat(2,1fr)}.hero-masthead{top:150px;font-size:24vw}}
+@media(max-width:760px){#topbar{height:68px}.wordmark{font-size:1.2rem}.navset{gap:0}.langset button{min-width:28px;font-size:.62rem;padding:.3rem}.navlinks{display:none}#mobile-menu-btn{display:block;order:2;margin-left:.5rem;min-width:44px;min-height:44px;font-size:1.3rem}.navlinks.mobile-open{position:absolute;top:68px;left:0;right:0;display:flex;flex-direction:column;gap:0;background:#0b1118;padding:1rem 1.5rem;border-bottom:1px solid var(--brass)}.navlinks a{font-size:.8rem;padding:1rem}.hero-edition{top:94px;font-size:.5rem;letter-spacing:.14em}.hero-edition span:last-child{display:none}.hero-masthead{top:132px;font-size:29vw;left:1rem;letter-spacing:-.04em}.hero-masthead span{font-size:.5rem;letter-spacing:.5em;margin-top:.6rem}#manifesto{min-height:960px;padding-bottom:80px;align-items:flex-start;padding-top:360px}#manifesto-bg img{object-position:65% center;transform:scale(1.04)}#manifesto:after{background:linear-gradient(0deg,#080b0e 0%,#080b0ef0 28%,#080b0e75 60%,#080b0e11 100%)}.manifesto-grid{grid-template-columns:1fr;gap:2.3rem}.statement{font-size:clamp(2.6rem,10vw,4rem)}.manifesto-grid .lede{font-size:.93rem}.manifesto-grid>div>div{margin-top:1.3rem!important;gap:.6rem!important}.manifesto-aside{max-width:100%;padding-top:1.1rem;gap:.6rem}.hero-offer h2{font-size:2rem}.hero-offer strong{font-size:2.8rem}.hero-bottom{bottom:22px;font-size:.54rem;gap:1rem}.hero-bottom span:last-child{display:none}.hero-bottom a{flex-shrink:0}.value-strip{gap:.7rem;flex-wrap:wrap;font-size:.54rem;padding:1.1rem}.value-strip i:last-of-type,.value-strip span:last-child{display:none}.band{padding-block:3.5rem}.band-head .display-row{gap:.8rem}.band-head .display-row>.label{margin-left:0;width:100%;font-size:.58rem}.band-head h2{font-size:3.2rem}.feature{grid-template-columns:1fr}.feature-art{min-height:420px;aspect-ratio:1/1}.feature-body{padding:1.5rem}.feature-body h3{font-size:2.6rem}.editorial-preview{inset:3.5rem 2.5rem 4rem}.editorial-post>strong{font-size:2.5rem}.menu-row .rt strong{font-size:1.65rem}.ready-list{gap:.8rem}.ready-thumb{height:170px}.ready-row .rt,.ready-row .rv{padding:0 .8rem}.ready-row .rt strong{font-size:1.5rem}.ready-row .rt span{font-size:.72rem;min-height:3.8rem}.ready-row .rv{font-size:1.4rem}#kiosk{bottom:0;left:0;right:0;transform:translateY(110%);width:100%;border-radius:0;border:0;border-top:1px solid var(--rule-brass)}#kiosk.up{transform:translateY(0)}#kiosk button{min-width:0;flex:1;padding:.65rem .2rem;min-height:64px}#amb-btn{bottom:80px;left:16px}#amb-panel{bottom:132px;left:16px;max-width:calc(100vw - 32px)}#handoff{padding:1.5rem}#handoff h2{font-size:2.2rem;padding-right:1rem}.handoff-actions .btn{width:100%}.sheet-art{min-height:8rem;max-height:10rem}.sheet-body{padding:1.25rem}.qa-q{font-size:1.25rem}footer{padding-bottom:8rem}}
+
+:root{--cinema:url("hero.webp")}
+/* CORRECTIF — débordement horizontal. Les compositions SVG sont dessinées en
+   « slice » : leur contenu est volontairement plus large que leur cadre et doit
+   être découpé par le cadre. En V2 un conteneur a cessé de découper : la page
+   faisait 441px de large sur un écran de 390, ce qui poussait le bandeau — et
+   donc le bouton de menu — hors de l'écran. On garantit le découpage à la
+   source, sur .art, plutôt que de compter sur chaque parent. */
+.art{overflow:hidden}
+.feature-art,.ready-thumb,.preview-art,.sheet-art,#manifesto-bg{overflow:hidden}
+html,body{max-width:100%;overflow-x:clip}
+
+/* CORRECTIF — bandeau mobile. Le sélecteur de langue + le bouton menu ne
+   tenaient pas dans la largeur : le bouton sortait de l'écran (x 377–421 sur
+   un écran de 390) et overflow-x:hidden masquait le débordement, donc aucun
+   test de débordement ne le voyait. Sous 760px le sélecteur descend dans le
+   panneau de menu (déplacé dans le DOM par matchMedia). */
+@media(max-width:760px){
+  #topbar .row{gap:.5rem}
+  .wordmark{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .navset{margin-left:auto;flex:0 0 auto}
+  #mobile-menu-btn{margin-left:0}
+  .navlinks.mobile-open .langset{display:flex;justify-content:center;gap:.5rem;
+    margin-top:.8rem;padding-top:.9rem;border-top:1px solid var(--rule)}
+  .navlinks.mobile-open .langset button{min-width:44px;min-height:44px;font-size:.7rem}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}#manifesto-bg img{transform:none!important}.editorial-post,.editorial-swatch{transition:none}}
+
+</style>
+
+
+<!-- ═══════════════ SEUIL ═══════════════ -->
+<div id="threshold">
+  <div class="scene" id="threshold-scene" aria-hidden="true"></div>
+  <div class="veil" aria-hidden="true"></div>
+  <div class="bars" aria-hidden="true"><i></i><i></i></div>
+  <div class="inner">
+    <p class="house">AURA<br><em>Business</em></p>
+    <div class="sub"><i></i><span data-i18n="threshold.kicker">Miami · Nuit</span><i></i></div>
+    <button class="btn enter" id="enter-btn" data-i18n="threshold.enter">Entrer</button>
+    <p class="whisper" data-i18n="threshold.whisper">Un clic. Les spots. L'ambiance.</p>
+  </div>
+</div>
+<div class="flash" id="flash-a" style="background:var(--cyan)"></div>
+<div class="flash" id="flash-b" style="background:var(--pink)"></div>
+<div class="flash" id="flash-c" style="background:#fff"></div>
+
+<!-- ═══════════════ NAVIGATION ═══════════════ -->
+<a class="skip-link" href="#main-content">Contenu / Content</a>
+<header id="topbar">
+  <div class="row">
+    <a href="#carte" class="wordmark">AURA <em>Business</em></a>
+    <div class="navset">
+      <button id="mobile-menu-btn" aria-expanded="false" aria-controls="main-nav" aria-label="Menu">☰</button><nav id="main-nav" class="navlinks" aria-label="Sections">
+        <a href="#carte" data-i18n="nav.carte">La carte</a>
+        <a href="#ready" data-i18n="nav.ready">Déjà prêt</a>
+        <a href="#club" data-i18n="nav.club">Le club</a>
+        <a href="#questions" data-i18n="nav.questions">Questions</a>
+      </nav>
+      <div class="langset" role="group" aria-label="Langue">
+        <button data-lang="fr" aria-pressed="true">FR</button>
+        <button data-lang="en" aria-pressed="false">EN</button>
+        <button data-lang="es" aria-pressed="false">ES</button>
+        <button data-lang="it" aria-pressed="false">IT</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main id="main-content">
+
+<!-- ═══════════════ MANIFESTE ═══════════════ -->
+<section class="band" id="manifesto">
+  <div id="manifesto-bg" aria-hidden="true"><img id="cinema-image" src="hero.webp" width="1672" height="941" fetchpriority="high" decoding="async" alt="" onerror="this.style.display='none'"></div><div class="hero-edition"><span data-i18n="v2.edition">Studio de contenu indépendant</span><span>COLLECTION — 01</span></div><div class="hero-masthead" aria-hidden="true">AURA<span>BUSINESS</span></div>
+  <div class="shell">
+    <div class="manifesto-grid">
+      <div class="reveal">
+        <p class="label label-brass" data-i18n="manifesto.eyebrow">Maison de contenu</p>
+        <h1 class="statement" style="margin-top:1.2rem;">
+          <span data-i18n="manifesto.line1">Nous créons vos visuels</span><br>
+          <em data-i18n="manifesto.line2">et vos textes Instagram.</em>
+        </h1>
+        <p class="lede" style="margin-top:1.6rem;" data-i18n="manifesto.lede">Vous choisissez un numéro sur la carte. Nous préparons le fichier. Vous collez, vous publiez. Pas d'abonnement, pas d'agence, pas de réunion.</p>
+        <div style="display:flex; gap:.8rem; flex-wrap:wrap; margin-top:2rem;">
+          <a href="#carte" class="btn" data-i18n="manifesto.cta">Voir la carte</a>
+          <button class="btn btn-ghost" id="dm-btn" data-i18n="manifesto.cta2">Nous écrire</button>
+        </div>
+      </div>
+      <aside class="manifesto-aside reveal" data-d="2">
+        <p class="label label-brass" data-i18n="v2.focus">La sélection de la maison</p>
+        <div class="hero-offer"><div><span class="label">N° 02</span><h2>Signature</h2></div><strong>90<span>€</span></strong></div>
+        <p class="hero-recipe" data-i18n="v2.recipe">12 visuels · 12 textes · 6 messages · bio</p>
+        <button class="arrow-link" data-order="2"><span data-i18n="v2.discover">Découvrir le pack</span> ↗</button>
+      </aside>
+    </div>
+  </div>
+<div class="hero-bottom"><span data-i18n="v2.bottom">Pensé pour votre activité. Prêt pour Instagram.</span><a href="#carte" aria-label="La carte">↓</a><span data-i18n="v2.noSub">Un achat. Aucun abonnement.</span></div>
+</section>
+<div class="value-strip"><span data-i18n="v2.strip1">Visuels + textes</span><i>✦</i><span data-i18n="v2.strip2">Sur brief ou déjà prêt</span><i>✦</i><span data-i18n="v2.strip3">Pour commerces & indépendants</span></div>
+
+<!-- ═══════════════ LA CARTE ═══════════════ -->
+<section class="band" id="carte">
+  <div class="shell">
+    <div class="band-head reveal">
+      <div class="hair"></div>
+      <div class="display-row">
+        <span class="section-no">01 /</span><h2 data-i18n="carte.title">La carte</h2>
+        <p class="label" data-i18n="carte.hint">Un numéro · un paiement · un fichier</p>
+      </div>
+    </div>
+
+    <article class="feature reveal" id="feature-pack" data-d="1"></article>
+
+    <div class="menu-rows" id="menu-rows" style="margin-top:clamp(2.5rem,5vw,4rem);"></div>
+  </div>
+</section>
+
+<!-- ═══════════════ DÉJÀ PRÊT ═══════════════ -->
+<section class="band" id="ready">
+  <div class="shell">
+    <div class="band-head reveal">
+      <div class="hair"></div>
+      <div class="display-row">
+        <span class="section-no">02 /</span><h2 data-i18n="ready.title">Déjà prêt</h2>
+        <p class="label" data-i18n="ready.hint">Sans brief · livraison directe</p>
+      </div>
+      <p class="lede" data-i18n="ready.lede">Des fichiers déjà composés. Vous prenez, vous payez la maison, le fichier part.</p>
+    </div>
+    <div class="ready-list reveal" data-d="1" id="ready-list"></div>
+  </div>
+</section>
+
+<!-- ═══════════════ PROTOCOLE ═══════════════ -->
+<section class="band" id="protocol">
+  <div class="shell">
+    <div class="band-head reveal">
+      <div class="hair"></div>
+      <div class="display-row"><h2 data-i18n="protocol.title">Le protocole</h2></div>
+    </div>
+    <div class="steps reveal" data-d="1" id="steps"></div>
+  </div>
+</section>
+
+<!-- ═══════════════ CLUB ═══════════════ -->
+<section class="band" id="club">
+  <div class="shell">
+    <div class="band-head reveal">
+      <div class="hair"></div>
+      <div class="display-row">
+        <span class="section-no">04 /</span><h2 data-i18n="club.title">Le club</h2>
+        <p class="label" data-i18n="club.hint">Crew · 50/50</p>
+      </div>
+      <p class="lede" data-i18n="club.lede">Les mêmes packs. Vous amenez le client, la maison produit et livre, vous touchez la moitié. On vend le fichier, pas le community management.</p>
+    </div>
+
+    <div class="club-grid">
+      <div class="reveal" data-d="1">
+        <p class="label label-brass" data-i18n="club.rulesTitle">Le protocole, non négociable</p>
+        <ol class="protocol" id="protocol-list" style="margin-top:1rem;"></ol>
+      </div>
+
+      <div class="reveal" data-d="2">
+        <div id="pass-form">
+          <p class="label label-brass" data-i18n="club.joinTitle">Votre carte</p>
+          <div class="field" style="margin-top:1rem;">
+            <label for="member-name" data-i18n="club.nameLabel">Votre nom en jeu</label>
+            <input id="member-name" type="text" maxlength="24" autocomplete="off" data-i18n-ph="club.namePh" placeholder="Ex. Vega">
+          </div>
+          <button class="btn btn-block" id="create-pass" style="margin-top:1rem;" data-i18n="club.createBtn">Créer la carte</button>
+          <p class="note" data-i18n="club.localNote">Votre carte est enregistrée sur cet appareil. Elle ne remplace pas un compte : c'est votre repère, la maison tient le registre officiel.</p>
+        </div>
+
+        <div class="pass" id="pass" hidden>
+          <div class="pass-top">
+            <div style="min-width:0;">
+              <div class="pass-code" id="pass-code">AURA-0000</div>
+              <div class="pass-name" id="pass-name">—</div>
+            </div>
+            <div class="pass-rank" id="pass-rank">Recrue</div>
+          </div>
+          <div class="meter"><i id="pass-meter"></i></div>
+          <div class="pass-next" id="pass-next"></div>
+
+          <div class="pass-section">
+            <p class="label" data-i18n="club.linkTitle">Votre lien personnel</p>
+            <div class="copyfield">
+              <input id="pass-link" type="text" readonly aria-label="Lien de parrainage">
+              <button class="btn btn-ghost btn-sm" id="pass-link-copy" data-i18n="club.copy">Copier</button>
+            </div>
+            <p class="note" data-i18n="club.linkNote">Toute commande passée depuis ce lien arrive chez la maison avec votre code. C'est ce qui prouve que le client est le vôtre.</p>
+          </div>
+
+          <div class="pass-section">
+            <p class="label" data-i18n="club.ledgerTitle">Vos tickets</p>
+            <div class="ledger" id="pass-ledger"></div>
+          </div>
+
+          <div class="pass-section">
+            <button class="btn btn-ghost btn-sm btn-block" id="pass-forget" data-i18n="club.forget">Effacer ma carte de cet appareil</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="missions reveal" data-d="2" id="missions"></div>
+  </div>
+</section>
+
+<!-- ═══════════════ QUESTIONS ═══════════════ -->
+<section class="band" id="questions">
+  <div class="shell" style="max-width:52rem;">
+    <div class="band-head reveal">
+      <div class="hair"></div>
+      <div class="display-row"><h2 data-i18n="questions.title">Questions</h2></div>
+    </div>
+    <div class="qa reveal" data-d="1" id="qa"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="shell">
+    <div class="foot-top">
+      <p class="foot-mark">AURA <em>Business</em></p>
+      <div>
+        <p class="label" data-i18n="footer.contact">La maison</p>
+        <button class="arrow-link" id="dm-btn-2">@polakpl_f44
+          <svg width="18" height="10" viewBox="0 0 18 10" fill="none" aria-hidden="true"><path d="M1 5h15m0 0L12 1m4 4l-4 4" stroke="currentColor" stroke-width="1.2"/></svg>
+        </button>
+      </div>
+    </div>
+    <p class="legal" data-i18n="footer.legal">Maison de création de contenu Instagram via @polakpl_f44. Visuels, textes et messages produits avec l'aide de l'intelligence artificielle. Aucun résultat commercial garanti. Prix en euros, toutes taxes comprises. Commande confirmée en message privé avant production. Les visuels présentés sur ce site sont des compositions générées, pas des photographies. Les marques éventuellement visibles ne nous appartiennent pas.</p>
+  </div>
+</footer>
+
+</main>
+
+<!-- ═══════════════ HUD ═══════════════ -->
+<div class="hud-clock" id="hud-clock" aria-hidden="true">
+  <div class="hd" id="clock-day">Lun</div>
+  <div class="ht num" id="clock-time">00:00</div>
+  <div class="hs" id="clock-season">Night Shift</div>
+</div>
+
+<button class="amb-btn" id="amb-btn" aria-label="Ambiance sonore" aria-expanded="false">
+  <span class="amb-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+</button>
+<div class="amb-panel" id="amb-panel">
+  <div class="amb-head">
+    <b data-i18n="amb.title">Ambiance</b>
+    <span id="amb-current"></span>
+  </div>
+  <div id="amb-list"></div>
+  <p class="amb-note" data-i18n="amb.note">Ambiances générées en direct par le navigateur (synthèse). Ce ne sont pas des morceaux enregistrés.</p>
+</div>
+
+<div class="summons" id="summons" role="dialog" aria-labelledby="summons-title" aria-hidden="true">
+  <p class="from" data-i18n="summons.from">Numéro masqué</p>
+  <h3 id="summons-title" data-i18n="summons.title">Social Club</h3>
+  <p data-i18n="summons.line">Des missions. 50/50. La maison produit, vous encaissez la moitié.</p>
+  <div class="row">
+    <button class="btn btn-sm" id="summons-yes" data-i18n="summons.yes">Répondre</button>
+    <button class="btn btn-ghost btn-sm" id="summons-no" data-i18n="summons.no">Plus tard</button>
+  </div>
+</div>
+
+<nav id="kiosk" aria-label="Commander"></nav>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<!-- ═══════════════ FEUILLE DE COMMANDE ═══════════════ -->
+<div id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+  <div class="sheet-card">
+    <span class="sheet-grab" aria-hidden="true"></span>
+    <div class="sheet-art" id="sheet-art"></div>
+    <button class="sheet-close" id="sheet-close" aria-label="Fermer">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.3"/></svg>
+    </button>
+    <div class="sheet-body">
+      <div class="rail" aria-hidden="true"><i id="rail-1"></i><i id="rail-2"></i><i id="rail-3"></i></div>
+
+      <div id="step-1">
+        <p class="label label-brass" id="step-1-n">n°2</p>
+        <h3 id="sheet-title" style="font-size:clamp(1.8rem,4vw,2.6rem); margin-top:.4rem;">—</h3>
+        <p class="lede" id="step-1-tag" style="margin-top:.5rem;"></p>
+        <p style="font-family:'Bodoni Moda',serif; font-size:2.4rem; color:var(--brass); margin-top:1rem;" id="step-1-price">—</p>
+        <ul class="recipe" id="step-1-recipe" style="margin-top:1.2rem;"></ul>
+        <button class="btn btn-block" id="to-2" style="margin-top:1.6rem;" data-i18n="sheet.next">Continuer</button>
+      </div>
+
+      <div id="step-2" hidden>
+        <button class="arrow-link" id="back-to-1" type="button">← <span data-i18n="sheet.backPack">Pack</span></button><p class="label label-brass" data-i18n="sheet.briefLabel">Étape 2 · le brief</p>
+        <h3 style="font-size:clamp(1.6rem,3.5vw,2.2rem); margin:.4rem 0 1.2rem;" data-i18n="sheet.briefTitle">Trois lignes suffisent</h3>
+        <div style="display:flex; flex-direction:column; gap:1rem;">
+          <div class="field">
+            <label for="f-sell" data-i18n="sheet.sell">Vous vendez</label>
+            <input id="f-sell" type="text" maxlength="300" required autocomplete="off" data-i18n-ph="sheet.sellPh" placeholder="coaching, restaurant, agence…">
+          </div>
+          <div class="field">
+            <label for="f-audience" data-i18n="sheet.audience">Vous vous adressez à</label>
+            <input id="f-audience" type="text" maxlength="300" required autocomplete="off" data-i18n-ph="sheet.audiencePh" placeholder="à qui vous parlez">
+          </div>
+          <div class="field">
+            <label for="f-ig" data-i18n="sheet.ig">Votre Instagram</label>
+            <input id="f-ig" type="text" maxlength="31" required autocomplete="off" data-i18n-ph="sheet.igPh" placeholder="@votrecompte">
+          </div>
+          <p class="form-error" id="form-error" hidden data-i18n="sheet.required">Merci de remplir les trois lignes.</p>
+        </div>
+        <p class="label" style="margin-top:1.6rem;" data-i18n="sheet.extrasLabel">Suppléments</p>
+        <div class="chips" id="chips" style="margin-top:.7rem;"></div>
+        <div class="preview" style="margin-top:1.4rem;">
+          <div class="preview-art" id="preview-art"></div>
+          <div>
+            <p class="label label-brass" data-i18n="sheet.previewLabel">Composé pour vous</p>
+            <p data-i18n="sheet.previewHint">La direction visuelle se recompose à partir de votre compte. Chaque commande reçoit sa propre déclinaison.</p>
+          </div>
+        </div>
+        <div class="total" style="margin-top:1.4rem;">
+          <span class="label" data-i18n="sheet.total">Total</span>
+          <b class="num" id="sheet-total">—</b>
+        </div>
+        <button class="btn btn-block" id="to-3" style="margin-top:1.2rem;" data-i18n="sheet.next">Continuer</button>
+      </div>
+
+      <div id="step-3" hidden>
+        <button class="arrow-link" id="back-to-2" type="button">← <span data-i18n="sheet.briefLabel">Brief</span></button><p class="label label-brass" data-i18n="sheet.sendLabel">Étape 3 · l'envoi</p>
+        <h3 style="font-size:clamp(1.6rem,3.5vw,2.2rem); margin:.4rem 0 1rem;" data-i18n="sheet.sendTitle">Votre message est écrit</h3>
+        <textarea class="brief" id="brief" readonly aria-label="Votre message"></textarea>
+        <button class="btn btn-block" id="send-btn" style="margin-top:1.2rem;" data-i18n="sheet.copyOpen">Copier et ouvrir Instagram</button>
+        <p class="hint" style="margin-top:.9rem;" data-i18n="sheet.helpNote">Le message est copié. Dans Instagram : appuyez dans la zone de saisie, puis Coller. Nous confirmons le prix et le délai avant tout paiement — rien n'est prélevé sur ce site.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<textarea id="clip" class="sr" readonly aria-hidden="true" tabindex="-1"></textarea>
+
+<dialog id="handoff" aria-labelledby="handoff-title"><button class="sheet-close" id="handoff-close" aria-label="Fermer / Close">×</button><p class="label label-brass">AURA BUSINESS · INSTAGRAM</p><h2 id="handoff-title" data-i18n="v2.handoffTitle">Votre message est prêt.</h2><p class="lede" data-i18n="v2.handoffHelp">Copiez-le, ouvrez Instagram puis collez-le dans la conversation. Rien n’est envoyé automatiquement.</p><textarea id="handoff-message" readonly aria-label="Message Instagram" rows="8"></textarea><p id="copy-status" role="status" aria-live="polite"></p><div class="handoff-actions"><button class="btn" id="handoff-copy" data-i18n="v2.copy">Copier le message</button><a class="btn btn-ghost" href="https://ig.me/m/polakpl_f44" target="_blank" rel="noopener noreferrer" data-i18n="v2.open">Ouvrir Instagram ↗</a></div><p class="note" data-i18n="v2.handoffNote">La maison confirme le prix et le délai en message privé avant tout paiement.</p></dialog>
+<script>
+(function(){
+"use strict";
+
+/* ════════════════════════════════════════════════════════════════════
+   1. LANGUES
+   ════════════════════════════════════════════════════════════════════ */
+var STR = {
+fr:{
+ "threshold.kicker":"Miami · Nuit","threshold.enter":"Entrer","threshold.whisper":"Un clic. Les spots. L'ambiance.",
+ "nav.carte":"La carte","nav.ready":"Déjà prêt","nav.club":"Le club","nav.questions":"Questions",
+ "manifesto.eyebrow":"Maison de contenu","manifesto.line1":"Nous créons vos visuels","manifesto.line2":"et vos textes Instagram.",
+ "manifesto.lede":"Vous choisissez un numéro sur la carte. Nous préparons le fichier. Vous collez, vous publiez. Pas d'abonnement, pas d'agence, pas de réunion.",
+ "manifesto.cta":"Voir la carte","manifesto.cta2":"Nous écrire","manifesto.promise":"Tant que ce n'est pas juste, le fichier ne part pas.",
+ "facts.sales":"ans de vente","facts.design":"ans d'infographie","facts.delivery":"livraison standard","facts.sub":"par mois, sans abonnement",
+ "carte.title":"La carte","carte.hint":"Un numéro · un paiement · un fichier",
+ "ready.title":"Déjà prêt","ready.hint":"Sans brief · livraison directe","ready.lede":"Des fichiers déjà composés. Vous prenez, vous payez la maison, le fichier part.",
+ "protocol.title":"Le protocole","questions.title":"Questions","footer.contact":"La maison",
+ "footer.legal":"Maison de création de contenu Instagram via @polakpl_f44. Visuels, textes et messages produits avec l'aide de l'intelligence artificielle. Aucun résultat commercial garanti. Prix en euros, toutes taxes comprises. Commande confirmée en message privé avant production. Les visuels présentés sur ce site sont des compositions générées, pas des photographies. Les marques éventuellement visibles ne nous appartiennent pas.",
+ "club.title":"Le club","club.hint":"Crew · 50/50",
+ "club.lede":"Les mêmes packs. Vous amenez le client, la maison produit et livre, vous touchez la moitié. On vend le fichier, pas le community management.",
+ "club.rulesTitle":"Le protocole, non négociable","club.joinTitle":"Votre carte","club.nameLabel":"Votre nom en jeu","club.namePh":"Ex. Vega",
+ "club.createBtn":"Créer la carte","club.localNote":"Votre carte est enregistrée sur cet appareil. Elle ne remplace pas un compte : c'est votre repère, la maison tient le registre officiel.",
+ "club.linkTitle":"Votre lien personnel","club.copy":"Copier",
+ "club.linkNote":"Toute commande passée depuis ce lien arrive chez la maison avec votre code. C'est ce qui prouve que le client est le vôtre.",
+ "club.ledgerTitle":"Vos tickets","club.forget":"Effacer ma carte de cet appareil",
+ "club.r1":"Le client écrit et paie @polakpl_f44. Jamais le Crew.","club.r2":"Le Crew reçoit le brief. Jamais le contact du client.",
+ "club.r3":"50/50 après livraison, versé par la maison.","club.r4":"Contourner la maison — prendre le client ou l'argent — met fin à la carte.",
+ "club.welcome":"Bienvenue dans le Crew, ","club.welcomeBack":"Content de vous revoir, ","club.linkCopied":"Lien copié.","club.forgotten":"Carte effacée de cet appareil.",
+ "club.needPass":"Créez d'abord votre carte.","club.ticketCopied":"Ticket copié. Instagram s'ouvre.","club.take":"Prendre la mission",
+ "club.share":"Votre part","club.toNext":"XP avant","club.maxRank":"Rang le plus haut atteint.","club.ledgerEmpty":"Aucun ticket pour l'instant.","club.pending":"À livrer",
+ "rank.0":"Recrue","rank.1":"Associé","rank.2":"Lieutenant","rank.3":"Inner Circle",
+ "amb.title":"Ambiance","amb.off":"Silence","amb.note":"Ambiances générées en direct par le navigateur (synthèse). Ce ne sont pas des morceaux enregistrés.",
+ "summons.from":"Numéro masqué","summons.title":"Social Club","summons.line":"Des missions. 50/50. La maison produit, vous encaissez la moitié.",
+ "summons.yes":"Répondre","summons.no":"Plus tard",
+ "sheet.next":"Continuer","sheet.briefLabel":"Étape 2 · le brief","sheet.briefTitle":"Trois lignes suffisent",
+ "sheet.sell":"Vous vendez","sheet.sellPh":"coaching, restaurant, agence…","sheet.audience":"Vous vous adressez à","sheet.audiencePh":"à qui vous parlez",
+ "sheet.ig":"Votre Instagram","sheet.igPh":"@votrecompte","sheet.required":"Merci de remplir les trois lignes.",
+ "sheet.extrasLabel":"Suppléments","sheet.previewLabel":"Composé pour vous",
+ "sheet.previewHint":"La direction visuelle se recompose à partir de votre compte. Chaque commande reçoit sa propre déclinaison.",
+ "sheet.total":"Total","sheet.sendLabel":"Étape 3 · l'envoi","sheet.sendTitle":"Votre message est écrit","sheet.copyOpen":"Copier et ouvrir Instagram",
+ "sheet.helpNote":"Le message est copié. Dans Instagram : appuyez dans la zone de saisie, puis Coller. Nous confirmons le prix et le délai avant tout paiement — rien n'est prélevé sur ce site.",
+ "sheet.order":"Commander","sheet.copied":"Message copié. Instagram s'ouvre.",
+ "unit.visuals":"visuels","unit.texts":"textes","unit.messages":"messages","unit.bio":"bio","unit.stories":"stories","unit.delay":"Livraison",
+ "extra.bio":"Bio · +15€","extra.messages":"+5 messages · +20€","extra.stories":"+5 stories · +20€","extra.express":"Express 24 h · +25€",
+ "brief.hello":"Bonjour, je souhaite le","brief.at":"à","brief.total":"Total","brief.sell":"Je vends","brief.audience":"Je m'adresse à",
+ "brief.ig":"Mon Instagram","brief.ref":"Recommandé par","brief.ready":"Déjà prêt — livraison directe. Je prends ce pack.",
+ "pack.1.name":"Essentiel","pack.1.tag":"Pour commencer. Une semaine de publications, prête à coller.",
+ "pack.2.name":"Signature","pack.2.tag":"Le menu de la maison. Deux semaines de contenu et votre bio réécrite.",
+ "pack.3.name":"Atelier","pack.3.tag":"Un mois entier, sans y penser. Le rythme est tenu pour vous.",
+ "pack.4.name":"Maison","pack.4.tag":"Pour les entreprises. Le mois complet, stories incluses.",
+ "pack.featured":"Le menu de la maison",
+ "ready.1.name":"Street","ready.1.tag":"4 visuels. Prêts à coller.",
+ "ready.2.name":"Night","ready.2.tag":"8 visuels et leurs 8 textes.",
+ "ready.3.name":"Heat","ready.3.tag":"12 visuels, les textes et 4 messages.",
+ "ready.4.name":"House","ready.4.tag":"20 visuels et la bio. Le plus complet.",
+ "step.1.t":"Vous choisissez","step.1.d":"Un numéro sur la carte. Un prix affiché. Rien à négocier.",
+ "step.2.t":"Vous dites trois lignes","step.2.d":"Ce que vous vendez, à qui vous parlez, votre compte. Le reste est notre travail.",
+ "step.3.t":"Vous publiez","step.3.d":"Le fichier arrive sous 48 heures. Vous collez, vous publiez, c'est en ligne.",
+ "qa.1.q":"Que dois-je vous envoyer ?","qa.1.a":"Trois lignes : ce que vous vendez, à qui vous vous adressez, votre compte Instagram. S'il manque un détail, nous posons la question avant de produire.",
+ "qa.2.q":"C'est de l'intelligence artificielle ?","qa.2.a":"Oui, pour aller vite. Le ton est calé sur le vôtre et chaque fichier est relu à la main avant l'envoi. Vous recevez un texte qui vous ressemble, pas un texte générique.",
+ "qa.3.q":"Comment se passe le paiement ?","qa.3.a":"Rien n'est prélevé sur ce site. Vous nous écrivez sur Instagram, nous confirmons le prix et le délai, le paiement se fait en message privé, puis la production commence.",
+ "qa.4.q":"Est-ce un abonnement ?","qa.4.a":"Non. Un numéro, un paiement, un fichier. Vous revenez quand vous en avez besoin, pas parce qu'un prélèvement tombe.",
+ "qa.5.q":"Et si le résultat ne me convient pas ?","qa.5.a":"Nous ajustons le ton et renvoyons le fichier. Tant que ce n'est pas juste, le fichier ne part pas."
+},
+en:{
+ "threshold.kicker":"Miami · Night","threshold.enter":"Enter","threshold.whisper":"One click. The lights. The room.",
+ "nav.carte":"The menu","nav.ready":"Ready now","nav.club":"The club","nav.questions":"Questions",
+ "manifesto.eyebrow":"Content house","manifesto.line1":"We make your visuals","manifesto.line2":"and your Instagram copy.",
+ "manifesto.lede":"You pick a number from the menu. We prepare the file. You paste, you publish. No subscription, no agency, no meetings.",
+ "manifesto.cta":"See the menu","manifesto.cta2":"Message us","manifesto.promise":"If it isn't right, the file doesn't ship.",
+ "facts.sales":"years in sales","facts.design":"years in design","facts.delivery":"standard delivery","facts.sub":"per month, no subscription",
+ "carte.title":"The menu","carte.hint":"One number · one payment · one file",
+ "ready.title":"Ready now","ready.hint":"No brief · direct delivery","ready.lede":"Files already composed. You take one, you pay the house, the file ships.",
+ "protocol.title":"How it works","questions.title":"Questions","footer.contact":"The house",
+ "footer.legal":"Instagram content house operating through @polakpl_f44. Visuals, copy and messages produced with the help of artificial intelligence. No commercial results guaranteed. Prices in euros, tax included. Orders are confirmed by direct message before production. The visuals shown on this site are generated compositions, not photographs. Any brands visible do not belong to us.",
+ "club.title":"The club","club.hint":"Crew · 50/50",
+ "club.lede":"The same packs. You bring the client, the house produces and delivers, you take half. We sell the file, not community management.",
+ "club.rulesTitle":"The protocol, non-negotiable","club.joinTitle":"Your card","club.nameLabel":"Your crew name","club.namePh":"e.g. Vega",
+ "club.createBtn":"Create the card","club.localNote":"Your card is saved on this device. It is not an account: it is your own record, the house keeps the official one.",
+ "club.linkTitle":"Your personal link","club.copy":"Copy",
+ "club.linkNote":"Any order placed from this link reaches the house carrying your code. That is what proves the client is yours.",
+ "club.ledgerTitle":"Your tickets","club.forget":"Erase my card from this device",
+ "club.r1":"The client writes to and pays @polakpl_f44. Never the Crew.","club.r2":"The Crew receives the brief. Never the client's contact.",
+ "club.r3":"50/50 after delivery, paid by the house.","club.r4":"Going around the house — taking the client or the money — ends the card.",
+ "club.welcome":"Welcome to the Crew, ","club.welcomeBack":"Good to see you again, ","club.linkCopied":"Link copied.","club.forgotten":"Card erased from this device.",
+ "club.needPass":"Create your card first.","club.ticketCopied":"Ticket copied. Instagram is opening.","club.take":"Take the mission",
+ "club.share":"Your share","club.toNext":"XP before","club.maxRank":"Highest rank reached.","club.ledgerEmpty":"No ticket yet.","club.pending":"To deliver",
+ "rank.0":"Recruit","rank.1":"Associate","rank.2":"Lieutenant","rank.3":"Inner Circle",
+ "amb.title":"Room tone","amb.off":"Silence","amb.note":"Ambiences generated live in your browser (synthesis). These are not recorded tracks.",
+ "summons.from":"Unknown number","summons.title":"Social Club","summons.line":"Missions. 50/50. The house produces, you keep half.",
+ "summons.yes":"Answer","summons.no":"Later",
+ "sheet.next":"Continue","sheet.briefLabel":"Step 2 · the brief","sheet.briefTitle":"Three lines is enough",
+ "sheet.sell":"You sell","sheet.sellPh":"coaching, restaurant, agency…","sheet.audience":"You speak to","sheet.audiencePh":"who you're talking to",
+ "sheet.ig":"Your Instagram","sheet.igPh":"@youraccount","sheet.required":"Please fill in all three lines.",
+ "sheet.extrasLabel":"Add-ons","sheet.previewLabel":"Composed for you",
+ "sheet.previewHint":"The art direction recomposes from your account. Every order gets its own variation.",
+ "sheet.total":"Total","sheet.sendLabel":"Step 3 · sending","sheet.sendTitle":"Your message is written","sheet.copyOpen":"Copy and open Instagram",
+ "sheet.helpNote":"The message is copied. In Instagram: tap the message field, then Paste. We confirm price and timing before any payment — nothing is charged on this site.",
+ "sheet.order":"Order","sheet.copied":"Message copied. Instagram is opening.",
+ "unit.visuals":"visuals","unit.texts":"captions","unit.messages":"messages","unit.bio":"bio","unit.stories":"stories","unit.delay":"Delivery",
+ "extra.bio":"Bio · +15€","extra.messages":"+5 messages · +20€","extra.stories":"+5 stories · +20€","extra.express":"Express 24 h · +25€",
+ "brief.hello":"Hello, I'd like the","brief.at":"at","brief.total":"Total","brief.sell":"I sell","brief.audience":"I speak to",
+ "brief.ig":"My Instagram","brief.ref":"Referred by","brief.ready":"Ready now — direct delivery. I'll take this pack.",
+ "pack.1.name":"Essential","pack.1.tag":"To begin. One week of posts, ready to paste.",
+ "pack.2.name":"Signature","pack.2.tag":"The house menu. Two weeks of content and your bio rewritten.",
+ "pack.3.name":"Atelier","pack.3.tag":"A full month, handled. The rhythm is kept for you.",
+ "pack.4.name":"Maison","pack.4.tag":"For companies. The full month, stories included.",
+ "pack.featured":"The house menu",
+ "ready.1.name":"Street","ready.1.tag":"4 visuals. Ready to paste.",
+ "ready.2.name":"Night","ready.2.tag":"8 visuals and their 8 captions.",
+ "ready.3.name":"Heat","ready.3.tag":"12 visuals, the captions and 4 messages.",
+ "ready.4.name":"House","ready.4.tag":"20 visuals and the bio. The fullest one.",
+ "step.1.t":"You choose","step.1.d":"A number on the menu. A price on the page. Nothing to negotiate.",
+ "step.2.t":"You say three lines","step.2.d":"What you sell, who you speak to, your account. The rest is our job.",
+ "step.3.t":"You publish","step.3.d":"The file arrives within 48 hours. You paste, you publish, it's live.",
+ "qa.1.q":"What do I need to send you?","qa.1.a":"Three lines: what you sell, who you're speaking to, your Instagram account. If something is missing, we ask before producing anything.",
+ "qa.2.q":"Is this artificial intelligence?","qa.2.a":"Yes, to move fast. The tone is tuned to yours and every file is read by hand before it ships. You get copy that sounds like you, not generic filler.",
+ "qa.3.q":"How does payment work?","qa.3.a":"Nothing is charged on this site. You message us on Instagram, we confirm price and timing, payment happens in the conversation, then production starts.",
+ "qa.4.q":"Is this a subscription?","qa.4.a":"No. One number, one payment, one file. You come back when you need to, not because a charge landed.",
+ "qa.5.q":"What if I don't like the result?","qa.5.a":"We adjust the tone and send it back. If it isn't right, the file doesn't ship."
+},
+es:{
+ "threshold.kicker":"Miami · Noche","threshold.enter":"Entrar","threshold.whisper":"Un clic. Los focos. El ambiente.",
+ "nav.carte":"La carta","nav.ready":"Ya listo","nav.club":"El club","nav.questions":"Preguntas",
+ "manifesto.eyebrow":"Casa de contenido","manifesto.line1":"Creamos tus visuales","manifesto.line2":"y tus textos de Instagram.",
+ "manifesto.lede":"Eliges un número de la carta. Preparamos el archivo. Pegas y publicas. Sin suscripción, sin agencia, sin reuniones.",
+ "manifesto.cta":"Ver la carta","manifesto.cta2":"Escríbenos","manifesto.promise":"Si no está bien, el archivo no sale.",
+ "facts.sales":"años vendiendo","facts.design":"años de diseño","facts.delivery":"entrega estándar","facts.sub":"al mes, sin suscripción",
+ "carte.title":"La carta","carte.hint":"Un número · un pago · un archivo",
+ "ready.title":"Ya listo","ready.hint":"Sin brief · entrega directa","ready.lede":"Archivos ya compuestos. Lo tomas, pagas a la casa, el archivo sale.",
+ "protocol.title":"El método","questions.title":"Preguntas","footer.contact":"La casa",
+ "footer.legal":"Casa de creación de contenido para Instagram a través de @polakpl_f44. Visuales, textos y mensajes producidos con ayuda de inteligencia artificial. Ningún resultado comercial garantizado. Precios en euros, impuestos incluidos. El pedido se confirma por mensaje privado antes de producir. Los visuales de este sitio son composiciones generadas, no fotografías. Las marcas visibles no nos pertenecen.",
+ "club.title":"El club","club.hint":"Crew · 50/50",
+ "club.lede":"Los mismos packs. Tú traes al cliente, la casa produce y entrega, tú te llevas la mitad. Vendemos el archivo, no la gestión de comunidad.",
+ "club.rulesTitle":"El protocolo, no negociable","club.joinTitle":"Tu tarjeta","club.nameLabel":"Tu nombre en el club","club.namePh":"Ej. Vega",
+ "club.createBtn":"Crear la tarjeta","club.localNote":"Tu tarjeta se guarda en este dispositivo. No sustituye a una cuenta: es tu referencia, la casa lleva el registro oficial.",
+ "club.linkTitle":"Tu enlace personal","club.copy":"Copiar",
+ "club.linkNote":"Cualquier pedido hecho desde este enlace llega a la casa con tu código. Eso demuestra que el cliente es tuyo.",
+ "club.ledgerTitle":"Tus tickets","club.forget":"Borrar mi tarjeta de este dispositivo",
+ "club.r1":"El cliente escribe y paga a @polakpl_f44. Nunca al Crew.","club.r2":"El Crew recibe el brief. Nunca el contacto del cliente.",
+ "club.r3":"50/50 tras la entrega, pagado por la casa.","club.r4":"Saltarse a la casa — quedarse el cliente o el dinero — termina la tarjeta.",
+ "club.welcome":"Bienvenido al Crew, ","club.welcomeBack":"Me alegro de verte, ","club.linkCopied":"Enlace copiado.","club.forgotten":"Tarjeta borrada de este dispositivo.",
+ "club.needPass":"Crea antes tu tarjeta.","club.ticketCopied":"Ticket copiado. Instagram se abre.","club.take":"Tomar la misión",
+ "club.share":"Tu parte","club.toNext":"XP antes de","club.maxRank":"Rango máximo alcanzado.","club.ledgerEmpty":"Todavía ningún ticket.","club.pending":"Por entregar",
+ "rank.0":"Recluta","rank.1":"Asociado","rank.2":"Teniente","rank.3":"Inner Circle",
+ "amb.title":"Ambiente","amb.off":"Silencio","amb.note":"Ambientes generados en directo por el navegador (síntesis). No son temas grabados.",
+ "summons.from":"Número oculto","summons.title":"Social Club","summons.line":"Misiones. 50/50. La casa produce, tú te quedas la mitad.",
+ "summons.yes":"Responder","summons.no":"Más tarde",
+ "sheet.next":"Continuar","sheet.briefLabel":"Paso 2 · el brief","sheet.briefTitle":"Con tres líneas basta",
+ "sheet.sell":"Vendes","sheet.sellPh":"coaching, restaurante, agencia…","sheet.audience":"Te diriges a","sheet.audiencePh":"a quién le hablas",
+ "sheet.ig":"Tu Instagram","sheet.igPh":"@tucuenta","sheet.required":"Completa las tres líneas.",
+ "sheet.extrasLabel":"Extras","sheet.previewLabel":"Compuesto para ti",
+ "sheet.previewHint":"La dirección visual se recompone desde tu cuenta. Cada pedido recibe su propia variación.",
+ "sheet.total":"Total","sheet.sendLabel":"Paso 3 · el envío","sheet.sendTitle":"Tu mensaje ya está escrito","sheet.copyOpen":"Copiar y abrir Instagram",
+ "sheet.helpNote":"El mensaje está copiado. En Instagram: toca el campo de mensaje y pega. Confirmamos precio y plazo antes de cualquier pago — no se cobra nada en este sitio.",
+ "sheet.order":"Pedir","sheet.copied":"Mensaje copiado. Instagram se abre.",
+ "unit.visuals":"visuales","unit.texts":"textos","unit.messages":"mensajes","unit.bio":"bio","unit.stories":"historias","unit.delay":"Entrega",
+ "extra.bio":"Bio · +15€","extra.messages":"+5 mensajes · +20€","extra.stories":"+5 historias · +20€","extra.express":"Exprés 24 h · +25€",
+ "brief.hello":"Hola, quiero el","brief.at":"a","brief.total":"Total","brief.sell":"Vendo","brief.audience":"Me dirijo a",
+ "brief.ig":"Mi Instagram","brief.ref":"Recomendado por","brief.ready":"Ya listo — entrega directa. Tomo este pack.",
+ "pack.1.name":"Esencial","pack.1.tag":"Para empezar. Una semana de publicaciones, lista para pegar.",
+ "pack.2.name":"Signature","pack.2.tag":"La carta de la casa. Dos semanas de contenido y tu bio reescrita.",
+ "pack.3.name":"Atelier","pack.3.tag":"Un mes entero, resuelto. El ritmo lo mantenemos nosotros.",
+ "pack.4.name":"Maison","pack.4.tag":"Para empresas. El mes completo, historias incluidas.",
+ "pack.featured":"La carta de la casa",
+ "ready.1.name":"Street","ready.1.tag":"4 visuales. Listos para pegar.",
+ "ready.2.name":"Night","ready.2.tag":"8 visuales y sus 8 textos.",
+ "ready.3.name":"Heat","ready.3.tag":"12 visuales, los textos y 4 mensajes.",
+ "ready.4.name":"House","ready.4.tag":"20 visuales y la bio. El más completo.",
+ "step.1.t":"Eliges","step.1.d":"Un número en la carta. Un precio a la vista. Nada que negociar.",
+ "step.2.t":"Dices tres líneas","step.2.d":"Qué vendes, a quién le hablas, tu cuenta. El resto es nuestro trabajo.",
+ "step.3.t":"Publicas","step.3.d":"El archivo llega en 48 horas. Pegas, publicas, está en línea.",
+ "qa.1.q":"¿Qué tengo que enviarte?","qa.1.a":"Tres líneas: qué vendes, a quién te diriges y tu cuenta de Instagram. Si falta algún detalle, preguntamos antes de producir.",
+ "qa.2.q":"¿Esto es inteligencia artificial?","qa.2.a":"Sí, para ir rápido. El tono se ajusta al tuyo y cada archivo se revisa a mano antes de enviarlo. Recibes un texto que suena a ti, no relleno genérico.",
+ "qa.3.q":"¿Cómo se paga?","qa.3.a":"No se cobra nada en este sitio. Nos escribes por Instagram, confirmamos precio y plazo, el pago ocurre en la conversación y entonces empieza la producción.",
+ "qa.4.q":"¿Es una suscripción?","qa.4.a":"No. Un número, un pago, un archivo. Vuelves cuando lo necesitas, no porque te cobren.",
+ "qa.5.q":"¿Y si el resultado no me convence?","qa.5.a":"Ajustamos el tono y lo reenviamos. Si no está bien, el archivo no sale."
+},
+it:{
+ "threshold.kicker":"Miami · Notte","threshold.enter":"Entra","threshold.whisper":"Un clic. Le luci. L'atmosfera.",
+ "nav.carte":"La carta","nav.ready":"Già pronto","nav.club":"Il club","nav.questions":"Domande",
+ "manifesto.eyebrow":"Casa di contenuti","manifesto.line1":"Creiamo i tuoi visual","manifesto.line2":"e i tuoi testi Instagram.",
+ "manifesto.lede":"Scegli un numero dalla carta. Prepariamo il file. Incolli e pubblichi. Nessun abbonamento, nessuna agenzia, nessuna riunione.",
+ "manifesto.cta":"Vedi la carta","manifesto.cta2":"Scrivici","manifesto.promise":"Finché non è giusto, il file non parte.",
+ "facts.sales":"anni di vendita","facts.design":"anni di grafica","facts.delivery":"consegna standard","facts.sub":"al mese, senza abbonamento",
+ "carte.title":"La carta","carte.hint":"Un numero · un pagamento · un file",
+ "ready.title":"Già pronto","ready.hint":"Senza brief · consegna diretta","ready.lede":"File già composti. Lo prendi, paghi la casa, il file parte.",
+ "protocol.title":"Il metodo","questions.title":"Domande","footer.contact":"La casa",
+ "footer.legal":"Casa di creazione di contenuti Instagram tramite @polakpl_f44. Visual, testi e messaggi prodotti con l'aiuto dell'intelligenza artificiale. Nessun risultato commerciale garantito. Prezzi in euro, tasse incluse. L'ordine è confermato in messaggio privato prima della produzione. I visual del sito sono composizioni generate, non fotografie. Gli eventuali marchi visibili non ci appartengono.",
+ "club.title":"Il club","club.hint":"Crew · 50/50",
+ "club.lede":"Gli stessi pack. Tu porti il cliente, la casa produce e consegna, tu prendi metà. Vendiamo il file, non la gestione della community.",
+ "club.rulesTitle":"Il protocollo, non negoziabile","club.joinTitle":"La tua carta","club.nameLabel":"Il tuo nome nel club","club.namePh":"Es. Vega",
+ "club.createBtn":"Crea la carta","club.localNote":"La carta è salvata su questo dispositivo. Non sostituisce un account: è il tuo riferimento, la casa tiene il registro ufficiale.",
+ "club.linkTitle":"Il tuo link personale","club.copy":"Copia",
+ "club.linkNote":"Ogni ordine fatto da questo link arriva alla casa con il tuo codice. È ciò che dimostra che il cliente è tuo.",
+ "club.ledgerTitle":"I tuoi ticket","club.forget":"Cancella la mia carta da questo dispositivo",
+ "club.r1":"Il cliente scrive e paga @polakpl_f44. Mai il Crew.","club.r2":"Il Crew riceve il brief. Mai il contatto del cliente.",
+ "club.r3":"50/50 dopo la consegna, versato dalla casa.","club.r4":"Aggirare la casa — prendere il cliente o i soldi — chiude la carta.",
+ "club.welcome":"Benvenuto nel Crew, ","club.welcomeBack":"Bentornato, ","club.linkCopied":"Link copiato.","club.forgotten":"Carta cancellata da questo dispositivo.",
+ "club.needPass":"Crea prima la tua carta.","club.ticketCopied":"Ticket copiato. Instagram si apre.","club.take":"Prendi la missione",
+ "club.share":"La tua parte","club.toNext":"XP prima di","club.maxRank":"Rango più alto raggiunto.","club.ledgerEmpty":"Ancora nessun ticket.","club.pending":"Da consegnare",
+ "rank.0":"Recluta","rank.1":"Associato","rank.2":"Tenente","rank.3":"Inner Circle",
+ "amb.title":"Atmosfera","amb.off":"Silenzio","amb.note":"Atmosfere generate dal browser in tempo reale (sintesi). Non sono brani registrati.",
+ "summons.from":"Numero sconosciuto","summons.title":"Social Club","summons.line":"Missioni. 50/50. La casa produce, tu tieni metà.",
+ "summons.yes":"Rispondi","summons.no":"Più tardi",
+ "sheet.next":"Continua","sheet.briefLabel":"Passo 2 · il brief","sheet.briefTitle":"Bastano tre righe",
+ "sheet.sell":"Vendi","sheet.sellPh":"coaching, ristorante, agenzia…","sheet.audience":"Ti rivolgi a","sheet.audiencePh":"a chi parli",
+ "sheet.ig":"Il tuo Instagram","sheet.igPh":"@tuoaccount","sheet.required":"Compila le tre righe.",
+ "sheet.extrasLabel":"Extra","sheet.previewLabel":"Composto per te",
+ "sheet.previewHint":"La direzione visiva si ricompone dal tuo account. Ogni ordine riceve la sua variazione.",
+ "sheet.total":"Totale","sheet.sendLabel":"Passo 3 · l'invio","sheet.sendTitle":"Il tuo messaggio è già scritto","sheet.copyOpen":"Copia e apri Instagram",
+ "sheet.helpNote":"Il messaggio è copiato. Su Instagram: tocca il campo messaggio e incolla. Confermiamo prezzo e tempi prima di qualsiasi pagamento — su questo sito non si paga nulla.",
+ "sheet.order":"Ordina","sheet.copied":"Messaggio copiato. Instagram si apre.",
+ "unit.visuals":"visual","unit.texts":"testi","unit.messages":"messaggi","unit.bio":"bio","unit.stories":"storie","unit.delay":"Consegna",
+ "extra.bio":"Bio · +15€","extra.messages":"+5 messaggi · +20€","extra.stories":"+5 storie · +20€","extra.express":"Express 24 h · +25€",
+ "brief.hello":"Ciao, vorrei il","brief.at":"a","brief.total":"Totale","brief.sell":"Vendo","brief.audience":"Mi rivolgo a",
+ "brief.ig":"Il mio Instagram","brief.ref":"Segnalato da","brief.ready":"Già pronto — consegna diretta. Prendo questo pack.",
+ "pack.1.name":"Essenziale","pack.1.tag":"Per iniziare. Una settimana di post, pronta da incollare.",
+ "pack.2.name":"Signature","pack.2.tag":"La carta della casa. Due settimane di contenuti e la bio riscritta.",
+ "pack.3.name":"Atelier","pack.3.tag":"Un mese intero, risolto. Il ritmo lo teniamo noi.",
+ "pack.4.name":"Maison","pack.4.tag":"Per le aziende. Il mese completo, storie incluse.",
+ "pack.featured":"La carta della casa",
+ "ready.1.name":"Street","ready.1.tag":"4 visual. Pronti da incollare.",
+ "ready.2.name":"Night","ready.2.tag":"8 visual e i loro 8 testi.",
+ "ready.3.name":"Heat","ready.3.tag":"12 visual, i testi e 4 messaggi.",
+ "ready.4.name":"House","ready.4.tag":"20 visual e la bio. Il più completo.",
+ "step.1.t":"Scegli","step.1.d":"Un numero sulla carta. Un prezzo scritto. Niente da negoziare.",
+ "step.2.t":"Dici tre righe","step.2.d":"Cosa vendi, a chi parli, il tuo account. Il resto è lavoro nostro.",
+ "step.3.t":"Pubblichi","step.3.d":"Il file arriva entro 48 ore. Incolli, pubblichi, è online.",
+ "qa.1.q":"Cosa devo inviarvi?","qa.1.a":"Tre righe: cosa vendi, a chi ti rivolgi, il tuo account Instagram. Se manca un dettaglio, lo chiediamo prima di produrre.",
+ "qa.2.q":"È intelligenza artificiale?","qa.2.a":"Sì, per andare veloci. Il tono viene calibrato sul tuo e ogni file è riletto a mano prima di partire. Ricevi un testo che ti somiglia, non un riempitivo generico.",
+ "qa.3.q":"Come funziona il pagamento?","qa.3.a":"Su questo sito non si paga nulla. Ci scrivi su Instagram, confermiamo prezzo e tempi, il pagamento avviene nella conversazione e poi parte la produzione.",
+ "qa.4.q":"È un abbonamento?","qa.4.a":"No. Un numero, un pagamento, un file. Torni quando ti serve, non perché è scattato un addebito.",
+ "qa.5.q":"E se il risultato non mi convince?","qa.5.a":"Correggiamo il tono e lo rimandiamo. Finché non è giusto, il file non parte."
+}};
+
+var REVISED_COPY={"fr": {"manifesto.eyebrow": "Packs de contenu Instagram", "manifesto.line1": "Votre Instagram.", "manifesto.line2": "Une autre allure.", "manifesto.lede": "Des visuels et des textes prêts à publier pour votre commerce. Choisissez votre pack. On s’occupe de la création.", "manifesto.cta": "Choisir mon pack · dès 50 €", "manifesto.cta2": "Parler de mon projet ↗", "carte.hint": "Sur brief · de 50 à 250 €", "ready.hint": "Collections composées · de 40 à 200 €", "v2.edition": "Studio de contenu indépendant", "v2.focus": "La sélection de la maison", "v2.recipe": "12 visuels · 12 textes · 6 messages · bio", "v2.discover": "Découvrir le pack", "v2.bottom": "Pensé pour votre activité. Prêt pour Instagram.", "v2.noSub": "Un achat. Aucun abonnement.", "v2.strip1": "Visuels + textes", "v2.strip2": "Sur brief ou déjà prêt", "v2.strip3": "Pour commerces & indépendants", "v2.handoffTitle": "Votre message est prêt.", "v2.handoffHelp": "Copiez-le, ouvrez Instagram puis collez-le dans la conversation. Rien n’est envoyé automatiquement.", "v2.copy": "Copier le message", "v2.open": "Ouvrir Instagram ↗", "v2.handoffNote": "La maison confirme le prix et le délai en message privé avant tout paiement.", "v2.copyOk": "Message copié. Vous pouvez le coller dans Instagram.", "v2.copyFailed": "Copie bloquée : sélectionnez le texte ci-dessus, puis copiez-le manuellement.", "v2.refLocal": "Lien disponible une fois le site hébergé. Votre code :", "v2.demo": "Étude de style · illustration, hors pack livré", "v2.demoTitle": "LA NUIT\nÀ LA CARTE", "v2.demoSmall": "Une présence qui se remarque.", "club.linkNote": "Votre code est ajouté au message. La maison doit confirmer l’apport et la commission ; ce lien ne constitue pas une preuve de vente.", "club.localNote": "Carte locale sur cet appareil. Aucun compte ni commission validée ici. La maison confirme chaque apport.", "club.pending": "À confirmer par la maison", "club.toNext": "ventes validées avant", "sheet.previewLabel": "Étude d’ambiance", "sheet.previewHint": "Illustration générée à titre d’exemple. Elle ne lit pas votre profil Instagram et ne représente pas votre pack final.", "sheet.required": "Complétez les trois lignes avec un compte Instagram valide (@nom, sans lien).", "sheet.helpNote": "Préparez le message, puis copiez-le dans Instagram. La maison confirme prix et délai avant tout paiement.", "sheet.copyOpen": "Préparer l’envoi Instagram", "footer.legal": "Création de contenu Instagram via @polakpl_f44. Prix affichés en euros TTC. Prix, délai et conditions confirmés en message privé avant paiement. Les illustrations d’ambiance du site sont générées ; elles ne représentent ni un client réel ni les fichiers d’un pack. Aucun résultat commercial garanti. Paiement, production et livraison sont traités par la maison, hors de ce site."}, "en": {"manifesto.eyebrow": "Instagram content packs", "manifesto.line1": "Your Instagram.", "manifesto.line2": "A different presence.", "manifesto.lede": "Ready-to-post visuals and copy for your business. Choose your pack. We take care of the creative work.", "manifesto.cta": "Choose my pack · from €50", "manifesto.cta2": "Discuss my project ↗", "carte.hint": "Custom packs · €50 to €250", "ready.hint": "Prepared collections · €40 to €200", "v2.edition": "Independent content studio", "v2.focus": "The house selection", "v2.recipe": "12 visuals · 12 captions · 6 messages · bio", "v2.discover": "Explore the pack", "v2.bottom": "Made for your business. Ready for Instagram.", "v2.noSub": "One purchase. No subscription.", "v2.strip1": "Visuals + copy", "v2.strip2": "Custom or ready-made", "v2.strip3": "For local businesses & independents", "v2.handoffTitle": "Your message is ready.", "v2.handoffHelp": "Copy it, open Instagram and paste it into the conversation. Nothing is sent automatically.", "v2.copy": "Copy message", "v2.open": "Open Instagram ↗", "v2.handoffNote": "We confirm price and timing in a private message before payment.", "v2.copyOk": "Copied. You can paste this message into Instagram.", "v2.copyFailed": "Copy blocked: select the text above and copy it manually.", "v2.refLocal": "A link is available once hosted. Your code:", "v2.demo": "Style study · illustration, not a delivered pack", "v2.demoTitle": "AFTER\nHOURS", "v2.demoSmall": "A presence worth noticing.", "club.linkNote": "Your code is added to the message. The house must confirm the referral and commission; this link is not proof of a sale.", "club.localNote": "Local card on this device. No account or validated commission. The house confirms each referral.", "club.pending": "Awaiting house confirmation", "club.toNext": "verified sales until", "sheet.previewLabel": "Mood study", "sheet.previewHint": "Generated illustration only. It does not read your Instagram profile or represent your final pack.", "sheet.required": "Complete all three fields with a valid Instagram handle (@name, not a link).", "sheet.helpNote": "Prepare your message, then copy it into Instagram. Price and timing are confirmed before payment.", "sheet.copyOpen": "Prepare Instagram message", "footer.legal": "Instagram content studio via @polakpl_f44. Displayed prices in euros, tax inclusive. Price, timing and terms confirmed in private messages before payment. Generated mood illustrations do not depict real clients or actual pack files. No business results guaranteed. Payment, production and delivery are handled by the house outside this site."}, "es": {"manifesto.eyebrow": "Packs de contenido Instagram", "manifesto.line1": "Tu Instagram.", "manifesto.line2": "Otra presencia.", "manifesto.lede": "Imágenes y textos listos para publicar para tu negocio. Elige tu pack. Nosotros creamos el contenido.", "manifesto.cta": "Elegir mi pack · desde 50 €", "manifesto.cta2": "Hablar de mi proyecto ↗", "carte.hint": "A medida · de 50 a 250 €", "ready.hint": "Colecciones preparadas · de 40 a 200 €", "v2.edition": "Estudio independiente de contenido", "v2.focus": "La selección de la casa", "v2.recipe": "12 imágenes · 12 textos · 6 mensajes · bio", "v2.discover": "Descubrir el pack", "v2.bottom": "Para tu negocio. Listo para Instagram.", "v2.noSub": "Una compra. Sin suscripción.", "v2.strip1": "Imágenes + textos", "v2.strip2": "A medida o preparado", "v2.strip3": "Para negocios e independientes", "v2.handoffTitle": "Tu mensaje está listo.", "v2.handoffHelp": "Cópialo, abre Instagram y pégalo en la conversación. No se envía nada automáticamente.", "v2.copy": "Copiar mensaje", "v2.open": "Abrir Instagram ↗", "v2.handoffNote": "La casa confirma precio y plazo por mensaje antes del pago.", "v2.copyOk": "Copiado. Puedes pegarlo en Instagram.", "v2.copyFailed": "Copia bloqueada: selecciona el texto y cópialo manualmente.", "v2.refLocal": "Enlace disponible al publicar el sitio. Tu código:", "v2.demo": "Estudio de estilo · ilustración, no pack entregado", "v2.demoTitle": "LA NOCHE\nA LA CARTA", "v2.demoSmall": "Una presencia que destaca.", "club.linkNote": "El código se añade al mensaje. La casa debe confirmar la recomendación y comisión; el enlace no prueba una venta.", "club.localNote": "Tarjeta local en este dispositivo. No es una cuenta ni confirma comisiones. La casa valida cada recomendación.", "club.pending": "Pendiente de confirmación", "club.toNext": "ventas confirmadas hasta", "sheet.previewLabel": "Estudio visual", "sheet.previewHint": "Ilustración generada de ejemplo. No lee tu perfil Instagram ni representa el pack final.", "sheet.required": "Completa los tres campos con un usuario válido (@nombre, sin enlace).", "sheet.helpNote": "Prepara el mensaje y cópialo en Instagram. Confirmamos precio y plazo antes del pago.", "sheet.copyOpen": "Preparar mensaje Instagram", "footer.legal": "Contenido Instagram vía @polakpl_f44. Precios en euros, impuestos incluidos. Precio, plazo y condiciones confirmados por mensaje antes del pago. Ilustraciones generadas, no clientes reales ni archivos del pack. Sin garantía de resultados comerciales. Pago, producción y entrega gestionados fuera del sitio."}, "it": {"manifesto.eyebrow": "Pack di contenuti Instagram", "manifesto.line1": "Il tuo Instagram.", "manifesto.line2": "Un’altra presenza.", "manifesto.lede": "Immagini e testi pronti da pubblicare per la tua attività. Scegli il pack. Alla creazione pensiamo noi.", "manifesto.cta": "Scegli il pack · da 50 €", "manifesto.cta2": "Parliamo del progetto ↗", "carte.hint": "Su misura · da 50 a 250 €", "ready.hint": "Collezioni pronte · da 40 a 200 €", "v2.edition": "Studio indipendente di contenuti", "v2.focus": "La selezione della casa", "v2.recipe": "12 immagini · 12 testi · 6 messaggi · bio", "v2.discover": "Scopri il pack", "v2.bottom": "Per la tua attività. Pronto per Instagram.", "v2.noSub": "Un acquisto. Nessun abbonamento.", "v2.strip1": "Immagini + testi", "v2.strip2": "Su misura o già pronto", "v2.strip3": "Per attività e indipendenti", "v2.handoffTitle": "Il tuo messaggio è pronto.", "v2.handoffHelp": "Copialo, apri Instagram e incollalo nella conversazione. Nulla viene inviato automaticamente.", "v2.copy": "Copia messaggio", "v2.open": "Apri Instagram ↗", "v2.handoffNote": "La casa conferma prezzo e tempi in privato prima del pagamento.", "v2.copyOk": "Copiato. Puoi incollarlo su Instagram.", "v2.copyFailed": "Copia bloccata: seleziona il testo e copialo manualmente.", "v2.refLocal": "Link disponibile quando il sito è online. Codice:", "v2.demo": "Studio di stile · illustrazione, non pack consegnato", "v2.demoTitle": "LA NOTTE\nÀ LA CARTE", "v2.demoSmall": "Una presenza che si nota.", "club.linkNote": "Il codice viene aggiunto al messaggio. La casa deve confermare segnalazione e commissione; il link non prova una vendita.", "club.localNote": "Tessera locale sul dispositivo. Nessun account o commissione convalidata. La casa conferma ogni segnalazione.", "club.pending": "Da confermare dalla casa", "club.toNext": "vendite confermate al", "sheet.previewLabel": "Studio visivo", "sheet.previewHint": "Illustrazione generata di esempio. Non legge il profilo Instagram e non rappresenta il pack finale.", "sheet.required": "Completa i tre campi con un account valido (@nome, senza link).", "sheet.helpNote": "Prepara il messaggio e copialo su Instagram. Prezzo e tempi confermati prima del pagamento.", "sheet.copyOpen": "Prepara messaggio Instagram", "footer.legal": "Contenuti Instagram via @polakpl_f44. Prezzi in euro IVA inclusa. Prezzo, tempi e condizioni confermati in privato prima del pagamento. Illustrazioni generate, non clienti reali né file del pack. Nessun risultato commerciale garantito. Pagamento, produzione e consegna gestiti fuori dal sito."}};
+Object.keys(STR).forEach(function(l){STR[l]["sheet.backPack"]="Pack";});
+Object.keys(REVISED_COPY).forEach(function(l){Object.assign(STR[l],REVISED_COPY[l]);});
+var LANG = "fr";
+function t(k){ var d = STR[LANG] || STR.fr; return d[k] !== undefined ? d[k] : (STR.fr[k] !== undefined ? STR.fr[k] : k); }
+function eur(n){ return n + "€"; }
+
+/* ════════════════════════════════════════════════════════════════════
+   2. CATALOGUE  (source unique de vérité — prix, contenus, missions)
+   ════════════════════════════════════════════════════════════════════ */
+var PACKS = [
+  {id:1, price:50,  visuals:8,  texts:8,  messages:4,  bio:false, stories:false, delay:"24–48 h", tone:"pink",   featured:false},
+  {id:2, price:90,  visuals:12, texts:12, messages:6,  bio:true,  stories:false, delay:"48 h",    tone:"brass",  featured:true},
+  {id:3, price:150, visuals:18, texts:18, messages:10, bio:true,  stories:false, delay:"48–72 h", tone:"cyan",   featured:false},
+  {id:4, price:250, visuals:24, texts:24, messages:12, bio:true,  stories:true,  delay:"72 h",    tone:"violet", featured:false}
+];
+var READY = [
+  {id:1, price:40,  tone:"cyan"},
+  {id:2, price:80,  tone:"pink"},
+  {id:3, price:120, tone:"violet"},
+  {id:4, price:200, tone:"brass"}
+];
+var MISSIONS = [
+  {code:"NIGHT SHIFT",  packId:1, share:25},
+  {code:"HEAT SERVICE", packId:2, share:45},
+  {code:"ATELIER RUN",  packId:3, share:75},
+  {code:"HOUSE JOB",    packId:4, share:125}
+];
+var RANKS = [{xp:0,k:"rank.0"},{xp:2,k:"rank.1"},{xp:5,k:"rank.2"},{xp:10,k:"rank.3"}];
+function rankFor(xp){ var r = RANKS[0]; for(var i=0;i<RANKS.length;i++){ if(xp >= RANKS[i].xp) r = RANKS[i]; } return r; }
+
+var SEASONS = [
+  {n:"After Hours", c:"cyan"},  {n:"Velvet", c:"pink"},   {n:"Spring Break", c:"brass"},
+  {n:"Wet Neon",   c:"violet"}, {n:"Gold Hour", c:"brass"},{n:"Solstice", c:"cyan"},
+  {n:"Fireworks",  c:"pink"},   {n:"Heat Wave", c:"brass"},{n:"Night Shift", c:"brass"},
+  {n:"Hex",        c:"violet"}, {n:"Smoke", c:"cyan"},     {n:"Gold Room", c:"brass"}
+];
+
+/* Ambiances : synthèse temps réel. Aucun fichier audio n'est chargé — voir
+   la note affichée dans le panneau. Pour brancher de vrais morceaux plus
+   tard, remplacer play() par un <audio src> et garder la même interface. */
+var AMBIENCES = [
+  {id:0, freq:null,   name:"amb.off", mood:"",                root:0,   chord:[],        cut:0,    arp:0},
+  {id:1, freq:"95.6", name:"Vice Wave",  mood:"Nu disco",     root:110, chord:[0,7,10,15], cut:760,  arp:520},
+  {id:2, freq:"102.5",name:"Ocean Drive",mood:"Disco boogie", root:98,  chord:[0,5,9,14],  cut:900,  arp:460},
+  {id:3, freq:"98.8", name:"Neon Nights",mood:"Deep",         root:87,  chord:[0,3,7,10],  cut:620,  arp:0},
+  {id:4, freq:"91.4", name:"Palm FM",    mood:"Balearic",     root:116, chord:[0,4,7,11],  cut:1050, arp:640},
+  {id:5, freq:"87.9", name:"Night Call", mood:"Synthwave",    root:82,  chord:[0,3,7,12],  cut:700,  arp:380},
+  {id:6, freq:"103.2",name:"Montana",    mood:"Disco house",  root:104, chord:[0,4,7,14],  cut:980,  arp:420},
+  {id:7, freq:"107.1",name:"Gold Room",  mood:"Funk soul",    root:92,  chord:[0,4,9,12],  cut:840,  arp:600},
+  {id:8, freq:"97.3", name:"Phonk 87",   mood:"Phonk",        root:73,  chord:[0,3,10,12], cut:540,  arp:340}
+];
+
+var IG_URL = "https://ig.me/m/polakpl_f44";
+
+/* ════════════════════════════════════════════════════════════════════
+   3. MESURE  (points d'accroche analytics — volontairement inertes)
+   Aucun outil d'analytics n'est connecté à cette page : il n'y a pas de
+   backend et rien n'est collecté. track() est le point de branchement
+   unique — le jour où un domaine propre et un outil (Plausible, GA4,
+   Matomo…) existent, il suffit d'implémenter cette fonction.
+   Événements émis : page_view, product_view, cta_click, brief_started,
+   brief_completed, order_submitted, ready_order, referral_click,
+   referral_conversion, membership_created, mission_taken.
+   ════════════════════════════════════════════════════════════════════ */
+function track(event, props){
+  if(!window.AURA_ANALYTICS) return;           /* rien de branché : on ne fait rien */
+  try{ window.AURA_ANALYTICS(event, props || {}); }catch(e){}
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   4. IMAGERIE — compositions de nuit générées (aucune photo requise)
+   ════════════════════════════════════════════════════════════════════ */
+var TONES = {
+  brass:  {key:"#D9B978", fill:"#FF9E4A", sky:"#160F22"},
+  pink:   {key:"#FF2E88", fill:"#7B3BFF", sky:"#170A1E"},
+  cyan:   {key:"#57E9FF", fill:"#2B7BFF", sky:"#09131F"},
+  violet: {key:"#9B6BFF", fill:"#FF2E88", sky:"#130B22"}
+};
+function hashStr(s){ var h = 2166136261; s = String(s); for(var i=0;i<s.length;i++){ h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+function rngFrom(seed){ var a = seed; return function(){ a |= 0; a = (a + 0x6D2B79F5) | 0; var x = Math.imul(a ^ (a >>> 15), 1 | a); x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x; return ((x ^ (x >>> 14)) >>> 0) / 4294967296; }; }
+function rnd(r, a, b){ return a + r() * (b - a); }
+function rgba(hex, a){
+  var n = parseInt(hex.slice(1), 16);
+  return "rgba(" + ((n >> 16) & 255) + "," + ((n >> 8) & 255) + "," + (n & 255) + "," + a + ")";
+}
+
+/* Une composition : ciel dégradé, halo d'horizon, deux plans de ville en
+   silhouette avec fenêtres allumées, cônes de lumière volumétrique, rue
+   mouillée avec reflet inversé, palmiers, parfois une voiture. Déterministe
+   pour une graine donnée — la même commande donne toujours la même image.
+   NOTE : `seed` est hachée avant d'entrer dans le balisage. Elle vient
+   parfois de ce que tape un visiteur : jamais de chaîne brute dans un
+   attribut, sinon injection. */
+function scene(seed, o){
+  o = o || {};
+  var W = 400, H = o.h || 300;
+  var tone = TONES[o.tone] || TONES.brass;
+  var hash = hashStr(seed), uid = hash.toString(36), r = rngFrom(hash);
+  var hz = H * (o.horizon || .66);
+  var p = [];
+
+  p.push('<defs>'
+    + '<linearGradient id="sk' + uid + '" x1="0" y1="0" x2="0" y2="1">'
+      + '<stop offset="0" stop-color="#05030A"/>'
+      + '<stop offset=".55" stop-color="' + tone.sky + '"/>'
+      + '<stop offset="1" stop-color="' + rgba(tone.fill, .30) + '"/></linearGradient>'
+    + '<linearGradient id="st' + uid + '" x1="0" y1="0" x2="0" y2="1">'
+      + '<stop offset="0" stop-color="' + rgba(tone.key, .24) + '"/>'
+      + '<stop offset=".28" stop-color="' + rgba(tone.fill, .10) + '"/>'
+      + '<stop offset="1" stop-color="#030208"/></linearGradient>'
+    + '<radialGradient id="gl' + uid + '" cx=".5" cy=".5" r=".5">'
+      + '<stop offset="0" stop-color="' + rgba(tone.key, .55) + '"/>'
+      + '<stop offset="1" stop-color="' + rgba(tone.key, 0) + '"/></radialGradient>'
+    + '<linearGradient id="bm' + uid + '" x1="0" y1="0" x2="0" y2="1">'
+      + '<stop offset="0" stop-color="' + rgba(tone.key, .26) + '"/>'
+      + '<stop offset="1" stop-color="' + rgba(tone.key, 0) + '"/></linearGradient>'
+    + '<clipPath id="cp' + uid + '"><rect x="0" y="' + hz.toFixed(1) + '" width="' + W + '" height="' + (H - hz).toFixed(1) + '"/></clipPath>'
+  + '</defs>');
+
+  p.push('<rect width="' + W + '" height="' + H + '" fill="url(#sk' + uid + ')"/>');
+
+  /* lune / source haute */
+  var mx = rnd(r, W * .18, W * .82), my = H * rnd(r, .16, .3);
+  p.push('<circle cx="' + mx.toFixed(1) + '" cy="' + my.toFixed(1) + '" r="' + (H * .55).toFixed(1) + '" fill="url(#gl' + uid + ')" opacity=".55"/>');
+  /* le disque n'est pas dessiné derrière un texte : il y ferait une tache */
+  if(o.moon !== false) p.push('<circle cx="' + mx.toFixed(1) + '" cy="' + my.toFixed(1) + '" r="' + (H * .026).toFixed(1) + '" fill="#FFF3D6" opacity=".92"/>');
+
+  /* halo d'horizon */
+  p.push('<ellipse cx="' + rnd(r, W * .3, W * .7).toFixed(1) + '" cy="' + hz.toFixed(1) + '" rx="' + (W * .55).toFixed(1) + '" ry="' + (H * .16).toFixed(1) + '" fill="' + rgba(tone.key, .3) + '"/>');
+
+  /* cônes de lumière volumétrique */
+  for(var c = 0; c < 2; c++){
+    var cx = rnd(r, W * .1, W * .9), spread = rnd(r, 26, 54);
+    p.push('<path d="M' + cx.toFixed(1) + ' ' + (H * .02).toFixed(1)
+      + 'L' + (cx - spread).toFixed(1) + ' ' + hz.toFixed(1)
+      + 'L' + (cx + spread).toFixed(1) + ' ' + hz.toFixed(1) + 'Z" fill="url(#bm' + uid + ')" opacity="' + rnd(r, .3, .6).toFixed(2) + '"/>');
+  }
+
+  /* deux plans de ville */
+  function skyline(depth, minH, maxH, count, fill, lit){
+    var out = '', x = -6, w = (W + 12) / count;
+    for(var i = 0; i < count; i++){
+      var bw = w * rnd(r, .62, 1.12), bh = rnd(r, minH, maxH), by = hz - bh;
+      out += '<rect x="' + x.toFixed(1) + '" y="' + by.toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + (bh + 8).toFixed(1) + '" fill="' + fill + '"/>';
+      if(r() > .72) out += '<rect x="' + (x + bw * .42).toFixed(1) + '" y="' + (by - rnd(r, 6, 16)).toFixed(1) + '" width="1.4" height="' + rnd(r, 6, 16).toFixed(1) + '" fill="' + fill + '"/>';
+      /* fenêtres : pas de grille parfaite — le pas et la hauteur varient un
+         peu par immeuble, sinon la ville a l'air tricotée à la machine */
+      var stepX = rnd(r, 5.4, 7.4), stepY = rnd(r, 8, 11.5), wh = rnd(r, 2.2, 3.4);
+      var cols = Math.max(1, Math.floor((bw - 4) / stepX));
+      for(var cc = 0; cc < cols; cc++){
+        for(var rr2 = 0; rr2 < Math.floor(bh / stepY); rr2++){
+          if(r() > lit) continue;
+          out += '<rect x="' + (x + 2.5 + cc * stepX).toFixed(1) + '" y="' + (by + 5 + rr2 * stepY).toFixed(1)
+            + '" width="' + (stepX * .32).toFixed(1) + '" height="' + wh.toFixed(1) + '" fill="' + (r() > .8 ? tone.key : "#FFE0A6") + '" opacity="' + rnd(r, .25, .9).toFixed(2) + '"/>';
+        }
+      }
+      x += bw;
+    }
+    return '<g opacity="' + depth + '">' + out + '</g>';
+  }
+  var far  = skyline(.75, H * .10, H * .26, 11, "#0A0714", .34);
+  var near = skyline(1,   H * .16, H * .34, 6,  "#040309", .42);
+  p.push(far, near);
+
+  /* rue mouillée + reflet */
+  p.push('<rect x="0" y="' + hz.toFixed(1) + '" width="' + W + '" height="' + (H - hz).toFixed(1) + '" fill="url(#st' + uid + ')"/>');
+  p.push('<g clip-path="url(#cp' + uid + ')" opacity=".28" transform="translate(0,' + (2 * hz).toFixed(1) + ') scale(1,-0.55)">' + near + '</g>');
+  for(var s = 0; s < 5; s++){
+    var sy = hz + (H - hz) * rnd(r, .08, .95);
+    p.push('<rect x="0" y="' + sy.toFixed(1) + '" width="' + W + '" height="' + rnd(r, .4, 1.1).toFixed(1) + '" fill="' + rgba(tone.key, rnd(r, .05, .16)) + '"/>');
+  }
+
+  /* palmiers */
+  function palm(px, py, sc, accent){
+    var lean = rnd(r, -7, 11) * sc, th = 70 * sc, tx = px + lean, ty = py - th, g = '';
+    g += '<path d="M' + px.toFixed(1) + ' ' + py.toFixed(1) + 'Q' + (px + lean * .55).toFixed(1) + ' ' + (py - th * .55).toFixed(1)
+       + ' ' + tx.toFixed(1) + ' ' + ty.toFixed(1) + '" stroke="#030208" stroke-width="' + (3.6 * sc).toFixed(2) + '" fill="none" stroke-linecap="round"/>';
+    for(var f = 0; f < 7; f++){
+      var ang = (-172 + f * 26 + rnd(r, -7, 7)) * Math.PI / 180;
+      var len = 30 * sc * rnd(r, .8, 1.2);
+      var ex = tx + Math.cos(ang) * len, ey = ty + Math.sin(ang) * len * .55 + 6 * sc;
+      g += '<path d="M' + tx.toFixed(1) + ' ' + ty.toFixed(1)
+         + 'Q' + (tx + Math.cos(ang) * len * .55).toFixed(1) + ' ' + (ty + Math.sin(ang) * len * .3 - 13 * sc).toFixed(1)
+         + ' ' + ex.toFixed(1) + ' ' + ey.toFixed(1) + '" stroke="' + (f % 3 === 0 ? rgba(accent, .8) : "#030208")
+         + '" stroke-width="' + (2.2 * sc).toFixed(2) + '" fill="none" stroke-linecap="round"/>';
+    }
+    return g;
+  }
+  if(o.palms !== 0) p.push(palm(rnd(r, W * .02, W * .13), hz + 4, rnd(r, .95, 1.25), tone.key));
+  if(o.palms !== 1 && o.palms !== 0) p.push(palm(rnd(r, W * .88, W * .99), hz + 4, rnd(r, .7, .95), tone.fill));
+
+  /* voiture */
+  if(o.car){
+    var cx2 = W * .5 + rnd(r, -22, 22), cy2 = hz + (H - hz) * .42, sc2 = (H / 300) * 1.05;
+    var bw2 = 150 * sc2, bh2 = 26 * sc2, bx = cx2 - bw2 / 2, byy = cy2 - bh2;
+    p.push('<ellipse cx="' + cx2.toFixed(1) + '" cy="' + (cy2 + 3).toFixed(1) + '" rx="' + (bw2 * .56).toFixed(1) + '" ry="' + (6 * sc2).toFixed(1) + '" fill="' + rgba(tone.key, .5) + '"/>');
+    p.push('<path d="M' + bx.toFixed(1) + ' ' + cy2.toFixed(1)
+      + 'L' + bx.toFixed(1) + ' ' + (byy + bh2 * .62).toFixed(1)
+      + 'Q' + (bx + bw2 * .06).toFixed(1) + ' ' + (byy + bh2 * .2).toFixed(1) + ' ' + (bx + bw2 * .26).toFixed(1) + ' ' + (byy + bh2 * .16).toFixed(1)
+      + 'L' + (bx + bw2 * .37).toFixed(1) + ' ' + byy.toFixed(1)
+      + 'L' + (bx + bw2 * .61).toFixed(1) + ' ' + byy.toFixed(1)
+      + 'L' + (bx + bw2 * .74).toFixed(1) + ' ' + (byy + bh2 * .2).toFixed(1)
+      + 'Q' + (bx + bw2 * .93).toFixed(1) + ' ' + (byy + bh2 * .24).toFixed(1) + ' ' + (bx + bw2).toFixed(1) + ' ' + (byy + bh2 * .66).toFixed(1)
+      + 'L' + (bx + bw2).toFixed(1) + ' ' + cy2.toFixed(1) + 'Z" fill="#08070D"/>');
+    p.push('<rect x="' + (bx + bw2 * .04).toFixed(1) + '" y="' + (byy + bh2 * .68).toFixed(1) + '" width="' + (bw2 * .92).toFixed(1) + '" height="' + (bh2 * .07).toFixed(1) + '" fill="' + rgba(tone.key, .85) + '"/>');
+    p.push('<path d="M' + (bx + bw2 * .3).toFixed(1) + ' ' + (byy + bh2 * .18).toFixed(1) + 'L' + (bx + bw2 * .4).toFixed(1) + ' ' + (byy + bh2 * .04).toFixed(1)
+      + 'L' + (bx + bw2 * .58).toFixed(1) + ' ' + (byy + bh2 * .04).toFixed(1) + 'L' + (bx + bw2 * .66).toFixed(1) + ' ' + (byy + bh2 * .18).toFixed(1) + 'Z" fill="' + rgba(tone.fill, .5) + '"/>');
+    [.24, .78].forEach(function(w){
+      p.push('<circle cx="' + (bx + bw2 * w).toFixed(1) + '" cy="' + cy2.toFixed(1) + '" r="' + (bh2 * .37).toFixed(1) + '" fill="#020106" stroke="' + rgba(tone.key, .7) + '" stroke-width="1.1"/>');
+    });
+  }
+
+  return '<svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMax slice" role="presentation" xmlns="http://www.w3.org/2000/svg">' + p.join("") + '</svg>';
+}
+function paint(el, seed, opts){
+  if(!el) return;
+  el.innerHTML = '<div class="art">' + scene(seed, opts) + '<span class="art-vig"></span></div>';
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   5. UTILITAIRES
+   ════════════════════════════════════════════════════════════════════ */
+var $ = function(s, c){ return (c || document).querySelector(s); };
+var $$ = function(s, c){ return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
+function esc(s){ return String(s).replace(/[&<>"']/g, function(m){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]; }); }
+var REDUCED = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+var toastTimer = null;
+function toast(msg){
+  var el = $("#toast");
+  el.textContent = msg;
+  el.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ el.classList.remove("show"); }, 3400);
+}
+
+/* Copie SYNCHRONE puis ouverture d'Instagram. L'ordre compte : Safari iOS
+   refuse l'accès au presse-papier après un await, donc execCommand d'abord,
+   navigation ensuite. */
+async function copyText(text){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    try{ await navigator.clipboard.writeText(text); return true; }catch(e){}
+  }
+  var prev=document.activeElement, ok=false;
+  var ta=document.createElement("textarea"); ta.value=text;
+  ta.style.cssText="position:fixed;left:0;top:0;opacity:0;width:1px;height:1px";
+  (document.querySelector("dialog[open]")||document.body).appendChild(ta);
+  try{ta.focus();ta.select();ok=document.execCommand("copy");}catch(e){}
+  ta.remove();if(prev&&prev.focus)prev.focus();return ok;
+}
+function isTouch(){return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);}
+function toInstagram(text){
+  $("#handoff-message").value=text;
+  $("#copy-status").textContent="";
+  if(!$("#handoff").open)$("#handoff").showModal();
+  $("#handoff-copy").focus();
+}
+
+function store(key, val){
+  try{
+    if(val === undefined) return JSON.parse(localStorage.getItem(key) || "null");
+    if(val === null) localStorage.removeItem(key);
+    else localStorage.setItem(key, JSON.stringify(val));
+  }catch(e){ return null; }
+}
+
+/* Parrainage : ?ref=AURA-1234 capté à l'arrivée, conservé pour la session,
+   estampillé sur chaque message de commande. C'est la preuve d'apport. */
+var refCode = null;
+(function captureRef(){
+  try{
+    var p = new URLSearchParams(location.search).get("ref");
+    if(p && /^AURA-[A-Z0-9]{4,16}$/.test(p)){ refCode = p; sessionStorage.setItem("aura.ref", refCode); track("referral_click", {code:refCode}); }
+    else { var savedRef=sessionStorage.getItem("aura.ref"); refCode=/^AURA-[A-Z0-9]{4,16}$/.test(savedRef||"")?savedRef:null; }
+  }catch(e){ refCode = null; }
+})();
+
+/* ════════════════════════════════════════════════════════════════════
+   6. RENDUS
+   ════════════════════════════════════════════════════════════════════ */
+function packName(p){ return t("pack." + p.id + ".name"); }
+function packSummary(p){
+  var bits = [p.visuals + " " + t("unit.visuals"), p.texts + " " + t("unit.texts"), p.messages + " " + t("unit.messages")];
+  if(p.bio) bits.push(t("unit.bio"));
+  if(p.stories) bits.push(t("unit.stories"));
+  return bits.join(" · ");
+}
+function packRecipe(p){
+  var li = [];
+  li.push(p.visuals + " " + t("unit.visuals") + " 1:1");
+  li.push(p.texts + " " + t("unit.texts"));
+  li.push(p.messages + " " + t("unit.messages"));
+  if(p.bio) li.push(t("unit.bio"));
+  if(p.stories) li.push(t("unit.stories"));
+  li.push(t("unit.delay") + " " + p.delay);
+  return li;
+}
+var ARROW = '<svg width="15" height="9" viewBox="0 0 18 10" fill="none" aria-hidden="true"><path d="M1 5h15m0 0L12 1m4 4l-4 4" stroke="currentColor" stroke-width="1.3"/></svg>';
+
+function renderFeature(){
+  var p = PACKS.filter(function(x){ return x.featured; })[0];
+  var el = $("#feature-pack");
+  el.innerHTML =
+    '<div class="feature-art" id="feature-art">'
+      + '<span class="feature-tag">' + esc(t("pack.featured")) + '</span>'
+      + '<div class="plate"><div class="n">n°' + p.id + ' · ' + esc(packName(p)) + '</div><div class="p num">' + eur(p.price) + '</div></div>'
+    + '</div>'
+    + '<div class="feature-body">'
+      + '<h3>' + esc(packName(p)) + '</h3>'
+      + '<p class="lede">' + esc(t("pack." + p.id + ".tag")) + '</p>'
+      + '<ul class="recipe">' + packRecipe(p).map(function(x){ return "<li>" + esc(x) + "</li>"; }).join("") + '</ul>'
+      + '<button class="btn" data-order="' + p.id + '">' + esc(t("sheet.order")) + ' · ' + eur(p.price) + '</button>'
+    + '</div>';
+  $("#feature-art").insertAdjacentHTML("beforeend", '<div class="editorial-preview"><div class="editorial-post"><span>AURA / STUDIO</span><strong>'+esc(t("v2.demoTitle")).replace(/\n/g,"<br>")+'</strong><small>'+esc(t("v2.demoSmall"))+'</small></div><div class="editorial-swatch"><span>INSTAGRAM<br>CONTENT<br>COLLECTION</span><b>02</b></div></div><p class="study-label">'+esc(t("v2.demo"))+'</p>');
+}
+function renderMenuRows(){
+  var rows = PACKS.filter(function(x){ return !x.featured; });
+  $("#menu-rows").innerHTML = rows.map(function(p){
+    return '<button class="menu-row" data-order="' + p.id + '" aria-label="' + esc(packName(p) + " " + eur(p.price)) + '">'
+      + '<span class="rn num">n°' + p.id + '</span>'
+      + '<span class="rt"><strong>' + esc(packName(p)) + '</strong><span>' + esc(packSummary(p)) + ' · ' + esc(p.delay) + '</span></span>'
+      + '<span class="rp"><b class="num">' + eur(p.price) + '</b><i>' + ARROW + '</i></span>'
+    + '</button>';
+  }).join("");
+}
+function renderReady(){
+  $("#ready-list").innerHTML = READY.map(function(r){
+    return '<button class="ready-row" data-ready="' + r.id + '">'
+      + '<span class="ready-thumb" id="ready-art-' + r.id + '"></span>'
+      + '<span class="rt"><strong>' + esc(t("ready." + r.id + ".name")) + '</strong><span>' + esc(t("ready." + r.id + ".tag")) + '</span></span>'
+      + '<span class="rv num">' + eur(r.price) + '</span>'
+    + '</button>';
+  }).join("");
+  READY.forEach(function(r){ paint($("#ready-art-" + r.id), "ready-" + r.id, {tone:r.tone, h:150, palms:1}); });
+}
+function renderSteps(){
+  $("#steps").innerHTML = [1,2,3].map(function(n){
+    return '<div class="step"><div class="sn num">0' + n + '</div><h3>' + esc(t("step." + n + ".t")) + '</h3><p>' + esc(t("step." + n + ".d")) + '</p></div>';
+  }).join("");
+}
+function renderProtocolList(){
+  $("#protocol-list").innerHTML = [1,2,3,4].map(function(n){
+    return '<li><b>' + n + '</b><span>' + esc(t("club.r" + n)) + '</span></li>';
+  }).join("");
+}
+function renderMissions(){
+  $("#missions").innerHTML = MISSIONS.map(function(m){
+    var p = PACKS.filter(function(x){ return x.id === m.packId; })[0];
+    return '<div class="mission">'
+      + '<div class="mc">' + esc(m.code) + '</div>'
+      + '<h3>n°' + p.id + ' ' + esc(packName(p)) + ' · ' + eur(p.price) + '</h3>'
+      + '<div class="mw">' + esc(packSummary(p)) + '</div>'
+      + '<div class="ms num">' + esc(t("club.share")) + ' ' + eur(m.share) + '</div>'
+      + '<button class="btn btn-ghost btn-sm" data-mission="' + esc(m.code) + '">' + esc(t("club.take")) + '</button>'
+    + '</div>';
+  }).join("");
+}
+function renderQA(){
+  $("#qa").innerHTML = [1,2,3,4,5].map(function(n){
+    return '<div class="qa-item" data-qa="' + n + '">'
+      + '<button class="qa-q" id="qq' + n + '" aria-expanded="false" aria-controls="qa' + n + '">' + esc(t("qa." + n + ".q")) + '<i aria-hidden="true"></i></button>'
+      + '<div class="qa-a" id="qa' + n + '" role="region" aria-labelledby="qq' + n + '"><div><p>' + esc(t("qa." + n + ".a")) + '</p></div></div>'
+    + '</div>';
+  }).join("");
+}
+function renderKiosk(){
+  $("#kiosk").innerHTML = PACKS.map(function(p){
+    return '<button data-order="' + p.id + '" aria-label="' + esc(packName(p) + " " + eur(p.price)) + '">'
+      + '<span class="kn">n°' + p.id + '</span><span class="kp num">' + eur(p.price) + '</span></button>';
+  }).join("");
+}
+function renderAmbiences(){
+  $("#amb-list").innerHTML = AMBIENCES.map(function(a){
+    var nm = a.id === 0 ? t("amb.off") : a.name;
+    return '<button class="station" data-amb="' + a.id + '" aria-pressed="' + (a.id === ambIndex) + '">'
+      + '<span class="sf num">' + (a.freq || "—") + '</span>'
+      + '<span class="sn">' + esc(nm) + '</span>'
+      + '<span class="sm">' + esc(a.mood) + '</span></button>';
+  }).join("");
+}
+
+function applyLang(){
+  document.documentElement.lang = LANG;
+  $$("[data-i18n]").forEach(function(el){ el.textContent = t(el.getAttribute("data-i18n")); });
+  $$("[data-i18n-ph]").forEach(function(el){ el.setAttribute("placeholder", t(el.getAttribute("data-i18n-ph"))); });
+  $$(".langset button").forEach(function(b){ b.setAttribute("aria-pressed", String(b.getAttribute("data-lang") === LANG)); });
+  renderFeature(); renderMenuRows(); renderReady(); renderSteps();
+  renderProtocolList(); renderMissions(); renderQA(); renderKiosk(); renderAmbiences();
+  renderPass(); tickClock();
+  if(order.pack) fillSheet();
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   7. FEUILLE DE COMMANDE
+   ════════════════════════════════════════════════════════════════════ */
+var order = {pack:null, step:1, extras:{bio:false, messages:false, stories:false, express:false}};
+var lastFocus = null;
+var EXTRA_PRICE = {bio:15, messages:20, stories:20, express:25};
+
+function extrasTotal(){
+  var p = order.pack, sum = 0;
+  if(!p) return 0;
+  if(!p.bio && order.extras.bio) sum += EXTRA_PRICE.bio;
+  if(order.extras.messages) sum += EXTRA_PRICE.messages;
+  if(order.extras.stories) sum += EXTRA_PRICE.stories;
+  if(order.extras.express) sum += EXTRA_PRICE.express;
+  return sum;
+}
+function orderTotal(){ return order.pack ? order.pack.price + extrasTotal() : 0; }
+
+function openSheet(packId){
+  var p = PACKS.filter(function(x){ return x.id === packId; })[0];
+  if(!p) return;
+  lastFocus = document.activeElement;
+  order = {pack:p, step:1, extras:{bio:false, messages:false, stories:false, express:false}};
+  ["f-sell","f-audience","f-ig"].forEach(function(id){
+    var el = $("#" + id); el.value = ""; el.classList.remove("bad"); el.removeAttribute("aria-invalid");
+  });
+  $("#form-error").hidden = true;
+  fillSheet();
+  goStep(1);
+  $("#sheet").classList.add("open");
+  document.body.classList.add("is-locked");
+  setTimeout(function(){ $("#sheet-close").focus(); }, 60);
+  track("product_view", {pack:p.id, price:p.price});
+}
+function fillSheet(){
+  var p = order.pack;
+  if(!p) return;
+  paint($("#sheet-art"), "sheet-" + p.id, {tone:p.tone, h:380, car:p.featured, horizon:.7});
+  $("#step-1-n").textContent = "n°" + p.id + " · " + p.delay;
+  $("#sheet-title").textContent = packName(p);
+  $("#step-1-tag").textContent = t("pack." + p.id + ".tag");
+  $("#step-1-price").textContent = eur(p.price);
+  $("#step-1-recipe").innerHTML = packRecipe(p).map(function(x){ return "<li>" + esc(x) + "</li>"; }).join("");
+  renderChips();
+  updateTotal();
+}
+function closeSheet(){
+  $("#sheet").classList.remove("open");
+  document.body.classList.remove("is-locked");
+  if(lastFocus && lastFocus.focus) lastFocus.focus();
+}
+function goStep(n){
+  order.step = n;
+  $("#step-1").hidden = n !== 1;
+  $("#step-2").hidden = n !== 2;
+  $("#step-3").hidden = n !== 3;
+  [1,2,3].forEach(function(i){ $("#rail-" + i).classList.toggle("on", i <= n); });
+  $(".sheet-card").scrollTop = 0;
+  if(n === 2){ setTimeout(function(){$("#f-sell").focus();},0); updatePreview(); track("brief_started", {pack:order.pack.id}); }
+  if(n === 3){ setTimeout(function(){$("#brief").focus();},0); writeBrief(); track("brief_completed", {pack:order.pack.id, total:orderTotal()}); }
+}
+function renderChips(){
+  var p = order.pack, items = [];
+  if(!p.bio) items.push({k:"bio", label:t("extra.bio")});
+  items.push({k:"messages", label:t("extra.messages")});
+  items.push({k:"stories", label:t("extra.stories")});
+  items.push({k:"express", label:t("extra.express")});
+  $("#chips").innerHTML = items.map(function(i){
+    return '<button type="button" class="chip" data-extra="' + i.k + '" aria-pressed="' + (order.extras[i.k] === true) + '">' + esc(i.label) + '</button>';
+  }).join("");
+}
+function updateTotal(){ $("#sheet-total").textContent = eur(orderTotal()); }
+var previewTimer = null;
+function updatePreview(){
+  var p = order.pack;
+  if(!p) return;
+  var raw = ($("#f-ig").value || $("#f-sell").value || ("n" + p.id)).trim().toLowerCase();
+  paint($("#preview-art"), "client-" + p.id + "-" + raw, {tone:p.tone, h:200, palms:1, car:p.featured});
+}
+function writeBrief(){
+  var p = order.pack, lines = [];
+  lines.push(t("brief.hello") + " n°" + p.id + " " + packName(p) + " " + t("brief.at") + " " + eur(p.price) + ".");
+  if(!p.bio && order.extras.bio) lines.push("+ " + t("extra.bio"));
+  if(order.extras.messages) lines.push("+ " + t("extra.messages"));
+  if(order.extras.stories) lines.push("+ " + t("extra.stories"));
+  if(order.extras.express) lines.push("+ " + t("extra.express"));
+  lines.push(t("brief.total") + " : " + eur(orderTotal()));
+  lines.push("");
+  lines.push(t("brief.sell") + " : " + ($("#f-sell").value.trim() || "—"));
+  lines.push(t("brief.audience") + " : " + ($("#f-audience").value.trim() || "—"));
+  lines.push(t("brief.ig") + " : " + ($("#f-ig").value.trim() || "—"));
+  if(refCode) lines.push(t("brief.ref") + " : " + refCode);
+  $("#brief").value = lines.join("\n");
+}
+function validateBrief(){
+  var ids = ["f-sell","f-audience","f-ig"], first = null, ok = true;
+  ids.forEach(function(id){
+    var el = $("#" + id), good = el.value.trim().length > 0 && el.value.length<=300; if(id==="f-ig")good=/^@?[A-Za-z0-9._]{1,30}$/.test(el.value.trim());
+    el.classList.toggle("bad", !good);
+    el.setAttribute("aria-invalid", String(!good));
+    if(!good){ ok = false; if(!first) first = el; }
+  });
+  $("#form-error").hidden = ok;
+  if(!ok && first) first.focus();
+  return ok;
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   8. LE CLUB  (carte locale — aucun compte, aucun serveur)
+   ════════════════════════════════════════════════════════════════════ */
+var pass = null;
+function loadPass(){ pass=store("aura.pass")||null; if(pass && (typeof pass.name!=="string" || !/^AURA-[A-Z0-9]{4,16}$/.test(pass.code||"") || !Array.isArray(pass.ledger)))pass=null; if(pass)pass.xp=Math.max(0,Math.min(1000000,Number(pass.xp)||0)); }
+function savePass(){ store("aura.pass", pass); }
+function newCode(){ var a=new Uint8Array(8); crypto.getRandomValues(a); return "AURA-"+Array.from(a,function(n){return n.toString(16).padStart(2,"0");}).join("").toUpperCase(); }
+
+function renderPass(){
+  var form = $("#pass-form"), card = $("#pass");
+  if(!pass){ form.hidden = false; card.hidden = true; return; }
+  form.hidden = true; card.hidden = false;
+  $("#pass-code").textContent = pass.code;
+  $("#pass-name").textContent = pass.name;
+  var r = rankFor(pass.xp), idx = RANKS.indexOf(r);
+  $("#pass-rank").textContent = t(r.k);
+  if(idx < RANKS.length - 1){
+    var nxt = RANKS[idx + 1], span = nxt.xp - r.xp, into = pass.xp - r.xp;
+    $("#pass-meter").style.width = Math.max(4, Math.min(100, Math.round(into / span * 100))) + "%";
+    $("#pass-next").textContent = (nxt.xp - pass.xp) + " " + t("club.toNext") + " " + t(nxt.k);
+  } else {
+    $("#pass-meter").style.width = "100%";
+    $("#pass-next").textContent = t("club.maxRank");
+  }
+  $("#pass-link").value = location.protocol === "file:" ? t("v2.refLocal") + " " + pass.code : location.origin + location.pathname + "?ref=" + encodeURIComponent(pass.code);
+  var led = pass.ledger || [];
+  $("#pass-ledger").innerHTML = led.length === 0
+    ? '<p class="ledger-empty">' + esc(t("club.ledgerEmpty")) + '</p>'
+    : led.slice(-6).reverse().map(function(x){
+        return '<div class="ledger-row"><b>' + esc(x.code) + '</b><span>' + eur(x.share) + ' · ' + esc(t("club.pending")) + '</span></div>';
+      }).join("");
+}
+function createPass(){
+  var input = $("#member-name"), raw = input.value.trim();
+  if(!raw){ input.focus(); return; }
+  var back = !!pass;
+  pass = {code:(pass && pass.code) || newCode(), name:raw.slice(0, 24), xp:(pass && pass.xp) || 0, ledger:(pass && pass.ledger) || []};
+  savePass(); renderPass();
+  toast((back ? t("club.welcomeBack") : t("club.welcome")) + pass.name);
+  track("membership_created", {code:pass.code});
+}
+function takeMission(code){
+  if(!pass){ toast(t("club.needPass")); $("#member-name").focus(); $("#club").scrollIntoView({behavior:REDUCED ? "auto" : "smooth"}); return; }
+  var m = MISSIONS.filter(function(x){ return x.code === code; })[0];
+  if(!m) return;
+  var p = PACKS.filter(function(x){ return x.id === m.packId; })[0];
+  var ticket = pass.code + "-" + String(Math.floor(1000 + Math.random() * 9000));
+  var body = [
+    "AURA BUSINESS — TICKET " + ticket,
+    pass.code + " · " + pass.name.toUpperCase() + " · " + t(rankFor(pass.xp).k),
+    "",
+    m.code + " — n°" + p.id + " " + packName(p) + " · " + eur(p.price),
+    t("club.share") + " : " + eur(m.share),
+    "",
+    t("club.r1"),
+    t("club.r2"),
+    t("club.r3")
+  ].join("\n");
+  toInstagram(body);
+  
+  /* A mission click cannot certify a sale or award validated XP. */
+  pass.ledger = (pass.ledger || []).concat([{code:m.code, share:m.share, ts:Date.now()}]).slice(-30);
+  savePass(); renderPass();
+  track("mission_taken", {mission:m.code, share:m.share});
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   9. AMBIANCE  (synthèse Web Audio — aucun fichier chargé)
+   ════════════════════════════════════════════════════════════════════ */
+var actx = null, master = null, voices = [], arpTimer = null, ambIndex = 0, lfo = null;
+function audioReady(){
+  if(actx) return true;
+  try{
+    actx = new (window.AudioContext || window.webkitAudioContext)();
+    master = actx.createGain(); master.gain.value = 0;
+    var delay = actx.createDelay(1.2); delay.delayTime.value = .38;
+    var fb = actx.createGain(); fb.gain.value = .32;
+    var wet = actx.createGain(); wet.gain.value = .3;
+    master.connect(actx.destination);
+    master.connect(delay); delay.connect(fb); fb.connect(delay); delay.connect(wet); wet.connect(actx.destination);
+    return true;
+  }catch(e){ actx = null; return false; }
+}
+function killVoices(){
+  voices.forEach(function(v){ try{ v.stop(); }catch(e){} });
+  voices = [];
+  if(lfo){ try{ lfo.stop(); }catch(e){} lfo = null; }
+  if(arpTimer){ clearInterval(arpTimer); arpTimer = null; }
+}
+function crackle(){
+  if(!actx) return;
+  var n = Math.floor(actx.sampleRate * .16), buf = actx.createBuffer(1, n, actx.sampleRate), d = buf.getChannelData(0);
+  for(var i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, 2);
+  var src = actx.createBufferSource(); src.buffer = buf;
+  var bp = actx.createBiquadFilter(); bp.type = "bandpass"; bp.frequency.value = 1800; bp.Q.value = .7;
+  var g = actx.createGain(); g.gain.value = .16;
+  src.connect(bp); bp.connect(g); g.connect(actx.destination);
+  src.start();
+}
+function setAmbience(i){
+  if(!audioReady()) return;
+  if(actx.state === "suspended") actx.resume();
+  var a = AMBIENCES[i]; if(!a) return;
+  ambIndex = i;
+  killVoices(); crackle();
+  master.gain.cancelScheduledValues(actx.currentTime);
+  master.gain.setValueAtTime(master.gain.value, actx.currentTime);
+  master.gain.linearRampToValueAtTime(0, actx.currentTime + .18);
+
+  if(a.root){
+    var filter = actx.createBiquadFilter();
+    filter.type = "lowpass"; filter.frequency.value = a.cut; filter.Q.value = .8;
+    filter.connect(master);
+    a.chord.forEach(function(semi, k){
+      var osc = actx.createOscillator();
+      osc.type = k === 0 ? "sine" : (k === 1 ? "triangle" : "sawtooth");
+      osc.frequency.value = a.root * Math.pow(2, semi / 12);
+      osc.detune.value = (k - 1) * 4;
+      var g = actx.createGain();
+      g.gain.value = k === 0 ? .17 : (k === a.chord.length - 1 ? .045 : .075);
+      osc.connect(g); g.connect(filter); osc.start();
+      voices.push(osc);
+    });
+    lfo = actx.createOscillator(); lfo.frequency.value = .05;
+    var lg = actx.createGain(); lg.gain.value = a.cut * .45;
+    lfo.connect(lg); lg.connect(filter.frequency); lfo.start();
+
+    if(a.arp && !REDUCED){
+      arpTimer = setInterval(function(){
+        if(!actx || ambIndex !== i) return;
+        var semi = a.chord[Math.floor(Math.random() * a.chord.length)] + 12;
+        var o = actx.createOscillator(); o.type = "triangle";
+        o.frequency.value = a.root * Math.pow(2, semi / 12);
+        var g = actx.createGain(); g.gain.setValueAtTime(0, actx.currentTime);
+        g.gain.linearRampToValueAtTime(.05, actx.currentTime + .02);
+        g.gain.exponentialRampToValueAtTime(.0008, actx.currentTime + .5);
+        o.connect(g); g.connect(master); o.start(); o.stop(actx.currentTime + .55);
+      }, a.arp);
+    }
+    setTimeout(function(){
+      if(ambIndex === i && master) master.gain.linearRampToValueAtTime(.34, actx.currentTime + .7);
+    }, 190);
+  }
+  $("#amb-btn").classList.toggle("on", !!a.root);
+  $("#amb-current").textContent = a.root ? (a.freq + " " + a.name) : "";
+  $$("#amb-list .station").forEach(function(b){ b.setAttribute("aria-pressed", String(Number(b.getAttribute("data-amb")) === i)); });
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   10. HUD  (horloge, kiosque, convocation)
+   ════════════════════════════════════════════════════════════════════ */
+var DAYS = {
+  fr:["Dim","Lun","Mar","Mer","Jeu","Ven","Sam"], en:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],
+  es:["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"], it:["Dom","Lun","Mar","Mer","Gio","Ven","Sab"]
+};
+function tickClock(){
+  var d = new Date(), days = DAYS[LANG] || DAYS.fr, s = SEASONS[d.getMonth()];
+  $("#clock-day").textContent = days[d.getDay()] + " " + d.getDate();
+  $("#clock-time").textContent = String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
+  var el = $("#clock-season");
+  el.textContent = s.n;
+  el.style.color = "var(--" + (s.c === "brass" ? "brass" : s.c) + ")";
+}
+
+var summonsShown = false;
+function maybeSummons(){
+  if(summonsShown || pass) return;
+  try{ if(sessionStorage.getItem("aura.summons")) return; }catch(e){}
+  summonsShown = true;
+  try{ sessionStorage.setItem("aura.summons", "1"); }catch(e){}
+  var el = $("#summons");
+  el.classList.add("show"); el.setAttribute("aria-hidden", "false");
+}
+function hideSummons(){
+  var el = $("#summons");
+  el.classList.remove("show"); el.setAttribute("aria-hidden", "true");
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   11. SEUIL + APPARITIONS + NAVIGATION
+   ════════════════════════════════════════════════════════════════════ */
+function runThreshold(){
+  $("#threshold").style.display="none";
+  document.body.classList.remove("is-locked");
+  $("#kiosk").classList.add("up");
+  $("#amb-btn").classList.add("show");
+  track("page_view",{lang:LANG,ref:refCode||null});
+}
+
+function setupReveals(){
+  var items = $$(".reveal");
+  if(!("IntersectionObserver" in window) || REDUCED){ items.forEach(function(el){ el.classList.add("in"); }); return; }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target); }
+    });
+  }, {rootMargin:"0px 0px -12% 0px", threshold:.08});
+  items.forEach(function(el){ io.observe(el); });
+  /* filet de sécurité : rien ne doit rester invisible si l'observateur
+     ne se déclenche pas (onglet en arrière-plan, capture de vignette…) */
+  setTimeout(function(){ items.forEach(function(el){ el.classList.add("in"); }); }, 2600);
+}
+function setupNav(){
+  var bar = $("#topbar"), last = window.scrollY, ticking = false;
+  window.addEventListener("scroll", function(){
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(function(){
+      var y = window.scrollY;
+      bar.classList.toggle("hidden", y > 220 && y > last && !$("#sheet").classList.contains("open"));
+      last = y;
+      ticking = false;
+    });
+  }, {passive:true});
+
+  if("IntersectionObserver" in window){
+    var links = $$(".navlinks a");
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(!en.isIntersecting) return;
+        var id = "#" + en.target.id;
+        links.forEach(function(a){ a.classList.toggle("active", a.getAttribute("href") === id); });
+        /* Club accessible through navigation, no unsolicited popup. */
+      });
+    }, {rootMargin:"-45% 0px -45% 0px"});
+    ["carte","ready","protocol","club","questions"].forEach(function(id){
+      var s = document.getElementById(id); if(s) io.observe(s);
+    });
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   12. ÉVÉNEMENTS
+   ════════════════════════════════════════════════════════════════════ */
+document.addEventListener("click", function(e){
+  var el;
+  if((el = e.target.closest("[data-order]"))){ openSheet(Number(el.getAttribute("data-order"))); track("cta_click", {from:"order"}); return; }
+  if((el = e.target.closest("[data-ready]"))){
+    var r = READY.filter(function(x){ return x.id === Number(el.getAttribute("data-ready")); })[0];
+    if(!r) return;
+    var msg = ["AURA — READY-" + r.id + " " + t("ready." + r.id + ".name") + " · " + eur(r.price), t("brief.ready"), "Total : " + eur(r.price)];
+    if(refCode) msg.push(t("brief.ref") + " : " + refCode);
+    toInstagram(msg.join("\n"));
+    
+    track("ready_order", {pack:r.id, price:r.price});
+    return;
+  }
+  if((el = e.target.closest("[data-mission]"))){ takeMission(el.getAttribute("data-mission")); return; }
+  if((el = e.target.closest("[data-extra]"))){
+    var k = el.getAttribute("data-extra");
+    order.extras[k] = !order.extras[k];
+    el.setAttribute("aria-pressed", String(order.extras[k]));
+    updateTotal();
+    return;
+  }
+  if((el = e.target.closest("[data-amb]"))){ setAmbience(Number(el.getAttribute("data-amb"))); return; }
+  if((el = e.target.closest("[data-lang]"))){ LANG = el.getAttribute("data-lang"); applyLang(); return; }
+  if((el = e.target.closest(".qa-q"))){
+    var item = el.closest(".qa-item"), open = item.classList.contains("open");
+    $$(".qa-item").forEach(function(i){ i.classList.remove("open"); $(".qa-q", i).setAttribute("aria-expanded", "false"); });
+    if(!open){ item.classList.add("open"); el.setAttribute("aria-expanded", "true"); }
+    return;
+  }
+  if(e.target.closest("#dm-btn") || e.target.closest("#dm-btn-2")){
+    track("cta_click", {from:"dm"});
+    if(isTouch()) window.location.href = IG_URL; else window.open(IG_URL, "_blank", "noopener");
+    return;
+  }
+});
+
+$("#back-to-1").addEventListener("click",function(){goStep(1);$("#to-2").focus();});
+$("#back-to-2").addEventListener("click",function(){goStep(2);});
+$("#to-2").addEventListener("click", function(){ goStep(2); });
+$("#to-3").addEventListener("click", function(){ if(validateBrief()) goStep(3); });
+$("#sheet-close").addEventListener("click", closeSheet);
+$("#sheet").addEventListener("click", function(e){ if(e.target.id === "sheet") closeSheet(); });
+$("#send-btn").addEventListener("click", function(){
+  toInstagram($("#brief").value);
+  
+  track("order_message_prepared", {pack:order.pack.id, total:orderTotal(), ref:refCode || null});
+  if(refCode) track("referral_message_prepared", {code:refCode, total:orderTotal()});
+});
+["f-sell","f-audience","f-ig"].forEach(function(id){
+  var el = $("#" + id);
+  el.addEventListener("input", function(){
+    if(el.value.trim()){ el.classList.remove("bad"); el.setAttribute("aria-invalid", "false"); }
+    if(!$$("#step-2 input.bad").length) $("#form-error").hidden = true;
+    clearTimeout(previewTimer);
+    previewTimer = setTimeout(updatePreview, 260);
+  });
+  el.addEventListener("keydown", function(e){
+    if(e.key === "Enter"){ e.preventDefault(); if(validateBrief()) goStep(3); }
+  });
+});
+document.addEventListener("keydown", function(e){
+  if(e.key !== "Escape" || $("#handoff").open) return;
+  if($("#sheet").classList.contains("open")) closeSheet();
+  else if($("#amb-panel").classList.contains("open")) toggleAmb(false);
+});
+/* piège à focus dans la feuille */
+$("#sheet").addEventListener("keydown", function(e){
+  if(e.key !== "Tab") return;
+  var f = $$('button, input, textarea, [href], [tabindex]:not([tabindex="-1"])', $(".sheet-card"))
+    .filter(function(el){ return el.offsetParent !== null && !el.disabled; });
+  if(!f.length) return;
+  var first = f[0], last = f[f.length - 1];
+  if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+  else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+});
+
+function toggleAmb(force){
+  var panel = $("#amb-panel"), btn = $("#amb-btn");
+  var open = force === undefined ? !panel.classList.contains("open") : force;
+  panel.classList.toggle("open", open);
+  btn.setAttribute("aria-expanded", String(open));
+}
+$("#amb-btn").addEventListener("click", function(e){ e.stopPropagation(); audioReady(); toggleAmb(); });
+document.addEventListener("click", function(e){
+  if($("#amb-panel").classList.contains("open") && !e.target.closest("#amb-panel") && !e.target.closest("#amb-btn")) toggleAmb(false);
+});
+
+$("#create-pass").addEventListener("click", createPass);
+$("#member-name").addEventListener("keydown", function(e){ if(e.key === "Enter"){ e.preventDefault(); createPass(); } });
+$("#pass-link-copy").addEventListener("click", async function(){ var ok=await copyText($("#pass-link").value); toast(t(ok?"club.linkCopied":"v2.copyFailed")); });
+$("#pass-forget").addEventListener("click", function(){
+  pass = null; store("aura.pass", null); renderPass(); toast(t("club.forgotten"));
+});
+$("#summons-yes").addEventListener("click", function(){
+  hideSummons();
+  $("#club").scrollIntoView({behavior:REDUCED ? "auto" : "smooth"});
+  track("cta_click", {from:"summons"});
+});
+$("#summons-no").addEventListener("click", hideSummons);
+
+/* ════════════════════════════════════════════════════════════════════
+   13. DÉMARRAGE
+   ════════════════════════════════════════════════════════════════════ */
+
+$("#handoff-close").addEventListener("click",function(){$("#handoff").close();});
+$("#handoff-copy").addEventListener("click",async function(){var ok=await copyText($("#handoff-message").value);$("#copy-status").textContent=t(ok?"v2.copyOk":"v2.copyFailed");if(!ok){$("#handoff-message").focus();$("#handoff-message").select();}});
+var menuBtn=$("#mobile-menu-btn"),menu=$("#main-nav");
+function closeMenu(){menu.classList.remove("mobile-open");menuBtn.setAttribute("aria-expanded","false");}
+menuBtn.addEventListener("click",function(){var open=menuBtn.getAttribute("aria-expanded")!=="true";menuBtn.setAttribute("aria-expanded",String(open));menu.classList.toggle("mobile-open",open);});
+menu.addEventListener("click",function(e){if(e.target.closest("a"))closeMenu();});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&menu.classList.contains("mobile-open")){closeMenu();menuBtn.focus();}});
+document.addEventListener("click",function(e){if(!e.target.closest(".navset"))closeMenu();});
+if(!REDUCED){var cinematicTick=false;window.addEventListener("scroll",function(){if(cinematicTick)return;cinematicTick=true;requestAnimationFrame(function(){var y=Math.min(window.scrollY,900);$("#cinema-image").style.transform="translateY("+(y*.12)+"px) scale(1.04)";cinematicTick=false;});},{passive:true});}
+
+
+/* Le sélecteur de langue vit dans le bandeau sur grand écran et dans le
+   panneau de menu sur téléphone, sinon la barre déborde. */
+(function(){
+  var mq = window.matchMedia("(max-width:760px)");
+  var langset = document.querySelector(".langset");
+  var navset = document.querySelector(".navset");
+  var panel = document.getElementById("main-nav");
+  function place(){
+    if(!langset || !navset || !panel) return;
+    if(mq.matches){ if(langset.parentElement !== panel) panel.appendChild(langset); }
+    else { if(langset.parentElement !== navset) navset.appendChild(langset); }
+  }
+  place();
+  if(mq.addEventListener) mq.addEventListener("change", place); else mq.addListener(place);
+})();
+
+
+(function init(){
+  var nav = (navigator.language || "fr").slice(0, 2).toLowerCase();
+  if(STR[nav]) LANG = nav;
+  loadPass();
+  applyLang();
+  setupReveals();
+  setupNav();
+  runThreshold();
+  setInterval(tickClock, 20000);
+  if(refCode) setTimeout(function(){ toast(t("brief.ref") + " : " + refCode); }, 3200);
+})();
+
+})();
+</script>
+
