@@ -50,6 +50,21 @@ const aller = async (page, url) => {
      return svg && svg.getBoundingClientRect().width > 40;
    });
  }));
+ /* Photographies importées : le fichier doit être réellement chargé et peint,
+    pas simplement déclaré. Une balise <image> pointant vers un fichier absent
+    donne un cadre vide qu'on pourrait prendre pour une création. */
+ const CHEMIN_PHOTOS = require('path').join(__dirname,'..','src','creations','photos');
+ const photosDeclarees = (CREA.photos||[]).filter(x=>x.present);
+ ck('photographies déclarées présentes sur disque',
+    photosDeclarees.every(x=>require('fs').existsSync(
+      require('path').join(CHEMIN_PHOTOS, x.fichier.split('/').pop()))),
+    photosDeclarees.length + ' photo(s)');
+ ck('photographies réellement peintes dans la page', await p.evaluate(()=>{
+   const imgs=[...document.querySelectorAll('svg image')];
+   if(!imgs.length) return true;           /* aucune photo déclarée : rien à vérifier */
+   return imgs.every(i=>{ const r=i.getBoundingClientRect(); return r.width>20 && r.height>20; });
+ }), (await p.locator('svg image').count()) + ' balise(s) <image>');
+
  /* La page ne doit dépendre d'aucun tiers : polices comprises, elle doit
     s'afficher entière hors ligne. */
  ck('aucune requête vers un tiers', tiers.length===0, tiers.length?tiers.join(' '):'0');

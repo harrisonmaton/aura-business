@@ -5,7 +5,8 @@
 | Fichier | Taille | Nature | Droits |
 |---|---|---|---|
 | `src/fonts/*.woff2` | 220 768 o (6 fichiers) | Archivo et Bodoni Moda, sous-ensembles latin et latin-ext | SIL OFL 1.1, redistribution autorisée, `src/fonts/OFL.txt` |
-| `src/creations/*.svg` | ~85 Ko (20 fichiers) | 12 pièces de démonstration (3 séries) + 8 couvertures de packs | **produites par `scripts/build-creations.js`** — voir ci-dessous |
+| `src/creations/*.svg` | ~102 Ko (21 fichiers) | 12 pièces de démonstration + 8 couvertures + l'image d'accueil | **produites par `scripts/build-creations.js`** |
+| `src/creations/photos/trattoria-pates.webp` | 59 960 o | Photographie de cacio e pepe, 1080×1080 | **générée pour ce projet** — voir ci-dessous |
 | `v3_office.png`, `v3_office_rempli.png` | 89 / 91 Ko | Captures du back-office, vide et rempli. Pièces de recette, pas des livrables | production interne |
 
 **C'est tout.** Il n'y a aucun autre fichier binaire dans le dépôt.
@@ -40,6 +41,31 @@ de messages — au lieu d'un nom posé sur une image d'ambiance.
 Les SVG sont injectés **en ligne** dans la vitrine plutôt que chargés en `<img>` :
 un SVG chargé en `<img>` est un document isolé qui n'hérite pas des polices de la
 page, et les compositions seraient rendues avec une fonte générique.
+
+### Photographies générées
+
+| | |
+|---|---|
+| Fichier | `src/creations/photos/trattoria-pates.webp` |
+| Sujet | Bol de cacio e pepe, lumière de fenêtre, ardoise sombre |
+| Dimensions | 1080×1080, recadré depuis un original 2048×1152 |
+| Poids | 59 960 o · SHA-256 `872e7071…21c5e` |
+| Source | ElevenLabs, modèle `bytedance-seedream-5-pro` |
+| Coût réel | 818,1 crédits — 8,18 cents |
+| Licence | Générée pour ce projet à partir d'une description écrite ici. Aucun élément tiers, aucune photographie importée, aucune marque. |
+
+**Aucun texte n'est généré dans l'image.** Les titres, le prix et le badge restent
+en SVG posés par-dessus : ils restent lisibles, traduisibles dans les quatre
+langues, et modifiables sans regénérer la photo.
+
+Ce fichier n'est **ni écrit ni supprimé** par `build-creations.js` : le script se
+contente de le recenser et d'enregistrer son empreinte. Deux contrôles de recette
+vérifient qu'une photo déclarée existe réellement sur disque et qu'elle est peinte
+dans la page — une balise `<image>` pointant vers un fichier absent donnerait un
+cadre vide qu'on pourrait prendre pour une création.
+
+Si la photo est absente, la composition SVG d'origine reste affichée à sa place.
+Aucun emplacement vide n'est jamais présenté comme une création finie.
 
 ### Polices
 

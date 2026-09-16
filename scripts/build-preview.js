@@ -12,4 +12,8 @@ for (const [src,out] of [['vitrine.html','vitrine.html'],['back-office.html','ba
   fs.writeFileSync(path.join(__dirname,'..','preview',out), SK + body + '</body></html>');
 }
 fs.cpSync(path.join(__dirname,'..','src','fonts'), path.join(__dirname,'..','preview','fonts'), {recursive:true});
+/* Les photographies sont référencées par les SVG en ligne via un chemin
+   relatif au document : elles doivent exister à côté de la page. */
+const photos = path.join(__dirname,'..','src','creations','photos');
+if (fs.existsSync(photos)) fs.cpSync(photos, path.join(__dirname,'..','preview','creations','photos'), {recursive:true});
 console.log("preview/ régénéré depuis src/ (polices incluses ; l'image d'accueil est une composition en ligne)");

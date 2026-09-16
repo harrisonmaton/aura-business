@@ -63,13 +63,30 @@ function filets(x, y, w, n, ecart, couleur, opacite){
 
 /* ─── Publications 1:1 ─────────────────────────────────────────────────── */
 
-function posteTypo({id, teinte, sur, titre, sousTitre, bas, badge}){
+function posteTypo({id, teinte, sur, titre, sousTitre, bas, badge, photo}){
   const W=1080,H=1080;
+  /* Quand une photographie est disponible, elle devient le fond et le texte
+     se pose dessus. Le texte n'est jamais généré dans l'image : il reste en
+     SVG, donc lisible, traduisible et modifiable sans regénérer la photo.
+     Le voile sombre garantit le contraste quelle que soit la photo. */
+  const fond = photo
+    ? `<image href="${photo}" x="0" y="0" width="${W}" height="${H}" preserveAspectRatio="xMidYMid slice"/>
+       <rect width="${W}" height="${H}" fill="#0A0710" opacity=".34"/>
+       <rect width="${W}" height="${H}" fill="url(#voile-${id})"/>`
+    : `<rect width="${W}" height="${H}" fill="url(#fond-${id})"/>
+       <rect width="${W}" height="${H}" fill="url(#halo-${id})"/>
+       ${eventail(540, 1080, 900, 17, teinte, .13)}`;
+  const voile = photo
+    ? `<linearGradient id="voile-${id}" x1="0" y1="0" x2="0" y2="1">
+         <stop offset="0" stop-color="#0A0710" stop-opacity=".82"/>
+         <stop offset=".45" stop-color="#0A0710" stop-opacity=".18"/>
+         <stop offset="1" stop-color="#0A0710" stop-opacity=".88"/>
+       </linearGradient>`
+    : '';
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="${esc(sur)} — ${esc(titre)}">
 ${defs(id, teinte)}
-<rect width="${W}" height="${H}" fill="url(#fond-${id})"/>
-<rect width="${W}" height="${H}" fill="url(#halo-${id})"/>
-${eventail(540, 1080, 900, 17, teinte, .13)}
+<defs>${voile}</defs>
+${fond}
 <rect x="64" y="64" width="${W-128}" height="${H-128}" fill="none" stroke="${C.laiton}" stroke-width="1.5" opacity=".42"/>
 <rect x="78" y="78" width="${W-156}" height="${H-156}" fill="none" stroke="${C.laiton}" stroke-width="1" opacity=".18"/>
 <text x="112" y="182" font-family="${SANS}" font-size="26" font-weight="600" letter-spacing="9" fill="${teinte}">${esc(sur)}</text>
@@ -294,7 +311,8 @@ const SERIES = [
     teinte:C.corail, second:C.laiton, pack:2,
     resume:'Trois publications, une story et les textes pour une trattoria de quartier.',
     pieces:[
-      {k:'post', f:posteTypo,  n:'Les pâtes',    a:{sur:'FAIT MAISON', titre:'Cacio', sousTitre:'e pepe', bas:'Pâtes fraîches tous les matins.', badge:'CE SOIR'}},
+      {k:'post', f:posteTypo,  n:'Les pâtes',    photo:'trattoria-pates.webp',
+       a:{sur:'FAIT MAISON', titre:'Cacio', sousTitre:'e pepe', bas:'Pâtes fraîches tous les matins.', badge:'CE SOIR'}},
       {k:'post', f:posteCarte, n:'La carte',     a:{sur:'LA CARTE', titre:'Ce soir', pied:'Service de 19 h à 23 h · sur place et à emporter',
           lignes:[['Antipasti della casa','9 €'],['Cacio e pepe','14 €'],['Ossobuco, polenta','19 €'],['Tiramisu maison','7 €']]}},
       {k:'post', f:posteBloc,  n:'Réserver',     a:{second:C.laiton, mot1:'Une', mot2:'table ?', sur:'RÉSERVATION', bas:'Message privé · réponse dans l’heure'}},
@@ -374,6 +392,37 @@ const COUVERTURES = [].concat(
   })
 );
 
+/* ─── Photographies importées ──────────────────────────────────────────────
+   Certaines pièces sont de vraies photographies produites hors du dépôt puis
+   déposées dans src/creations/photos/. Elles ne sont jamais écrites ni
+   supprimées par ce script : il se contente de les recenser, de vérifier
+   qu'elles existent et d'enregistrer leur empreinte.
+
+   Une pièce déclarée ici mais dont le fichier est absent ne devient pas un
+   emplacement vide présenté comme une création : la composition SVG reste
+   affichée et le manifeste note la photo comme attendue. */
+const PHOTOS = path.join(SORTIE, 'photos');
+fs.mkdirSync(PHOTOS, {recursive:true});
+
+const PHOTOS_ATTENDUES = [
+  {piece:'trattoria-1', fichier:'trattoria-pates.webp', sujet:"Bol de cacio e pepe, lumière naturelle, ardoise sombre",
+   format:'1:1', largeur:1080, hauteur:1080,
+   source:'ElevenLabs · bytedance-seedream-5-pro', licence:"Générée pour ce projet, aucun élément tiers"}
+];
+
+function photosPresentes(){
+  const crypto = require('crypto');
+  return PHOTOS_ATTENDUES.map(p => {
+    const chemin = path.join(PHOTOS, p.fichier);
+    if(!fs.existsSync(chemin)) return Object.assign({}, p, {present:false});
+    const buf = fs.readFileSync(chemin);
+    return Object.assign({}, p, {
+      present:true, octets:buf.length,
+      sha256:crypto.createHash('sha256').update(buf).digest('hex')
+    });
+  });
+}
+
 /* ─── Écriture ─────────────────────────────────────────────────────────── */
 
 /* Ce script ne supprime que les fichiers qu'il a lui-même écrits, recensés
@@ -410,7 +459,12 @@ for(const s of SERIES){
   const pieces = [];
   s.pieces.forEach((p,i)=>{
     const id = s.id + '-' + (i+1);
-    const svg = p.f(Object.assign({id, teinte:s.teinte}, p.a));
+    /* La photo n'est utilisée que si le fichier est réellement là. Sinon la
+       composition SVG reste affichée : jamais d'emplacement vide présenté
+       comme une création. */
+    const dispo = p.photo && fs.existsSync(path.join(PHOTOS, p.photo));
+    const svg = p.f(Object.assign({id, teinte:s.teinte,
+      photo: dispo ? 'creations/photos/' + p.photo : null}, p.a));
     fs.writeFileSync(path.join(SORTIE, id + '.svg'), svg);
     inline[id] = svg;
     pieces.push({fichier:`creations/${id}.svg`, nom:p.n, format:p.k==='story'?'9:16':'1:1', type:p.k});
@@ -437,6 +491,20 @@ manifeste.accueil = {
        + "métadonnée, et aucun document du dépôt n'indiquait son origine.",
   provenance:'Composition écrite dans scripts/build-creations.js — aucune photographie, aucun élément tiers.'
 };
+
+/* Photographies : recensées, jamais écrites ni supprimées par ce script. */
+const photos = photosPresentes();
+manifeste.photos = photos.map(p => ({
+  piece:p.piece, fichier:`creations/photos/${p.fichier}`, sujet:p.sujet,
+  format:p.format, dimensions:`${p.largeur}×${p.hauteur}`,
+  source:p.source, licence:p.licence,
+  present:p.present, octets:p.octets || 0, sha256:p.sha256 || null
+}));
+const manquantes = photos.filter(p => !p.present);
+if(manquantes.length){
+  manifeste._photos_attendues = manquantes.length + " photographie(s) déclarée(s) mais absente(s) du dépôt : "
+    + "la composition SVG reste affichée à leur place. Aucun emplacement vide n'est présenté comme une création.";
+}
 
 fs.writeFileSync(path.join(SORTIE, 'MANIFESTE.json'), JSON.stringify(manifeste, null, 2));
 
