@@ -112,7 +112,91 @@ const aller = async (page, url) => {
     Le site doit montrer le travail livré, et chaque démonstration doit
     ramener au pack correspondant sans jamais se faire passer pour un
     client réel. */
- ck('galerie : une vitre par série', await p.locator('.vitre').count() === CREA.series.length);
+ /* V6 : le hero montre l'ensemble d'un pack — publication, story, deux pages
+    de carrousel et la légende — au lieu d'une vignette par série. Chaque pièce
+    doit être réellement visible : une story cachée derrière la publication ne
+    montre rien de ce que le client reçoit. */
+ const scene = await p.evaluate(()=>{
+   /* Mesure ce que l'oeil reçoit, pas ce que le CSS déclare : on interroge le
+      compositeur point par point. elementFromPoint tient compte du z-index, des
+      transformations 3D et de tout ce qui passe devant. Une pièce dont la boîte
+      est grande mais qui est entièrement masquée ressort ici à 0 %. */
+   const r = el => {
+     const b = el.getBoundingClientRect();
+     let vus=0, total=0;
+     for(let i=1;i<10;i++) for(let j=1;j<10;j++){
+       const x=b.left+b.width*i/10, y=b.top+b.height*j/10;
+       if(x<0||y<0||x>innerWidth||y>innerHeight) continue;
+       total++;
+       const cible=document.elementFromPoint(x,y);
+       if(cible && (cible===el || el.contains(cible))) vus++;
+     }
+     return {w:Math.round(b.width), h:Math.round(b.height), x:Math.round(b.left), y:Math.round(b.top),
+             visible: total ? Math.round(vus*100/total) : 0};
+   };
+   const q = s => [...document.querySelectorAll(s)].map(r);
+   return {post:q('.p-post'), story:q('.p-story'), car:q('.p-car1, .p-car2'), leg:q('.p-legende')};
+ });
+ ck('hero V6 : les cinq pièces du pack sont présentes',
+    scene.post.length===1 && scene.story.length===1 && scene.car.length===2 && scene.leg.length===1,
+    `post ${scene.post.length} story ${scene.story.length} carrousel ${scene.car.length} légende ${scene.leg.length}`);
+ ck('hero V6 : aucune pièce n\'est réduite à rien',
+    [].concat(scene.post,scene.story,scene.car,scene.leg).every(b=>b.w>60 && b.h>60),
+    JSON.stringify([].concat(scene.post,scene.story,scene.car).map(b=>b.w+'x'+b.h)));
+ /* Les pièces se recouvrent : c'est une pile en perspective, pas une grille.
+    Le défaut à interdire n'est donc pas le recouvrement mais l'occultation —
+    une story posée derrière la publication ne montre rien de ce que le client
+    achète. On exige que chaque pièce garde au moins un tiers de sa surface
+    réellement atteignable au clic. */
+ ck('hero V6 : aucune pièce n\'est masquée par une autre',
+    [].concat(scene.post, scene.story, scene.car, scene.leg).every(b=>b.visible>=33),
+    JSON.stringify([].concat(scene.post,scene.story,scene.car,scene.leg).map(b=>b.visible+'%')));
+ /* Le contenu annoncé vient du catalogue, pas d'une saisie décorative. */
+ ck('hero V6 : le contenu du pack est écrit en clair', await p.evaluate(()=>{
+   const t = (document.getElementById('pack-compte')||{}).textContent || '';
+   return /\d+\s*visuels/.test(t) && /\d+\s*textes/.test(t) && /délai/.test(t);
+ }), (await p.textContent('#pack-compte')||'').replace(/\s+/g,' ').trim());
+ /* Le prix fait partie de ce qu'on vient voir : il doit être lisible sans
+    défiler. Mesuré avant correction : le bas du prix tombait à 960 px sur un
+    écran de 900. */
+ const premierEcran = await p.evaluate(()=>({
+   prixBas: Math.round(document.getElementById('pack-prix').getBoundingClientRect().bottom),
+   hauteur: innerHeight,
+   montant: (document.querySelector('#pack-prix .montant')||{}).textContent||'',
+   commande: !!document.querySelector('#pack-prix [data-order]')
+ }));
+ ck('hero V6 : le prix du pack est visible sans défiler',
+    premierEcran.prixBas <= premierEcran.hauteur && /\d/.test(premierEcran.montant)
+    && premierEcran.commande,
+    premierEcran.montant.trim() + ' — bas ' + premierEcran.prixBas + ' / écran ' + premierEcran.hauteur);
+ /* Le bandeau de prix collant recouvrait le montant affiché dans le hero. */
+ ck('hero V6 : le bandeau collant ne recouvre pas le prix du hero',
+    await p.evaluate(()=>{
+      const k=document.getElementById('kiosk'), b=document.querySelector('#pack-prix .montant');
+      if(!k||!b) return false;
+      const a=k.getBoundingClientRect(), c=b.getBoundingClientRect();
+      const couvre = a.left<c.right && c.left<a.right && a.top<c.bottom && c.top<a.bottom;
+      return !couvre;
+    }));
+ /* Le titre de couverture chevauchait la ligne d'édition du haut de page. */
+ ck('hero : le titre de couverture ne percute aucune ligne voisine',
+    await p.evaluate(()=>{
+      const m=document.querySelector('.hero-masthead'), e=document.querySelector('.hero-edition');
+      const l=document.querySelector('#manifesto .label-brass');
+      const a=m.getBoundingClientRect();
+      return a.top >= e.getBoundingClientRect().bottom && a.bottom <= l.getBoundingClientRect().top;
+    }));
+ /* Défaut réel trouvé par la mesure d'occultation : une pièce posée en retrait
+    (translateZ négatif) passe DERRIÈRE le plan de la scène, et .stage captait
+    tous les clics. Les pièces étaient visibles mais mortes. */
+ for(const piece of ['.p-story','.p-car1','.p-car2']){
+   const atteint = await p.evaluate(sel=>{
+     const e=document.querySelector(sel), b=e.getBoundingClientRect();
+     const c=document.elementFromPoint(b.left+b.width/2, b.top+b.height/2);
+     return !!(c && (c===e || e.contains(c)));
+   }, piece);
+   ck('hero V6 : ' + piece + ' reçoit réellement le clic', atteint);
+ }
  ck('galerie : les pièces de la série active sont rendues',
     await p.locator('.piece').count() === CREA.series[0].pieces.length);
  ck('galerie : chaque série est étiquetée concept de démonstration',
@@ -121,19 +205,22 @@ const aller = async (page, url) => {
  ck('galerie : aucune enseigne présentée comme cliente réelle',
     await p.evaluate(()=>!/nos clients|ils nous font confiance|témoignage/i.test(
       document.getElementById('creations').textContent)));
- /* Changer d'onglet doit déplacer la vitre active du hero : les deux vues
-    lisent le même état, sinon elles divergent en silence. */
- await p.click('[data-serie-onglet="1"]'); await p.waitForTimeout(650);
+ /* Changer d'onglet doit reconstruire la scène du hero sur la même série :
+    les deux vues lisent le même état, sinon elles divergent en silence. */
+ await p.click('[data-serie-onglet="1"]'); await p.waitForTimeout(700);
  ck('galerie : onglet et hero partagent le même état',
-    await p.getAttribute('.vitre[data-vitre="1"]','data-rang') === '0'
-    && (await p.textContent('#serie-enseigne')).trim() === CREA.series[1].enseigne);
+    (await p.textContent('#hero-enseigne')||'').includes(CREA.series[1].enseigne)
+    && (await p.textContent('#serie-enseigne')).trim() === CREA.series[1].enseigne,
+    (await p.textContent('#hero-enseigne')||'').trim());
  /* Le bouton d'offre doit pointer le pack déclaré dans le manifeste. */
  ck('galerie : la démonstration mène au bon pack',
     await p.getAttribute('#serie-pack','data-order') === String(CREA.series[1].packSuggere));
  // clavier
- await p.focus('.vitre[data-rang="0"]');
- await p.keyboard.press('ArrowRight'); await p.waitForTimeout(600);
- ck('galerie : parcours au clavier', await p.getAttribute('.vitre[data-vitre="2"]','data-rang') === '0');
+ await p.focus('.p-post');
+ await p.keyboard.press('ArrowRight'); await p.waitForTimeout(700);
+ ck('galerie : parcours au clavier',
+    (await p.textContent('#hero-enseigne')||'').includes(CREA.series[2].enseigne),
+    (await p.textContent('#hero-enseigne')||'').trim());
  // aperçu
  const ouvreur = '.piece[data-piece="0"]';
  await p.click(ouvreur); await p.waitForTimeout(500);
@@ -204,6 +291,21 @@ const aller = async (page, url) => {
  });
  await nuCtx.close();
  ck('mobile : aucun débordement RÉEL (clip neutralisé, 390 px)', nu.sw<=391 && nu.iw<=391);
+ /* Les règles mobiles visaient encore les anciennes vitrines : les pièces du
+    pack, posées en absolu, retombaient à 2 × 2 px dans une grille sans contenu
+    en flux. Le pack était invisible sur téléphone. */
+ const packMobile = await mp.evaluate(()=>
+   [...document.querySelectorAll('.p-post,.p-story,.p-car1,.p-car2,.p-legende')]
+     .map(e=>{ const b=e.getBoundingClientRect();
+       return {c:e.className.replace('piece3d ',''), w:Math.round(b.width), h:Math.round(b.height)}; }));
+ ck('mobile : les cinq pièces du pack sont dépliées à taille réelle',
+    packMobile.length===5 && packMobile.every(x=>x.w>=120 && x.h>=80),
+    JSON.stringify(packMobile.map(x=>x.c+' '+x.w+'x'+x.h)));
+ ck('mobile : le prix et le bouton de commande du pack sont présents',
+    await mp.evaluate(()=>{
+      const m=document.querySelector('#pack-prix .montant');
+      return !!(m && /\d/.test(m.textContent) && document.querySelector('#pack-prix [data-order]'));
+    }));
  await mp.click('#mobile-menu-btn'); await mp.waitForTimeout(300);
  ck('mobile : menu ouvrable et langues accessibles', await mp.evaluate(()=>document.getElementById('main-nav').classList.contains('mobile-open') && document.querySelectorAll('#main-nav .langset button').length===4));
  await mp.click('#main-nav a[href="#club"]'); await mp.waitForTimeout(500);

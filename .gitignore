@@ -1,1 +1,4 @@
 node_modules/
+
+# Captures et vidéos de recette : preuves de livraison, pas des sources.
+livrables/

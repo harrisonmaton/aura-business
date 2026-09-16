@@ -234,7 +234,7 @@ p{margin:0;}
 #manifesto-bg .art::after{opacity:.3;}
 @media (max-width:900px){ #manifesto-bg{opacity:.3;} }
 .manifesto-grid{display:grid; gap:clamp(2rem,5vw,3.5rem); grid-template-columns:1fr;}
-@media (min-width:900px){ .manifesto-grid{grid-template-columns:1fr 1.05fr; align-items:center;} }
+@media (min-width:900px){ .manifesto-grid{align-items:start;} }
 .statement{font-size:var(--t-h1); line-height:1.02; letter-spacing:-.02em;
   font-family:'Bodoni Moda',serif;}
 .statement em{font-style:italic; color:var(--brass);}
@@ -529,12 +529,12 @@ html{scroll-behavior:smooth;scroll-padding-top:90px}[hidden]{display:none!import
 #topbar{height:78px;background:linear-gradient(180deg,rgba(8,11,14,.95),rgba(8,11,14,.62));border-bottom:1px solid rgba(255,255,255,.13);backdrop-filter:blur(14px)}
 #topbar.hidden{transform:none}.wordmark{font-size:1.5rem;letter-spacing:.05em}.navlinks{border:0;background:none;padding:0;border-radius:0;gap:1.2rem}.navlinks a{border-radius:0;padding:.75rem .1rem;letter-spacing:.12em;font-size:.82rem}.navlinks a:hover,.navlinks a.active{background:none;color:var(--brass)}
 .langset button{min-width:36px;min-height:44px;color:#c6c1b6}#mobile-menu-btn{display:none}
-#manifesto{padding:0;min-height:850px;min-height:max(800px,95svh);display:flex;align-items:flex-end;padding-bottom:110px;overflow:hidden;border-bottom:1px solid var(--rule)}
+#manifesto{padding:0;min-height:auto;display:flex;align-items:flex-start;padding-top:clamp(196px,18vw,252px);padding-bottom:76px;overflow:hidden;border-bottom:1px solid var(--rule)}
 #manifesto>.shell{width:100%;position:relative;z-index:2}#manifesto-bg{opacity:1;mask-image:none;-webkit-mask-image:none;inset:0;z-index:-2}#manifesto-bg img{height:100%;width:100%;object-fit:cover;object-position:center;transform:scale(1.04);will-change:transform}
 #manifesto:after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(5,9,12,.66),transparent 78%),linear-gradient(0deg,#080b0e 0%,rgba(8,11,14,.66) 25%,transparent 72%)}
 .hero-edition{position:absolute;left:var(--gutter);right:var(--gutter);top:108px;display:flex;justify-content:space-between;font-size:.75rem;letter-spacing:.22em;text-transform:uppercase;color:#e5d7bd}
-.hero-masthead{position:absolute;top:126px;left:var(--gutter);font-family:'Bodoni Moda',Georgia,serif;font-size:clamp(130px,19vw,290px);font-weight:400;line-height:.9;letter-spacing:-.045em;color:#eee8da;text-shadow:0 8px 70px #080b0e33}.hero-masthead span{font-family:'Archivo',sans-serif;font-size:.78rem;letter-spacing:.65em;display:block;margin:1.1rem 0 0 .4rem}
-.manifesto-grid{grid-template-columns:1.5fr .65fr;align-items:end;gap:6rem}.statement{font-size:clamp(2.6rem,4.1vw,4.7rem);line-height:1.02;letter-spacing:-.035em}.statement em{color:#e4bf88}.manifesto-grid .lede{font-size:.95rem;max-width:29rem;color:#d0ceca;line-height:1.75}.manifesto-grid .label{font-size:.78rem}.manifesto-aside{border-top:1px solid var(--brass);padding:1.6rem 0 0;gap:1rem;margin-bottom:.2rem}.hero-offer{display:flex;align-items:center;justify-content:space-between;gap:2rem}.hero-offer h2{font-size:2.3rem;margin-top:.4rem}.hero-offer strong{font:3.4rem 'Bodoni Moda',Georgia,serif;font-weight:400}.hero-offer strong span{font-size:1.4rem;color:var(--brass)}.hero-recipe{font-size:.75rem;color:#d0ccc3}.manifesto-aside .arrow-link{border-top:1px solid var(--rule);padding-top:1rem;justify-content:space-between}
+.hero-masthead{position:absolute;top:132px;left:var(--gutter);font-family:'Bodoni Moda',Georgia,serif;font-size:clamp(96px,9.8vw,142px);font-weight:400;line-height:.9;letter-spacing:-.045em;color:#eee8da;text-shadow:0 8px 70px #080b0e33}.hero-masthead span{font-family:'Archivo',sans-serif;font-size:.78rem;letter-spacing:.65em;display:block;margin:1.1rem 0 0 .4rem}
+.manifesto-grid{grid-template-columns:1fr;align-items:start;gap:3rem}@media(min-width:1100px){.manifesto-grid{grid-template-columns:.82fr 1.18fr;gap:clamp(2rem,3.4vw,3.4rem);align-items:center}}.statement{font-size:clamp(2.6rem,4.1vw,4.7rem);line-height:1.02;letter-spacing:-.035em}.statement em{color:#e4bf88}.manifesto-grid .lede{font-size:.95rem;max-width:29rem;color:#d0ceca;line-height:1.75}.manifesto-grid .label{font-size:.78rem}.manifesto-aside{border-top:1px solid var(--brass);padding:1.6rem 0 0;gap:1rem;margin-bottom:.2rem;width:100%}.hero-offer{display:flex;align-items:center;justify-content:space-between;gap:2rem}.hero-offer h2{font-size:2.3rem;margin-top:.4rem}.hero-offer strong{font:3.4rem 'Bodoni Moda',Georgia,serif;font-weight:400}.hero-offer strong span{font-size:1.4rem;color:var(--brass)}.hero-recipe{font-size:.75rem;color:#d0ccc3}.manifesto-aside .arrow-link{border-top:1px solid var(--rule);padding-top:1rem;justify-content:space-between}
 .hero-bottom{position:absolute;bottom:30px;left:var(--gutter);right:var(--gutter);display:flex;align-items:center;justify-content:space-between;font-size:.75rem;color:#bcb7ad;letter-spacing:.04em}.hero-bottom a{font-size:1.4rem;width:42px;height:42px;display:grid;place-items:center;border:1px solid var(--rule);border-radius:50%}
 .btn{font-size:.82rem;letter-spacing:.1em;border-radius:0;padding:1rem 1.4rem;min-height:50px}.btn-ghost{--btn-bg:rgba(8,11,14,.32)}.value-strip{display:flex;align-items:center;justify-content:center;gap:clamp(1rem,4vw,4rem);padding:1.5rem var(--gutter);border-bottom:1px solid var(--rule);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase}.value-strip i{font-style:normal;color:var(--brass);font-size:1rem}
 .band{padding-block:6rem}.band-head .display-row{justify-content:flex-start;gap:1.4rem;align-items:baseline}.band-head .display-row>.label{margin-left:auto}.band-head h2{font-size:clamp(2.6rem,5vw,4.8rem)}.section-no{font-size:.72rem;color:var(--brass);letter-spacing:.12em}.band-head .hair{display:none}
@@ -550,8 +550,8 @@ html{scroll-behavior:smooth;scroll-padding-top:90px}[hidden]{display:none!import
 #club{background:radial-gradient(ellipse at 90% 20%,#17363877,transparent 65%),#090d0f}.pass{background:linear-gradient(135deg,#25372f,#101b1e 65%,#303020);border-color:#9a845e}.missions{border-color:var(--rule)}.mission{background:#11191b}.mission .ms{color:var(--brass)}
 #kiosk{backdrop-filter:blur(20px);background:#0b1016eF;border-color:#8c7855;border-radius:4px;bottom:18px}#kiosk button{min-height:54px;min-width:100px}.sheet-card{background:#10171a}.sheet-close{min-width:44px;min-height:44px}.field input{font-size:16px}.chip{min-height:44px}.copyfield input{font-size:16px}#amb-btn{background:#101619;bottom:25px;top:auto;left:20px}#amb-panel{background:#101619}.qa-q{font-size:1.55rem}.legal{font-size:.78rem}
 #handoff{color:var(--paper);background:#11191d;border:1px solid var(--rule-brass);padding:2.5rem;width:min(640px,calc(100% - 2rem));max-height:90dvh;overflow:auto}#handoff::backdrop{background:#030609d9;backdrop-filter:blur(10px)}#handoff h2{font-size:2.8rem;margin:1.5rem 0 1rem}#handoff .lede{font-size:.92rem}#handoff textarea{display:block;width:100%;margin-top:1.4rem;padding:1rem;background:#080e11;color:#e8e2d7;border:1px solid var(--rule);resize:vertical;line-height:1.6;font-size:14px}#copy-status{min-height:2.5rem;font-size:.8rem;color:var(--brass);margin:.6rem 0}.handoff-actions{display:flex;flex-wrap:wrap;gap:.6rem}
-@media(min-width:1800px){.hero-masthead{left:calc((100vw - 88rem)/2 + var(--gutter))}#manifesto{min-height:1000px}}
-@media(max-width:1000px){.manifesto-grid{gap:2rem;grid-template-columns:1.2fr .8fr}.feature-body{padding:2rem}.feature-art{min-height:510px}.ready-list{grid-template-columns:repeat(2,1fr)}.hero-masthead{top:150px;font-size:24vw}}
+@media(min-width:1800px){.hero-masthead{left:calc((100vw - 88rem)/2 + var(--gutter))}#manifesto{padding-top:252px}}
+@media(max-width:1000px){.manifesto-grid{gap:2rem;grid-template-columns:1fr}.feature-body{padding:2rem}.feature-art{min-height:510px}.ready-list{grid-template-columns:repeat(2,1fr)}.hero-masthead{top:150px;font-size:24vw}}
 @media(max-width:760px){#topbar{height:68px}.wordmark{font-size:1.2rem}.navset{gap:0}.langset button{min-width:28px;font-size:.62rem;padding:.3rem}.navlinks{display:none}#mobile-menu-btn{display:block;order:2;margin-left:.5rem;min-width:44px;min-height:44px;font-size:1.3rem}.navlinks.mobile-open{position:absolute;top:68px;left:0;right:0;display:flex;flex-direction:column;gap:0;background:#0b1118;padding:1rem 1.5rem;border-bottom:1px solid var(--brass)}.navlinks a{font-size:.8rem;padding:1rem}.hero-edition{top:94px;font-size:.75rem;letter-spacing:.1em}.hero-edition span:last-child{display:none}.hero-masthead{top:120px;font-size:24vw;left:1rem;letter-spacing:-.04em}.hero-masthead span{font-size:.78rem;letter-spacing:.42em;margin-top:.6rem}#manifesto{min-height:auto;padding-bottom:64px;align-items:flex-start;padding-top:250px}#manifesto-bg img{object-position:65% center;transform:scale(1.04)}#manifesto:after{background:linear-gradient(0deg,#080b0e 0%,#080b0ef5 30%,#080b0ea8 62%,#080b0e55 100%)}.manifesto-grid{grid-template-columns:1fr;gap:2.3rem}.statement{font-size:clamp(2.6rem,10vw,4rem)}.manifesto-grid .lede{font-size:.93rem}.manifesto-grid>div>div{margin-top:1.3rem!important;gap:.6rem!important}.manifesto-aside{max-width:100%;padding-top:1.1rem;gap:.6rem}.hero-offer h2{font-size:2rem}.hero-offer strong{font-size:2.8rem}.hero-bottom{bottom:22px;font-size:.72rem;gap:1rem}.hero-bottom span:last-child{display:none}.hero-bottom a{flex-shrink:0}.value-strip{gap:.7rem;flex-wrap:wrap;font-size:.75rem;padding:1.1rem}.value-strip i:last-of-type,.value-strip span:last-child{display:none}.band{padding-block:3.5rem}.band-head .display-row{gap:.8rem}.band-head .display-row>.label{margin-left:0;width:100%;font-size:.78rem}.band-head h2{font-size:3.2rem}.feature{grid-template-columns:1fr}.feature-art{width:100%;min-width:0;min-height:0;aspect-ratio:1/1}.feature-body{padding:1.5rem}.feature-body h3{font-size:2.6rem}.editorial-preview{inset:3.5rem 2.5rem 4rem}.editorial-post>strong{font-size:2.5rem}.menu-row .rt strong{font-size:1.65rem}.ready-list{gap:.8rem}.ready-thumb{height:170px}.ready-row .rt,.ready-row .rv{padding:0 .8rem}.ready-row .rt strong{font-size:1.5rem}.ready-row .rt span{font-size:.78rem;min-height:4.2rem}.ready-row .rv{font-size:1.4rem}#kiosk{bottom:0;left:0;right:0;transform:translateY(110%);width:100%;border-radius:0;border:0;border-top:1px solid var(--rule-brass)}#kiosk.up{transform:translateY(0)}#kiosk button{min-width:0;flex:1;padding:.65rem .2rem;min-height:64px}/* Mesuré : en flottant, ce bouton recouvrait en permanence les noms de packs
    et leurs prix au défilement. Le réglage le moins utile de la page masquait
    l'information la plus décisive. Il est donc ancré en haut, hors du contenu. */
@@ -596,9 +596,88 @@ html,body{max-width:100%;overflow-x:clip}
    création active est nette et de face, ses voisines reculent et pivotent. */
 :root{ --duree:520ms; --courbe:cubic-bezier(.22,.61,.36,1); }
 
-.scene{ perspective:1500px; perspective-origin:50% 45%; overflow:visible; }
-.stage{ position:relative; transform-style:preserve-3d; height:clamp(340px,30vw,440px);
+/* ── V6 : le pack comme objet tangible ────────────────────────────────────
+   Un pack n'est pas une carte avec un prix : c'est un ensemble de pièces.
+   La scène les montre ensemble et à leur vraie proportion — la publication
+   carrée devant, la story verticale derrière à droite, deux pages de
+   carrousel en retrait à gauche, et la légende posée comme un feuillet.
+   Le visiteur voit ce qu'il reçoit, pas une promesse. */
+.scene{ perspective:1500px; perspective-origin:48% 45%; overflow:visible; }
+/* Les pièces se dimensionnent sur la HAUTEUR de la scène, jamais sur sa largeur :
+   une publication carrée mesurée en pourcentage de largeur devenait plus haute
+   que son cadre et poussait tout le pack sous la ligne de flottaison. */
+.stage{ position:relative; transform-style:preserve-3d; height:clamp(232px,19.6vw,290px);
+  margin-bottom:clamp(1.9rem,3.2vw,2.8rem);
   transition:transform var(--duree) var(--courbe); will-change:transform; }
+
+.piece3d{ position:absolute; transform-style:preserve-3d; border:1px solid var(--rule-brass);
+  background:var(--ink-2); overflow:hidden; padding:0; cursor:pointer;
+  transition:transform var(--duree) var(--courbe), box-shadow var(--duree) var(--courbe),
+             filter var(--duree) var(--courbe);
+  box-shadow:0 28px 64px rgba(0,0,0,.62); }
+.piece3d svg{ display:block; width:100%; height:auto; }
+/* Le plan de la scène est à z=0. Une pièce posée en retrait (translateZ
+   négatif) se retrouve DERRIÈRE ce plan : le navigateur dirigeait alors tous
+   les clics vers .stage, et la story comme les deux pages de carrousel
+   n'étaient plus cliquables — visibles, mais mortes. La scène ne capte donc
+   plus rien ; seules les pièces reçoivent le pointeur. */
+.stage{ pointer-events:none; }
+.stage .piece3d{ pointer-events:auto; }
+.stage .piece3d{ width:auto; }                 /* largeur déduite du format */
+.stage .piece3d svg{ height:100%; width:auto; }
+.piece3d:focus-visible{ outline:2px solid var(--brass); outline-offset:3px; }
+.piece3d .role{ position:absolute; left:0; right:0; bottom:0; padding:.45rem .6rem;
+  background:linear-gradient(0deg,rgba(7,5,12,.95),rgba(7,5,12,0));
+  font-family:'Archivo',sans-serif; font-size:.78rem; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--brass-hi); text-align:left; }
+/* Le feuillet de légende se pose sur le bas de la publication : son étiquette
+   remonte, sinon elle disparaît sous le feuillet. */
+.p-post .role{ bottom:auto; top:0;
+  background:linear-gradient(180deg,rgba(7,5,12,.95),rgba(7,5,12,0)); }
+
+/* Les pièces se recouvrent — c'est une pile posée en perspective, pas une
+   grille. Ce qui est interdit, c'est qu'une pièce soit MASQUÉE : chacune garde
+   une zone atteignable au clic, vérifiée point par point par la recette. */
+/* Publication principale : nette, de face, au premier plan. */
+.p-post{ left:0; top:50%; height:88%;
+  transform:translateY(-50%) translateZ(70px) rotateY(6deg); z-index:6; }
+/* Story : verticale, dressée juste derrière. */
+.p-story{ left:40%; top:50%; height:97%;
+  transform:translateY(-50%) translateZ(-60px) rotateY(-14deg); z-index:5; }
+/* Carrousel : deux pages en retrait, décalées en escalier. */
+.p-car1{ left:62%; top:2%; height:51%;
+  transform:translateZ(-165px) rotateY(-12deg) rotateZ(-2deg); z-index:4; }
+.p-car2{ left:74%; top:47%; height:51%;
+  transform:translateZ(-215px) rotateY(-14deg) rotateZ(2.5deg); z-index:3; }
+/* Légende : un feuillet de texte, posé au bord inférieur de la publication. */
+.p-legende{ left:0; bottom:-11%; width:33%; cursor:default;
+  transform:translateZ(150px) rotateY(4deg); z-index:7; padding:.8rem .9rem;
+  background:rgba(12,9,18,.95); backdrop-filter:blur(6px); box-shadow:0 22px 50px rgba(0,0,0,.7); }
+.p-legende .lab{ font-family:'Archivo',sans-serif; font-size:.78rem; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--brass); display:block; margin-bottom:.35rem; }
+.p-legende p{ font-size:.86rem; line-height:1.5; color:var(--craie); }
+.piece3d:hover:not(.p-legende){ filter:brightness(1.08); }
+
+/* Compteur du pack : ce que l'ensemble contient, lisible sans survol. */
+.pack-compte{ display:flex; gap:1.1rem; flex-wrap:wrap; margin-top:1rem;
+  font-family:'Archivo',sans-serif; font-size:.82rem; letter-spacing:.08em; color:var(--muted); }
+.pack-compte b{ color:var(--brass-hi); font-weight:600; }
+
+/* Le prix appartient au hero : on ne montre pas un objet sans dire ce qu'il coûte.
+   Le montant vient du catalogue, comme la carte — une seule source. */
+.pack-prix{ display:flex; align-items:baseline; gap:.9rem; flex-wrap:wrap;
+  margin-top:1.15rem; padding-top:1.05rem; border-top:1px solid var(--rule-brass); }
+.pack-prix .nom{ font-family:'Archivo',sans-serif; font-size:.74rem; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--muted); }
+.pack-prix .montant{ font-family:'Bodoni Moda',serif; font-size:2.05rem; line-height:1;
+  color:var(--brass-hi); font-weight:400; }
+.pack-prix .btn{ margin-left:auto; }
+@media (max-width:760px){
+  .pack-prix{ gap:.6rem; }
+  .pack-prix .montant{ font-size:1.8rem; }
+  .pack-prix .btn{ margin-left:0; width:100%; text-align:center; }
+}
+
 .vitre{ position:absolute; top:50%; left:50%; margin:0; width:clamp(230px,24vw,330px);
   transform-style:preserve-3d; transition:transform var(--duree) var(--courbe),
   opacity var(--duree) var(--courbe), filter var(--duree) var(--courbe);
@@ -683,6 +762,22 @@ section[id]{ scroll-margin-top:96px; }
   .scene{ perspective:none; }
   .stage{ height:auto; display:grid; gap:.8rem; transform:none !important;
     grid-template-columns:repeat(2,1fr); }
+  /* V6 mobile : le pack se déplie à plat. Les pièces du hero sont posées en
+     absolu sur le bureau ; ici elles rentrent dans le flux, sinon la scène
+     retombe à zéro de haut et les visuels disparaissent (mesuré : 2 × 2 px).
+     L'ordre de lecture reste celui du pack : publication, story, les deux
+     pages de carrousel, puis la légende. */
+  .stage .piece3d{ position:static; width:auto; height:auto;
+    transform:none !important; box-shadow:0 14px 34px rgba(0,0,0,.55); }
+  .stage .piece3d svg{ width:100%; height:auto; }
+  .p-post{ grid-column:1 / -1; grid-row:1; }
+  .p-story{ grid-column:1; grid-row:2 / span 2; align-self:start; }
+  .p-car1{ grid-column:2; grid-row:2; }
+  .p-car2{ grid-column:2; grid-row:3; }
+  .p-legende{ grid-column:1 / -1; grid-row:4; }
+  /* Plus de feuillet posé sur la publication : l'étiquette revient en bas. */
+  .p-post .role{ top:auto; bottom:0;
+    background:linear-gradient(0deg,rgba(7,5,12,.95),rgba(7,5,12,0)); }
   .vitre{ position:static; width:auto; margin:0; transform:none !important;
     opacity:1 !important; filter:none !important; }
   .vitre[data-rang="0"]{ grid-column:1/-1; }
@@ -780,10 +875,13 @@ footer a[href*="instagram"], footer a[href*="ig.me"]{ display:inline-flex; align
         <div class="scene" id="hero-scene">
           <div class="stage" id="hero-stage"></div>
         </div>
+        <p class="label" id="hero-enseigne" style="margin-top:1.1rem;"></p>
+        <div class="pack-compte" id="pack-compte"></div>
+        <div class="pack-prix" id="pack-prix"></div>
         <div class="galerie-cmd">
-          <button type="button" id="hero-prec" aria-label="Création précédente">←</button>
-          <div class="puces" id="hero-puces" role="tablist" aria-label="Créations"></div>
-          <button type="button" id="hero-suiv" aria-label="Création suivante">→</button>
+          <button type="button" id="hero-prec" aria-label="Secteur précédent">←</button>
+          <div class="puces" id="hero-puces" role="tablist" aria-label="Secteurs"></div>
+          <button type="button" id="hero-suiv" aria-label="Secteur suivant">→</button>
         </div>
       </aside>
     </div>
@@ -1390,6 +1488,66 @@ var V5_COPY = {
      "crea.versPack":"Vedi il pack {n} · {p}"}
 };
 Object.keys(V5_COPY).forEach(function(l){Object.assign(STR[l],V5_COPY[l]);});
+/* V6 — noms des pièces du pack, visibles dans la scène. */
+var V6_COPY = {
+ "fr": {
+  "v6.publication": "Publication",
+  "v6.story": "Story",
+  "v6.carrousel": "Carrousel",
+  "v6.legende": "La légende fournie",
+  "v6.visuels": "visuels",
+  "v6.textes": "textes",
+  "v6.messages": "messages",
+  "v6.bio": "bio réécrite",
+  "v6.stories": "stories",
+  "v6.delai": "de délai",
+  "v6.page": "Page",
+  "v6.commander": "Commander ce pack"
+ },
+ "en": {
+  "v6.publication": "Post",
+  "v6.story": "Story",
+  "v6.carrousel": "Carousel",
+  "v6.legende": "The caption provided",
+  "v6.visuels": "visuals",
+  "v6.textes": "captions",
+  "v6.messages": "messages",
+  "v6.bio": "bio rewritten",
+  "v6.stories": "stories",
+  "v6.delai": "turnaround",
+  "v6.page": "Page",
+  "v6.commander": "Order this pack"
+ },
+ "es": {
+  "v6.publication": "Publicación",
+  "v6.story": "Story",
+  "v6.carrousel": "Carrusel",
+  "v6.legende": "El texto incluido",
+  "v6.visuels": "imágenes",
+  "v6.textes": "textos",
+  "v6.messages": "mensajes",
+  "v6.bio": "bio reescrita",
+  "v6.stories": "stories",
+  "v6.delai": "de plazo",
+  "v6.page": "Página",
+  "v6.commander": "Pedir este pack"
+ },
+ "it": {
+  "v6.publication": "Post",
+  "v6.story": "Story",
+  "v6.carrousel": "Carosello",
+  "v6.legende": "Il testo fornito",
+  "v6.visuels": "immagini",
+  "v6.textes": "testi",
+  "v6.messages": "messaggi",
+  "v6.bio": "bio riscritta",
+  "v6.stories": "stories",
+  "v6.delai": "di consegna",
+  "v6.page": "Pagina",
+  "v6.commander": "Ordina questo pack"
+ }
+};
+Object.keys(V6_COPY).forEach(function(l){Object.assign(STR[l],V6_COPY[l]);});
 var LANG = "fr";
 function t(k){ var d = STR[LANG] || STR.fr; return d[k] !== undefined ? d[k] : (STR.fr[k] !== undefined ? STR.fr[k] : k); }
 function eur(n){ return n + "€"; }
@@ -1763,6 +1921,65 @@ function vitresHero(){
   });
 }
 
+/* V6 — l'ensemble du pack, pièce par pièce, à sa vraie proportion.
+   On lit les rôles depuis le manifeste : la story est la pièce 9:16, les
+   publications sont les 1:1. Rien n'est affiché qui n'existe pas. */
+function idDe(p){ return p.fichier.replace(/^creations\//,"").replace(/\.svg$/,""); }
+
+function ensemblePack(serie){
+  var s = SERIES_DEMO[serie]; if(!s) return "";
+  var posts  = s.pieces.filter(function(p){ return p.type !== "story"; });
+  var story  = s.pieces.filter(function(p){ return p.type === "story"; })[0];
+  var pack   = PACKS.filter(function(x){ return x.id === s.packSuggere; })[0] || PACKS[1];
+
+  var blocs = [];
+  if(posts[0]) blocs.push(morceau("p-post", posts[0], 0, t("v6.publication")));
+  if(story)    blocs.push(morceau("p-story", story, s.pieces.indexOf(story), t("v6.story")));
+  if(posts[1]) blocs.push(morceau("p-car1", posts[1], 1, t("v6.page") + " 2"));
+  if(posts[2]) blocs.push(morceau("p-car2", posts[2], 2, t("v6.page") + " 3"));
+
+  /* La légende est un vrai texte livré, repris du manifeste. */
+  blocs.push('<div class="piece3d p-legende">'
+    + '<span class="lab">' + esc(t("v6.legende")) + '</span>'
+    + '<p>' + esc(s.textes[0]) + '</p></div>');
+
+  return blocs.join("");
+
+  function morceau(classe, piece, index, role){
+    return '<button type="button" class="piece3d ' + classe + '" data-piece="' + index + '" '
+      + 'aria-label="' + esc(role + " — " + piece.nom) + '">'
+      + CREATIONS[idDe(piece)]
+      + '<span class="role">' + esc(role) + '</span></button>';
+  }
+}
+
+/* Ce que l'ensemble contient, écrit en clair sous la scène. Les nombres
+   viennent du catalogue, jamais d'une saisie décorative. */
+function compteDuPack(serie){
+  var s = SERIES_DEMO[serie]; if(!s) return "";
+  var p = PACKS.filter(function(x){ return x.id === s.packSuggere; })[0] || PACKS[1];
+  var items = [
+    ["<b>" + p.visuals + "</b> " + t("v6.visuels")],
+    ["<b>" + p.texts + "</b> " + t("v6.textes")],
+    ["<b>" + p.messages + "</b> " + t("v6.messages")]
+  ];
+  if(p.bio)     items.push(["<b>" + t("v6.bio") + "</b>"]);
+  if(p.stories) items.push(["<b>" + t("v6.stories") + "</b>"]);
+  items.push(["<b>" + esc(p.delay) + "</b> " + t("v6.delai")]);
+  return items.map(function(x){ return "<span>" + x[0] + "</span>"; }).join("");
+}
+
+/* Le prix du pack montré dans le hero. Même source que la carte : PACKS vient
+   de src/catalog.json. Aucun montant n'est écrit ici en dur. */
+function prixDuPack(serie){
+  var s = SERIES_DEMO[serie]; if(!s) return "";
+  var p = PACKS.filter(function(x){ return x.id === s.packSuggere; })[0] || PACKS[1];
+  return '<span class="nom">' + esc(packName(p)) + '</span>'
+       + '<span class="montant">' + esc(eur(p.price)) + '</span>'
+       + '<button type="button" class="btn" data-order="' + p.id + '">'
+       + esc(t("v6.commander")) + '</button>';
+}
+
 function placerVitres(){
   var stage = $("#hero-stage"); if(!stage) return;
   var vitres = $$(".vitre", stage), n = vitres.length;
@@ -1799,16 +2016,19 @@ function renderGalerie(){
   var stage = $("#hero-stage");
   if(!stage || typeof SERIES_DEMO === "undefined") return;
   var v = vitresHero();
-  stage.innerHTML = v.map(function(x, i){
-    return '<button type="button" class="vitre" data-vitre="' + i + '" data-serie="' + x.serie + '">'
-      + CREATIONS[x.id]
-      + '<span class="marque">' + esc(x.nom) + '</span></button>';
-  }).join("");
+  /* V6 : la scène montre l'ensemble du pack de la série active, au lieu d'une
+     vignette par série. Les séries se parcourent avec les puces et les flèches. */
+  stage.innerHTML = ensemblePack(vitreActive);
+  var compte = $("#pack-compte");
+  if(compte) compte.innerHTML = compteDuPack(vitreActive);
+  var prix = $("#pack-prix");
+  if(prix) prix.innerHTML = prixDuPack(vitreActive);
+  var ens = $("#hero-enseigne");
+  if(ens) ens.textContent = SERIES_DEMO[vitreActive].enseigne + " · " + SERIES_DEMO[vitreActive].secteur;
   $("#hero-puces").innerHTML = v.map(function(x, i){
     return '<button type="button" role="tab" aria-current="' + (i === vitreActive) + '" '
       + 'aria-label="' + esc(x.nom) + '"><i></i></button>';
   }).join("");
-  placerVitres();
   renderSerie();
 }
 
@@ -1816,8 +2036,7 @@ function choisirVitre(i){
   var n = SERIES_DEMO.length;
   vitreActive = (i % n + n) % n;
   serieActive = vitreActive;
-  placerVitres();
-  renderSerie();
+  renderGalerie();
 }
 
 function renderSerie(){
@@ -2219,9 +2438,21 @@ function hideSummons(){
 function runThreshold(){
   $("#threshold").style.display="none";
   document.body.classList.remove("is-locked");
-  $("#kiosk").classList.add("up");
+  suivrePrixHero();
   $("#amb-btn").classList.add("show");
   track("page_view",{lang:LANG,ref:refCode||null});
+}
+
+/* Le bandeau de prix collant recouvrait le prix affiché dans le hero — mesuré :
+   le montant du pack passait sous la barre. Tant que le prix du hero est à
+   l'écran, la barre reste rangée : elle n'apporte rien et masque l'essentiel. */
+function suivrePrixHero(){
+  var kiosk = $("#kiosk"), ancre = $("#pack-prix");
+  if(!kiosk) return;
+  if(!ancre || !("IntersectionObserver" in window)){ kiosk.classList.add("up"); return; }
+  new IntersectionObserver(function(entrees){
+    kiosk.classList.toggle("up", !entrees[0].isIntersecting);
+  }, {threshold:0}).observe(ancre);
 }
 
 function setupReveals(){
@@ -2310,6 +2541,7 @@ document.addEventListener("click", function(e){
   if((el = e.target.closest("[data-piece]"))){
     ouvrirLoupe(serieActive, Number(el.getAttribute("data-piece")), el); return;
   }
+  if((el = e.target.closest(".p-legende"))) return;   /* feuillet de texte, non cliquable */
   if((el = e.target.closest("[data-order]"))){ openSheet(Number(el.getAttribute("data-order"))); track("cta_click", {from:"order"}); return; }
   if((el = e.target.closest("[data-ready]"))){
     var r = READY.filter(function(x){ return x.id === Number(el.getAttribute("data-ready")); })[0];
@@ -2381,7 +2613,7 @@ document.addEventListener("keydown", function(e){
   if((e.key === "ArrowLeft" || e.key === "ArrowRight") && e.target.closest("#hero-scene, #hero-puces")){
     e.preventDefault();
     choisirVitre(vitreActive + (e.key === "ArrowRight" ? 1 : -1));
-    var actif = $('.vitre[data-rang="0"]'); if(actif) actif.focus();
+    var actif = $('.p-post'); if(actif) actif.focus();
     return;
   }
   if(e.key !== "Escape" || $("#handoff").open) return;
@@ -2428,8 +2660,8 @@ document.addEventListener("keydown", function(e){
   scene.addEventListener("pointerleave", function(){
     var st = $("#hero-stage"); if(st) st.style.transform = "";
   });
-  window.addEventListener("resize", placerVitres);
-  douxMouvement.addEventListener("change", placerVitres);
+  window.addEventListener("resize", renderGalerie);
+  douxMouvement.addEventListener("change", renderGalerie);
 })();
 /* piège à focus dans la feuille */
 $("#sheet").addEventListener("keydown", function(e){
