@@ -11,20 +11,22 @@
 
 **C'est tout.** Il n'y a aucun autre fichier binaire dans le dépôt.
 
-Tous les visuels visibles sur la vitrine en dehors de `hero.webp` sont des
-compositions SVG **générées par le code au chargement**, à partir d'un générateur
-déterministe (PRNG `mulberry32`, graine par hachage FNV-1a). Il n'existe donc
-aucun fichier image à exporter pour eux : ils n'existent pas sur disque.
+À une exception près — la photographie ci-dessous — tous les visuels de la
+vitrine sont des compositions SVG écrites dans `scripts/build-creations.js`,
+déterministes : relancer le script reproduit les mêmes fichiers à l'octet près.
 
 ### Créations de démonstration et couvertures
 
-**Aucune image n'a été importée, aucune n'a été générée par un modèle d'images.**
-La session qui les a produites n'avait aucun outil de génération d'images ; la
-limite a été annoncée plutôt que contournée. Chaque composition est écrite en SVG
-dans `scripts/build-creations.js` et rendue déterministe : relancer le script
-reproduit exactement les mêmes fichiers. La provenance de chaque élément
-graphique est donc ce script, ce qui règle la question des droits par
-construction — contrairement à `hero.webp`.
+**Aucune image tierce n'a été importée.** Ces vingt compositions sont écrites en
+SVG dans `scripts/build-creations.js` et rendues déterministes : relancer le
+script reproduit exactement les mêmes fichiers. Leur provenance est donc ce
+script, ce qui règle la question des droits par construction.
+
+Historique, pour que ce document reste exact : elles ont d'abord été produites
+dans une session qui n'avait aucun outil de génération d'images — la limite avait
+été annoncée plutôt que contournée. Depuis, ElevenLabs a été connecté et une
+première photographie a été générée puis intégrée (section suivante). Les deux
+approches coexistent : la photo est le sujet, le SVG porte le texte.
 
 Douze pièces réparties en trois séries — restaurant italien, salon de coiffure,
 boutique indépendante — chacune avec trois publications 1:1, une story 9:16 et
