@@ -134,7 +134,7 @@ ${filets(0, 520, W, 2, 22, C.laiton, .28)}
 <text x="540" y="200" text-anchor="middle" font-family="${SANS}" font-size="26" font-weight="600" letter-spacing="12" fill="${C.craie}">${esc(sur)}</text>
 <text x="540" y="470" text-anchor="middle" font-family="${SERIF}" font-size="185" fill="${C.papier}">${esc(mot1)}</text>
 <text x="540" y="660" text-anchor="middle" font-family="${SERIF}" font-size="185" font-style="italic" fill="${teinte}">${esc(mot2)}</text>
-<text x="540" y="880" text-anchor="middle" font-family="${SANS}" font-size="32" letter-spacing="4" fill="${C.craie}">${esc(bas)}</text>
+<text x="540" y="880" text-anchor="middle" font-family="${SANS}" font-size="32" fill="${C.craie}">${esc(bas)}</text>
 ${grain(id,W,H)}
 </svg>`;
 }
@@ -157,8 +157,8 @@ ${eventail(540, 1920, 1500, 21, teinte, .11)}
 ${filets(110, 950, 340, 3, 16, C.laiton, .5)}
 <text x="110" y="1120" font-family="${SANS}" font-size="40" fill="${C.craie}">${esc(bas)}</text>
 <rect x="110" y="1560" width="${W-220}" height="104" rx="52" fill="${C.papier}"/>
-<text x="540" y="1627" text-anchor="middle" font-family="${SANS}" font-size="36" font-weight="700" letter-spacing="4" fill="${C.encre}">${esc(action)}</text>
-<text x="540" y="1790" text-anchor="middle" font-family="${SANS}" font-size="26" letter-spacing="6" fill="${C.craie}" opacity=".7">CONCEPT DE DÉMONSTRATION</text>
+<text x="540" y="1627" text-anchor="middle" font-family="${SANS}" font-size="36" font-weight="700" letter-spacing="2" fill="${C.encre}">${esc(action)}</text>
+<text x="540" y="1790" text-anchor="middle" font-family="${SANS}" font-size="26" letter-spacing="3" fill="${C.craie}" opacity=".7">CONCEPT DE DÉMONSTRATION</text>
 ${grain(id,W,H)}
 </svg>`;
 }
@@ -188,7 +188,7 @@ ${defs(id, teinte)}
 <rect width="${W}" height="${H}" fill="url(#halo-${id})" opacity=".45"/>
 ${eventail(450, 1200, 820, 15, teinte, .1)}
 <text x="64" y="132" font-family="${SERIF}" font-size="92" fill="${C.papier}">${esc(nom)}</text>
-<text x="64" y="192" font-family="${SANS}" font-size="24" letter-spacing="6" fill="${teinte}">${esc(ligne)}</text>
+<text x="64" y="192" font-family="${SANS}" font-size="24" letter-spacing="1" fill="${teinte}">${esc(ligne)}</text>
 ${tuiles}
 <rect x="64" y="1032" width="${W-128}" height="1.5" fill="${C.laiton}" opacity=".5"/>
 <text x="64" y="1122" font-family="${SERIF}" font-size="80" fill="${C.laiton}">${esc(prix)}</text>

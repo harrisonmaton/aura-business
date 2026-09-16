@@ -31,7 +31,7 @@
       stroke="#D9B978" stroke-width="1" opacity="0.1"/><line x1="450" y1="1200" x2="1244.2" y2="996.1"
       stroke="#D9B978" stroke-width="1" opacity="0.1"/>
 <text x="64" y="132" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="92" fill="#F4F1EA">House</text>
-<text x="64" y="192" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="24" letter-spacing="6" fill="#D9B978">COLLECTION · EN PRÉPARATION</text>
+<text x="64" y="192" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="24" letter-spacing="1" fill="#D9B978">COLLECTION · EN PRÉPARATION</text>
 <g transform="translate(64 252) rotate(-1.6 173 125)">
       <rect width="346" height="250" fill="#1B1320"/>
       <rect width="346" height="250" fill="#D9B978" opacity=".13"/>

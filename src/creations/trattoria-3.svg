@@ -20,6 +20,6 @@
 <text x="540" y="200" text-anchor="middle" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="26" font-weight="600" letter-spacing="12" fill="#CFC7BC">RÉSERVATION</text>
 <text x="540" y="470" text-anchor="middle" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="185" fill="#F4F1EA">Une</text>
 <text x="540" y="660" text-anchor="middle" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="185" font-style="italic" fill="#FF6B4A">table ?</text>
-<text x="540" y="880" text-anchor="middle" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="32" letter-spacing="4" fill="#CFC7BC">Message privé · réponse dans l’heure</text>
+<text x="540" y="880" text-anchor="middle" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="32" fill="#CFC7BC">Message privé · réponse dans l’heure</text>
 <rect width="1080" height="1080" filter="url(#grain-trattoria-3)" opacity=".55"/>
 </svg>

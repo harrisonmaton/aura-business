@@ -135,11 +135,21 @@ const aller = async (page, url) => {
              visible: total ? Math.round(vus*100/total) : 0};
    };
    const q = s => [...document.querySelectorAll(s)].map(r);
-   return {post:q('.p-post'), story:q('.p-story'), car:q('.p-car1, .p-car2'), leg:q('.p-legende')};
+   return {post:q('.p-post'), story:q('.p-story'), car:q('.p-car1, .p-car2'), leg:q('.pack-legende')};
  });
+ /* La légende était un feuillet posé DANS la scène : le détecteur Impeccable a
+    mesuré qu'elle recouvrait à 100 % la mention « concept de démonstration » de
+    la story et 67 % de son étiquette. Elle est devenue un cartel hors scène :
+    les quatre visuels dans la scène, le texte livré à côté. */
  ck('hero V6 : les cinq pièces du pack sont présentes',
     scene.post.length===1 && scene.story.length===1 && scene.car.length===2 && scene.leg.length===1,
     `post ${scene.post.length} story ${scene.story.length} carrousel ${scene.car.length} légende ${scene.leg.length}`);
+ /* Le cartel doit porter un texte réellement livré, pas un libellé décoratif. */
+ ck('hero V6 : la légende livrée est citée en clair',
+    await p.evaluate(()=>{
+      const q=document.querySelector('.pack-legende q');
+      return !!q && q.textContent.trim().length > 20;
+    }), (await p.textContent('.pack-legende q')||'').trim().slice(0,52));
  ck('hero V6 : aucune pièce n\'est réduite à rien',
     [].concat(scene.post,scene.story,scene.car,scene.leg).every(b=>b.w>60 && b.h>60),
     JSON.stringify([].concat(scene.post,scene.story,scene.car).map(b=>b.w+'x'+b.h)));
@@ -149,7 +159,7 @@ const aller = async (page, url) => {
     achète. On exige que chaque pièce garde au moins un tiers de sa surface
     réellement atteignable au clic. */
  ck('hero V6 : aucune pièce n\'est masquée par une autre',
-    [].concat(scene.post, scene.story, scene.car, scene.leg).every(b=>b.visible>=33),
+    [].concat(scene.post, scene.story, scene.car, scene.leg).every(b=>b.visible>=50),
     JSON.stringify([].concat(scene.post,scene.story,scene.car,scene.leg).map(b=>b.visible+'%')));
  /* Le contenu annoncé vient du catalogue, pas d'une saisie décorative. */
  ck('hero V6 : le contenu du pack est écrit en clair', await p.evaluate(()=>{
@@ -295,11 +305,11 @@ const aller = async (page, url) => {
     pack, posées en absolu, retombaient à 2 × 2 px dans une grille sans contenu
     en flux. Le pack était invisible sur téléphone. */
  const packMobile = await mp.evaluate(()=>
-   [...document.querySelectorAll('.p-post,.p-story,.p-car1,.p-car2,.p-legende')]
+   [...document.querySelectorAll('.p-post,.p-story,.p-car1,.p-car2')]
      .map(e=>{ const b=e.getBoundingClientRect();
        return {c:e.className.replace('piece3d ',''), w:Math.round(b.width), h:Math.round(b.height)}; }));
- ck('mobile : les cinq pièces du pack sont dépliées à taille réelle',
-    packMobile.length===5 && packMobile.every(x=>x.w>=120 && x.h>=80),
+ ck('mobile : les quatre visuels du pack sont dépliés à taille réelle',
+    packMobile.length===4 && packMobile.every(x=>x.w>=120 && x.h>=80),
     JSON.stringify(packMobile.map(x=>x.c+' '+x.w+'x'+x.h)));
  ck('mobile : le prix et le bouton de commande du pack sont présents',
     await mp.evaluate(()=>{

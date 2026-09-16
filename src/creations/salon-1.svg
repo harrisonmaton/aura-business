@@ -20,6 +20,6 @@
 <text x="540" y="200" text-anchor="middle" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="26" font-weight="600" letter-spacing="12" fill="#CFC7BC">NOUVELLE SAISON</text>
 <text x="540" y="470" text-anchor="middle" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="185" fill="#F4F1EA">Coupe</text>
 <text x="540" y="660" text-anchor="middle" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="185" font-style="italic" fill="#FF2E88">nette.</text>
-<text x="540" y="880" text-anchor="middle" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="32" letter-spacing="4" fill="#CFC7BC">Sur rendez-vous · du mardi au samedi</text>
+<text x="540" y="880" text-anchor="middle" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="32" fill="#CFC7BC">Sur rendez-vous · du mardi au samedi</text>
 <rect width="1080" height="1080" filter="url(#grain-salon-1)" opacity=".55"/>
 </svg>

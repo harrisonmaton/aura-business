@@ -15,12 +15,16 @@
    ========================================================================= */
 :root{
   --ink:#07050C; --ink-2:#0B0812; --ink-3:#120E1C; --ink-4:#191327;
-  --paper:#F4F1EA; --muted:#A49CB6; --faint:#6E6784;
+  /* Mesuré : #6E6784 sur #0B0812 donne 3,7:1 — sous le minimum de 4,5:1.
+     Ce gris portait les libellés de colonnes et les états de commande. */
+  --paper:#F4F1EA; --muted:#BCB4CC; --faint:#948CA8;
   --brass:#D9B978; --brass-lo:#8A7440; --brass-hi:#F7E6BC;
   --pink:#FF2E88; --cyan:#57E9FF; --violet:#7B3BFF; --green:#4ADE9B;
   --rule:rgba(244,241,234,.11); --rule-soft:rgba(244,241,234,.06); --rule-brass:rgba(217,185,120,.34);
   --gutter:clamp(1rem,3vw,2.2rem);
-  --t-micro:.64rem;
+  /* Mesuré : 43 libellés fonctionnels tombaient à 10,24 px. Un back-office
+     se lit tous les jours ; rien de fonctionnel ne descend sous 11,5 px. */
+  --t-micro:.72rem;
   --ease:cubic-bezier(.16,.84,.3,1);
   color-scheme:dark;
 }
@@ -96,6 +100,12 @@ main{padding-block:clamp(1.6rem,4vw,3rem) 5rem;}
 .pipe .bar{height:2px; margin-top:.6rem; background:rgba(244,241,234,.1);}
 .pipe .bar i{display:block; height:100%; background:var(--brass); width:0; transition:width .7s var(--ease);}
 @media (max-width:640px){ .pipe{grid-template-columns:repeat(2,1fr);} }
+/* Mesuré à 320 px : deux colonnes de 150 px plus les gouttières donnaient
+   328 px de contenu pour 320 px d'écran. Le contenu minimal d'une cellule de
+   grille ne se réduit pas tout seul — d'où le min-width:0 explicite. */
+.pipe div,.tile{ min-width:0; }
+.pipe .s{ overflow-wrap:anywhere; }
+@media (max-width:380px){ .pipe{grid-template-columns:1fr;} }
 
 /* ——— cartes / listes ——————————————————————————————————————— */
 .card{border:1px solid var(--rule); background:var(--ink-2); padding:clamp(1.1rem,2.5vw,1.6rem);}
