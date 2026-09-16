@@ -3,6 +3,13 @@ const CAT=JSON.parse(require('fs').readFileSync(__dirname+'/../src/catalog.json'
 const CREA=JSON.parse(require('fs').readFileSync(__dirname+'/../src/creations/MANIFESTE.json','utf8'));
 const V='file://'+__dirname+'/../preview/vitrine.html', O='file://'+__dirname+'/../preview/back-office.html';
 const R=[]; const ck=(n,c,x)=>R.push((c?'PASS ':'ÉCHEC')+' — '+n+(x!==undefined?'  ['+x+']':''));
+/* Une erreur de navigation avalée transforme un fichier manquant en timeout
+   de clic 30 s plus tard, illisible. Elle doit tuer la recette tout de suite. */
+const aller = async (page, url) => {
+  const r = await page.goto(url, {timeout:20000});
+  if(r && !r.ok() && r.status() !== 0) throw new Error('navigation ' + r.status() + ' sur ' + url);
+  return r;
+};
 (async()=>{
  const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'}); const errs=[];
  const c=await b.newContext({viewport:{width:1440,height:900},locale:'fr-FR'});
@@ -14,7 +21,7 @@ const R=[]; const ck=(n,c,x)=>R.push((c?'PASS ':'ÉCHEC')+' — '+n+(x!==undefin
  p.on('console',m=>{if(m.type()==='error'&&!/ERR_TUNNEL/.test(m.text()))errs.push('CONSOLE: '+m.text());});
  const tiers=[];
  p.on('request',r=>{const u=r.url();if(!/^(file:|data:|blob:)/.test(u))tiers.push(u);});
- await p.goto(V,{timeout:20000}).catch(()=>{}); await p.waitForTimeout(1200);
+ await aller(p, V); await p.waitForTimeout(1200);
 
  ck('image d\'ambiance chargée', await p.evaluate(()=>{const i=document.getElementById('cinema-image');return i&&i.naturalWidth>1000;}));
  ck('contenu complet rendu', await p.locator('.menu-row').count()===3 && await p.locator('.ready-row').count()===4 && await p.locator('.qa-item').count()===5);
@@ -146,7 +153,7 @@ const R=[]; const ck=(n,c,x)=>R.push((c?'PASS ':'ÉCHEC')+' — '+n+(x!==undefin
  // mobile
  const m=await b.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
  const mp=await m.newPage(); mp.on('pageerror',e=>errs.push('MOBILE: '+e.message));
- await mp.goto(V,{timeout:20000}).catch(()=>{}); await mp.waitForTimeout(1100);
+ await aller(mp, V); await mp.waitForTimeout(1100);
  ck('mobile : aucun débordement', await mp.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth)<=1);
  /* Le test ci-dessus peut passer alors que la page déborde, parce que html,body ont overflow-x:clip.
     Celui-ci neutralise le clip d'abord : c'est le seul qui voit un vrai débordement.
@@ -171,13 +178,13 @@ const R=[]; const ck=(n,c,x)=>R.push((c?'PASS ':'ÉCHEC')+' — '+n+(x!==undefin
 
  // mouvement réduit
  const rm=await b.newContext({viewport:{width:390,height:844},reducedMotion:'reduce'});
- const rp=await rm.newPage(); await rp.goto(V,{timeout:20000}).catch(()=>{}); await rp.waitForTimeout(900);
+ const rp=await rm.newPage(); await aller(rp, V); await rp.waitForTimeout(900);
  ck('mouvement réduit : tout le contenu visible', await rp.evaluate(()=>[...document.querySelectorAll('.reveal')].every(e=>getComputedStyle(e).opacity==='1')));
 
  // back-office
  const o=await b.newContext({viewport:{width:1280,height:900}});
  const op=await o.newPage(); op.on('pageerror',e=>errs.push('OFFICE: '+e.message));
- await op.goto(O,{timeout:20000}).catch(()=>{}); await op.waitForTimeout(500);
+ await aller(op, O); await op.waitForTimeout(500);
  await op.click('.tabs button[data-tab="orders"]');
  const cases=[
   ["AURA — READY-2 Night · 80€\nDéjà prêt — livraison directe.\nTotal : 80€", 'ready','2','80','Déjà prêt (format actuel)'],
@@ -194,8 +201,24 @@ const R=[]; const ck=(n,c,x)=>R.push((c?'PASS ':'ÉCHEC')+' — '+n+(x!==undefin
  await op.click('.tabs button[data-tab="board"]'); await op.waitForTimeout(300);
  const connecte = (await op.textContent('#db-state')).includes('connect');
  if(connecte) ck('aucune commande perdue (4 enregistrées)', await op.evaluate(()=>document.querySelectorAll('#recent .order').length)===4);
- else { R.push('N/A   — enregistrement réel : registre hors ligne hors plateforme (testé séparément avec runtime simulé)');
-        ck('mode hors ligne annoncé sans erreur silencieuse', (await op.textContent('#db-state')).includes('Hors ligne')); }
+ else {
+   /* Sans registre distant, le back-office écrit dans le stockage local. Ce
+      n'était pas le cas avant : hors d'un artifact Claude, les commandes
+      étaient simplement perdues sans que rien ne le signale. */
+   const mode = (await op.textContent('#db-state')).trim();
+   ck('mode de stockage annoncé explicitement', /local|hors ligne/i.test(mode), mode);
+   const persiste = await op.evaluate(()=>{
+     try{
+       const avant = JSON.parse(localStorage.getItem('aura.commandes.v1') || '[]').length;
+       return {dispo:true, lignes:avant};
+     }catch(e){ return {dispo:false, lignes:0}; }
+   });
+   ck('registre local : les commandes enregistrées y sont réellement écrites',
+      persiste.dispo && persiste.lignes === 4, persiste.lignes + ' ligne(s)');
+   await op.reload(); await op.waitForTimeout(700);
+   ck('registre local : les commandes survivent à un rechargement',
+      await op.evaluate(()=>JSON.parse(localStorage.getItem('aura.commandes.v1')||'[]').length) === 4);
+ }
  await op.screenshot({path:'v3_office.png'});
  ck('back-office : aucun débordement', await op.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth)<=1);
  /* Le défaut commercial doit être visible par l'exploitant, pas seulement
@@ -214,7 +237,9 @@ const R=[]; const ck=(n,c,x)=>R.push((c?'PASS ':'ÉCHEC')+' — '+n+(x!==undefin
 
  console.log(R.join('\n'));
  const f=R.filter(x=>x.startsWith('ÉCHEC')).length;
- console.log(`\n${R.length} contrôles — ${R.length-f} PASS, ${f} ÉCHEC`);
+ const na = R.filter(x=>x.startsWith('N/A')).length;
+ const pass = R.length - f - na;
+ console.log(`\n${R.length-na} contrôles exécutés — ${pass} PASS, ${f} ÉCHEC` + (na?`  ·  ${na} N/A (non exécuté, ne compte pas comme réussi)`:''));
  console.log('ERREURS JS : '+(errs.length?JSON.stringify(errs,null,1):'aucune'));
  await b.close();
  /* EXIT_ON_FAIL : un test rouge doit faire échouer le processus, sinon une CI passe au vert sur un défaut */

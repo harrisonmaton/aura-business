@@ -36,25 +36,25 @@
       <rect width="346" height="250" fill="#1B1320"/>
       <rect width="346" height="250" fill="#FF2E88" opacity=".13"/>
       <rect width="346" height="250" fill="none" stroke="#D9B978" stroke-width="1.5" opacity=".55"/>
-      <text x="26" y="52" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="18" font-weight="600" letter-spacing="5" fill="#FF2E88">PUBLICATION</text>
+      <text x="26" y="52" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="18" font-weight="600" letter-spacing="5" fill="#FF2E88">PRÉVU</text>
       <text x="26" y="140" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="58" fill="#F4F1EA">8 visuels</text>
-      <text x="26" y="188" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="22" fill="#CFC7BC" opacity=".8">format 1:1</text>
+      <text x="26" y="188" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="22" fill="#CFC7BC" opacity=".8">non composés</text>
       <rect x="26" y="212" width="110" height="1.5" fill="#D9B978" opacity="0.45"/><rect x="26" y="222" width="110" height="1.5" fill="#D9B978" opacity="0.45"/>
     </g><g transform="translate(452 404) rotate(1.8 173 125)">
       <rect width="346" height="250" fill="#1B1320"/>
       <rect width="346" height="250" fill="#7B3BFF" opacity=".13"/>
       <rect width="346" height="250" fill="none" stroke="#D9B978" stroke-width="1.5" opacity=".55"/>
-      <text x="26" y="52" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="18" font-weight="600" letter-spacing="5" fill="#7B3BFF">LÉGENDES</text>
+      <text x="26" y="52" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="18" font-weight="600" letter-spacing="5" fill="#7B3BFF">PRÉVU</text>
       <text x="26" y="140" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="58" fill="#F4F1EA">8 textes</text>
-      <text x="26" y="188" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="22" fill="#CFC7BC" opacity=".8">prêts à coller</text>
+      <text x="26" y="188" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="22" fill="#CFC7BC" opacity=".8">non composés</text>
       <rect x="26" y="212" width="110" height="1.5" fill="#D9B978" opacity="0.45"/><rect x="26" y="222" width="110" height="1.5" fill="#D9B978" opacity="0.45"/>
     </g><g transform="translate(128 690) rotate(-1.1 173 125)">
       <rect width="346" height="250" fill="#1B1320"/>
       <rect width="346" height="250" fill="#FF2E88" opacity=".13"/>
       <rect width="346" height="250" fill="none" stroke="#D9B978" stroke-width="1.5" opacity=".55"/>
-      <text x="26" y="52" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="18" font-weight="600" letter-spacing="5" fill="#FF2E88">USAGE</text>
-      <text x="26" y="140" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="58" fill="#F4F1EA">sans brief</text>
-      <text x="26" y="188" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="22" fill="#CFC7BC" opacity=".8">à composer</text>
+      <text x="26" y="52" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="18" font-weight="600" letter-spacing="5" fill="#FF2E88">STATUT</text>
+      <text x="26" y="140" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="58" fill="#F4F1EA">en préparation</text>
+      <text x="26" y="188" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="22" fill="#CFC7BC" opacity=".8">aucun fichier livrable</text>
       <rect x="26" y="212" width="110" height="1.5" fill="#D9B978" opacity="0.45"/><rect x="26" y="222" width="110" height="1.5" fill="#D9B978" opacity="0.45"/>
     </g>
 <rect x="64" y="1032" width="772" height="1.5" fill="#D9B978" opacity=".5"/>

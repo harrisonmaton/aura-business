@@ -225,29 +225,69 @@ const SERIES = [
             'La sélection de la semaine est en boutique, du mercredi au samedi.']}
 ];
 
-const COUVERTURES = [
-  {id:'c-essentiel', nom:'Essentiel', prix:'50 €', teinte:C.rose,   second:C.violet, ligne:'SUR BRIEF · 24–48 H',
-   vignettes:[['PUBLICATION','8 visuels','format 1:1'],['LÉGENDES','8 textes','prêts à coller'],['MESSAGES','4 réponses','clientèle']]},
-  {id:'c-signature', nom:'Signature', prix:'90 €', teinte:C.laiton, second:C.corail, ligne:'SUR BRIEF · 48 H',
-   vignettes:[['PUBLICATION','12 visuels','format 1:1'],['LÉGENDES','12 textes','prêts à coller'],['PROFIL','bio réécrite','+ 6 messages']]},
-  {id:'c-atelier',   nom:'Atelier',   prix:'150 €',teinte:C.cyan,   second:C.violet, ligne:'SUR BRIEF · 48–72 H',
-   vignettes:[['PUBLICATION','18 visuels','un mois'],['LÉGENDES','18 textes','prêts à coller'],['PROFIL','bio réécrite','+ 10 messages']]},
-  {id:'c-maison',    nom:'Maison',    prix:'250 €',teinte:C.violet, second:C.rose,   ligne:'SUR BRIEF · 72 H',
-   vignettes:[['PUBLICATION','24 visuels','un mois'],['STORIES','séquences','9:16'],['PROFIL','bio réécrite','+ 12 messages']]},
-  {id:'c-street',    nom:'Street',    prix:'40 €', teinte:C.cyan,   second:C.rose,   ligne:'COLLECTION · EN PRÉPARATION',
-   vignettes:[['PUBLICATION','4 visuels','format 1:1'],['LÉGENDES','4 textes','prêts à coller'],['USAGE','sans brief','à composer']]},
-  {id:'c-night',     nom:'Night',     prix:'80 €', teinte:C.rose,   second:C.violet, ligne:'COLLECTION · EN PRÉPARATION',
-   vignettes:[['PUBLICATION','8 visuels','format 1:1'],['LÉGENDES','8 textes','prêts à coller'],['USAGE','sans brief','à composer']]},
-  {id:'c-heat',      nom:'Heat',      prix:'120 €',teinte:C.corail, second:C.laiton, ligne:'COLLECTION · EN PRÉPARATION',
-   vignettes:[['PUBLICATION','12 visuels','format 1:1'],['LÉGENDES','12 textes','prêts à coller'],['USAGE','sans brief','à composer']]},
-  {id:'c-house',     nom:'House',     prix:'200 €',teinte:C.laiton, second:C.cyan,   ligne:'COLLECTION · EN PRÉPARATION',
-   vignettes:[['PUBLICATION','20 visuels','format 1:1'],['PROFIL','bio incluse','+ légendes'],['USAGE','sans brief','à composer']]}
-];
+/* Les couvertures se déduisent du catalogue au lieu de le recopier. Un prix ou
+   un délai réécrit ici aurait fini par contredire la page sans que personne
+   ne le voie : un visuel ment plus discrètement qu'une ligne de texte. */
+const CATALOGUE = JSON.parse(fs.readFileSync(path.join(RACINE,'src','catalog.json'),'utf8'));
+const TEINTES = {
+  Essentiel:[C.rose,C.violet], Signature:[C.laiton,C.corail],
+  Atelier:[C.cyan,C.violet],   Maison:[C.violet,C.rose],
+  Street:[C.cyan,C.rose],      Night:[C.rose,C.violet],
+  Heat:[C.corail,C.laiton],    House:[C.laiton,C.cyan]
+};
+const slug = n => 'c-' + n.toLowerCase();
+
+const COUVERTURES = [].concat(
+  CATALOGUE.brief.map(p => {
+    const [teinte, second] = TEINTES[p.name];
+    const vignettes = [
+      ['PUBLICATION', p.visuals + ' visuels', 'format 1:1'],
+      ['LÉGENDES',    p.texts + ' textes',    'prêts à coller'],
+      p.bio ? ['PROFIL', 'bio réécrite', '+ ' + p.messages + ' messages']
+            : ['MESSAGES', p.messages + ' réponses', 'clientèle']
+    ];
+    return {id:slug(p.name), nom:p.name, prix:p.price + ' €', teinte, second,
+            ligne:'SUR BRIEF · ' + p.delay.toUpperCase(), vignettes};
+  }),
+  CATALOGUE.ready.map(r => {
+    const [teinte, second] = TEINTES[r.name];
+    const dispo = r.assets > 0;
+    /* Une collection sans fichier ne doit pas annoncer son contenu comme
+       livrable : la couverture dit ce qui est prévu, pas ce qui existe. */
+    const vignettes = dispo
+      ? [['PUBLICATION', r.visuals + ' visuels', 'format 1:1'],
+         ['LÉGENDES',    r.texts + ' textes',    'prêts à coller'],
+         r.bio ? ['PROFIL','bio incluse','+ légendes'] : ['USAGE','sans brief','prêt à publier']]
+      : [['PRÉVU', r.visuals + ' visuels', 'non composés'],
+         ['PRÉVU', r.texts + ' textes',    'non composés'],
+         ['STATUT', 'en préparation',      'aucun fichier livrable']];
+    return {id:slug(r.name), nom:r.name, prix:r.price + ' €', teinte, second,
+            ligne:'COLLECTION · ' + (dispo ? 'DISPONIBLE' : 'EN PRÉPARATION'), vignettes};
+  })
+);
 
 /* ─── Écriture ─────────────────────────────────────────────────────────── */
 
-fs.rmSync(SORTIE, {recursive:true, force:true});
+/* Ce script ne supprime que les fichiers qu'il a lui-même écrits, recensés
+   dans le manifeste précédent. Un rmSync du dossier entier détruisait tout
+   asset déposé à la main — une exportation Canva, un fichier de collection —
+   à la première régénération, sans avertissement. */
 fs.mkdirSync(SORTIE, {recursive:true});
+const CHEMIN_MANIFESTE = path.join(SORTIE, 'MANIFESTE.json');
+if(fs.existsSync(CHEMIN_MANIFESTE)){
+  const ancien = JSON.parse(fs.readFileSync(CHEMIN_MANIFESTE,'utf8'));
+  const siens = []
+    .concat((ancien.series||[]).flatMap(s => (s.pieces||[]).map(p => p.fichier)))
+    .concat((ancien.couvertures||[]).map(c => c.fichier))
+    .map(f => path.basename(f));
+  let retires = 0;
+  for(const f of siens){
+    const p = path.join(SORTIE, f);
+    if(fs.existsSync(p)){ fs.unlinkSync(p); retires++; }
+  }
+  const restants = fs.readdirSync(SORTIE).filter(f => f !== 'MANIFESTE.json');
+  if(restants.length) console.log(`  ${restants.length} fichier(s) non générés par ce script, conservés : ${restants.join(', ')}`);
+}
 
 const manifeste = {
   _provenance: "Toutes ces compositions sont produites par scripts/build-creations.js. "

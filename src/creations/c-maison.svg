@@ -38,15 +38,15 @@
       <rect width="346" height="250" fill="none" stroke="#D9B978" stroke-width="1.5" opacity=".55"/>
       <text x="26" y="52" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="18" font-weight="600" letter-spacing="5" fill="#7B3BFF">PUBLICATION</text>
       <text x="26" y="140" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="58" fill="#F4F1EA">24 visuels</text>
-      <text x="26" y="188" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="22" fill="#CFC7BC" opacity=".8">un mois</text>
+      <text x="26" y="188" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="22" fill="#CFC7BC" opacity=".8">format 1:1</text>
       <rect x="26" y="212" width="110" height="1.5" fill="#D9B978" opacity="0.45"/><rect x="26" y="222" width="110" height="1.5" fill="#D9B978" opacity="0.45"/>
     </g><g transform="translate(452 404) rotate(1.8 173 125)">
       <rect width="346" height="250" fill="#1B1320"/>
       <rect width="346" height="250" fill="#FF2E88" opacity=".13"/>
       <rect width="346" height="250" fill="none" stroke="#D9B978" stroke-width="1.5" opacity=".55"/>
-      <text x="26" y="52" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="18" font-weight="600" letter-spacing="5" fill="#FF2E88">STORIES</text>
-      <text x="26" y="140" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="58" fill="#F4F1EA">séquences</text>
-      <text x="26" y="188" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="22" fill="#CFC7BC" opacity=".8">9:16</text>
+      <text x="26" y="52" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="18" font-weight="600" letter-spacing="5" fill="#FF2E88">LÉGENDES</text>
+      <text x="26" y="140" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="58" fill="#F4F1EA">24 textes</text>
+      <text x="26" y="188" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="22" fill="#CFC7BC" opacity=".8">prêts à coller</text>
       <rect x="26" y="212" width="110" height="1.5" fill="#D9B978" opacity="0.45"/><rect x="26" y="222" width="110" height="1.5" fill="#D9B978" opacity="0.45"/>
     </g><g transform="translate(128 690) rotate(-1.1 173 125)">
       <rect width="346" height="250" fill="#1B1320"/>

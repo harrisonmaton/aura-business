@@ -59,6 +59,7 @@ header .row{display:flex; align-items:center; justify-content:space-between; gap
 .dot{width:7px; height:7px; border-radius:50%; background:var(--faint);}
 .dot.ok{background:var(--green); box-shadow:0 0 10px rgba(74,222,155,.6);}
 .dot.ko{background:var(--pink);}
+.dot.warn{background:var(--brass); box-shadow:0 0 10px rgba(217,185,120,.5);}
 
 main{padding-block:clamp(1.6rem,4vw,3rem) 5rem;}
 .panel[hidden]{display:none;}
@@ -385,14 +386,32 @@ function toast(m){ var e = $("#toast"); e.textContent = m; e.classList.add("show
    ════════════════════════════════════════════════════════════════════ */
 var db = null, orders = [], unsub = null;
 
+/* Registre local : window.claude.use("db") n'existe que dans un artifact Claude.
+   Le back-office en dépendait pour enregistrer les commandes — donc hors de ce
+   runtime, rien n'était conservé. Le stockage du navigateur prend le relais :
+   les commandes survivent à un rechargement dans n'importe quel navigateur.
+   Ce n'est pas une base partagée, et l'interface le dit. */
+var CLE_LOCALE = "aura.commandes.v1";
+var registreLocal = {
+  disponible:function(){ try{ localStorage.setItem("__t","1"); localStorage.removeItem("__t"); return true; }catch(e){ return false; } },
+  lire:function(){ try{ return JSON.parse(localStorage.getItem(CLE_LOCALE) || "[]"); }catch(e){ return []; } },
+  ecrire:function(liste){ try{ localStorage.setItem(CLE_LOCALE, JSON.stringify(liste)); return true; }catch(e){ return false; } }
+};
+
 async function connect(){
   try{
     if(window.claude && window.claude.use) db = await window.claude.use("db");
   }catch(e){ db = null; }
   var dot = $("#db-dot"), st = $("#db-state");
   if(!db){
-    dot.className = "dot ko";
-    st.textContent = "Hors ligne";
+    if(registreLocal.disponible()){
+      orders = registreLocal.lire();
+      dot.className = "dot warn";
+      st.textContent = "Registre local (cet appareil)";
+    } else {
+      dot.className = "dot ko";
+      st.textContent = "Hors ligne — aucun stockage disponible";
+    }
     renderAll();
     return;
   }
@@ -415,25 +434,52 @@ async function connect(){
   }
 }
 
+/* Sans registre distant, on écrit localement plutôt que de perdre la commande.
+   putOrder est idempotent : réenregistrer le même identifiant remplace la
+   ligne au lieu d'en créer une seconde. */
 async function putOrder(o){
-  if(!db){ toast("Registre non disponible : rien n'a été enregistré."); return false; }
-  try{
-    await db.collection("orders").doc(o.id).set(o);
-    return true;
-  }catch(e){
-    toast(e && e.code === "quota_exceeded" ? "Registre plein — archivez d'anciennes commandes." : "Enregistrement refusé.");
+  if(db){
+    try{
+      await db.collection("orders").doc(o.id).set(o);
+      return true;
+    }catch(e){
+      toast(e && e.code === "quota_exceeded" ? "Registre plein — archivez d'anciennes commandes." : "Enregistrement refusé.");
+      return false;
+    }
+  }
+  if(!registreLocal.disponible()){
+    toast("Aucun stockage disponible : rien n'a été enregistré.");
     return false;
   }
+  var liste = registreLocal.lire();
+  var i = liste.findIndex(function(x){ return x.id === o.id; });
+  if(i >= 0) liste[i] = o; else liste.push(o);
+  if(!registreLocal.ecrire(liste)){ toast("Stockage plein — enregistrement refusé."); return false; }
+  orders = liste;
+  renderAll();
+  return true;
 }
 async function patchOrder(id, fields){
-  if(!db) return;
-  try{ await db.collection("orders").doc(id).update(fields); }
-  catch(e){ toast("Mise à jour refusée."); }
+  if(db){
+    try{ await db.collection("orders").doc(id).update(fields); }
+    catch(e){ toast("Mise à jour refusée."); }
+    return;
+  }
+  var liste = registreLocal.lire();
+  var i = liste.findIndex(function(x){ return x.id === id; });
+  if(i < 0) return;
+  Object.keys(fields).forEach(function(k){ liste[i][k] = fields[k]; });
+  registreLocal.ecrire(liste); orders = liste; renderAll();
 }
 async function dropOrder(id){
-  if(!db) return;
-  try{ await db.collection("orders").doc(id).delete(); toast("Commande supprimée."); }
-  catch(e){ toast("Suppression refusée."); }
+  if(db){
+    try{ await db.collection("orders").doc(id).delete(); toast("Commande supprimée."); }
+    catch(e){ toast("Suppression refusée."); }
+    return;
+  }
+  var liste = registreLocal.lire().filter(function(x){ return x.id !== id; });
+  registreLocal.ecrire(liste); orders = liste; renderAll();
+  toast("Commande supprimée.");
 }
 
 /* ════════════════════════════════════════════════════════════════════

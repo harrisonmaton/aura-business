@@ -34,6 +34,27 @@ for(const r of cat.ready){
   else if(Number(oo[1])!==r.assets) err.push(`back-office : ${r.name} annonce ${oo[1]} fichier(s) au lieu de ${r.assets}`);
 }
 if(err.length){ console.log('ÉCHEC — divergence de catalogue :'); err.forEach(e=>console.log('  '+e)); process.exit(1); }
+/* Les délais annoncés vivent dans catalog.json. Recopiés dans une page ou dans
+   un visuel de couverture, ils finissent par promettre un délai périmé. */
+for(const p of cat.brief){
+  if(!p.delay){ err.push(`catalog.json : pack ${p.name} sans délai`); continue; }
+  const v=src.vitrine.match(new RegExp(`id:${p.id},[^}]*delay:"([^"]+)"`));
+  if(!v) err.push(`vitrine : pack ${p.name} sans délai`);
+  else if(v[1]!==p.delay) err.push(`vitrine : ${p.name} annonce « ${v[1]} » au lieu de « ${p.delay} »`);
+}
+/* Les couvertures sont générées depuis le catalogue : si l'une d'elles affiche
+   un prix ou un délai qui n'en vient pas, c'est qu'elle a été recopiée. */
+const fs2=require('fs'), dirC=__dirname+'/../src/creations';
+for(const c of cat.brief.concat(cat.ready)){
+  const f=`${dirC}/c-${c.name.toLowerCase()}.svg`;
+  if(!fs2.existsSync(f)){ err.push(`couverture manquante pour ${c.name}`); continue; }
+  const svg=fs2.readFileSync(f,'utf8');
+  if(!svg.includes(`${c.price} €`)) err.push(`couverture ${c.name} : prix ${c.price} € absent du visuel`);
+  if(c.delay && !svg.includes(c.delay.toUpperCase())) err.push(`couverture ${c.name} : délai « ${c.delay} » absent du visuel`);
+  if(c.assets === 0 && !/EN PRÉPARATION/.test(svg)) err.push(`couverture ${c.name} : sans fichier mais non marquée en préparation`);
+}
+if(err.length){ console.log('ÉCHEC — divergence de catalogue :'); err.forEach(e=>console.log('  '+e)); process.exit(1); }
+
 const vendables=cat.ready.filter(r=>r.assets>0).length;
 console.log(`PASS  — catalogue cohérent : ${cat.brief.length} packs sur brief + ${cat.ready.length} collections, prix et fichiers identiques dans les deux pages`);
 console.log(`PASS  — collections livrables : ${vendables}/${cat.ready.length} (les autres sont en assets_missing)`);
