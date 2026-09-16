@@ -4,7 +4,6 @@
 
 | Fichier | Taille | Nature | Droits |
 |---|---|---|---|
-| `src/hero.webp` | 140 248 o | Image d'ambiance de la page d'accueil, recompressée, servie en fichier séparé cacheable | **non établis — voir ci-dessous** |
 | `src/fonts/*.woff2` | 220 768 o (6 fichiers) | Archivo et Bodoni Moda, sous-ensembles latin et latin-ext | SIL OFL 1.1, redistribution autorisée, `src/fonts/OFL.txt` |
 | `src/creations/*.svg` | ~85 Ko (20 fichiers) | 12 pièces de démonstration (3 séries) + 8 couvertures de packs | **produites par `scripts/build-creations.js`** — voir ci-dessous |
 | `v3_office.png`, `v3_office_rempli.png` | 89 / 91 Ko | Captures du back-office, vide et rempli. Pièces de recette, pas des livrables | production interne |
@@ -50,36 +49,24 @@ vérifié par le contrôle « aucune requête vers un tiers » de la recette. Le
 familles sont sous SIL Open Font License 1.1, qui autorise explicitement la
 redistribution, y compris embarquée.
 
-## Réserve sur `hero.webp` — toujours ouverte
+## `hero.webp` — retiré du dépôt
 
-**La provenance et la licence de cette image ne sont pas documentées.**
-Recherche menée sans résultat :
+**Le fichier n'existe plus.** Sa provenance n'a jamais pu être établie : ni le
+fichier ni sa version d'origine avant recompression (251 202 o, extraite du
+base64 du commit `8c7b766`) ne portaient la moindre métadonnée — pas d'`EXIF`,
+pas de `XMP`, pas d'`ICCP`, pas de manifeste C2PA — et aucun document du dépôt
+n'indiquait son origine. Photographie ou image générée : indéterminable.
 
-- le fichier ne contient **aucune métadonnée** : un seul chunk `VP8`, pas d'`EXIF`,
-  pas de `XMP`, pas d'`ICCP`, pas de manifeste C2PA ;
-- la version d'origine, avant externalisation et recompression (251 202 o, extraite
-  du base64 inline du commit `8c7b766`), n'en contient **pas davantage** : l'image
-  est donc arrivée dans le projet déjà dépourvue de toute trace d'origine ;
-- aucun document du dépôt n'indique d'où elle vient.
+Plutôt que de laisser cette incertitude bloquer indéfiniment toute publication
+commerciale, l'image est **remplacée par `src/creations/accueil.svg`**, une
+composition Ocean Drive après minuit écrite dans `scripts/build-creations.js` :
+façade streamline moderne, marquise néon, palmiers, chaussée mouillée, horizon
+de ville. Sa provenance est ce script. Deux contrôles de recette vérifient que
+l'image d'accueil est bien une composition du dépôt et qu'aucun élément ni
+aucune règle CSS ne charge encore `hero.webp`.
 
-Elle représente une façade d'hôtel art déco en bord de mer, de nuit. Qu'elle soit
-une photographie ou une image générée **n'est pas déterminable** à partir des
-éléments disponibles, et rien ne permet d'affirmer l'un ou l'autre.
-
-Conséquences, tant que ce n'est pas tranché :
-
-1. elle **ne doit pas** être considérée comme libre d'usage commercial ;
-2. si elle représentait un bâtiment réel identifiable, un droit à l'image des biens
-   pourrait s'ajouter à la question de la licence ;
-3. la mention en pied de page a été **corrigée** : elle affirmait que les visuels du
-   site étaient des compositions générées et non des photographies, ce qui n'était
-   pas vérifiable pour cette image. Elle attribue désormais la génération aux seules
-   vignettes et compositions décoratives — ce qui est vrai et vérifiable — et ne dit
-   plus rien de l'origine de l'image d'accueil. Contrôle de non-régression dans la
-   recette : « mention légale : aucune affirmation sur l'origine de l'image d'accueil ».
-
-**Avant toute publication commerciale**, il faut soit retrouver la source et la
-licence de ce fichier, soit le remplacer par une image dont la provenance est écrite.
+Les miniatures des collections, qui recadraient cette image, affichent
+désormais la couverture du pack correspondant.
 
 ## Collections « Déjà prêt » — aucune n'est livrable
 

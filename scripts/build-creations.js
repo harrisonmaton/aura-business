@@ -179,6 +179,114 @@ ${grain(id,W,H)}
 </svg>`;
 }
 
+/* ─── Image d'accueil ──────────────────────────────────────────────────────
+   Remplace hero.webp, dont la provenance n'a jamais pu être établie : ni le
+   fichier ni sa version d'origine ne portaient la moindre métadonnée, et rien
+   ne permettait d'affirmer qu'il était libre d'usage commercial. Celle-ci est
+   écrite ici, donc sa provenance est ce fichier.
+   Ocean Drive après minuit : façade streamline moderne, marquise néon,
+   palmiers en ombres, horizon de ville, chaussée mouillée. ──────────────── */
+function accueil(){
+  const W=1672, H=941, id='accueil';
+  const sol = 660;                                   /* ligne de chaussée */
+  /* Palmier géométrique : tronc incurvé et palmes en éventail. */
+  const palmier = (x, y, h, ech, op) => {
+    let d = `<path d="M${x} ${y} q${-8*ech} ${-h*0.5} ${4*ech} ${-h}" stroke="#05040A" stroke-width="${5*ech}" fill="none" opacity="${op}"/>`;
+    for(let i=0;i<9;i++){
+      const a = -Math.PI*0.06 - (Math.PI*0.88) * i/8;
+      const lx = x + 4*ech + Math.cos(a)*78*ech, ly = y - h + Math.sin(a)*52*ech;
+      d += `<path d="M${x+4*ech} ${y-h} Q${(x+4*ech+lx)/2} ${(y-h+ly)/2 - 26*ech} ${lx} ${ly}"
+        stroke="#05040A" stroke-width="${3.4*ech}" fill="none" opacity="${op}"/>`;
+    }
+    return d;
+  };
+  /* Fenêtre éclairée de la façade. */
+  const fen = (x,y,w,h,o) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#F2C98A" opacity="${o}"/>`;
+  let fenetres = '';
+  for(let e=0;e<4;e++) for(let c=0;c<7;c++){
+    const o = 0.14 + ((e*7+c)%5)*0.11;
+    fenetres += fen(1012 + c*62, 250 + e*86, 40, 54, o.toFixed(2));
+  }
+  let refl = '';
+  for(let i=0;i<26;i++){
+    const x = 40 + i*64, w = 10 + (i%4)*16;
+    refl += `<rect x="${x}" y="${sol + 18 + (i%5)*22}" width="${w}" height="2.5"
+      fill="${i%3===0?C.rose:(i%3===1?C.cyan:C.laiton)}" opacity="${(0.05+(i%4)*0.035).toFixed(3)}"/>`;
+  }
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}"
+    role="img" aria-label="Composition Ocean Drive après minuit : façade art déco, néons, palmiers">
+<defs>
+  <linearGradient id="ciel-${id}" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#0A0714"/><stop offset=".46" stop-color="#1A1030"/>
+    <stop offset=".72" stop-color="#3A1740"/><stop offset="1" stop-color="#6B2440"/>
+  </linearGradient>
+  <linearGradient id="sol-${id}" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#150D22"/><stop offset="1" stop-color="#07050E"/>
+  </linearGradient>
+  <radialGradient id="lune-${id}" cx="20%" cy="18%" r="34%">
+    <stop offset="0" stop-color="${C.cyan}" stop-opacity=".22"/><stop offset="1" stop-color="${C.cyan}" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="neon-${id}" cx="62%" cy="34%" r="46%">
+    <stop offset="0" stop-color="${C.rose}" stop-opacity=".34"/><stop offset="1" stop-color="${C.rose}" stop-opacity="0"/>
+  </radialGradient>
+  <filter id="flou-${id}"><feGaussianBlur stdDeviation="16"/></filter>
+  <filter id="grain-${id}"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2"/>
+    <feColorMatrix type="saturate" values="0"/>
+    <feComponentTransfer><feFuncA type="linear" slope=".05"/></feComponentTransfer></filter>
+</defs>
+<rect width="${W}" height="${H}" fill="url(#ciel-${id})"/>
+<rect width="${W}" height="${H}" fill="url(#lune-${id})"/>
+<rect width="${W}" height="${H}" fill="url(#neon-${id})"/>
+
+<!-- horizon de ville -->
+<g opacity=".5">${Array.from({length:34},(_,i)=>{
+  const x=i*52, h=16+((i*37)%46);
+  return `<rect x="${x}" y="${sol-h-6}" width="34" height="${h}" fill="#0C0818"/>`;
+}).join('')}</g>
+<rect x="0" y="${sol-8}" width="${W}" height="3" fill="${C.cyan}" opacity=".13"/>
+
+<!-- façade streamline : volume principal et rotonde -->
+<path d="M980 ${sol} L980 190 Q980 132 1046 132 L1560 132 Q1620 132 1620 190 L1620 ${sol} Z" fill="#141020"/>
+<path d="M980 ${sol} L980 190 Q980 132 1046 132 L1140 132 L1140 ${sol} Z" fill="#191426"/>
+${fenetres}
+<!-- marquise néon : trois arcs -->
+<path d="M968 208 Q968 120 1058 120 L1566 120" stroke="${C.rose}" stroke-width="7" fill="none" opacity=".85" filter="url(#flou-${id})"/>
+<path d="M968 208 Q968 120 1058 120 L1566 120" stroke="#FFC7DF" stroke-width="2.4" fill="none" opacity=".95"/>
+<path d="M974 236 Q974 150 1060 150 L1566 150" stroke="${C.cyan}" stroke-width="5" fill="none" opacity=".5" filter="url(#flou-${id})"/>
+<path d="M974 236 Q974 150 1060 150 L1566 150" stroke="#BFF3FF" stroke-width="1.6" fill="none" opacity=".8"/>
+<path d="M980 470 L1620 470" stroke="${C.laiton}" stroke-width="3" opacity=".62"/>
+<path d="M980 486 L1620 486" stroke="${C.laiton}" stroke-width="1.4" opacity=".34"/>
+<!-- auvent du rez-de-chaussée -->
+<path d="M962 500 L1620 500 L1620 520 L962 520 Z" fill="#1E1730"/>
+<path d="M962 520 L1620 520" stroke="${C.laiton}" stroke-width="2" opacity=".5"/>
+<g opacity=".9">${Array.from({length:9},(_,i)=>fen(1008+i*66, 540, 44, 96, (0.2+(i%4)*0.13).toFixed(2))).join('')}</g>
+<!-- colonnes -->
+${Array.from({length:8},(_,i)=>`<rect x="${992+i*78}" y="520" width="9" height="${sol-520}" fill="#0B0814" opacity=".85"/>`).join('')}
+
+<!-- chaussée mouillée -->
+<rect x="0" y="${sol}" width="${W}" height="${H-sol}" fill="url(#sol-${id})"/>
+${refl}
+<!-- reflet vertical de la marquise -->
+<path d="M1100 ${sol} L1092 ${H}" stroke="${C.rose}" stroke-width="16" opacity=".1" filter="url(#flou-${id})"/>
+<path d="M1300 ${sol} L1312 ${H}" stroke="${C.cyan}" stroke-width="12" opacity=".07" filter="url(#flou-${id})"/>
+
+<!-- palmiers -->
+${palmier(232, sol+8, 300, 1.25, .96)}
+${palmier(430, sol+2, 238, 1.0, .9)}
+${palmier(806, sol+6, 272, 1.12, .93)}
+${palmier(1592, sol+10, 320, 1.3, .96)}
+
+<!-- lampadaires art déco -->
+${[120, 560, 900].map(x=>`<g opacity=".8">
+  <rect x="${x}" y="${sol-176}" width="4" height="176" fill="#0B0814"/>
+  <circle cx="${x+2}" cy="${sol-182}" r="9" fill="${C.laiton}" opacity=".8"/>
+  <circle cx="${x+2}" cy="${sol-182}" r="24" fill="${C.laiton}" opacity=".14" filter="url(#flou-${id})"/>
+</g>`).join('')}
+
+<rect width="${W}" height="${H}" filter="url(#grain-${id})" opacity=".6"/>
+</svg>`;
+}
+
 /* ─── Contenu : trois commerces fictifs ────────────────────────────────── */
 
 const SERIES = [
@@ -316,6 +424,19 @@ for(const c of COUVERTURES){
   inline[c.id] = svg;
   manifeste.couvertures.push({fichier:`creations/${c.id}.svg`, nom:c.nom, prix:c.prix});
 }
+
+/* Image d'accueil : remplace hero.webp, de provenance inconnue. */
+const svgAccueil = accueil();
+fs.writeFileSync(path.join(SORTIE, 'accueil.svg'), svgAccueil);
+inline['accueil'] = svgAccueil;
+manifeste.accueil = {
+  fichier:'creations/accueil.svg', role:"Image d'ambiance de la page d'accueil",
+  remplace:'hero.webp',
+  raison:"La provenance et la licence de hero.webp n'ont jamais pu être établies : "
+       + "ni le fichier ni sa version d'origine avant recompression ne portaient de "
+       + "métadonnée, et aucun document du dépôt n'indiquait son origine.",
+  provenance:'Composition écrite dans scripts/build-creations.js — aucune photographie, aucun élément tiers.'
+};
 
 fs.writeFileSync(path.join(SORTIE, 'MANIFESTE.json'), JSON.stringify(manifeste, null, 2));
 

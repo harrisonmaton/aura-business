@@ -161,5 +161,12 @@
       "nom": "House",
       "prix": "200 €"
     }
-  ]
+  ],
+  "accueil": {
+    "fichier": "creations/accueil.svg",
+    "role": "Image d'ambiance de la page d'accueil",
+    "remplace": "hero.webp",
+    "raison": "La provenance et la licence de hero.webp n'ont jamais pu être établies : ni le fichier ni sa version d'origine avant recompression ne portaient de métadonnée, et aucun document du dépôt n'indiquait son origine.",
+    "provenance": "Composition écrite dans scripts/build-creations.js — aucune photographie, aucun élément tiers."
+  }
 }

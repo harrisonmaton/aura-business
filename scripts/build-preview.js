@@ -11,6 +11,5 @@ for (const [src,out] of [['vitrine.html','vitrine.html'],['back-office.html','ba
   const body = fs.readFileSync(path.join(__dirname,'..','src',src),'utf8');
   fs.writeFileSync(path.join(__dirname,'..','preview',out), SK + body + '</body></html>');
 }
-fs.copyFileSync(path.join(__dirname,'..','src','hero.webp'), path.join(__dirname,'..','preview','hero.webp'));
 fs.cpSync(path.join(__dirname,'..','src','fonts'), path.join(__dirname,'..','preview','fonts'), {recursive:true});
-console.log('preview/ régénéré depuis src/ (image et polices incluses)');
+console.log("preview/ régénéré depuis src/ (polices incluses ; l'image d'accueil est une composition en ligne)");

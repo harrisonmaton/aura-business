@@ -23,14 +23,32 @@ const aller = async (page, url) => {
  p.on('request',r=>{const u=r.url();if(!/^(file:|data:|blob:)/.test(u))tiers.push(u);});
  await aller(p, V); await p.waitForTimeout(1200);
 
- ck('image d\'ambiance chargée', await p.evaluate(()=>{const i=document.getElementById('cinema-image');return i&&i.naturalWidth>1000;}));
+ /* hero.webp est retiré : l'image d'accueil est une composition du dépôt,
+    dont la provenance est documentée dans le manifeste. */
+ ck('image d\'accueil : composition du dépôt, pas hero.webp', await p.evaluate(()=>{
+   const c=document.getElementById('cinema-image');
+   return !!(c && c.querySelector('svg') && c.dataset.provenance);
+ }));
+ /* Ce qui compte n'est pas la mention du nom dans un commentaire d'historique,
+    mais qu'aucun élément ni aucune règle CSS ne charge encore ce fichier. */
+ ck('aucun chargement résiduel de hero.webp', await p.evaluate(()=>{
+   const attr=[...document.querySelectorAll('[src],[href],[data-src]')]
+     .some(e=>/hero\.webp/.test(e.getAttribute('src')||e.getAttribute('href')||e.getAttribute('data-src')||''));
+   const css=[...document.querySelectorAll('*')]
+     .some(e=>/hero\.webp/.test(getComputedStyle(e).backgroundImage||''));
+   return !attr && !css;
+ }));
  ck('contenu complet rendu', await p.locator('.menu-row').count()===3 && await p.locator('.ready-row').count()===4 && await p.locator('.qa-item').count()===5);
  ck('lien d\'évitement présent (a11y)', await p.locator('.skip-link').count()===1);
- /* angle mort de la recette précédente : l'externalisation de l'image avait vidé
-    le fond des 4 miniatures « Déjà prêt » sans qu'aucune assertion ne rougisse. */
- ck('miniatures Déjà prêt : fond réellement chargé', await p.evaluate(()=>{
+ /* Angle mort de la recette précédente : l'externalisation de l'image avait vidé
+    le fond des 4 miniatures sans qu'aucune assertion ne rougisse. Elles montrent
+    désormais la couverture du pack, en SVG inline : on vérifie le contenu réel. */
+ ck('miniatures Déjà prêt : couverture du pack réellement rendue', await p.evaluate(()=>{
    const els=[...document.querySelectorAll('.ready-thumb')];
-   return els.length===4 && els.every(e=>{const b=getComputedStyle(e).backgroundImage;return b&&b!=='none';});
+   return els.length===4 && els.every(e=>{
+     const svg=e.querySelector('svg');
+     return svg && svg.getBoundingClientRect().width > 40;
+   });
  }));
  /* La page ne doit dépendre d'aucun tiers : polices comprises, elle doit
     s'afficher entière hors ligne. */
