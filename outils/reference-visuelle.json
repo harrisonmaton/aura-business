@@ -1,85 +1,58 @@
 {
  "vitrine@320": {
-  "layout-transition": 4,
-  "gpt-thin-border-wide-shadow": 6,
-  "wide-tracking": 12,
-  "all-caps-body": 3,
-  "ai-color-palette": 4,
-  "kicker-above-heading": 6,
+  "layout-transition": 3,
+  "wide-tracking": 4,
+  "kicker-above-heading": 5,
   "shape-assembled-illustration": 1,
   "text-occlusion": 1
  },
  "vitrine@390": {
-  "layout-transition": 4,
-  "gpt-thin-border-wide-shadow": 6,
-  "wide-tracking": 12,
-  "all-caps-body": 3,
-  "ai-color-palette": 4,
-  "kicker-above-heading": 6,
+  "layout-transition": 3,
+  "wide-tracking": 4,
+  "kicker-above-heading": 5,
   "shape-assembled-illustration": 1,
   "text-occlusion": 1
  },
  "vitrine@768": {
-  "layout-transition": 4,
-  "clipped-overflow-container": 1,
-  "gpt-thin-border-wide-shadow": 6,
-  "wide-tracking": 12,
-  "text-occlusion": 3,
-  "body-text-viewport-edge": 1,
-  "all-caps-body": 3,
-  "line-length": 3,
-  "ai-color-palette": 4,
-  "kicker-above-heading": 6,
-  "shape-assembled-illustration": 1
+  "layout-transition": 3,
+  "wide-tracking": 4,
+  "kicker-above-heading": 5,
+  "shape-assembled-illustration": 1,
+  "text-occlusion": 3
  },
  "vitrine@1440": {
-  "layout-transition": 4,
-  "hero-eyebrow-chip": 1,
-  "gpt-thin-border-wide-shadow": 7,
-  "wide-tracking": 12,
-  "text-occlusion": 5,
-  "all-caps-body": 3,
-  "line-length": 3,
-  "cramped-padding": 1,
-  "ai-color-palette": 4,
+  "layout-transition": 3,
+  "wide-tracking": 4,
   "kicker-above-heading": 5,
   "shape-assembled-illustration": 1
  },
  "back-office@320": {
-  "undersized-ui-text": 43,
   "dark-glow": 1,
   "tiny-text": 3,
-  "low-contrast": 8,
-  "layout-transition": 5,
   "all-caps-body": 1,
+  "undersized-ui-text": 4,
   "wide-tracking": 1
  },
  "back-office@390": {
-  "undersized-ui-text": 43,
   "dark-glow": 1,
   "tiny-text": 3,
-  "low-contrast": 8,
-  "layout-transition": 5,
   "all-caps-body": 1,
+  "undersized-ui-text": 4,
   "wide-tracking": 1
  },
  "back-office@768": {
-  "undersized-ui-text": 43,
   "dark-glow": 1,
   "tiny-text": 3,
-  "low-contrast": 8,
-  "layout-transition": 5,
   "all-caps-body": 1,
+  "undersized-ui-text": 4,
   "line-length": 1,
   "wide-tracking": 1
  },
  "back-office@1440": {
-  "undersized-ui-text": 43,
   "dark-glow": 1,
   "tiny-text": 3,
-  "low-contrast": 8,
-  "layout-transition": 5,
   "all-caps-body": 1,
+  "undersized-ui-text": 4,
   "line-length": 1,
   "wide-tracking": 1
  }

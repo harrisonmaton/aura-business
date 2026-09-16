@@ -203,6 +203,92 @@ ${grain(id,W,H)}
    écrite ici, donc sa provenance est ce fichier.
    Ocean Drive après minuit : façade streamline moderne, marquise néon,
    palmiers en ombres, horizon de ville, chaussée mouillée. ──────────────── */
+/* ─── Scènes du protocole ──────────────────────────────────────────────────
+   La section « protocole » n'était que trois colonnes de texte sur du noir :
+   200 px de vide au-dessus, 250 en dessous, aucune image. Chaque étape reçoit
+   sa scène, dans la langue de la maison — nuit, laiton, filets streamline.
+   Format 4:3, dessinées ici, aucune source extérieure. */
+
+/* 1 — La carte : on choisit un numéro, le prix est écrit. */
+function etapeCarte(){
+  const W=1200,H=900,id='et1',t=C.laiton;
+  const lignes=[['01','Essentiel','50'],['02','Signature','90'],['03','Atelier','150'],['04','Maison','250']];
+  let rows='';
+  lignes.forEach((l,i)=>{
+    const y=392+i*118, actif=i===1;
+    if(actif) rows+=`<rect x="150" y="${y-72}" width="900" height="104" fill="${t}" opacity=".13"/>`;
+    rows+=`<text x="178" y="${y}" font-family="${SERIF}" font-size="46" fill="${actif?t:C.craie}" opacity="${actif?1:.62}">${l[0]}</text>`
+        + `<text x="286" y="${y}" font-family="${SERIF}" font-size="52" fill="${actif?C.papier:C.craie}" opacity="${actif?1:.72}">${l[1]}</text>`
+        + `<text x="1022" y="${y}" text-anchor="end" font-family="${SERIF}" font-size="52" fill="${actif?t:C.craie}" opacity="${actif?1:.62}">${l[2]} €</text>`
+        + `<rect x="150" y="${y+30}" width="900" height="1" fill="${C.laiton}" opacity=".22"/>`;
+  });
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="La carte des packs, un numéro et un prix par ligne" preserveAspectRatio="xMidYMid slice">
+${defs(id,t)}
+<rect width="${W}" height="${H}" fill="url(#fond-${id})"/>
+<rect width="${W}" height="${H}" fill="url(#halo-${id})" opacity=".5"/>
+${eventail(600,940,760,17,t,.07)}
+<rect x="96" y="80" width="${W-192}" height="${H-160}" fill="none" stroke="${t}" stroke-width="1.5" opacity=".38"/>
+<text x="150" y="212" font-family="${SANS}" font-size="24" font-weight="600" letter-spacing="9" fill="${t}">LA CARTE</text>
+<text x="150" y="312" font-family="${SERIF}" font-size="84" fill="${C.papier}">Un numéro.</text>
+${rows}
+${filets(150,838,340,3,14,t,.45)}
+<text x="1050" y="866" text-anchor="end" font-family="${SANS}" font-size="26" fill="${C.craie}" opacity=".72">Prix affiché · rien à négocier</text>
+${grain(id,W,H)}
+</svg>`;
+}
+
+/* 2 — Le brief : trois lignes, dans une messagerie. */
+function etapeBrief(){
+  const W=1200,H=900,id='et2',t=C.corail;
+  const bulles=[['Je vends','des pâtes fraîches, le soir'],['Je parle à','mon quartier'],['Mon compte','@trattoria.mezzanotte']];
+  let b='';
+  bulles.forEach((x,i)=>{
+    const y=300+i*168;
+    b+=`<rect x="150" y="${y}" width="${760-i*40}" height="124" rx="6" fill="${C.ardoise}" stroke="${t}" stroke-width="1" stroke-opacity=".34"/>`
+     + `<text x="188" y="${y+50}" font-family="${SANS}" font-size="24" font-weight="600" letter-spacing="5" fill="${t}" opacity=".9">${esc(x[0].toUpperCase())}</text>`
+     + `<text x="188" y="${y+98}" font-family="${SERIF}" font-size="44" fill="${C.papier}">${esc(x[1])}</text>`;
+  });
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Trois lignes de brief envoyées en message" preserveAspectRatio="xMidYMid slice">
+${defs(id,t)}
+<rect width="${W}" height="${H}" fill="url(#fond-${id})"/>
+<rect width="${W}" height="${H}" fill="url(#halo-${id})" opacity=".42"/>
+${eventail(980,960,620,13,t,.06)}
+<text x="150" y="196" font-family="${SANS}" font-size="24" font-weight="600" letter-spacing="9" fill="${t}">VOTRE BRIEF</text>
+${b}
+<circle cx="1010" cy="806" r="46" fill="${t}" opacity=".92"/>
+<path d="M990 806 h38 M1014 792 l14 14 -14 14" stroke="${C.encre}" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="940" y="816" text-anchor="end" font-family="${SANS}" font-size="26" fill="${C.craie}" opacity=".72">Trois lignes suffisent</text>
+${grain(id,W,H)}
+</svg>`;
+}
+
+/* 3 — La publication : la grille du compte, un fichier posé dedans. */
+function etapePublie(){
+  const W=1200,H=900,id='et3',t=C.laiton;
+  let g='';
+  for(let r=0;r<3;r++) for(let c=0;c<3;c++){
+    const x=634+c*152, y=244+r*152, neuf=(r===0&&c===1);
+    g+=`<rect x="${x}" y="${y}" width="136" height="136" fill="${neuf?t:C.ardoise}" opacity="${neuf?.92:.7}"/>`;
+    if(!neuf) g+=`<rect x="${x+26}" y="${y+86}" width="84" height="6" fill="${C.craie}" opacity=".24"/>`;
+  }
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Le fichier publié dans la grille du compte" preserveAspectRatio="xMidYMid slice">
+${defs(id,t)}
+<rect width="${W}" height="${H}" fill="url(#fond-${id})"/>
+<rect width="${W}" height="${H}" fill="url(#halo-${id})" opacity=".46"/>
+${eventail(260,930,680,15,t,.07)}
+<text x="130" y="196" font-family="${SANS}" font-size="24" font-weight="600" letter-spacing="9" fill="${t}">EN LIGNE</text>
+<text x="130" y="330" font-family="${SERIF}" font-size="92" fill="${C.papier}">48</text>
+<text x="130" y="404" font-family="${SERIF}" font-size="52" font-style="italic" fill="${t}">heures</text>
+${filets(130,470,300,3,16,t,.5)}
+<text x="130" y="600" font-family="${SANS}" font-size="26" fill="${C.craie}" opacity=".78">Vous collez.</text>
+<text x="130" y="646" font-family="${SANS}" font-size="26" fill="${C.craie}" opacity=".78">Vous publiez.</text>
+<rect x="598" y="184" width="544" height="580" fill="none" stroke="${t}" stroke-width="1.5" opacity="
+.34"/>
+${g}
+${grain(id,W,H)}
+</svg>`;
+}
+
 function accueil(){
   const W=1672, H=941, id='accueil';
   const sol = 660;                                   /* ligne de chaussée */
@@ -477,6 +563,16 @@ for(const c of COUVERTURES){
   fs.writeFileSync(path.join(SORTIE, c.id + '.svg'), svg);
   inline[c.id] = svg;
   manifeste.couvertures.push({fichier:`creations/${c.id}.svg`, nom:c.nom, prix:c.prix});
+}
+
+/* Scènes du protocole : une image par étape. */
+const ETAPES = [['etape-1', etapeCarte], ['etape-2', etapeBrief], ['etape-3', etapePublie]];
+manifeste.etapes = [];
+for(const [id, f] of ETAPES){
+  const svg = f();
+  fs.writeFileSync(path.join(SORTIE, id + '.svg'), svg);
+  inline[id] = svg;
+  manifeste.etapes.push({fichier:`creations/${id}.svg`, role:'Scène du protocole'});
 }
 
 /* Image d'accueil : remplace hero.webp, de provenance inconnue. */

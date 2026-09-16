@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" role="img" aria-label="Trois lignes de brief envoyées en message" preserveAspectRatio="xMidYMid slice">
+<defs>
+    <radialGradient id="halo-et2" cx="50%" cy="28%" r="78%">
+      <stop offset="0" stop-color="#FF6B4A" stop-opacity=".40"/>
+      <stop offset="1" stop-color="#FF6B4A" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="fond-et2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#120A18"/><stop offset="1" stop-color="#0A0710"/>
+    </linearGradient>
+    <filter id="grain-et2"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope=".055"/></feComponentTransfer>
+    </filter>
+  </defs>
+<rect width="1200" height="900" fill="url(#fond-et2)"/>
+<rect width="1200" height="900" fill="url(#halo-et2)" opacity=".42"/>
+<line x1="980" y1="960" x2="379.5" y2="805.8"
+      stroke="#FF6B4A" stroke-width="1" opacity="0.06"/><line x1="980" y1="960" x2="427.6" y2="678.5"
+      stroke="#FF6B4A" stroke-width="1" opacity="0.06"/><line x1="980" y1="960" x2="502.3" y2="564.8"
+      stroke="#FF6B4A" stroke-width="1" opacity="0.06"/><line x1="980" y1="960" x2="600.0" y2="470.1"
+      stroke="#FF6B4A" stroke-width="1" opacity="0.06"/><line x1="980" y1="960" x2="716.0" y2="399.0"
+      stroke="#FF6B4A" stroke-width="1" opacity="0.06"/><line x1="980" y1="960" x2="844.8" y2="354.9"
+      stroke="#FF6B4A" stroke-width="1" opacity="0.06"/><line x1="980" y1="960" x2="980.0" y2="340.0"
+      stroke="#FF6B4A" stroke-width="1" opacity="0.06"/><line x1="980" y1="960" x2="1115.2" y2="354.9"
+      stroke="#FF6B4A" stroke-width="1" opacity="0.06"/><line x1="980" y1="960" x2="1244.0" y2="399.0"
+      stroke="#FF6B4A" stroke-width="1" opacity="0.06"/><line x1="980" y1="960" x2="1360.0" y2="470.1"
+      stroke="#FF6B4A" stroke-width="1" opacity="0.06"/><line x1="980" y1="960" x2="1457.7" y2="564.8"
+      stroke="#FF6B4A" stroke-width="1" opacity="0.06"/><line x1="980" y1="960" x2="1532.4" y2="678.5"
+      stroke="#FF6B4A" stroke-width="1" opacity="0.06"/><line x1="980" y1="960" x2="1580.5" y2="805.8"
+      stroke="#FF6B4A" stroke-width="1" opacity="0.06"/>
+<text x="150" y="196" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="24" font-weight="600" letter-spacing="9" fill="#FF6B4A">VOTRE BRIEF</text>
+<rect x="150" y="300" width="760" height="124" rx="6" fill="#1B1320" stroke="#FF6B4A" stroke-width="1" stroke-opacity=".34"/><text x="188" y="350" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="24" font-weight="600" letter-spacing="5" fill="#FF6B4A" opacity=".9">JE VENDS</text><text x="188" y="398" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="44" fill="#F4F1EA">des pâtes fraîches, le soir</text><rect x="150" y="468" width="720" height="124" rx="6" fill="#1B1320" stroke="#FF6B4A" stroke-width="1" stroke-opacity=".34"/><text x="188" y="518" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="24" font-weight="600" letter-spacing="5" fill="#FF6B4A" opacity=".9">JE PARLE À</text><text x="188" y="566" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="44" fill="#F4F1EA">mon quartier</text><rect x="150" y="636" width="680" height="124" rx="6" fill="#1B1320" stroke="#FF6B4A" stroke-width="1" stroke-opacity=".34"/><text x="188" y="686" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="24" font-weight="600" letter-spacing="5" fill="#FF6B4A" opacity=".9">MON COMPTE</text><text x="188" y="734" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="44" fill="#F4F1EA">@trattoria.mezzanotte</text>
+<circle cx="1010" cy="806" r="46" fill="#FF6B4A" opacity=".92"/>
+<path d="M990 806 h38 M1014 792 l14 14 -14 14" stroke="#0A0710" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="940" y="816" text-anchor="end" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="26" fill="#CFC7BC" opacity=".72">Trois lignes suffisent</text>
+<rect width="1200" height="900" filter="url(#grain-et2)" opacity=".55"/>
+</svg>

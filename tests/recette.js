@@ -40,16 +40,29 @@ const aller = async (page, url) => {
  }));
  ck('contenu complet rendu', await p.locator('.menu-row').count()===3 && await p.locator('.ready-row').count()===4 && await p.locator('.qa-item').count()===5);
  ck('lien d\'évitement présent (a11y)', await p.locator('.skip-link').count()===1);
- /* Angle mort de la recette précédente : l'externalisation de l'image avait vidé
-    le fond des 4 miniatures sans qu'aucune assertion ne rougisse. Elles montrent
-    désormais la couverture du pack, en SVG inline : on vérifie le contenu réel. */
- ck('miniatures Déjà prêt : couverture du pack réellement rendue', await p.evaluate(()=>{
-   const els=[...document.querySelectorAll('.ready-thumb')];
-   return els.length===4 && els.every(e=>{
-     const svg=e.querySelector('svg');
-     return svg && svg.getBoundingClientRect().width > 40;
-   });
- }));
+ /* Une couverture n'est pas un pack livré. Tant qu'une collection n'a aucun
+    fichier, elle n'a droit à aucune vignette : une belle image posée là se lit
+    comme un produit prêt. Le contrôle vérifie donc les DEUX sens — vignette
+    réellement peinte pour ce qui est livrable, aucune vignette pour le reste.
+    L'angle mort de la recette précédente était l'inverse : elle exigeait quatre
+    vignettes, y compris pour des collections vides. */
+ const vignettes = await p.evaluate(()=>{
+   const dispo = [...document.querySelectorAll('.ready-row[data-ready]')].length;
+   const soon  = [...document.querySelectorAll('.ready-row.is-soon')].length;
+   const peintes = [...document.querySelectorAll('.ready-thumb')]
+     .filter(e=>{ const s=e.querySelector('svg'); return s && s.getBoundingClientRect().width>40; }).length;
+   const vignetteChezSoon = [...document.querySelectorAll('.ready-row.is-soon .ready-thumb')].length;
+   return {dispo, soon, peintes, vignetteChezSoon};
+ });
+ ck('Déjà prêt : une vignette par collection livrable, aucune pour les autres',
+    vignettes.peintes === vignettes.dispo && vignettes.vignetteChezSoon === 0
+    && vignettes.dispo + vignettes.soon === 4,
+    `livrables ${vignettes.dispo} · en préparation ${vignettes.soon} · vignettes peintes ${vignettes.peintes}`);
+ /* Le contenu annoncé doit venir du catalogue, pas d'une saisie décorative. */
+ ck('Déjà prêt : le contenu annoncé vient du catalogue', await p.evaluate(()=>{
+   const l = [...document.querySelectorAll('.ready-row.is-soon .rt span')].map(e=>e.textContent.trim());
+   return l.length>0 && l.every(x=>/\d+\s*\S+\s*·\s*\d+/.test(x));
+ }), (await p.textContent('.ready-row.is-soon .rt span')||'').trim());
  /* Photographies importées : le fichier doit être réellement chargé et peint,
     pas simplement déclaré. Une balise <image> pointant vers un fichier absent
     donne un cadre vide qu'on pourrait prendre pour une création. */
@@ -189,13 +202,20 @@ const aller = async (page, url) => {
       return !couvre;
     }));
  /* Le titre de couverture chevauchait la ligne d'édition du haut de page. */
+ /* Le titre de couverture est décoratif et posé en absolu : il a déjà recouvert
+    à 100 % la ligne d'édition du haut de page. On le borne entre ses deux
+    voisins réels — la ligne d'édition au-dessus, le titre du manifeste en
+    dessous — plutôt que sur une estampille qui peut disparaître. */
+ const couverture = await p.evaluate(()=>{
+   const m=document.querySelector('.hero-masthead').getBoundingClientRect();
+   const e=document.querySelector('.hero-edition').getBoundingClientRect();
+   const h=document.querySelector('#manifesto .statement').getBoundingClientRect();
+   return {haut:Math.round(m.top), bas:Math.round(m.bottom),
+           editionBas:Math.round(e.bottom), titreHaut:Math.round(h.top)};
+ });
  ck('hero : le titre de couverture ne percute aucune ligne voisine',
-    await p.evaluate(()=>{
-      const m=document.querySelector('.hero-masthead'), e=document.querySelector('.hero-edition');
-      const l=document.querySelector('#manifesto .label-brass');
-      const a=m.getBoundingClientRect();
-      return a.top >= e.getBoundingClientRect().bottom && a.bottom <= l.getBoundingClientRect().top;
-    }));
+    couverture.haut >= couverture.editionBas && couverture.bas <= couverture.titreHaut,
+    `édition finit ${couverture.editionBas} · couverture ${couverture.haut}–${couverture.bas} · titre commence ${couverture.titreHaut}`);
  /* Défaut réel trouvé par la mesure d'occultation : une pièce posée en retrait
     (translateZ négatif) passe DERRIÈRE le plan de la scène, et .stage captait
     tous les clics. Les pièces étaient visibles mais mortes. */

@@ -162,6 +162,20 @@
       "prix": "200 €"
     }
   ],
+  "etapes": [
+    {
+      "fichier": "creations/etape-1.svg",
+      "role": "Scène du protocole"
+    },
+    {
+      "fichier": "creations/etape-2.svg",
+      "role": "Scène du protocole"
+    },
+    {
+      "fichier": "creations/etape-3.svg",
+      "role": "Scène du protocole"
+    }
+  ],
   "accueil": {
     "fichier": "creations/accueil.svg",
     "role": "Image d'ambiance de la page d'accueil",
