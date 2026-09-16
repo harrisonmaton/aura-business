@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200" width="900" height="1200" role="img" aria-label="Couverture Heat — 120 €">
+<defs>
+    <radialGradient id="halo-c-heat" cx="50%" cy="28%" r="78%">
+      <stop offset="0" stop-color="#FF6B4A" stop-opacity=".40"/>
+      <stop offset="1" stop-color="#FF6B4A" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="fond-c-heat" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#120A18"/><stop offset="1" stop-color="#0A0710"/>
+    </linearGradient>
+    <filter id="grain-c-heat"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope=".055"/></feComponentTransfer>
+    </filter>
+  </defs>
+<rect width="900" height="1200" fill="url(#fond-c-heat)"/>
+<rect width="900" height="1200" fill="url(#halo-c-heat)" opacity=".45"/>
+<line x1="450" y1="1200" x2="-344.2" y2="996.1"
+      stroke="#FF6B4A" stroke-width="1" opacity="0.1"/><line x1="450" y1="1200" x2="-292.0" y2="850.9"
+      stroke="#FF6B4A" stroke-width="1" opacity="0.1"/><line x1="450" y1="1200" x2="-213.4" y2="718.0"
+      stroke="#FF6B4A" stroke-width="1" opacity="0.1"/><line x1="450" y1="1200" x2="-111.3" y2="602.2"
+      stroke="#FF6B4A" stroke-width="1" opacity="0.1"/><line x1="450" y1="1200" x2="10.6" y2="507.7"
+      stroke="#FF6B4A" stroke-width="1" opacity="0.1"/><line x1="450" y1="1200" x2="148.1" y2="437.6"
+      stroke="#FF6B4A" stroke-width="1" opacity="0.1"/><line x1="450" y1="1200" x2="296.3" y2="394.5"
+      stroke="#FF6B4A" stroke-width="1" opacity="0.1"/><line x1="450" y1="1200" x2="450.0" y2="380.0"
+      stroke="#FF6B4A" stroke-width="1" opacity="0.1"/><line x1="450" y1="1200" x2="603.7" y2="394.5"
+      stroke="#FF6B4A" stroke-width="1" opacity="0.1"/><line x1="450" y1="1200" x2="751.9" y2="437.6"
+      stroke="#FF6B4A" stroke-width="1" opacity="0.1"/><line x1="450" y1="1200" x2="889.4" y2="507.7"
+      stroke="#FF6B4A" stroke-width="1" opacity="0.1"/><line x1="450" y1="1200" x2="1011.3" y2="602.2"
+      stroke="#FF6B4A" stroke-width="1" opacity="0.1"/><line x1="450" y1="1200" x2="1113.4" y2="718.0"
+      stroke="#FF6B4A" stroke-width="1" opacity="0.1"/><line x1="450" y1="1200" x2="1192.0" y2="850.9"
+      stroke="#FF6B4A" stroke-width="1" opacity="0.1"/><line x1="450" y1="1200" x2="1244.2" y2="996.1"
+      stroke="#FF6B4A" stroke-width="1" opacity="0.1"/>
+<text x="64" y="132" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="92" fill="#F4F1EA">Heat</text>
+<text x="64" y="192" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="24" letter-spacing="6" fill="#FF6B4A">COLLECTION · EN PRÉPARATION</text>
+<g transform="translate(64 252) rotate(-1.6 173 125)">
+      <rect width="346" height="250" fill="#1B1320"/>
+      <rect width="346" height="250" fill="#FF6B4A" opacity=".13"/>
+      <rect width="346" height="250" fill="none" stroke="#D9B978" stroke-width="1.5" opacity=".55"/>
+      <text x="26" y="52" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="18" font-weight="600" letter-spacing="5" fill="#FF6B4A">PUBLICATION</text>
+      <text x="26" y="140" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="58" fill="#F4F1EA">12 visuels</text>
+      <text x="26" y="188" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="22" fill="#CFC7BC" opacity=".8">format 1:1</text>
+      <rect x="26" y="212" width="110" height="1.5" fill="#D9B978" opacity="0.45"/><rect x="26" y="222" width="110" height="1.5" fill="#D9B978" opacity="0.45"/>
+    </g><g transform="translate(452 404) rotate(1.8 173 125)">
+      <rect width="346" height="250" fill="#1B1320"/>
+      <rect width="346" height="250" fill="#D9B978" opacity=".13"/>
+      <rect width="346" height="250" fill="none" stroke="#D9B978" stroke-width="1.5" opacity=".55"/>
+      <text x="26" y="52" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="18" font-weight="600" letter-spacing="5" fill="#D9B978">LÉGENDES</text>
+      <text x="26" y="140" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="58" fill="#F4F1EA">12 textes</text>
+      <text x="26" y="188" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="22" fill="#CFC7BC" opacity=".8">prêts à coller</text>
+      <rect x="26" y="212" width="110" height="1.5" fill="#D9B978" opacity="0.45"/><rect x="26" y="222" width="110" height="1.5" fill="#D9B978" opacity="0.45"/>
+    </g><g transform="translate(128 690) rotate(-1.1 173 125)">
+      <rect width="346" height="250" fill="#1B1320"/>
+      <rect width="346" height="250" fill="#FF6B4A" opacity=".13"/>
+      <rect width="346" height="250" fill="none" stroke="#D9B978" stroke-width="1.5" opacity=".55"/>
+      <text x="26" y="52" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="18" font-weight="600" letter-spacing="5" fill="#FF6B4A">USAGE</text>
+      <text x="26" y="140" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="58" fill="#F4F1EA">sans brief</text>
+      <text x="26" y="188" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="22" fill="#CFC7BC" opacity=".8">à composer</text>
+      <rect x="26" y="212" width="110" height="1.5" fill="#D9B978" opacity="0.45"/><rect x="26" y="222" width="110" height="1.5" fill="#D9B978" opacity="0.45"/>
+    </g>
+<rect x="64" y="1032" width="772" height="1.5" fill="#D9B978" opacity=".5"/>
+<text x="64" y="1122" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="80" fill="#D9B978">120 €</text>
+<rect width="900" height="1200" filter="url(#grain-c-heat)" opacity=".55"/>
+</svg>

@@ -6,6 +6,7 @@
 |---|---|---|---|
 | `src/hero.webp` | 140 248 o | Image d'ambiance de la page d'accueil, recompressée, servie en fichier séparé cacheable | **non établis — voir ci-dessous** |
 | `src/fonts/*.woff2` | 220 768 o (6 fichiers) | Archivo et Bodoni Moda, sous-ensembles latin et latin-ext | SIL OFL 1.1, redistribution autorisée, `src/fonts/OFL.txt` |
+| `src/creations/*.svg` | ~85 Ko (20 fichiers) | 12 pièces de démonstration (3 séries) + 8 couvertures de packs | **produites par `scripts/build-creations.js`** — voir ci-dessous |
 | `v3_office.png`, `v3_office_rempli.png` | 89 / 91 Ko | Captures du back-office, vide et rempli. Pièces de recette, pas des livrables | production interne |
 
 **C'est tout.** Il n'y a aucun autre fichier binaire dans le dépôt.
@@ -14,6 +15,32 @@ Tous les visuels visibles sur la vitrine en dehors de `hero.webp` sont des
 compositions SVG **générées par le code au chargement**, à partir d'un générateur
 déterministe (PRNG `mulberry32`, graine par hachage FNV-1a). Il n'existe donc
 aucun fichier image à exporter pour eux : ils n'existent pas sur disque.
+
+### Créations de démonstration et couvertures
+
+**Aucune image n'a été importée, aucune n'a été générée par un modèle d'images.**
+La session qui les a produites n'avait aucun outil de génération d'images ; la
+limite a été annoncée plutôt que contournée. Chaque composition est écrite en SVG
+dans `scripts/build-creations.js` et rendue déterministe : relancer le script
+reproduit exactement les mêmes fichiers. La provenance de chaque élément
+graphique est donc ce script, ce qui règle la question des droits par
+construction — contrairement à `hero.webp`.
+
+Douze pièces réparties en trois séries — restaurant italien, salon de coiffure,
+boutique indépendante — chacune avec trois publications 1:1, une story 9:16 et
+les textes correspondants. **Les trois enseignes sont fictives** (Trattoria
+Mezzanotte, Salon Néon, Atelier Corail) et le site les présente explicitement
+comme « concept de démonstration ». Aucun client réel, aucun témoignage, aucun
+résultat commercial n'est affiché ni sous-entendu ; un contrôle de recette
+échoue si un mot comme « témoignage » ou « ils nous font confiance » apparaît
+dans la section.
+
+Les huit couvertures montrent le contenu du pack — nombre de visuels, de textes,
+de messages — au lieu d'un nom posé sur une image d'ambiance.
+
+Les SVG sont injectés **en ligne** dans la vitrine plutôt que chargés en `<img>` :
+un SVG chargé en `<img>` est un document isolé qui n'hérite pas des polices de la
+page, et les compositions seraient rendues avec une fonte générique.
 
 ### Polices
 

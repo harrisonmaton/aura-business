@@ -1,28 +1,31 @@
-=== Journal de recette — Aura Business ===
-Date UTC : 2026-09-15 22:11:08
-Commit   : arbre de travail — correctifs assets, droits et polices, avant commit
+=== Journal de recette — Aura Business V5 ===
+Date UTC : 2026-09-16 00:21:41
+Commit   : arbre de travail — direction visuelle V5, avant commit
 Node     : v22.22.2
 Playwright : 1.63.0  |  Chromium : 141.0.7390.37
 
 --- SHA-256 des sources testées ---
-c581aabb795c21038d187bdf86a4797f98c9052800603dd612f844d1c494b7fe  src/vitrine.html
+6cfe4def1220dafffba668c22c04da21b19a175c33120bca6fcee71f19988dc4  src/vitrine.html
 b31341f5f92507674341dcaefc1665cfa91bfba42e4f2641409baf07e31f5fa7  src/back-office.html
 2209b4b265d7be9c06cc8b6627101159e85bc70311fb13b83349d4dd20aa198d  src/catalog.json
 a1e8d5dbd9212fb510aa194f9ed31c4e532e84bbc2ff08a615161325fabd74c7  src/hero.webp
-ff4f17d21930e36d6d93baba663e624cb767afc3feebf7adaebd82242638de05  src/fonts/archivo-latin-ext.woff2
-8f704806dbedeaaeca334b11ec348bc3ac3a439d6431544b3afb54f534ee4967  src/fonts/archivo-latin.woff2
-4800c2afa7e500da381b6a23fcc843060284f092575b58410068b3598c1bdc7e  src/fonts/bodoni-moda-italic-latin-ext.woff2
-b737328c13b92784ee78d99e62e3bcc38eeef0f2dba41d107637b3acea46781f  src/fonts/bodoni-moda-italic-latin.woff2
-f156e4a7cef0928383fe259021b1f1d715a88d593565d0fc824704e54d07f6fd  src/fonts/bodoni-moda-latin-ext.woff2
-c032219ef636f7b4932f7d1dc91bdab602c970f090770b546bea4effaab3463c  src/fonts/bodoni-moda-latin.woff2
+6777a3303db399c8c42640f67f4ffafaa60202023c7e67354d90ce2f9e7477e5  src/creations/MANIFESTE.json
 
 --- npm test ---
 
-> aura-business@0.4.0 test
-> npm run build:preview && node tests/catalogue.js && node tests/recette.js && node tests/registre-avec-runtime-simule.js
+> aura-business@0.5.0 test
+> npm run build:creations && npm run build:preview && node tests/catalogue.js && node tests/recette.js && node tests/registre-avec-runtime-simule.js
 
 
-> aura-business@0.4.0 build:preview
+> aura-business@0.5.0 build:creations
+> node scripts/build-creations.js
+
+créations : 20 compositions, 85.3 Ko
+  3 séries de démonstration (4 pièces chacune)
+  8 couvertures de packs
+  manifeste : src/creations/MANIFESTE.json
+
+> aura-business@0.5.0 build:preview
 > node scripts/build-preview.js
 
 preview/ régénéré depuis src/ (image et polices incluses)
@@ -40,6 +43,17 @@ PASS  — section annoncée dans l'état correspondant au catalogue  [soon/soon 
 PASS  — aucune promesse de livraison immédiate sans fichier
 PASS  — état « en préparation » affiché au visiteur
 PASS  — mention légale : aucune affirmation sur l'origine de l'image d'accueil
+PASS  — galerie : une vitre par série
+PASS  — galerie : les pièces de la série active sont rendues
+PASS  — galerie : chaque série est étiquetée concept de démonstration
+PASS  — galerie : aucune enseigne présentée comme cliente réelle
+PASS  — galerie : onglet et hero partagent le même état
+PASS  — galerie : la démonstration mène au bon pack
+PASS  — galerie : parcours au clavier
+PASS  — aperçu : ouverture en grand
+PASS  — aperçu : bascule publication / story
+PASS  — aperçu : Échap ferme et rend le focus au déclencheur
+PASS  — aperçu : le bouton d'offre ouvre la commande du pack annoncé
 PASS  — feuille de commande ouverte
 PASS  — brief vide bloqué
 PASS  — identifiant Instagram invalide refusé
@@ -66,7 +80,7 @@ PASS  — back-office : aucun débordement
 PASS  — back-office : collections sans fichier signalées assets_missing  [4/4]
 PASS  — back-office : alerte visible et nommant les collections
 
-37 contrôles — 37 PASS, 0 ÉCHEC
+48 contrôles — 48 PASS, 0 ÉCHEC
 ERREURS JS : aucune
 registre : Registre connecté
   enregistré : Night 80€ (déjà prêt)
@@ -82,16 +96,21 @@ erreurs JS : aucune
 code de sortie = 0
 
 --- preuve que la recette rougit réellement ---
-Régression simulée : readyAvailable() forcée à true, les 4 collections
-redeviennent commandables alors que catalog.json les donne à assets:0.
-  → 37 contrôles — 32 PASS, 5 ÉCHEC — code de sortie = 1
-  ÉCHEC — collection sans fichier : aucun chemin de commande
-  ÉCHEC — collection sans fichier : pas de bouton cliquable
-  ÉCHEC — section annoncée dans l'état correspondant au catalogue
-  ÉCHEC — aucune promesse de livraison immédiate sans fichier
-  ÉCHEC — état « en préparation » affiché au visiteur
-Divergence simulée : catalog.json passé à assets:4 pour Street, pages inchangées.
-  → tests/catalogue.js — code de sortie = 1
-  ÉCHEC — vitrine : Street annonce 0 fichier(s) au lieu de 4
-  ÉCHEC — back-office : Street annonce 0 fichier(s) au lieu de 4
-Source restaurée dans les deux cas, recette revenue à 0.
+Régression simulée : choisirVitre() ne synchronise plus la série active
+avec la vitre du hero (serieActive figée à 0).
+  → 48 contrôles — 46 PASS, 2 ÉCHEC — code de sortie = 1
+  ÉCHEC — galerie : onglet et hero partagent le même état
+  ÉCHEC — galerie : la démonstration mène au bon pack
+Source restaurée, recette revenue à 0.
+
+--- performance : conditions du test ---
+Chromium 141 sans interface, page ouverte en file:// depuis le disque
+local, sans latence réseau, sans bridage CPU, machine du conteneur.
+Ces chiffres ne disent RIEN de l'expérience d'un visiteur réel sur
+mobile en 4G : ils ne servent qu'à détecter une régression entre deux
+versions mesurées dans les mêmes conditions.
+  desktop 1440 : FCP 224 ms · DCL 146 ms · CLS 0
+  mobile  390  : FCP 176 ms · DCL 136 ms · CLS 0
+  LCP : non capté en file:// — valeur volontairement non renseignée
+  1766 nœuds DOM · 16 SVG en ligne
+  poids : vitrine.html 280 Ko · hero.webp 137 Ko · polices 240 Ko

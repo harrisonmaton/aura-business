@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080" role="img" aria-label="Une table ?">
+<defs>
+    <radialGradient id="halo-trattoria-3" cx="50%" cy="28%" r="78%">
+      <stop offset="0" stop-color="#FF6B4A" stop-opacity=".40"/>
+      <stop offset="1" stop-color="#FF6B4A" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="fond-trattoria-3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#120A18"/><stop offset="1" stop-color="#0A0710"/>
+    </linearGradient>
+    <filter id="grain-trattoria-3"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope=".055"/></feComponentTransfer>
+    </filter>
+  </defs>
+<rect width="1080" height="1080" fill="url(#fond-trattoria-3)"/>
+<rect x="0" y="0" width="1080" height="1080" fill="url(#halo-trattoria-3)"/>
+<circle cx="820" cy="270" r="230" fill="#D9B978" opacity=".30"/>
+<circle cx="300" cy="810" r="180" fill="#FF6B4A" opacity=".22"/>
+<rect x="0" y="520" width="1080" height="1.5" fill="#D9B978" opacity="0.28"/><rect x="0" y="542" width="1080" height="1.5" fill="#D9B978" opacity="0.28"/>
+<text x="540" y="200" text-anchor="middle" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="26" font-weight="600" letter-spacing="12" fill="#CFC7BC">RÉSERVATION</text>
+<text x="540" y="470" text-anchor="middle" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="185" fill="#F4F1EA">Une</text>
+<text x="540" y="660" text-anchor="middle" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="185" font-style="italic" fill="#FF6B4A">table ?</text>
+<text x="540" y="880" text-anchor="middle" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="32" letter-spacing="4" fill="#CFC7BC">Message privé · réponse dans l’heure</text>
+<rect width="1080" height="1080" filter="url(#grain-trattoria-3)" opacity=".55"/>
+</svg>

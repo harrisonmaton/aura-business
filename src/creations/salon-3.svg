@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080" role="img" aria-label="AGENDA — Jeudi">
+<defs>
+    <radialGradient id="halo-salon-3" cx="50%" cy="28%" r="78%">
+      <stop offset="0" stop-color="#FF2E88" stop-opacity=".40"/>
+      <stop offset="1" stop-color="#FF2E88" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="fond-salon-3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#120A18"/><stop offset="1" stop-color="#0A0710"/>
+    </linearGradient>
+    <filter id="grain-salon-3"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope=".055"/></feComponentTransfer>
+    </filter>
+  </defs>
+<rect width="1080" height="1080" fill="url(#fond-salon-3)"/>
+<rect width="1080" height="1080" fill="url(#halo-salon-3)"/>
+<line x1="540" y1="1080" x2="-331.7" y2="856.2"
+      stroke="#FF2E88" stroke-width="1" opacity="0.13"/><line x1="540" y1="1080" x2="-283.1" y2="716.1"
+      stroke="#FF2E88" stroke-width="1" opacity="0.13"/><line x1="540" y1="1080" x2="-212.2" y2="585.9"
+      stroke="#FF2E88" stroke-width="1" opacity="0.13"/><line x1="540" y1="1080" x2="-120.9" y2="469.1"
+      stroke="#FF2E88" stroke-width="1" opacity="0.13"/><line x1="540" y1="1080" x2="-11.6" y2="368.9"
+      stroke="#FF2E88" stroke-width="1" opacity="0.13"/><line x1="540" y1="1080" x2="112.6" y2="287.9"
+      stroke="#FF2E88" stroke-width="1" opacity="0.13"/><line x1="540" y1="1080" x2="248.5" y2="228.5"
+      stroke="#FF2E88" stroke-width="1" opacity="0.13"/><line x1="540" y1="1080" x2="392.2" y2="192.2"
+      stroke="#FF2E88" stroke-width="1" opacity="0.13"/><line x1="540" y1="1080" x2="540.0" y2="180.0"
+      stroke="#FF2E88" stroke-width="1" opacity="0.13"/><line x1="540" y1="1080" x2="687.8" y2="192.2"
+      stroke="#FF2E88" stroke-width="1" opacity="0.13"/><line x1="540" y1="1080" x2="831.5" y2="228.5"
+      stroke="#FF2E88" stroke-width="1" opacity="0.13"/><line x1="540" y1="1080" x2="967.4" y2="287.9"
+      stroke="#FF2E88" stroke-width="1" opacity="0.13"/><line x1="540" y1="1080" x2="1091.6" y2="368.9"
+      stroke="#FF2E88" stroke-width="1" opacity="0.13"/><line x1="540" y1="1080" x2="1200.9" y2="469.1"
+      stroke="#FF2E88" stroke-width="1" opacity="0.13"/><line x1="540" y1="1080" x2="1292.2" y2="585.9"
+      stroke="#FF2E88" stroke-width="1" opacity="0.13"/><line x1="540" y1="1080" x2="1363.1" y2="716.1"
+      stroke="#FF2E88" stroke-width="1" opacity="0.13"/><line x1="540" y1="1080" x2="1411.7" y2="856.2"
+      stroke="#FF2E88" stroke-width="1" opacity="0.13"/>
+<rect x="64" y="64" width="952" height="952" fill="none" stroke="#D9B978" stroke-width="1.5" opacity=".42"/>
+<rect x="78" y="78" width="924" height="924" fill="none" stroke="#D9B978" stroke-width="1" opacity=".18"/>
+<text x="112" y="182" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="26" font-weight="600" letter-spacing="9" fill="#FF2E88">AGENDA</text>
+<text x="112" y="430" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="150" fill="#F4F1EA">Jeudi</text>
+<text x="112" y="530" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="88" font-style="italic" fill="#FF2E88">11 h 30</text>
+<rect x="112" y="600" width="300" height="1.5" fill="#D9B978" opacity="0.5"/><rect x="112" y="614" width="300" height="1.5" fill="#D9B978" opacity="0.5"/><rect x="112" y="628" width="300" height="1.5" fill="#D9B978" opacity="0.5"/>
+<text x="112" y="740" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="34" fill="#CFC7BC">Une place s’est libérée cette semaine.</text>
+<rect x="112" y="880" width="128" height="58" fill="#FF2E88"/>
+<text x="126" y="919" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="26" font-weight="700" letter-spacing="3" fill="#0A0710">LIBRE</text>
+<rect width="1080" height="1080" filter="url(#grain-salon-3)" opacity=".55"/>
+</svg>

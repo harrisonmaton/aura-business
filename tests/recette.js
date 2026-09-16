@@ -1,5 +1,6 @@
 const { chromium } = require('playwright');
 const CAT=JSON.parse(require('fs').readFileSync(__dirname+'/../src/catalog.json','utf8'));
+const CREA=JSON.parse(require('fs').readFileSync(__dirname+'/../src/creations/MANIFESTE.json','utf8'));
 const V='file://'+__dirname+'/../preview/vitrine.html', O='file://'+__dirname+'/../preview/back-office.html';
 const R=[]; const ck=(n,c,x)=>R.push((c?'PASS ':'ÉCHEC')+' — '+n+(x!==undefined?'  ['+x+']':''));
 (async()=>{
@@ -67,6 +68,52 @@ const R=[]; const ck=(n,c,x)=>R.push((c?'PASS ':'ÉCHEC')+' — '+n+(x!==undefin
       return !/compositions générées, pas des photographies/i.test(l)
           && !/illustrations d.ambiance du site sont générées/i.test(l);
     }));
+ /* ── Galerie de créations ─────────────────────────────────────────────
+    Le site doit montrer le travail livré, et chaque démonstration doit
+    ramener au pack correspondant sans jamais se faire passer pour un
+    client réel. */
+ ck('galerie : une vitre par série', await p.locator('.vitre').count() === CREA.series.length);
+ ck('galerie : les pièces de la série active sont rendues',
+    await p.locator('.piece').count() === CREA.series[0].pieces.length);
+ ck('galerie : chaque série est étiquetée concept de démonstration',
+    (await p.locator('.demo-tag').count()) === 1
+    && /démonstration/i.test(await p.textContent('.demo-tag')));
+ ck('galerie : aucune enseigne présentée comme cliente réelle',
+    await p.evaluate(()=>!/nos clients|ils nous font confiance|témoignage/i.test(
+      document.getElementById('creations').textContent)));
+ /* Changer d'onglet doit déplacer la vitre active du hero : les deux vues
+    lisent le même état, sinon elles divergent en silence. */
+ await p.click('[data-serie-onglet="1"]'); await p.waitForTimeout(650);
+ ck('galerie : onglet et hero partagent le même état',
+    await p.getAttribute('.vitre[data-vitre="1"]','data-rang') === '0'
+    && (await p.textContent('#serie-enseigne')).trim() === CREA.series[1].enseigne);
+ /* Le bouton d'offre doit pointer le pack déclaré dans le manifeste. */
+ ck('galerie : la démonstration mène au bon pack',
+    await p.getAttribute('#serie-pack','data-order') === String(CREA.series[1].packSuggere));
+ // clavier
+ await p.focus('.vitre[data-rang="0"]');
+ await p.keyboard.press('ArrowRight'); await p.waitForTimeout(600);
+ ck('galerie : parcours au clavier', await p.getAttribute('.vitre[data-vitre="2"]','data-rang') === '0');
+ // aperçu
+ const ouvreur = '.piece[data-piece="0"]';
+ await p.click(ouvreur); await p.waitForTimeout(500);
+ ck('aperçu : ouverture en grand', await p.evaluate(()=>document.getElementById('loupe').open));
+ await p.click('#loupe-story'); await p.waitForTimeout(400);
+ ck('aperçu : bascule publication / story',
+    await p.getAttribute('#loupe-story','aria-pressed') === 'true'
+    && await p.evaluate(()=>/1920/.test(document.querySelector('#loupe-vue svg').getAttribute('viewBox'))));
+ await p.keyboard.press('Escape'); await p.waitForTimeout(450);
+ ck('aperçu : Échap ferme et rend le focus au déclencheur',
+    !(await p.evaluate(()=>document.getElementById('loupe').open))
+    && await p.evaluate(()=>document.activeElement.classList.contains('piece')));
+ /* Depuis l'aperçu, l'offre doit ouvrir la feuille de commande du bon pack. */
+ await p.click(ouvreur); await p.waitForTimeout(400);
+ await p.click('#loupe-offre'); await p.waitForTimeout(600);
+ ck('aperçu : le bouton d\'offre ouvre la commande du pack annoncé',
+    await p.isVisible('#sheet') && !(await p.evaluate(()=>document.getElementById('loupe').open)));
+ await p.click('#sheet-close'); await p.waitForTimeout(350);
+ await p.click('[data-serie-onglet="0"]'); await p.waitForTimeout(450);
+
  // commande
  await p.click('#kiosk button[data-order="2"]'); await p.waitForTimeout(400);
  ck('feuille de commande ouverte', await p.isVisible('#sheet'));

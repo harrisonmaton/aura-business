@@ -1,10 +1,11 @@
 {
   "name": "aura-business",
   "private": true,
-  "version": "0.4.0",
+  "version": "0.5.0",
   "scripts": {
     "build:preview": "node scripts/build-preview.js",
-    "test": "npm run build:preview && node tests/catalogue.js && node tests/recette.js && node tests/registre-avec-runtime-simule.js"
+    "test": "npm run build:creations && npm run build:preview && node tests/catalogue.js && node tests/recette.js && node tests/registre-avec-runtime-simule.js",
+    "build:creations": "node scripts/build-creations.js"
   },
   "devDependencies": {
     "playwright": "^1.56.0"

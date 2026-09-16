@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080" role="img" aria-label="Sélection">
+<defs>
+    <radialGradient id="halo-boutique-3" cx="50%" cy="28%" r="78%">
+      <stop offset="0" stop-color="#57E9FF" stop-opacity=".40"/>
+      <stop offset="1" stop-color="#57E9FF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="fond-boutique-3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#120A18"/><stop offset="1" stop-color="#0A0710"/>
+    </linearGradient>
+    <filter id="grain-boutique-3"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope=".055"/></feComponentTransfer>
+    </filter>
+  </defs>
+<rect width="1080" height="1080" fill="url(#fond-boutique-3)"/>
+<rect width="1080" height="1080" fill="url(#halo-boutique-3)"/>
+<rect x="56" y="56" width="968" height="968" fill="#1B1320" opacity=".55"/>
+<rect x="56" y="56" width="968" height="968" fill="none" stroke="#D9B978" stroke-width="1.5" opacity=".45"/>
+<text x="120" y="190" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="24" font-weight="600" letter-spacing="10" fill="#57E9FF">EN BOUTIQUE</text>
+<text x="120" y="310" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="104" fill="#F4F1EA">Sélection</text>
+<text x="120" y="430" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="52" fill="#F4F1EA">Chemise lin lavé</text>
+      <text x="960" y="430" text-anchor="end" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="44" fill="#57E9FF">78 €</text>
+      <line x1="120" y1="456" x2="960" y2="456" stroke="#D9B978" stroke-width="1" opacity=".22" stroke-dasharray="3 7"/><text x="120" y="534" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="52" fill="#F4F1EA">Pantalon droit</text>
+      <text x="960" y="534" text-anchor="end" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="44" fill="#57E9FF">92 €</text>
+      <line x1="120" y1="560" x2="960" y2="560" stroke="#D9B978" stroke-width="1" opacity=".22" stroke-dasharray="3 7"/><text x="120" y="638" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="52" fill="#F4F1EA">Veste non doublée</text>
+      <text x="960" y="638" text-anchor="end" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="44" fill="#57E9FF">145 €</text>
+      <line x1="120" y1="664" x2="960" y2="664" stroke="#D9B978" stroke-width="1" opacity=".22" stroke-dasharray="3 7"/><text x="120" y="742" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="52" fill="#F4F1EA">Foulard imprimé</text>
+      <text x="960" y="742" text-anchor="end" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="44" fill="#57E9FF">34 €</text>
+      <line x1="120" y1="768" x2="960" y2="768" stroke="#D9B978" stroke-width="1" opacity=".22" stroke-dasharray="3 7"/>
+<text x="120" y="940" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="28" fill="#CFC7BC" opacity=".85">Boutique ouverte du mercredi au samedi, 11 h – 19 h</text>
+<rect width="1080" height="1080" filter="url(#grain-boutique-3)" opacity=".55"/>
+</svg>
