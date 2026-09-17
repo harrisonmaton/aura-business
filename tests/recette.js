@@ -294,11 +294,25 @@ const aller = async (page, url) => {
     sans défiler. */
  ck('hero : plus de logotype décoratif avant le contenu',
     await p.evaluate(()=>!document.querySelector('.hero-masthead') && !document.querySelector('.hero-edition')));
- ck('hero : la promesse annoncée est bien celle affichée',
-    await p.evaluate(()=>{
-      const h = document.querySelector('#manifesto .statement');
-      return !!h && /impossible à ignorer/i.test(h.textContent);
-    }), (await p.textContent('#manifesto .statement')||'').replace(/\s+/g,' ').trim());
+ /* Le titre du premier écran est un verrou en trois temps — nom, promesse,
+    chute. On vérifie que les TROIS sont peints : un dégradé appliqué au texte
+    le rend transparent, et une erreur de découpe donnerait un titre invisible
+    tout en laissant le texte dans le document. */
+ const verrou = await p.evaluate(()=>{
+   const h = document.querySelector('#manifesto .lockup');
+   if(!h) return null;
+   const part = s=>{
+     const e = h.querySelector(s); if(!e) return null;
+     const r = e.getBoundingClientRect();
+     return {txt:e.textContent.trim(), l:Math.round(r.width), h:Math.round(r.height)};
+   };
+   return {aura:part('.lk-aura'), script:part('.lk-script'), next:part('.lk-next')};
+ });
+ ck('hero : le verrou typographique est peint en trois temps',
+    !!verrou && ['aura','script','next'].every(k=>verrou[k] && verrou[k].txt
+      && verrou[k].l > 60 && verrou[k].h > 12),
+    verrou ? ['aura','script','next'].map(k=>verrou[k]
+      ? verrou[k].txt+' '+verrou[k].l+'×'+verrou[k].h : k+' absent').join(' · ') : 'verrou absent');
  /* Défaut réel trouvé par la mesure d'occultation : une pièce posée en retrait
     (translateZ négatif) passe DERRIÈRE le plan de la scène, et .stage captait
     tous les clics. Les pièces étaient visibles mais mortes. */

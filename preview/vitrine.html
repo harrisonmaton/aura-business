@@ -275,12 +275,168 @@ p{margin:0;}
 .menu-row .rm{width:96px; height:64px; border-radius:6px; overflow:hidden; flex:none;
   border:1px solid var(--rule); background:var(--ink-2);}
 .menu-row .rm img{width:100%; height:100%; object-fit:cover; display:block;}
+/* ── V∞ : le verrou typographique du premier écran ─────────────────────────
+   Le chrome est un dégradé peint DANS le texte : blanc, bleu froid, blanc,
+   rose. Les deux reflets clairs au milieu font le métal — un dégradé linéaire
+   simple donne du plastique. */
+.lockup{margin:0; line-height:.88; letter-spacing:-.03em;}
+.lockup .lk-aura{display:block; font-family:var(--display); font-weight:700;
+  font-size:clamp(3.6rem,8.2vw,7.4rem);
+  background:linear-gradient(176deg,#FFFFFF 0%,#D7E7F5 24%,#8FA8C0 44%,
+    #FFFFFF 56%,#F0C2E0 76%,#B98FC4 100%);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 3px 18px rgba(120,180,255,.24));}
+.lockup .lk-script{display:block; font-family:var(--editorial); font-style:italic;
+  font-weight:500; font-size:clamp(1.9rem,4.4vw,3.5rem); letter-spacing:-.01em;
+  margin-top:-.06em;
+  background:linear-gradient(92deg,#FF6FB5 0%,#FF2E88 48%,#C86BFF 100%);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  -webkit-text-fill-color:transparent;}
+.lockup .lk-next{display:block; font-family:var(--display); font-weight:700;
+  font-size:clamp(2.2rem,5.4vw,4.4rem); color:var(--paper); margin-top:.04em;}
+.lk-lede{margin-top:1.5rem; max-width:44ch;}
+
+/* Le bouton principal reprend le dégradé rose de la référence. */
+/* Mesuré : le premier dégradé (#FF3D96 → #C069FF) donnait 3,1:1 pour du
+   blanc à son extrémité violette — le bouton le plus important du site était
+   sous le seuil de lisibilité. Les deux bornes sont descendues jusqu'à passer
+   4,5:1 en blanc (4,63:1 côté rose, 5,75:1 côté violet) sans perdre le néon.
+   La lueur portée, elle, ne touche pas le texte : elle reste. */
+.btn-aura{background:linear-gradient(92deg,#E01B6A,#8E37D6); color:#fff;
+  border:0; box-shadow:0 10px 30px -8px rgba(224,27,106,.5);}
+.btn-aura:hover{filter:brightness(1.12); box-shadow:0 14px 38px -8px rgba(224,27,106,.66);}
+
+/* ── Indicateurs ──────────────────────────────────────────────────────────
+   Trois tuiles, comme la référence. Les valeurs viennent du catalogue. */
+.indics{display:flex; flex-wrap:wrap; gap:clamp(1.4rem,3vw,2.8rem);
+  list-style:none; margin:2.2rem 0 0; padding:1.5rem 0 0;
+  border-top:1px solid var(--rule);}
+.indics b{display:block; font-family:var(--display); font-weight:700;
+  font-size:clamp(1.7rem,3.4vw,2.5rem); line-height:1;
+  background:linear-gradient(92deg,#FFFFFF,#F0C2E0);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  -webkit-text-fill-color:transparent;}
+.indics span{display:block; margin-top:.45rem; font-size:.8rem; line-height:1.45;
+  color:var(--faint); max-width:18ch;}
+.indics-note{margin-top:1rem; font-size:.76rem; line-height:1.55; color:var(--faint);
+  max-width:52ch; opacity:.8;}
+
+/* ── Signature du fondateur ───────────────────────────────────────────── */
+.signature{margin:clamp(2rem,4vw,3rem) 0 0; padding-left:1.3rem;
+  border-left:2px solid var(--corail, #FF746C); max-width:40ch;}
+.signature blockquote{margin:0; font-family:var(--editorial); font-style:italic;
+  font-size:clamp(1.05rem,1.9vw,1.45rem); line-height:1.4; color:var(--paper);}
+.signature figcaption{margin-top:.8rem; display:flex; flex-direction:column; gap:.15rem;}
+.signature b{font-family:var(--display); font-weight:700; font-size:.92rem;
+  color:var(--paper); letter-spacing:.01em;}
+.signature span{font-size:.76rem; color:var(--faint);}
+@media (min-width:1100px){
+  /* Sur grand écran la signature se range à droite, sous le panneau produit,
+     exactement comme dans la référence. */
+  .signature{margin-left:auto; text-align:left;}
+}
+
+/* ── V∞ : la bande à trois temps ───────────────────────────────────────────
+   C'est la signature structurelle de la référence, et ce qui lui donne sa
+   densité maîtrisée : une colonne d'intro qui pose le sujet, un rail de
+   cartes au centre, une colonne latérale qui ajoute l'argument. Trois
+   fonctions distinctes sur une seule ligne d'horizon.
+   En dessous de 1200 px le rail passe sous l'intro, et la colonne latérale
+   sous le rail : l'ordre de lecture reste le même. */
+.bande-grid{display:grid; gap:clamp(1.4rem,2.4vw,2.2rem); align-items:start;
+  grid-template-columns:minmax(230px,.85fr) minmax(0,2.6fr) minmax(210px,.8fr);}
+@media (max-width:1200px){ .bande-grid{grid-template-columns:1fr;} }
+.bande-intro .label{margin-bottom:.9rem;}
+.bande-intro h2{font-family:var(--display); font-weight:700; line-height:.98;
+  font-size:clamp(1.8rem,2.7vw,2.5rem); letter-spacing:-.025em; margin:0;
+  color:var(--paper);}
+.bande-intro h2 em{font-style:normal; display:block; color:var(--faint);}
+.bande-intro .lede{margin-top:1.1rem; font-size:.9rem; max-width:34ch;}
+.bande-intro .btn{margin-top:1.5rem;}
+
+/* Le rail : quatre cartes de pack, cinq d'univers. En dessous de 1200 px il
+   défile horizontalement au doigt plutôt que de s'empiler en colonne — une
+   pile de cinq cartes plein écran enterre la suite de la page. */
+.rail{display:grid; gap:clamp(.7rem,1.2vw,1rem);
+  grid-auto-flow:column; grid-auto-columns:minmax(0,1fr);}
+@media (max-width:1200px){
+  .rail{grid-auto-columns:minmax(210px,45vw); overflow-x:auto; padding-bottom:.6rem;
+    scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch;}
+  .rail>*{scroll-snap-align:start;}
+}
+@media (max-width:560px){ .rail{grid-auto-columns:minmax(200px,70vw);} }
+
+/* Carte de pack : la scène en fond, le texte posé dessus, le voile entre les
+   deux. Sans ce voile le titre se pose sur un néon et devient illisible. */
+.pk{position:relative; display:flex; flex-direction:column; justify-content:flex-end;
+  min-height:clamp(270px,24vw,330px); padding:clamp(.9rem,1.4vw,1.2rem);
+  border:1px solid var(--rule); border-radius:10px; overflow:hidden;
+  text-align:left; cursor:pointer; background:var(--ink-2);
+  transition:transform .45s var(--ease), border-color .45s var(--ease);}
+.pk:hover{transform:translateY(-5px); border-color:var(--corail,#FF746C);}
+/* Le cadrage vise le HAUT de la scène — ciel, soleil, néons. Centré, la
+   carte ne montrait que le quai sombre du bas et toutes les cartes se
+   ressemblaient : quatre rectangles noirs au lieu de quatre heures. */
+.pk img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+  object-position:center 26%; z-index:0; transition:transform .8s var(--ease);}
+.pk:hover img{transform:scale(1.05);}
+.pk::after{content:""; position:absolute; inset:0; z-index:1;
+  background:linear-gradient(0deg, rgba(6,8,18,.95) 4%, rgba(6,8,18,.62) 38%,
+    rgba(6,8,18,.10) 72%, rgba(6,8,18,0) 100%);}
+.pk>*{position:relative; z-index:2;}
+.pk .pk-no{position:absolute; top:clamp(.8rem,1.3vw,1.1rem); left:clamp(.9rem,1.4vw,1.2rem);
+  z-index:2; font-family:var(--display); font-weight:700; font-size:.92rem;
+  color:var(--paper); opacity:.85; letter-spacing:.02em;}
+.pk .pk-nom{font-family:var(--display); font-weight:700; line-height:1;
+  font-size:clamp(1.35rem,2.1vw,1.8rem); letter-spacing:-.02em; color:var(--paper);}
+.pk .pk-sous{margin-top:.45rem; font-size:.79rem; line-height:1.45; color:#D8D2C8;}
+.pk .pk-prix{margin-top:.7rem; font-family:var(--editorial); font-size:1.15rem;
+  color:var(--paper);}
+.pk .pk-lien{margin-top:.85rem; display:inline-flex; align-items:center; gap:.4rem;
+  align-self:flex-start; font-size:.7rem; letter-spacing:.12em; text-transform:uppercase;
+  padding:.5rem .85rem; border:1px solid rgba(255,245,232,.42); border-radius:99px;
+  color:var(--paper); white-space:nowrap;}
+.pk:hover .pk-lien{background:var(--paper); color:#0A0D1A; border-color:var(--paper);}
+
+/* Colonne latérale : l'argument qui accompagne le rail. */
+.cote{border:1px solid var(--rule); border-radius:10px; padding:clamp(1.1rem,1.7vw,1.5rem);
+  background:linear-gradient(170deg, rgba(255,46,136,.09), rgba(10,13,26,.55) 55%);}
+.cote-t{font-family:var(--display); font-weight:700; font-size:clamp(1rem,1.4vw,1.2rem);
+  line-height:1.15; letter-spacing:-.01em; color:var(--paper); margin:0 0 1rem;}
+.cote-liste{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:.65rem;}
+.cote-liste li{display:flex; gap:.6rem; align-items:flex-start;
+  font-size:.81rem; line-height:1.45; color:#D8D2C8;}
+.cote-liste svg{flex:none; margin-top:.15rem;}
+.sceau{margin-top:1.3rem; display:flex; flex-direction:column; align-items:center;
+  justify-content:center; gap:.15rem; width:116px; height:116px; margin-inline:auto;
+  border-radius:50%; border:1px solid rgba(255,46,136,.5); text-align:center;
+  background:radial-gradient(circle at 50% 35%, rgba(255,46,136,.16), transparent 70%);}
+.sceau b{font-family:var(--display); font-weight:700; font-size:.78rem; color:var(--paper);
+  letter-spacing:.02em;}
+.sceau span{font-size:.72rem; color:var(--faint);}
+
+/* ── Pied de page : la ligne de savoir-faire ──────────────────────────── */
+.metiers{list-style:none; margin:0 0 1.6rem; padding:0 0 1.6rem;
+  border-bottom:1px solid var(--rule);
+  display:grid; gap:clamp(.8rem,1.6vw,1.4rem);
+  grid-template-columns:repeat(auto-fit,minmax(128px,1fr));}
+.metiers li{display:flex; flex-direction:column; align-items:center; gap:.5rem;
+  text-align:center; font-size:.74rem; letter-spacing:.06em; text-transform:uppercase;
+  color:var(--faint);}
+.metiers svg{color:#FF2E88;}
+.foot-devise{margin:0 0 1.4rem; font-family:var(--display); font-weight:700;
+  font-size:.82rem; letter-spacing:.24em; text-transform:uppercase; color:var(--paper);
+  opacity:.8;}
+
 /* ── Par secteur ───────────────────────────────────────────────────────── */
-.secteurs{display:grid; gap:clamp(.8rem,1.4vw,1.2rem);
-  grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); margin-top:clamp(2rem,4vw,3rem);}
 .secteur{position:relative; overflow:hidden; border:1px solid var(--rule);
-  background:var(--ink-2); display:flex; flex-direction:column;}
-.secteur-art{position:relative; aspect-ratio:4/5; overflow:hidden;}
+  border-radius:10px; background:var(--ink-2); display:flex; flex-direction:column;
+  transition:transform .45s var(--ease), border-color .45s var(--ease);}
+.secteur:hover{transform:translateY(-5px); border-color:var(--corail,#FF746C);}
+.secteur-art{position:relative; aspect-ratio:3/4; overflow:hidden;}
+.secteur-art img{transition:transform .8s var(--ease);}
+.secteur:hover .secteur-art img{transform:scale(1.05);}
 .secteur-art img{width:100%; height:100%; object-fit:cover; display:block;}
 .secteur-art::after{content:""; position:absolute; inset:0;
   background:linear-gradient(0deg, rgba(8,11,14,.86) 4%, rgba(8,11,14,.12) 52%, transparent);}
@@ -290,8 +446,11 @@ p{margin:0;}
 .secteur-t{padding:.9rem 1rem 1.1rem; font-size:.84rem; line-height:1.55; color:var(--faint);}
 .secteurs-note{margin-top:1.4rem; font-size:.78rem; line-height:1.6; color:var(--faint);
   max-width:66ch;}
-@media (max-width:760px){ .secteurs{grid-template-columns:repeat(2,1fr);}
-  .secteur-nom{font-size:1.05rem;} .secteur-t{font-size:.78rem;} }
+@media (max-width:760px){ .secteur-nom{font-size:1.05rem;} .secteur-t{font-size:.78rem;} }
+.cote-club{display:flex; flex-direction:column;}
+.cote-club .couronne{color:#FF2E88;}
+.club-p{font-size:.83rem; line-height:1.5; color:#D8D2C8; margin:0 0 1.3rem;}
+.cote-club .btn{align-self:flex-start;}
 
 /* Le club est la seule bande à porter une scène en fond : c'est une invitation,
    pas une fiche produit. Elle reste très en retrait — le protocole et les
@@ -1183,16 +1342,24 @@ footer a[href*="instagram"], footer a[href*="ig.me"]{ display:inline-flex; align
   <div class="shell">
     <div class="manifesto-grid">
       <div class="reveal">
-        <p class="hero-kicker" data-i18n="v2.edition">Studio de contenu indépendant</p>
-        <h1 class="statement">
-          <span data-i18n="manifesto.line1">Votre commerce.</span><br>
-          <em data-i18n="manifesto.line2">Impossible à ignorer.</em>
+        <p class="hero-kicker" data-i18n="vinf.kicker">Studio créatif pour commerces ambitieux</p>
+        <!-- Le verrou typographique de la référence : le nom en chrome, la
+             promesse en script, la chute en capitales pleines. Trois graisses,
+             trois traitements, une seule lecture. -->
+        <h1 class="lockup">
+          <span class="lk-aura" data-i18n="vinf.t1">AURA</span>
+          <em class="lk-script" data-i18n="vinf.t2">Votre Business</em>
+          <span class="lk-next" data-i18n="vinf.t3">Next level.</span>
         </h1>
-        <p class="lede" style="margin-top:1.6rem;" data-i18n="manifesto.lede">Vous choisissez un numéro sur la carte. Nous préparons le fichier. Vous collez, vous publiez. Pas d'abonnement, pas d'agence, pas de réunion.</p>
+        <p class="lede lk-lede" data-i18n="vinf.lede">Identité de marque, contenu et univers visuels sur-mesure pour les commerces qui veulent changer de dimension.</p>
         <div class="hero-actions">
-          <a href="#creations" class="btn" data-i18n="manifesto.cta">Voir les créations</a>
-          <a href="#carte" class="btn btn-ghost" data-i18n="manifesto.cta2">Découvrir les packs</a>
+          <a href="#carte" class="btn btn-aura" data-i18n="vinf.cta1">Parler de votre projet</a>
+          <a href="#creations" class="btn btn-ghost" data-i18n="vinf.cta2">Découvrir les packs</a>
         </div>
+        <!-- Emplacement des indicateurs de la référence, chiffres honnêtes :
+             ils sont lus dans le catalogue au chargement, pas écrits ici. -->
+        <ul class="indics" id="indics" aria-label="Indicateurs de l'offre"></ul>
+        <p class="indics-note" data-i18n="vinf.kn"></p>
       </div>
       <aside class="manifesto-aside reveal" data-d="2">
         <p class="label label-brass" data-i18n="hero.galerie">Ce que vous recevez</p>
@@ -1216,6 +1383,13 @@ footer a[href*="instagram"], footer a[href*="ig.me"]{ display:inline-flex; align
       </aside>
       <figcaption class="pack-legende reveal" data-d="3" id="pack-legende"></figcaption>
     </div>
+    <!-- Signature du fondateur, comme dans la référence : une intention, pas
+         un chiffre. C'est la seule forme de preuve qu'on puisse produire
+         aujourd'hui sans mentir — celle du goût et de la posture. -->
+    <figure class="signature reveal" data-d="3">
+      <blockquote data-i18n="vinf.cite">Créer des marques qui font rêver et qui performent.</blockquote>
+      <figcaption><b data-i18n="vinf.qui">Harrison Maton</b><span data-i18n="vinf.role">Directeur créatif &amp; fondateur</span></figcaption>
+    </figure>
   </div>
 <div class="hero-bottom"><span data-i18n="v2.bottom">Pensé pour votre activité. Prêt pour Instagram.</span><a href="#carte" aria-label="La carte">↓</a><span data-i18n="v2.noSub">Un achat. Aucun abonnement.</span></div>
 </section>
@@ -1273,13 +1447,30 @@ footer a[href*="instagram"], footer a[href*="ig.me"]{ display:inline-flex; align
   <div class="shell">
     <div class="band-head reveal">
       <div class="hair"></div>
-      <div class="display-row">
-        <span class="section-no">02 /</span><h2 data-i18n="carte.title">La carte</h2>
-        <p class="label" data-i18n="carte.hint">Un numéro · un paiement · un fichier</p>
-      </div>
+      <!-- Pas de second titre ici : la colonne d'intro de la bande porte
+           déjà « Des univers uniques ». Deux titres l'un sur l'autre, c'est
+           la hiérarchie qui s'effondre. -->
     </div>
 
-    <article class="feature reveal" id="feature-pack" data-d="1"></article>
+    <!-- La bande à trois temps de la référence : intro, rail de packs,
+         argument sur-mesure. -->
+    <div class="bande-grid reveal" data-d="1">
+      <div class="bande-intro">
+        <p class="label label-brass" data-i18n="bd.packs.label">Nos packs</p>
+        <h2><span data-i18n="bd.packs.t1">Des univers uniques.</span>
+            <em data-i18n="bd.packs.t2">Pour tous les ambitieux.</em></h2>
+        <p class="lede" data-i18n="bd.packs.lede"></p>
+        <a href="#creations" class="btn btn-aura" data-i18n="bd.packs.cta">Voir tous les packs</a>
+      </div>
+      <div class="rail" id="packs-rail"></div>
+      <aside class="cote">
+        <p class="cote-t" data-i18n="bd.sur.t">Du sur-mesure. Toujours.</p>
+        <ul class="cote-liste" id="cote-liste"></ul>
+        <div class="sceau"><b data-i18n="bd.sceau">Fait pour vous</b><span data-i18n="bd.sceau2">sur brief</span></div>
+      </aside>
+    </div>
+
+    <article class="feature reveal" id="feature-pack" data-d="2" style="margin-top:clamp(2.5rem,5vw,4rem);"></article>
 
     <div class="menu-rows" id="menu-rows" style="margin-top:clamp(2.5rem,5vw,4rem);"></div>
   </div>
@@ -1290,15 +1481,24 @@ footer a[href*="instagram"], footer a[href*="ig.me"]{ display:inline-flex; align
      chapeau et le répète sous les vignettes. -->
 <section class="band" id="secteurs">
   <div class="shell">
-    <div class="band-head reveal">
-      <div class="hair"></div>
-      <div class="display-row">
-        <span class="section-no">03 /</span><h2 data-i18n="sect.title">Par secteur</h2>
-        <p class="label" data-i18n="sect.hint">Études de style</p>
+    <div class="band-head reveal"><div class="hair"></div></div>
+    <div class="bande-grid reveal" data-d="1">
+      <div class="bande-intro">
+        <p class="label label-brass" data-i18n="bd.real.label">Nos univers</p>
+        <h2><span data-i18n="bd.real.t1">Un métier.</span>
+            <em data-i18n="bd.real.t2">Une direction artistique.</em></h2>
+        <p class="lede" data-i18n="sect.lede"></p>
+        <p class="label" data-i18n="sect.hint" style="margin-top:1.2rem">Études de style</p>
       </div>
-      <p class="lede" data-i18n="sect.lede"></p>
+      <div class="rail" id="secteurs-liste"></div>
+      <!-- La colonne du club, exactement à la place qu'elle occupe dans la
+           référence : l'écosystème se propose à côté des univers, pas après. -->
+      <aside class="cote cote-club">
+        <p class="cote-t"><span class="couronne" aria-hidden="true">♛</span> <span data-i18n="bd.club.t">Aura Club</span></p>
+        <p class="club-p" data-i18n="bd.club.p"></p>
+        <a href="#club" class="btn btn-aura" data-i18n="bd.club.cta">Accès club</a>
+      </aside>
     </div>
-    <div class="secteurs reveal" data-d="1" id="secteurs-liste"></div>
     <p class="secteurs-note" data-i18n="sect.note"></p>
   </div>
 </section>
@@ -1409,6 +1609,11 @@ footer a[href*="instagram"], footer a[href*="ig.me"]{ display:inline-flex; align
 
 <footer>
   <div class="shell">
+    <!-- La ligne de métiers de la référence. Chaque entrée correspond à
+         quelque chose que la maison fait réellement et qui existe sur ce
+         site : pas de service affiché pour faire nombre. -->
+    <ul class="metiers" id="metiers" aria-label="Savoir-faire"></ul>
+    <p class="foot-devise" data-i18n="ft.devise">Créer · Vendre · Gagner</p>
     <div class="foot-top">
       <p class="foot-mark">AURA <em>Business</em></p>
       <div>
@@ -1868,6 +2073,190 @@ var SECTEUR_COPY = {
      "sect.note":"Nessun cliente reale è mostrato qui. Queste immagini sono scenografie composte dal codice del sito. Suggeriscono un'atmosfera; non mostrano un'attività esistente né i file di un pack."}
 };
 Object.keys(SECTEUR_COPY).forEach(function(l){Object.assign(STR[l],SECTEUR_COPY[l]);});
+
+/* ── V∞ : premier écran, preuves, signature ────────────────────────────────
+   La référence maîtresse affiche « +150 business accompagnés » et « +300 %
+   de croissance moyenne ». Ces deux chiffres n'existent pas : aucun commerce
+   n'a été livré, aucune croissance n'a été mesurée. Le mandat tranche
+   lui-même — « pas de fake social proof » — donc on garde l'EMPLACEMENT et
+   le poids visuel des trois indicateurs, et on les remplit avec ce qui est
+   vérifiable dans src/catalog.json : le nombre de packs, la fourchette de
+   prix, le délai annoncé, le fait que tout part d'un brief. Un indicateur
+   d'offre est une information ; un résultat inventé est une promesse qu'on
+   ne peut pas tenir. */
+var VINF_COPY = {
+ fr:{"vinf.kicker":"Studio créatif pour commerces ambitieux",
+     "vinf.t1":"AURA","vinf.t2":"Votre Business","vinf.t3":"Next level.",
+     "vinf.lede":"Identité de marque, contenu et univers visuels sur-mesure pour les commerces qui veulent changer de dimension.",
+     "vinf.cta1":"Parler de votre projet","vinf.cta2":"Découvrir les packs",
+     "vinf.k1":"4","vinf.k1l":"packs, de 50 à 250 €",
+     "vinf.k2":"24–72 h","vinf.k2l":"délai annoncé, selon le pack",
+     "vinf.k3":"100 %","vinf.k3l":"sur-mesure, à partir d'un brief",
+     "vinf.kn":"Indicateurs de l'offre, lus dans le catalogue. Aucun résultat commercial n'est garanti.",
+     "vinf.cite":"Créer des marques qui font rêver et qui performent.",
+     "vinf.qui":"Harrison Maton","vinf.role":"Directeur créatif & fondateur",
+     "vinf.scroll":"Scroller pour explorer"},
+ en:{"vinf.kicker":"Creative studio for ambitious businesses",
+     "vinf.t1":"AURA","vinf.t2":"Your Business","vinf.t3":"Next level.",
+     "vinf.lede":"Brand identity, content and bespoke visual worlds for businesses ready to change league.",
+     "vinf.cta1":"Talk about your project","vinf.cta2":"Explore the packs",
+     "vinf.k1":"4","vinf.k1l":"packs, from €50 to €250",
+     "vinf.k2":"24–72 h","vinf.k2l":"stated turnaround, by pack",
+     "vinf.k3":"100 %","vinf.k3l":"bespoke, built from a brief",
+     "vinf.kn":"Offer indicators, read from the catalogue. No business result is guaranteed.",
+     "vinf.cite":"Build brands people dream about — and that perform.",
+     "vinf.qui":"Harrison Maton","vinf.role":"Creative director & founder",
+     "vinf.scroll":"Scroll to explore"},
+ es:{"vinf.kicker":"Estudio creativo para negocios ambiciosos",
+     "vinf.t1":"AURA","vinf.t2":"Tu Negocio","vinf.t3":"Next level.",
+     "vinf.lede":"Identidad de marca, contenido y universos visuales a medida para negocios que quieren cambiar de dimensión.",
+     "vinf.cta1":"Hablar de tu proyecto","vinf.cta2":"Descubrir los packs",
+     "vinf.k1":"4","vinf.k1l":"packs, de 50 a 250 €",
+     "vinf.k2":"24–72 h","vinf.k2l":"plazo anunciado, según el pack",
+     "vinf.k3":"100 %","vinf.k3l":"a medida, a partir de un brief",
+     "vinf.kn":"Indicadores de la oferta, leídos del catálogo. No se garantiza ningún resultado comercial.",
+     "vinf.cite":"Crear marcas que hagan soñar y que funcionen.",
+     "vinf.qui":"Harrison Maton","vinf.role":"Director creativo y fundador",
+     "vinf.scroll":"Desplázate para explorar"},
+ it:{"vinf.kicker":"Studio creativo per attività ambiziose",
+     "vinf.t1":"AURA","vinf.t2":"Il tuo Business","vinf.t3":"Next level.",
+     "vinf.lede":"Identità di marca, contenuti e universi visivi su misura per le attività che vogliono cambiare passo.",
+     "vinf.cta1":"Parliamo del tuo progetto","vinf.cta2":"Scopri i pack",
+     "vinf.k1":"4","vinf.k1l":"pack, da 50 a 250 €",
+     "vinf.k2":"24–72 h","vinf.k2l":"tempi dichiarati, per pack",
+     "vinf.k3":"100 %","vinf.k3l":"su misura, a partire da un brief",
+     "vinf.kn":"Indicatori dell'offerta, letti dal catalogo. Nessun risultato commerciale è garantito.",
+     "vinf.cite":"Creare marchi che fanno sognare e che performano.",
+     "vinf.qui":"Harrison Maton","vinf.role":"Direttore creativo e fondatore",
+     "vinf.scroll":"Scorri per esplorare"}
+};
+Object.keys(VINF_COPY).forEach(function(l){Object.assign(STR[l],VINF_COPY[l]);});
+
+/* ── V∞ : bandes packs et réalisations ─────────────────────────────────────
+   Les packs prennent les noms demandés par le mandat — Starter, Growth,
+   Elite, Legend — à la place d'Essential, Signature, Atelier, Maison. C'est
+   un changement d'AFFICHAGE : les identifiants, les prix et le contenu de
+   src/catalog.json ne bougent pas, et le message de commande reprend
+   automatiquement le nouveau nom puisqu'il le lit ici. Décision documentée
+   dans ÉTAT.md ; elle se défait en retirant ce bloc. */
+var BANDES_COPY = {
+ fr:{"pack.1.name":"Starter","pack.2.name":"Growth","pack.3.name":"Elite","pack.4.name":"Legend",
+     "pk.1.sous":"L'essentiel pour démarrer avec impact.",
+     "pk.2.sous":"Plus de visibilité. Plus de clients.",
+     "pk.3.sous":"Une marque puissante et distinctive.",
+     "pk.4.sous":"Un univers complet, sans limites.",
+     "bd.packs.label":"Nos packs",
+     "bd.packs.t1":"Des univers uniques.","bd.packs.t2":"Pour tous les ambitieux.",
+     "bd.packs.lede":"Des packs personnalisés selon votre activité, vos objectifs et votre univers. Un point de départ clair, pas un abonnement.",
+     "bd.packs.cta":"Voir tous les packs","bd.savoir":"En savoir plus",
+     "bd.sur.t":"Du sur-mesure. Toujours.",
+     "bd.sur.1":"Adapté à votre activité","bd.sur.2":"Direction artistique incluse",
+     "bd.sur.3":"Visuels et textes prêts à publier","bd.sur.4":"Showroom 3D et aperçu avant commande",
+     "bd.sur.5":"Livraison en fichiers, sans outil à installer","bd.sur.6":"Un interlocuteur, pas un service client",
+     "bd.sceau":"Fait pour vous","bd.sceau2":"sur brief",
+     "bd.real.label":"Nos univers","bd.real.t1":"Un métier.","bd.real.t2":"Une direction artistique.",
+     "bd.real.cta":"Voir toutes les études",
+     "bd.club.t":"Aura Club","bd.club.p":"Un cercle d'apporteurs : vous amenez le commerce, la maison produit et livre, vous touchez la moitié.",
+     "bd.club.cta":"Accès club"},
+ en:{"pack.1.name":"Starter","pack.2.name":"Growth","pack.3.name":"Elite","pack.4.name":"Legend",
+     "pk.1.sous":"The essentials, with real impact.",
+     "pk.2.sous":"More visibility. More customers.",
+     "pk.3.sous":"A powerful, distinctive brand.",
+     "pk.4.sous":"A complete world, no limits.",
+     "bd.packs.label":"Our packs",
+     "bd.packs.t1":"Distinct worlds.","bd.packs.t2":"For the ambitious.",
+     "bd.packs.lede":"Packs tailored to your trade, your goals and your world. A clear starting point, not a subscription.",
+     "bd.packs.cta":"See all packs","bd.savoir":"Learn more",
+     "bd.sur.t":"Bespoke. Always.",
+     "bd.sur.1":"Built around your trade","bd.sur.2":"Art direction included",
+     "bd.sur.3":"Visuals and copy ready to post","bd.sur.4":"3D showroom and preview before ordering",
+     "bd.sur.5":"Delivered as files, nothing to install","bd.sur.6":"One person, not a support desk",
+     "bd.sceau":"Made for you","bd.sceau2":"from a brief",
+     "bd.real.label":"Our worlds","bd.real.t1":"One trade.","bd.real.t2":"One art direction.",
+     "bd.real.cta":"See all studies",
+     "bd.club.t":"Aura Club","bd.club.p":"A circle of introducers: you bring the business, the house produces and delivers, you take half.",
+     "bd.club.cta":"Club access"},
+ es:{"pack.1.name":"Starter","pack.2.name":"Growth","pack.3.name":"Elite","pack.4.name":"Legend",
+     "pk.1.sous":"Lo esencial para empezar con impacto.",
+     "pk.2.sous":"Más visibilidad. Más clientes.",
+     "pk.3.sous":"Una marca potente y distintiva.",
+     "pk.4.sous":"Un universo completo, sin límites.",
+     "bd.packs.label":"Nuestros packs",
+     "bd.packs.t1":"Universos únicos.","bd.packs.t2":"Para los ambiciosos.",
+     "bd.packs.lede":"Packs personalizados según tu actividad, tus objetivos y tu universo. Un punto de partida claro, no una suscripción.",
+     "bd.packs.cta":"Ver todos los packs","bd.savoir":"Saber más",
+     "bd.sur.t":"A medida. Siempre.",
+     "bd.sur.1":"Adaptado a tu actividad","bd.sur.2":"Dirección artística incluida",
+     "bd.sur.3":"Imágenes y textos listos para publicar","bd.sur.4":"Showroom 3D y vista previa antes de pedir",
+     "bd.sur.5":"Entrega en archivos, sin instalar nada","bd.sur.6":"Un interlocutor, no un servicio de atención",
+     "bd.sceau":"Hecho para ti","bd.sceau2":"desde un brief",
+     "bd.real.label":"Nuestros universos","bd.real.t1":"Un oficio.","bd.real.t2":"Una dirección artística.",
+     "bd.real.cta":"Ver todos los estudios",
+     "bd.club.t":"Aura Club","bd.club.p":"Un círculo de recomendadores: tú traes el negocio, la casa produce y entrega, tú te llevas la mitad.",
+     "bd.club.cta":"Acceso club"},
+ it:{"pack.1.name":"Starter","pack.2.name":"Growth","pack.3.name":"Elite","pack.4.name":"Legend",
+     "pk.1.sous":"L'essenziale per partire con impatto.",
+     "pk.2.sous":"Più visibilità. Più clienti.",
+     "pk.3.sous":"Un marchio forte e distintivo.",
+     "pk.4.sous":"Un universo completo, senza limiti.",
+     "bd.packs.label":"I nostri pack",
+     "bd.packs.t1":"Universi unici.","bd.packs.t2":"Per chi ha ambizione.",
+     "bd.packs.lede":"Pack personalizzati secondo la tua attività, i tuoi obiettivi e il tuo universo. Un punto di partenza chiaro, non un abbonamento.",
+     "bd.packs.cta":"Vedi tutti i pack","bd.savoir":"Scopri di più",
+     "bd.sur.t":"Su misura. Sempre.",
+     "bd.sur.1":"Costruito sulla tua attività","bd.sur.2":"Direzione artistica inclusa",
+     "bd.sur.3":"Immagini e testi pronti da pubblicare","bd.sur.4":"Showroom 3D e anteprima prima dell'ordine",
+     "bd.sur.5":"Consegna in file, niente da installare","bd.sur.6":"Un interlocutore, non un servizio clienti",
+     "bd.sceau":"Fatto per te","bd.sceau2":"da un brief",
+     "bd.real.label":"I nostri universi","bd.real.t1":"Un mestiere.","bd.real.t2":"Una direzione artistica.",
+     "bd.real.cta":"Vedi tutti gli studi",
+     "bd.club.t":"Aura Club","bd.club.p":"Un circolo di segnalatori: tu porti l'attività, la casa produce e consegna, tu prendi metà.",
+     "bd.club.cta":"Accesso club"}
+};
+Object.keys(BANDES_COPY).forEach(function(l){Object.assign(STR[l],BANDES_COPY[l]);});
+var PIED_COPY = {
+ "fr": {
+  "ft.devise": "Créer · Vendre · Gagner",
+  "ft.m1": "Identité visuelle",
+  "ft.m2": "Contenu social",
+  "ft.m3": "Showroom 3D",
+  "ft.m4": "Direction artistique",
+  "ft.m5": "Sur-mesure",
+  "ft.m6": "Club & apport",
+  "ft.lieu": "Depuis Lille · partout où les ambitieux se trouvent"
+ },
+ "en": {
+  "ft.devise": "Create · Sell · Win",
+  "ft.m1": "Visual identity",
+  "ft.m2": "Social content",
+  "ft.m3": "3D showroom",
+  "ft.m4": "Art direction",
+  "ft.m5": "Bespoke",
+  "ft.m6": "Club & referrals",
+  "ft.lieu": "From Lille · wherever the ambitious are"
+ },
+ "es": {
+  "ft.devise": "Crear · Vender · Ganar",
+  "ft.m1": "Identidad visual",
+  "ft.m2": "Contenido social",
+  "ft.m3": "Showroom 3D",
+  "ft.m4": "Dirección artística",
+  "ft.m5": "A medida",
+  "ft.m6": "Club y recomendación",
+  "ft.lieu": "Desde Lille · donde estén los ambiciosos"
+ },
+ "it": {
+  "ft.devise": "Creare · Vendere · Vincere",
+  "ft.m1": "Identità visiva",
+  "ft.m2": "Contenuti social",
+  "ft.m3": "Showroom 3D",
+  "ft.m4": "Direzione artistica",
+  "ft.m5": "Su misura",
+  "ft.m6": "Club e segnalazioni",
+  "ft.lieu": "Da Lille · ovunque siano gli ambiziosi"
+ }
+};
+Object.keys(PIED_COPY).forEach(function(l){Object.assign(STR[l],PIED_COPY[l]);});
 
 /* V5 : la page s'ouvre sur le travail livré, plus sur un décor. */
 var V5_COPY = {
@@ -2410,6 +2799,80 @@ function sceneImg(id, classe, priorite){
     + ' decoding="async"' + (priorite ? '' : ' loading="lazy"') + '>';
 }
 
+/* Six savoir-faire, six pictogrammes dessinés ici : aucune police d'icônes
+   à charger, donc rien à demander à un tiers. */
+var PICTOS = {
+  m1:'<path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/>',
+  m2:'<rect x="3.5" y="5.5" width="17" height="13" rx="2.5"/><circle cx="12" cy="12" r="3.4"/>',
+  m3:'<path d="M12 3.2l7.6 4.4v8.8L12 20.8 4.4 16.4V7.6z"/><path d="M4.4 7.6L12 12l7.6-4.4M12 12v8.8"/>',
+  m4:'<path d="M4 19.5L9 9l3.4 6.2L15 11l5 8.5z"/><circle cx="7.4" cy="5.6" r="2"/>',
+  m5:'<path d="M12 3.5l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5L4.8 8.8l5-.7z"/>',
+  m6:'<circle cx="9" cy="8.5" r="3.2"/><path d="M3.6 19.5c0-3 2.4-5.4 5.4-5.4s5.4 2.4 5.4 5.4"/><path d="M16 7.2l1.5 3 3 .5-2.2 2.1.5 3-2.8-1.5"/>'
+};
+function renderMetiers(){
+  var hote = $("#metiers"); if(!hote) return;
+  hote.innerHTML = [1,2,3,4,5,6].map(function(n){
+    return '<li><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"'
+      + ' stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true">'
+      + PICTOS["m" + n] + '</svg><span>' + esc(t("ft.m" + n)) + '</span></li>';
+  }).join("");
+}
+
+/* Le rail de packs : une carte par pack du catalogue, adossée à sa scène.
+   Le prix vient de PACKS, jamais d'une saisie — c'est la même source que le
+   serveur utilise pour encaisser, donc l'affiche ne peut pas diverger. */
+var COCHE = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">'
+  + '<circle cx="12" cy="12" r="10" stroke="#FF2E88" stroke-width="1.6"/>'
+  + '<path d="M7.5 12.4l3.1 3.1 6-6.4" stroke="#FF2E88" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+function renderRailPacks(){
+  var hote = $("#packs-rail"); if(!hote) return;
+  hote.innerHTML = PACKS.map(function(p, i){
+    var no = ("0" + (i + 1)).slice(-2);
+    return '<button type="button" class="pk" data-order="' + p.id + '" '
+      + 'aria-label="' + esc(packName(p) + " — " + eur(p.price)) + '">'
+      + sceneImg("pack-" + p.id, "pk-img")
+      + '<span class="pk-no">' + no + '</span>'
+      + '<span class="pk-nom">' + esc(packName(p)) + '</span>'
+      + '<span class="pk-sous">' + esc(t("pk." + p.id + ".sous")) + '</span>'
+      + '<span class="pk-prix num">' + eur(p.price) + '</span>'
+      + '<span class="pk-lien">' + esc(t("bd.savoir")) + ' ' + ARROW + '</span>'
+    + '</button>';
+  }).join("");
+  var liste = $("#cote-liste");
+  if(liste) liste.innerHTML = [1,2,3,4,5,6].map(function(n){
+    return '<li>' + COCHE + '<span>' + esc(t("bd.sur." + n)) + '</span></li>';
+  }).join("");
+}
+
+/* Les indicateurs du premier écran sont CALCULÉS, pas saisis. Le nombre de
+   packs, la fourchette de prix et la fourchette de délai sont lus dans PACKS,
+   qui vient de src/catalog.json. Si l'offre change, l'affiche change avec
+   elle — un chiffre écrit en dur finit toujours par mentir. */
+function renderIndicateurs(){
+  var hote = $("#indics"); if(!hote || !PACKS.length) return;
+  var prix = PACKS.map(function(p){ return p.price; });
+  var bornes = t("vinf.k1l").replace(/50/, Math.min.apply(null, prix))
+                            .replace(/250/, Math.max.apply(null, prix));
+  /* Le délai est une chaîne libre par pack (« 24–48 h », « 72 h ») : on en
+     extrait les nombres pour donner la vraie amplitude annoncée. */
+  var heures = PACKS.reduce(function(acc, p){
+    (String(p.delay).match(/\d+/g) || []).forEach(function(n){ acc.push(+n); });
+    return acc;
+  }, []);
+  var delai = heures.length
+    ? Math.min.apply(null, heures) + "–" + Math.max.apply(null, heures) + " h"
+    : t("vinf.k2");
+  var lignes = [
+    [String(PACKS.length), bornes],
+    [delai,               t("vinf.k2l")],
+    [t("vinf.k3"),        t("vinf.k3l")]
+  ];
+  hote.innerHTML = lignes.map(function(l){
+    return '<li><b>' + esc(l[0]) + '</b><span>' + esc(l[1]) + '</span></li>';
+  }).join("");
+}
+
 /* Les cinq secteurs sont adossés aux scènes réellement construites : si une
    scène manque, le secteur ne s'affiche pas. Pas de cadre vide. */
 var SECTEURS = [
@@ -2925,7 +3388,7 @@ function applyLang(){
   $$("[data-i18n]").forEach(function(el){ el.textContent = t(el.getAttribute("data-i18n")); });
   $$("[data-i18n-ph]").forEach(function(el){ el.setAttribute("placeholder", t(el.getAttribute("data-i18n-ph"))); });
   $$(".langset button").forEach(function(b){ b.setAttribute("aria-pressed", String(b.getAttribute("data-lang") === LANG)); });
-  renderFeature(); renderMenuRows(); renderSecteurs(); renderReady(); renderSteps();
+  renderIndicateurs(); renderMetiers(); renderRailPacks(); renderFeature(); renderMenuRows(); renderSecteurs(); renderReady(); renderSteps();
   renderProtocolList(); renderMissions(); renderQA(); renderKiosk(); renderAmbiences();
   renderPass(); tickClock(); renderGalerie();
   if(order.pack) fillSheet();

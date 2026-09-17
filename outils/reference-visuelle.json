@@ -1,33 +1,44 @@
 {
  "_justifications": {
   "_lire": "Comptes de défauts acceptés, par vue. Une entrée nouvelle n'est pas un défaut disparu : c'est un défaut jugé. La raison s'écrit ici.",
-  "repeated-container-text @ vitrine 320/390": "« TRATTORIA » et « Mezzanotte » apparaissent quatre fois dans le panneau d'accueil parce que les quatre créations de la série portent l'enseigne du même commerce — c'est le principe d'une série de marque, pas une duplication de gabarit. Ce défaut n'existait pas dans la référence précédente pour une mauvaise raison : sur téléphone, le panneau était ENTIÈREMENT INVISIBLE (le showroom se déclarait actif alors que la feuille de style le masquait sous 760 px). Le détecteur ne mesurait donc rien. L'entrée apparaît parce que le défaut a été corrigé, pas introduit."
+  "repeated-container-text @ vitrine 320/390": "« TRATTORIA » et « Mezzanotte » apparaissent quatre fois dans le panneau d'accueil parce que les quatre créations de la série portent l'enseigne du même commerce — c'est le principe d'une série de marque, pas une duplication de gabarit. Ce défaut n'existait pas dans la référence précédente pour une mauvaise raison : sur téléphone, le panneau était ENTIÈREMENT INVISIBLE (le showroom se déclarait actif alors que la feuille de style le masquait sous 760 px). Le détecteur ne mesurait donc rien. L'entrée apparaît parce que le défaut a été corrigé, pas introduit.",
+  "gradient-text (6)": "Le nom AURA en chrome, la promesse en script rose et les trois indicateurs sont peints avec un dégradé découpé dans le texte. C'est le verrou typographique de la référence maîtresse — sans lui, il ne reste qu'un titre blanc. Contrôlé par ailleurs : la recette vérifie que les trois parties sont réellement PEINTES (largeur et hauteur mesurées), parce qu'une erreur de découpe rendrait le titre invisible tout en le laissant dans le document.",
+  "ai-color-palette (5) et dark-glow (3)": "Violet, magenta, cyan et lueurs portées sont la commande elle-même : Miami de nuit, néons, Ocean Drive. Le détecteur signale cette palette comme typique du générique ; ici elle est le cahier des charges. Ce qui reste surveillé, en revanche, c'est la LISIBILITÉ : le premier dégradé du bouton principal donnait 3,1:1 en blanc et a été corrigé à 4,63:1 et 5,75:1 aux deux bornes. Une palette assumée ne dispense pas du seuil de contraste.",
+  "kicker-above-heading (7, référence 5)": "Deux paires de plus : les colonnes d'intro des bandes packs et univers, qui posent une étiquette au-dessus de leur titre. C'est la structure de la référence — étiquette, titre, phrase, bouton — et elle sert la lecture au lieu de la gêner.",
+  "_reproductibilite": "L'audit attend désormais que TOUTES les images soient décodées avant de mesurer, au lieu d'une pause fixe de 2 s. Avant ce correctif, deux exécutions consécutives donnaient 147 puis 152 défauts : les scènes des rails sont en chargement différé, et selon le moment de la mesure une carte avait son image ou pas. Un garde-fou qui varie d'une exécution à l'autre ne garde rien. Trois exécutions de suite donnent maintenant le même total."
  },
  "vitrine@320": {
   "layout-transition": 3,
-  "ai-color-palette": 1,
+  "gradient-text": 6,
+  "ai-color-palette": 5,
+  "dark-glow": 3,
   "wide-tracking": 2,
-  "kicker-above-heading": 5,
-  "repeated-container-text": 3
+  "kicker-above-heading": 7
  },
  "vitrine@390": {
   "layout-transition": 3,
-  "ai-color-palette": 1,
+  "gradient-text": 6,
+  "ai-color-palette": 5,
+  "dark-glow": 3,
   "wide-tracking": 2,
-  "kicker-above-heading": 5,
-  "repeated-container-text": 3
+  "kicker-above-heading": 7
  },
  "vitrine@768": {
   "layout-transition": 3,
-  "ai-color-palette": 1,
+  "gradient-text": 6,
+  "ai-color-palette": 5,
+  "dark-glow": 3,
   "wide-tracking": 2,
-  "kicker-above-heading": 5
+  "line-length": 1,
+  "kicker-above-heading": 7
  },
  "vitrine@1440": {
   "layout-transition": 3,
-  "ai-color-palette": 1,
+  "gradient-text": 6,
+  "ai-color-palette": 5,
+  "dark-glow": 3,
   "wide-tracking": 2,
-  "kicker-above-heading": 5
+  "kicker-above-heading": 7
  },
  "back-office@320": {
   "dark-glow": 1,

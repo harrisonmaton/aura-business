@@ -23,7 +23,23 @@ const ECRANS = [
 async function scanner(nav, fichier, l, h) {
   const p = await nav.newPage({ viewport: { width: l, height: h }, locale: 'fr-FR' });
   await p.goto('file://' + path.join(RACINE, fichier), { waitUntil: 'load' });
-  await p.waitForTimeout(2000);
+  /* Une attente fixe rendait l'audit non reproductible : deux exécutions de
+     suite donnaient 147 puis 152 défauts, `text-overflow` et
+     `repeated-container-text` apparaissant une fois sur deux. Les scènes des
+     rails sont en chargement différé — selon le moment de la mesure, une
+     carte avait son image ou pas, et la mise en page n'était pas la même.
+     Un garde-fou qui varie d'une exécution à l'autre ne garde rien : on
+     force donc le chargement de toutes les images, puis on attend qu'elles
+     soient réellement décodées avant de mesurer quoi que ce soit. */
+  await p.evaluate(async () => {
+    document.querySelectorAll('img[loading="lazy"]').forEach(i => { i.loading = 'eager'; });
+    await Promise.all([...document.images].map(i => i.complete
+      ? Promise.resolve()
+      : new Promise(ok => { i.addEventListener('load', ok, { once: true });
+                            i.addEventListener('error', ok, { once: true }); })));
+    await document.fonts.ready;
+  });
+  await p.waitForTimeout(1200);          /* laisse retomber les animations d'entrée */
   /* Le débordement se mesure AVANT d'injecter le détecteur : son calque de
      visualisation déborde lui-même (mesuré : 468 px sur un écran de 390), et
      l'attribuer à la page serait un faux défaut. On neutralise overflow-x
