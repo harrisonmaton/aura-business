@@ -106,11 +106,6 @@ function defs(id, a, W, H, hz, solEau) {
     <stop offset=".70" stop-color="#05070F" stop-opacity=".30"/>
     <stop offset="1" stop-color="#05070F" stop-opacity=".62"/>
   </linearGradient>
-  <linearGradient id="voile-${id}" gradientUnits="userSpaceOnUse" x1="0" y1="${n(H * .66)}" x2="0" y2="${n(H)}">
-    <stop offset="0" stop-color="#05070F" stop-opacity="0"/>
-    <stop offset=".55" stop-color="#05070F" stop-opacity=".42"/>
-    <stop offset="1" stop-color="#05070F" stop-opacity=".80"/>
-  </linearGradient>
   <radialGradient id="vignette-${id}" cx="50%" cy="46%" r="72%">
     <stop offset=".55" stop-color="#05070F" stop-opacity="0"/>
     <stop offset="1" stop-color="#05070F" stop-opacity=".62"/>
@@ -475,7 +470,7 @@ function grain(id, W, H) {
 }
 
 /* ── La scène complète ─────────────────────────────────────────────────── */
-function scene({ id, ambiance, W, H, enseignes, titre, sousTitre, numero, sujet }) {
+function scene({ id, ambiance, W, H, enseignes, description, sujet }) {
   const a = AMBIANCES[ambiance] || AMBIANCES.crepuscule;
   const r = alea(id + ambiance);
   /* En portrait, la même composition qu'en paysage laisse un tiers de ciel
@@ -504,7 +499,7 @@ function scene({ id, ambiance, W, H, enseignes, titre, sousTitre, numero, sujet 
   });
 
   let d = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}"
-    role="img" aria-label="${esc(titre || 'Scène Aura')}" preserveAspectRatio="xMidYMid slice">
+    role="img" aria-label="${esc(description || 'Scène Aura')}" preserveAspectRatio="xMidYMid slice">
 <defs>${defs(id, a, W, H, hz, solEau)}</defs>
 <rect width="${W}" height="${n(hz + 2)}" fill="url(#ciel-${id})"/>
 ${soleil(id, a, sunX, sunY, sunR, hz)}
@@ -547,9 +542,6 @@ ${nuages(r, W, hz, a)}
       <rect x="${n(W * .05)}" y="${n(y)}" width="${n(W * .90)}" height="2" fill="${a.neon2}" opacity=".55"/>`;
   }
 
-  /* Voile de lisibilité : uniquement quand la scène porte du texte. Sur le
-     décor du premier écran, il n'y en a pas — et le quai reste éclairé. */
-  if (titre || sousTitre) d += `<rect width="${W}" height="${H}" fill="url(#voile-${id})"/>`;
 
   /* Palmiers de cadrage : volontairement coupés par les bords. Une couronne
      entière au premier plan mange la composition ; une couronne coupée
@@ -562,26 +554,14 @@ ${nuages(r, W, hz, a)}
 
   d += `<rect width="${W}" height="${H}" fill="url(#vignette-${id})"/>`;
 
-  /* Typographie de la scène. */
-  if (numero) {
-    d += `<text x="${n(W * .062)}" y="${n(H * .17)}" font-family="${SANS}" font-size="${n(H * .085)}" font-weight="700"
-      letter-spacing="${n1(-H * .004)}" fill="#FFF5E8" opacity=".92">${esc(numero)}</text>`;
-  }
-  /* Le corps s'adapte à la longueur du mot. « BEAUTY STUDIO » et « CAFÉ »
-     ne peuvent pas partager la même taille dans la même largeur : sans ce
-     calcul, le titre long sort du cadre. 0,62 em par capitale est la largeur
-     moyenne mesurée sur l'Archivo gras utilisée ici. */
-  const tiens = (texte, maxi, ratio) => Math.min(maxi, (W * .876) / (texte.length * ratio));
-  if (titre) {
-    const t = tiens(titre, H * .105, .62);
-    d += `<text x="${n(W * .062)}" y="${n(H * .845)}" font-family="${SANS}" font-size="${n1(t)}" font-weight="700"
-      letter-spacing="${n1(-t * .035)}" fill="#FFF5E8">${esc(titre)}</text>`;
-  }
-  if (sousTitre) {
-    const t = tiens(sousTitre, H * .042, .50);
-    d += `<text x="${n(W * .062)}" y="${n(H * .915)}" font-family="${SANS}" font-size="${n1(t)}" font-weight="500"
-      letter-spacing="${n1(t * .01)}" fill="#FFF5E8" opacity=".78">${esc(sousTitre)}</text>`;
-  }
+  /* AUCUNE typographie n'est peinte dans la scène, et c'est un choix.
+     Un titre cuit dans l'image ne se traduit pas : le site est en quatre
+     langues, « L'essentiel pour démarrer » resterait en français pour un
+     visiteur espagnol. Il entrait aussi en concurrence avec les titres de la
+     page dès qu'on posait la scène en fond — on lisait « 02 GROWTH » par
+     transparence derrière « Signature ». La scène apporte l'atmosphère, la
+     page apporte les mots : chacun son métier. Le titre reste dans le
+     catalogue, comme description, il n'est simplement plus dessiné. */
   d += grain(id, W, H) + '</svg>';
   return d;
 }
@@ -589,35 +569,39 @@ ${nuages(r, W, hz, a)}
 /* ── Le catalogue de scènes ────────────────────────────────────────────── */
 const SCENES = [
   /* Décor du premier écran : large, sans texte, il porte le hero. */
-  { id: 'hero', ambiance: 'crepuscule', W: 1600, H: 1000,
+  { id: 'hero', ambiance: 'crepuscule', W: 1600, H: 1000, description: 'Décor du premier écran',
     enseignes: [[.685,.245,.075,.175,'',.02,true],[.775,.215,.115,.052,'OCEAN',.028],
                 [.205,.255,.115,.058,'VICE',.030],[.885,.305,.055,.115,'',.02]],
     sujet: 'comptoir' },
 
   /* Les quatre packs : quatre heures, quatre dominantes, quatre identités. */
-  { id: 'pack-1', ambiance: 'aube',       W: 760, H: 900, numero: '01', titre: 'STARTER', sousTitre: "L'essentiel pour démarrer avec impact.",
-    enseignes: [[.63,.265,.19,.055,'OPEN',.030]] },
-  { id: 'pack-2', ambiance: 'crepuscule', W: 760, H: 900, numero: '02', titre: 'GROWTH',  sousTitre: 'Plus de visibilité. Plus de clients.',
-    enseignes: [[.56,.235,.26,.052,'GROWTH',.028],[.70,.335,.075,.105,'',.02,true]] },
-  { id: 'pack-3', ambiance: 'nuit',       W: 760, H: 900, numero: '03', titre: 'ELITE',   sousTitre: 'Une marque puissante et distinctive.',
-    enseignes: [[.54,.215,.30,.058,'ELITE',.032],[.66,.325,.085,.115,'',.02,true]] },
-  { id: 'pack-4', ambiance: 'or',         W: 760, H: 900, numero: '04', titre: 'LEGEND',  sousTitre: 'Un univers complet, sans limites.',
-    enseignes: [[.52,.195,.34,.062,'LEGEND',.034],[.64,.315,.09,.10,'',.022,true]] },
+  /* Quatre heures pour quatre packs. Ni le numéro ni le nom du pack n'entrent
+     dans l'image : ils vivent dans la page, traduits, et changeraient si
+     l'offre changeait. Les enseignes sont du décor de ville — pas des noms
+     commerciaux, qui se retrouveraient figés en dur dans un visuel. */
+  { id: 'pack-1', ambiance: 'aube',       W: 760, H: 900, description: 'Aube sur la baie',
+    enseignes: [[.63,.265,.19,.055,'BAY',.030]] },
+  { id: 'pack-2', ambiance: 'crepuscule', W: 760, H: 900, description: 'Crépuscule néon',
+    enseignes: [[.56,.235,.26,.052,'NEON',.028],[.70,.335,.075,.105,'',.02,true]] },
+  { id: 'pack-3', ambiance: 'nuit',       W: 760, H: 900, description: 'Nuit bleue',
+    enseignes: [[.54,.215,.30,.058,'PALM',.032],[.66,.325,.085,.115,'',.02,true]] },
+  { id: 'pack-4', ambiance: 'or',         W: 760, H: 900, description: 'Heure dorée',
+    enseignes: [[.52,.195,.34,.062,'SUNSET',.034],[.64,.315,.09,.10,'',.022,true]] },
 
   /* Les réalisations : un secteur, une ambiance. */
-  { id: 'real-cafe',    ambiance: 'aube',       W: 620, H: 760, titre: 'CAFÉ',       sousTitre: 'Identité & contenu',
+  { id: 'real-cafe',    ambiance: 'aube',       W: 620, H: 760, description: 'Café — Identité & contenu',
     enseignes: [[.55,.265,.33,.058,'CAFÉ',.030]] },
-  { id: 'real-resto',   ambiance: 'crepuscule', W: 620, H: 760, titre: 'RESTAURANT', sousTitre: 'Image & réservation',
+  { id: 'real-resto',   ambiance: 'crepuscule', W: 620, H: 760, description: 'Restaurant — Image & réservation',
     enseignes: [[.52,.245,.36,.058,'TAVOLA',.028]], sujet: 'comptoir' },
-  { id: 'real-boutique',ambiance: 'orchidee',   W: 620, H: 760, titre: 'BOUTIQUE',   sousTitre: 'Univers de marque',
+  { id: 'real-boutique',ambiance: 'orchidee',   W: 620, H: 760, description: 'Boutique — Univers de marque',
     enseignes: [[.56,.235,.30,.054,'ATELIER',.026]] },
-  { id: 'real-beauty',  ambiance: 'nuit',       W: 620, H: 760, titre: 'BEAUTY STUDIO', sousTitre: 'Contenu & acquisition',
+  { id: 'real-beauty',  ambiance: 'nuit',       W: 620, H: 760, description: 'Beauty studio — contenu & acquisition',
     enseignes: [[.54,.265,.32,.058,'STUDIO',.028]] },
-  { id: 'real-event',   ambiance: 'orchidee',   W: 620, H: 760, titre: 'ÉVÉNEMENT',  sousTitre: 'Expérience immersive',
+  { id: 'real-event',   ambiance: 'orchidee',   W: 620, H: 760, description: 'Événement — Expérience immersive',
     enseignes: [[.46,.195,.42,.068,'LIVE',.036]] },
 
   /* Le club. */
-  { id: 'club', ambiance: 'orchidee', W: 760, H: 560,
+  { id: 'club', ambiance: 'orchidee', W: 760, H: 560, description: 'Orchidée — bandeau du club',
     enseignes: [[.50,.235,.38,.072,'CLUB',.040]] }
 ];
 
@@ -635,7 +619,9 @@ const manifeste = {
     + "déterministe : deux constructions donnent des fichiers identiques.",
   genere: new Date().toISOString().slice(0, 10),
   scenes: SCENES.map(s => ({ id: s.id, ambiance: s.ambiance, dimensions: s.W + '×' + s.H,
-                             titre: s.titre || null, role: s.numero ? 'pack' : (s.id.startsWith('real') ? 'realisation' : 'decor') }))
+                             description: s.description || null,
+                             role: s.id.startsWith('pack') ? 'pack'
+                                 : s.id.startsWith('real') ? 'realisation' : 'decor' }))
 };
 fs.writeFileSync(path.join(SORTIE, 'MANIFESTE.json'), JSON.stringify(manifeste, null, 1) + '\n');
 
@@ -655,8 +641,10 @@ const catalogue = {};
 for (const s of SCENES) {
   catalogue[s.id] = {
     src: 'scenes/' + s.id + '.svg', l: s.W, h: s.H, ambiance: s.ambiance,
-    titre: s.titre || null,
-    alt: s.titre ? (s.titre + (s.sousTitre ? ' — ' + s.sousTitre : '')) : 'Scène Aura'
+    /* `description` sert au manifeste et aux journaux, pas d'alternative
+       textuelle : ces scènes sont du décor, elles se posent avec alt="" et
+       c'est la page qui porte le sens. */
+    description: s.description || null
   };
 }
 const bloc = DEB + '\n<script>var SCENES = ' + JSON.stringify(catalogue) + ';</script>\n' + FIN;

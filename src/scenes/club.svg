@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 560" width="760" height="560"
-    role="img" aria-label="Scène Aura" preserveAspectRatio="xMidYMid slice">
+    role="img" aria-label="Orchidée — bandeau du club" preserveAspectRatio="xMidYMid slice">
 <defs><linearGradient id="ciel-club" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="314">
     <stop offset="0" stop-color="#190840"/>
     <stop offset=".34" stop-color="#190840"/>
@@ -31,11 +31,6 @@
     <stop offset="0" stop-color="#05070F" stop-opacity="0"/>
     <stop offset=".70" stop-color="#05070F" stop-opacity=".30"/>
     <stop offset="1" stop-color="#05070F" stop-opacity=".62"/>
-  </linearGradient>
-  <linearGradient id="voile-club" gradientUnits="userSpaceOnUse" x1="0" y1="370" x2="0" y2="560">
-    <stop offset="0" stop-color="#05070F" stop-opacity="0"/>
-    <stop offset=".55" stop-color="#05070F" stop-opacity=".42"/>
-    <stop offset="1" stop-color="#05070F" stop-opacity=".80"/>
   </linearGradient>
   <radialGradient id="vignette-club" cx="50%" cy="46%" r="72%">
     <stop offset=".55" stop-color="#05070F" stop-opacity="0"/>
