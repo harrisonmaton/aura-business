@@ -1,0 +1,130 @@
+{
+  "_lire": "Contrat de livraison de chaque offre. La règle du mandat : si une seule réponse manque, l'offre ne peut pas être activable à l'achat. tests/commerce.js refuse de passer si une offre commandable n'est pas déclarée ici, ou si sa déclaration est incomplète.",
+  "_types": {
+    "A": "Numérique instantané — le fichier existe déjà, aucune intervention humaine.",
+    "B": "Abonnement SaaS — accès continu, aucune activation manuelle.",
+    "C": "Produit configuré — le moteur existe, les données du client font le résultat.",
+    "D": "Service sur brief — production humaine. Doit être annoncé comme tel, jamais comme instantané."
+  },
+  "_paiement": "AUCUNE offre n'est encaissée par ce site. Tous les boutons préparent un message que le visiteur envoie lui-même depuis son compte Instagram. Prix et délai sont confirmés en message privé AVANT tout paiement, qui se fait hors du site. C'est ce qui rend les offres de type D acceptables aujourd'hui : le site ne peut pas prendre d'argent sans livrer.",
+
+  "offres": [
+    {
+      "id": "brief-1", "source": "catalog.brief[id=1]", "type": "D",
+      "vend": "Une série de visuels et de textes Instagram composée sur brief.",
+      "recoit": "8 visuels, 8 textes, 4 messages.",
+      "quand": "24–48 h après validation du brief.",
+      "ou": "En message privé Instagram.",
+      "format": "Fichiers image + textes.",
+      "livre_par": "humain",
+      "si_echec": "Le client relance en message privé. Le site n'ayant encaissé aucun paiement, il n'y a rien à rembourser par le site.",
+      "retrouver": "La conversation Instagram sert d'historique.",
+      "aide": "Message privé @polakpl_f44.",
+      "commandable": true,
+      "etat": "ACTIVE",
+      "note": "Type D assumé : la page ne promet aucune livraison automatique et affiche le délai."
+    },
+    {
+      "id": "brief-2", "source": "catalog.brief[id=2]", "type": "D",
+      "vend": "Une série de visuels et de textes Instagram composée sur brief, bio comprise.",
+      "recoit": "12 visuels, 12 textes, 6 messages, bio réécrite.",
+      "quand": "48 h après validation du brief.",
+      "ou": "En message privé Instagram.",
+      "format": "Fichiers image + textes.",
+      "livre_par": "humain",
+      "si_echec": "Le client relance en message privé. Aucun paiement encaissé par le site.",
+      "retrouver": "La conversation Instagram sert d'historique.",
+      "aide": "Message privé @polakpl_f44.",
+      "commandable": true,
+      "etat": "ACTIVE"
+    },
+    {
+      "id": "brief-3", "source": "catalog.brief[id=3]", "type": "D",
+      "vend": "Une série étendue de visuels et de textes composée sur brief.",
+      "recoit": "18 visuels, 18 textes, 10 messages, bio réécrite.",
+      "quand": "48–72 h après validation du brief.",
+      "ou": "En message privé Instagram.",
+      "format": "Fichiers image + textes.",
+      "livre_par": "humain",
+      "si_echec": "Le client relance en message privé. Aucun paiement encaissé par le site.",
+      "retrouver": "La conversation Instagram sert d'historique.",
+      "aide": "Message privé @polakpl_f44.",
+      "commandable": true,
+      "etat": "ACTIVE"
+    },
+    {
+      "id": "brief-4", "source": "catalog.brief[id=4]", "type": "D",
+      "vend": "Un ensemble complet de visuels, textes et stories composé sur brief.",
+      "recoit": "24 visuels, 24 textes, 12 messages, bio réécrite, stories.",
+      "quand": "72 h après validation du brief.",
+      "ou": "En message privé Instagram.",
+      "format": "Fichiers image + textes.",
+      "livre_par": "humain",
+      "si_echec": "Le client relance en message privé. Aucun paiement encaissé par le site.",
+      "retrouver": "La conversation Instagram sert d'historique.",
+      "aide": "Message privé @polakpl_f44.",
+      "commandable": true,
+      "etat": "ACTIVE"
+    },
+    {
+      "id": "ready-1", "source": "catalog.ready[id=1]", "type": "A",
+      "vend": "La collection Street, déjà composée.",
+      "recoit": "4 visuels PNG 1080×1080, 4 légendes, un mode d'emploi — 9 fichiers.",
+      "quand": "À l'envoi du fichier par la maison, après confirmation.",
+      "ou": "En message privé Instagram.",
+      "format": "Archive contenant PNG et fichiers texte.",
+      "livre_par": "humain",
+      "si_echec": "Les fichiers existent dans le dépôt et peuvent être renvoyés. Aucun paiement encaissé par le site.",
+      "retrouver": "La conversation Instagram sert d'historique.",
+      "aide": "Message privé @polakpl_f44.",
+      "commandable": true,
+      "etat": "ACTIVE",
+      "note": "Type A par son contenu — les fichiers existent — mais l'envoi reste humain tant qu'Aura OS ne gère pas la livraison. La page ne promet donc rien d'instantané."
+    },
+    {
+      "id": "ready-2", "source": "catalog.ready[id=2]", "type": "A",
+      "vend": "La collection Night.",
+      "recoit": "Rien : les fichiers ne sont pas composés.",
+      "quand": null, "ou": null, "format": null, "livre_par": null,
+      "si_echec": null, "retrouver": null, "aide": "Message privé @polakpl_f44.",
+      "commandable": false,
+      "etat": "DRAFT",
+      "note": "0 fichier sur disque. Annoncée « en préparation », sans bouton de commande. Ne doit pas devenir commandable avant d'avoir ses fichiers."
+    },
+    {
+      "id": "ready-3", "source": "catalog.ready[id=3]", "type": "A",
+      "vend": "La collection Heat.",
+      "recoit": "Rien : les fichiers ne sont pas composés.",
+      "quand": null, "ou": null, "format": null, "livre_par": null,
+      "si_echec": null, "retrouver": null, "aide": "Message privé @polakpl_f44.",
+      "commandable": false,
+      "etat": "DRAFT",
+      "note": "0 fichier sur disque."
+    },
+    {
+      "id": "ready-4", "source": "catalog.ready[id=4]", "type": "A",
+      "vend": "La collection House.",
+      "recoit": "Rien : les fichiers ne sont pas composés.",
+      "quand": null, "ou": null, "format": null, "livre_par": null,
+      "si_echec": null, "retrouver": null, "aide": "Message privé @polakpl_f44.",
+      "commandable": false,
+      "etat": "DRAFT",
+      "note": "0 fichier sur disque."
+    },
+    {
+      "id": "club", "source": "vitrine #club", "type": "D",
+      "vend": "Rien. Le club est un accord d'apport, pas une offre payante.",
+      "recoit": "Un code d'apporteur, enregistré sur l'appareil.",
+      "quand": "Immédiatement, localement.",
+      "ou": "Dans le navigateur du visiteur.",
+      "format": "Code texte.",
+      "livre_par": "automatique",
+      "si_echec": "Aucun enjeu financier : rien n'est vendu ni encaissé.",
+      "retrouver": "Le code est stocké sur l'appareil ; la maison confirme chaque apport.",
+      "aide": "Message privé @polakpl_f44.",
+      "commandable": false,
+      "etat": "ACTIVE",
+      "note": "Aucun prix, aucun encaissement. La page dit déjà que la commission n'est ni validée ni garantie par le site."
+    }
+  ]
+}

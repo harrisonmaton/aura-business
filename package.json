@@ -4,7 +4,7 @@
   "version": "0.6.0",
   "scripts": {
     "build:preview": "node scripts/build-preview.js",
-    "test": "npm run build:creations && npm run build:scenes && npm run build:preview && node tests/catalogue.js && node tests/serveur.js && node tests/recette.js && node tests/parcours-complet.js && node tests/showroom.js && node tests/registre-avec-runtime-simule.js",
+    "test": "npm run build:creations && npm run build:scenes && npm run build:preview && node tests/catalogue.js && node tests/serveur.js && node tests/commerce.js && node tests/recette.js && node tests/parcours-complet.js && node tests/showroom.js && node tests/registre-avec-runtime-simule.js",
     "build:creations": "node scripts/build-creations.js",
     "test:serveur": "node tests/serveur.js",
     "audit": "node scripts/audit-visuel.js",
