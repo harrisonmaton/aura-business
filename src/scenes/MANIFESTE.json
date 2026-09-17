@@ -1,0 +1,83 @@
+{
+ "_provenance": "Scènes construites par scripts/build-scenes.js. Aucune photographie, aucun élément sous licence tierce, aucune génération payante. Le hasard est déterministe : deux constructions donnent des fichiers identiques.",
+ "genere": "2026-09-17",
+ "scenes": [
+  {
+   "id": "hero",
+   "ambiance": "crepuscule",
+   "dimensions": "1600×1000",
+   "titre": null,
+   "role": "decor"
+  },
+  {
+   "id": "pack-1",
+   "ambiance": "aube",
+   "dimensions": "760×900",
+   "titre": "STARTER",
+   "role": "pack"
+  },
+  {
+   "id": "pack-2",
+   "ambiance": "crepuscule",
+   "dimensions": "760×900",
+   "titre": "GROWTH",
+   "role": "pack"
+  },
+  {
+   "id": "pack-3",
+   "ambiance": "nuit",
+   "dimensions": "760×900",
+   "titre": "ELITE",
+   "role": "pack"
+  },
+  {
+   "id": "pack-4",
+   "ambiance": "or",
+   "dimensions": "760×900",
+   "titre": "LEGEND",
+   "role": "pack"
+  },
+  {
+   "id": "real-cafe",
+   "ambiance": "aube",
+   "dimensions": "620×760",
+   "titre": "CAFÉ",
+   "role": "realisation"
+  },
+  {
+   "id": "real-resto",
+   "ambiance": "crepuscule",
+   "dimensions": "620×760",
+   "titre": "RESTAURANT",
+   "role": "realisation"
+  },
+  {
+   "id": "real-boutique",
+   "ambiance": "orchidee",
+   "dimensions": "620×760",
+   "titre": "BOUTIQUE",
+   "role": "realisation"
+  },
+  {
+   "id": "real-beauty",
+   "ambiance": "nuit",
+   "dimensions": "620×760",
+   "titre": "BEAUTY STUDIO",
+   "role": "realisation"
+  },
+  {
+   "id": "real-event",
+   "ambiance": "orchidee",
+   "dimensions": "620×760",
+   "titre": "ÉVÉNEMENT",
+   "role": "realisation"
+  },
+  {
+   "id": "club",
+   "ambiance": "orchidee",
+   "dimensions": "760×560",
+   "titre": null,
+   "role": "decor"
+  }
+ ]
+}

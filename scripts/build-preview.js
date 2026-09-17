@@ -48,4 +48,13 @@ fs.copyFileSync(path.join(__dirname,'..','src','showroom.js'),
 
 const photos = path.join(__dirname,'..','src','creations','photos');
 if (fs.existsSync(photos)) fs.cpSync(photos, path.join(__dirname,'..','preview','creations','photos'), {recursive:true});
+
+/* Les scènes sont copiées comme fichiers, pas inlinées : la page ne porte que
+   leur catalogue (chemin, dimensions), et le navigateur les met en cache. */
+const scenes = path.join(__dirname,'..','src','scenes');
+if (fs.existsSync(scenes)) {
+  fs.cpSync(scenes, path.join(__dirname,'..','preview','scenes'), {recursive:true});
+  const n = fs.readdirSync(scenes).filter(f => f.endsWith('.svg')).length;
+  console.log('  scènes copiées : ' + n + ' fichier(s)');
+}
 console.log("preview/ régénéré depuis src/ (polices incluses ; l'image d'accueil est une composition en ligne)");
