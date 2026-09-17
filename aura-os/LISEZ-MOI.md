@@ -134,3 +134,49 @@ Le schéma était bon ; c'est le test qui mentait. C'est aussi exactement la
 classe de faille qui rend RLS dangereux derrière un pool de connexions : chez
 Supabase chaque requête porte son propre jeton, mais partout où l'on ouvre soi-
 même une connexion, c'est à nous de le garantir.
+
+---
+
+# Lot 2 — le parcours, prouvé au niveau des données
+
+## Décision d'architecture prise ici
+
+**L'accès aux données passe par SQL, pas par le client REST de Supabase.**
+
+Supabase *est* PostgreSQL : la même requête et les mêmes politiques RLS
+s'exécutent chez eux et sur la base locale. Le chemin de code testé est donc le
+chemin de production, pas une imitation. Et comme aucun démon Docker n'est
+disponible ici, sans ce choix rien de ce lot n'aurait pu être prouvé.
+
+Ce qui reste à Supabase : **l'authentification**. Comptes, sessions et jetons
+sont son métier ; ce n'est pas le genre de chose qu'on réimplémente.
+
+## Ce que le test d'acceptation prouve
+
+`tests/parcours.test.mjs` — 19 contrôles, contre une vraie base, **à travers le
+code applicatif réel** :
+
+commerce créé → onboarding écran par écran → plan de génération → publication
+et QR → page publique ouverte par un anonyme → QR résolu et scan compté →
+demande validée et déposée → visible au tableau de bord → statut modifié →
+chiffres exacts.
+
+Puis le pendant, sans lequel le reste ne vaut rien : **un second utilisateur
+n'accède à rien** — ni liste, ni demandes, ni chiffres, ni profil, ni carte, ni
+publication. Sept contrôles.
+
+## Deux défauts trouvés par ce test
+
+**`mesCommerces()` renvoyait tous les commerces publiés de la plateforme.** La
+fonction ne joignait pas l'appartenance : elle se reposait sur RLS. Or
+`business` porte deux politiques de lecture qui s'additionnent — « je suis
+membre » OU « le commerce est publié ». N'importe quel utilisateur voyait donc
+la liste de tous les commerces publiés.
+
+La leçon mérite d'être gardée : **RLS est un plancher, pas un substitut à la
+requête qu'on voulait écrire.** Il empêche de lire ce à quoi on n'a pas droit ;
+il ne devine pas ce qu'on cherchait.
+
+**Les fichiers de test se détruisaient mutuellement.** Deux suites
+reconstruisaient la même base en parallèle : 19 contrôles annulés
+silencieusement, et un `# fail 0` trompeur. Exécution sérialisée.

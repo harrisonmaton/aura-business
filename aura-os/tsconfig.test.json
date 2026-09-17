@@ -11,5 +11,10 @@
     "outDir": "dist-test",
     "rootDir": "src"
   },
-  "include": ["src/core/**/*.ts", "src/verticals/**/*.ts", "src/billing/**/*.ts"]
+  "include": [
+    "src/core/**/*.ts",
+    "src/verticals/**/*.ts",
+    "src/billing/**/*.ts",
+    "src/data/depot.ts"
+  ]
 }

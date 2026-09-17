@@ -39,7 +39,7 @@ export interface Vertical {
    interdit de préparer les interfaces des autres. Le registre existe pour que
    l'ajout du deuxième soit une ligne, pas une refonte. */
 export const VERTICALS: Record<string, () => Promise<Vertical>> = {
-  food: () => import('./food').then(m => m.food)
+  food: () => import('./food/index.js').then(m => m.food)
 };
 
 export async function chargerVertical(id: string): Promise<Vertical> {
