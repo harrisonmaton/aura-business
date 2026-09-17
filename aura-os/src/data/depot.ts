@@ -1,26 +1,39 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   Dépôt — tout l'accès aux données, en SQL
+   Dépôt SQL — TESTS ET MIGRATIONS UNIQUEMENT
 
-   DÉCISION D'ARCHITECTURE, prise au lot 2 et à consigner.
+   ⚠️  CE MODULE N'EST PLUS LE CHEMIN NORMAL DES REQUÊTES UTILISATEUR.
 
-   L'accès aux données passe par SQL sur la connexion PostgreSQL, et non par le
-   client REST de Supabase. Trois raisons :
+   Il l'était au lot 2, et c'était une erreur. Voir SECURITE.md. Deux raisons,
+   toutes deux structurelles :
 
-   1. Supabase EST PostgreSQL. La même requête, les mêmes politiques RLS
-      s'exécutent chez eux et sur la base locale de test. Le chemin de code
-      testé est donc le chemin de production, pas une imitation.
-   2. Aucun démon Docker n'est disponible ici, donc pas de pile Supabase
-      locale. Sans ce choix, rien de ce lot ne pourrait être prouvé.
-   3. On peut changer d'hébergeur PostgreSQL sans réécrire l'application.
+   1. Ici, l'APPLICATION AFFIRME l'identité (`dans({userId})`), et RLS fait
+      confiance à cette affirmation. Un seul identifiant non vérifié quelque
+      part — paramètre d'URL, champ de formulaire, cookie mal validé — et
+      l'usurpation est totale. On ne contourne pas la politique : on lui ment.
 
-   Ce qui reste à Supabase : l'AUTHENTIFICATION. Les comptes, les sessions et
-   les jetons sont son métier, et ce n'est pas le genre de chose qu'on
-   réimplémente.
+   2. La connexion s'ouvre avec un rôle privilégié et se rabaisse à chaque
+      transaction. Si `set local role authenticated` manque — oubli, retour
+      anticipé, exception mal rattrapée, requête ajoutée hors de `dans()` —
+      la requête s'exécute en privilégié et RLS est INTÉGRALEMENT contourné.
+      Une ligne manquante entre le fonctionnement normal et la fuite des
+      données de tous les commerces.
 
-   Règle absolue : chaque requête d'un utilisateur s'exécute sous le rôle
-   `authenticated` avec sa revendication d'identité. RLS filtre. Le code
-   n'ajoute jamais « and business_id = ... » en espérant que ça suffise — si
-   la politique est bonne, la base refuse d'elle-même.
+   Le produit passe désormais par `data/supabase.ts` : @supabase/ssr, clé
+   publiable, jeton vérifié cryptographiquement par Supabase. L'application ne
+   peut plus affirmer une identité, seulement en porter une.
+
+   Ce module reste pour deux usages légitimes, où l'on contrôle entièrement le
+   contexte et où aucune entrée utilisateur n'intervient :
+
+     — PROUVER les politiques contre un vrai PostgreSQL, sans dépendre du
+       réseau ni d'un tiers. C'est ce que font les 19 contrôles d'isolation.
+     — appliquer les migrations.
+
+   Ce qu'il prouve : les POLITIQUES, identiques des deux côtés.
+   Ce qu'il ne prouve PAS : le TRANSPORT — vérification du jeton, cookies de
+   session, rafraîchissement. Seul un vrai Supabase le peut.
+
+   Ne pas importer ce fichier depuis src/app/.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 import pg from 'pg';

@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { pagePublique, noterEvenement } from '@/data/depot';
+import { pagePublique, noterEvenement } from '@/data/lecture';
 import { lienWhatsApp, messageParDefaut } from '@/core/qr';
 
 export const dynamic = 'force-dynamic';

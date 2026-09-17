@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { resoudreQR, noterEvenement } from '@/data/depot';
+import { resoudreQR, noterEvenement } from '@/data/lecture';
 import { destination } from '@/core/qr';
 import type { TypeQR } from '@/verticals/types';
 
