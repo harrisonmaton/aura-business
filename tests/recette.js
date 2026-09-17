@@ -11,7 +11,13 @@ const aller = async (page, url) => {
   return r;
 };
 (async()=>{
- const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'}); const errs=[];
+/* Cette recette vérifie la COUCHE HTML : composition à plat, prix, commande,
+   clavier, mobile. Le showroom 3D se superpose à elle et capte les clics quand
+   il tourne ; il a sa propre recette (tests/showroom.js), qui vérifie aussi
+   que son absence ne retire rien. On démarre donc sans WebGL, pour mesurer le
+   repli — c'est ce que verra tout visiteur sans carte graphique. */
+ const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium',
+   args:['--disable-gpu','--disable-webgl']}); const errs=[];
  const c=await b.newContext({viewport:{width:1440,height:900},locale:'fr-FR'});
  await c.route('**://ig.me/**',r=>r.abort());
  const p=await c.newPage();
@@ -228,21 +234,18 @@ const aller = async (page, url) => {
       const couvre = a.left<c.right && c.left<a.right && a.top<c.bottom && c.top<a.bottom;
       return !couvre;
     }));
- /* Le titre de couverture chevauchait la ligne d'édition du haut de page. */
- /* Le titre de couverture est décoratif et posé en absolu : il a déjà recouvert
-    à 100 % la ligne d'édition du haut de page. On le borne entre ses deux
-    voisins réels — la ligne d'édition au-dessus, le titre du manifeste en
-    dessous — plutôt que sur une estampille qui peut disparaître. */
- const couverture = await p.evaluate(()=>{
-   const m=document.querySelector('.hero-masthead').getBoundingClientRect();
-   const e=document.querySelector('.hero-edition').getBoundingClientRect();
-   const h=document.querySelector('#manifesto .statement').getBoundingClientRect();
-   return {haut:Math.round(m.top), bas:Math.round(m.bottom),
-           editionBas:Math.round(e.bottom), titreHaut:Math.round(h.top)};
- });
- ck('hero : le titre de couverture ne percute aucune ligne voisine',
-    couverture.haut >= couverture.editionBas && couverture.bas <= couverture.titreHaut,
-    `édition finit ${couverture.editionBas} · couverture ${couverture.haut}–${couverture.bas} · titre commence ${couverture.titreHaut}`);
+ /* Le logotype décoratif et la ligne d'édition ont été supprimés : ils
+    occupaient 480 px avant le premier produit sur téléphone. Le contrôle qui
+    surveillait leur collision n'a plus d'objet ; celui-ci garde ce qui compte
+    à la place — le commerçant doit voir une création dans le premier écran,
+    sans défiler. */
+ ck('hero : plus de logotype décoratif avant le contenu',
+    await p.evaluate(()=>!document.querySelector('.hero-masthead') && !document.querySelector('.hero-edition')));
+ ck('hero : la promesse annoncée est bien celle affichée',
+    await p.evaluate(()=>{
+      const h = document.querySelector('#manifesto .statement');
+      return !!h && /impossible à ignorer/i.test(h.textContent);
+    }), (await p.textContent('#manifesto .statement')||'').replace(/\s+/g,' ').trim());
  /* Défaut réel trouvé par la mesure d'occultation : une pièce posée en retrait
     (translateZ négatif) passe DERRIÈRE le plan de la scène, et .stage captait
     tous les clics. Les pièces étaient visibles mais mortes. */
@@ -254,6 +257,80 @@ const aller = async (page, url) => {
    }, piece);
    ck('hero V6 : ' + piece + ' reçoit réellement le clic', atteint);
  }
+ /* La série restaurant doit montrer la PHOTO, pas seulement du texte sur un
+    dégradé : c'est le reproche principal de la version précédente. Chaque
+    pièce de la série qui déclare une photo doit réellement la peindre. */
+ const photosHero = await p.evaluate(()=>{
+   const imgs = [...document.querySelectorAll('#hero-stage image')];
+   /* Mesurer une taille absolue serait faux : sur la pièce « carte » la bande
+      photographique fait 264 px sur 1080, donc une trentaine de pixels une
+      fois la pièce réduite dans la scène. Ce qui compte est qu'elle occupe une
+      vraie surface et que le fichier soit celui qu'on croit. */
+   return {
+     nb: imgs.length,
+     peintes: imgs.filter(i=>{ const r=i.getBoundingClientRect(); return r.width*r.height > 800; }).length,
+     sources: [...new Set(imgs.map(i=>(i.getAttribute('href')||'').split('/').pop()))],
+     aires: imgs.map(i=>{ const r=i.getBoundingClientRect(); return Math.round(r.width*r.height); })
+   };
+ });
+ ck('série restaurant : la photographie est réellement peinte dans le hero',
+    photosHero.nb >= 3 && photosHero.peintes === photosHero.nb
+    && photosHero.sources.every(x=>/\.(webp|jpg|jpeg|png)$/i.test(x)),
+    photosHero.peintes + '/' + photosHero.nb + ' · ' + photosHero.sources.join(', ')
+    + ' · aires ' + photosHero.aires.join('/'));
+
+ /* Les cartels du hero doivent nommer le VRAI rôle de chaque pièce. « Page 2 »
+    posé sur une carte de restaurant était faux. */
+ const cartels = await p.evaluate(()=>[...document.querySelectorAll('.stage .role')].map(e=>e.textContent.trim()));
+ ck('hero : chaque cartel nomme le rôle réel de la pièce',
+    cartels.length === 4 && cartels.every(c=>c.length>2) && !cartels.some(c=>/^Page \d/i.test(c)),
+    cartels.join(' · '));
+
+ /* Le site ne prend aucun paiement : il doit le dire là où on s'apprête à
+    payer, et ne pas présenter un fichier figé comme personnalisable. */
+ const honnete = await p.evaluate(()=>{
+   const z = document.getElementById('honnete');
+   if(!z) return {absent:true};
+   const t = z.textContent;
+   return {
+     etapes: z.querySelectorAll('.flux li').length,
+     lignes: z.querySelectorAll('.adapt tr').length,
+     non: z.querySelectorAll('.adapt .non').length,
+     ditSansPaiement: /n.encaisse rien|no payment|no cobra|non incassa/i.test(t),
+     versBrief: !!z.querySelector('[data-order]')
+   };
+ });
+ ck('offre : le parcours réel de commande est écrit en clair',
+    !honnete.absent && honnete.etapes === 4 && honnete.ditSansPaiement,
+    honnete.etapes + ' étape(s), mention « le site n\'encaisse rien » : ' + honnete.ditSansPaiement);
+ ck('offre : un fichier figé n\'est pas présenté comme personnalisable',
+    !honnete.absent && honnete.lignes === 4 && honnete.non >= 2 && honnete.versBrief,
+    honnete.non + ' « non » sur ' + honnete.lignes + ' lignes, renvoi vers le sur-brief : ' + honnete.versBrief);
+
+ /* Aucun texte public ne doit promettre une livraison automatique. */
+ /* `textContent` embarquait le code du script — donc le dictionnaire des
+    quatre langues — et rougissait sur une chaîne jamais affichée. On lit le
+    texte RENDU, et on le fait dans les quatre langues : une promesse fausse
+    cachée en espagnol est une promesse fausse. */
+ const promesses = {};
+ for(const lg of ['fr','en','es','it']){
+   await p.evaluate(x=>{ const b=document.querySelector('.langset button[data-lang="'+x+'"]')
+     || [...document.querySelectorAll('.langset button')].find(e=>e.textContent.trim().toLowerCase()===x);
+     if(b) b.click(); }, lg);
+   await p.waitForTimeout(350);
+   promesses[lg] = await p.evaluate(()=>{
+     const t = document.body.innerText;
+     const m = t.match(/livraison directe|le fichier part|direct delivery|the file ships|entrega directa|consegna diretta|el archivo sale|il file parte/i);
+     return m ? m[0] : null;
+   });
+ }
+ await p.evaluate(()=>{ const b=[...document.querySelectorAll('.langset button')]
+   .find(e=>e.textContent.trim().toLowerCase()==='fr'); if(b) b.click(); });
+ await p.waitForTimeout(350);
+ ck('offre : aucune promesse de livraison automatique, dans aucune des quatre langues',
+    Object.values(promesses).every(v=>v===null),
+    Object.entries(promesses).filter(([,v])=>v).map(([k,v])=>k+':'+v).join(' ') || 'fr/en/es/it propres');
+
  ck('galerie : les pièces de la série active sont rendues',
     await p.locator('.piece').count() === CREA.series[0].pieces.length);
  ck('galerie : chaque série est étiquetée concept de démonstration',
@@ -278,8 +355,63 @@ const aller = async (page, url) => {
  ck('galerie : parcours au clavier',
     (await p.textContent('#hero-enseigne')||'').includes(CREA.series[2].enseigne),
     (await p.textContent('#hero-enseigne')||'').trim());
- // aperçu
+ /* ── Les trois interactions demandées, vérifiées par leur EFFET mesuré ──
+    Une transformation déclarée en CSS ne prouve rien : on lit l'échelle
+    réellement appliquée à chaque pièce. */
+ const echelles = async () => p.evaluate(()=>{
+   const pl = document.getElementById('serie-planche');
+   return {
+     choix: pl.getAttribute('data-choix'),
+     actif: [...pl.querySelectorAll('.piece')].findIndex(x=>x.getAttribute('aria-current')==='true'),
+     ech: [...pl.querySelectorAll('.piece')].map(x=>{
+       const m = getComputedStyle(x).transform;
+       return m === 'none' ? 1 : Math.round(+(m.match(/matrix\(([\d.]+)/)||[0,1])[1] * 100) / 100;
+     })
+   };
+ });
+ await p.evaluate(()=>document.getElementById('creations').scrollIntoView({block:'start'}));
+ await p.waitForTimeout(700);
+ const avantChoix = await echelles();
+ await p.click('.piece[data-piece="2"]'); await p.waitForTimeout(600);
+ const apresChoix = await echelles();
+ ck('interaction A : la pièce choisie avance, ses voisines reculent',
+    apresChoix.actif === 2 && apresChoix.ech[2] > 1
+    && apresChoix.ech.filter((v,i)=>i!==2).every(v=>v < 1)
+    && avantChoix.actif === 0,
+    'échelles ' + apresChoix.ech.join('/') + ' — active ' + apresChoix.actif);
+
+ /* Un deuxième appui sur la pièce déjà choisie ouvre le détail : au doigt, le
+    premier appui ne doit pas déclencher une fenêtre pleine page. */
+ await p.click('.piece[data-piece="2"]'); await p.waitForTimeout(700);
+ ck('interaction B : le détail s\'ouvre sur la pièce choisie',
+    await p.evaluate(()=>document.getElementById('loupe').open));
+ await p.keyboard.press('Escape'); await p.waitForTimeout(450);
+
+ /* Le déploiement anime l'entrée des pièces, puis LIBÈRE la planche : sans
+    cela, l'état final de l'animation neutralise la sélection. */
+ await p.click('#deploier'); await p.waitForTimeout(250);
+ const pendant = await p.evaluate(()=>document.getElementById('serie-planche').classList.contains('deploie'));
+ await p.waitForTimeout(1300);
+ const apres = await p.evaluate(()=>document.getElementById('serie-planche').classList.contains('deploie'));
+ await p.focus('.piece[data-piece="0"]'); await p.keyboard.press('ArrowRight'); await p.waitForTimeout(500);
+ const apresClavier = await echelles();
+ ck('interaction C : le pack se déploie, puis la sélection fonctionne encore',
+    pendant && !apres && apresClavier.actif === 1 && apresClavier.ech[1] > 1,
+    'pendant ' + pendant + ' · après ' + apres + ' · échelles ' + apresClavier.ech.join('/'));
+
+ /* Rien ne doit dépendre du survol : tout se pilote au clavier. */
+ ck('interactions : la sélection se pilote au clavier',
+    apresClavier.actif === 1 && apresClavier.choix === '1', 'choix ' + apresClavier.choix);
+
+ /* La barre des quatre packs ne doit plus recouvrir le bas du téléphone. */
+ /* Aperçu. Le geste a changé : le premier appui CHOISIT la pièce, le second
+    l'ouvre. Au doigt, un appui unique ne doit pas jeter une fenêtre pleine
+    page à la figure de quelqu'un qui voulait seulement regarder. */
  const ouvreur = '.piece[data-piece="0"]';
+ await p.click(ouvreur); await p.waitForTimeout(400);
+ ck('aperçu : un seul appui choisit sans ouvrir',
+    await p.evaluate(()=>!document.getElementById('loupe').open
+      && document.querySelector('.piece[data-piece="0"]').getAttribute('aria-current') === 'true'));
  await p.click(ouvreur); await p.waitForTimeout(500);
  ck('aperçu : ouverture en grand', await p.evaluate(()=>document.getElementById('loupe').open));
  await p.click('#loupe-story'); await p.waitForTimeout(400);
@@ -363,6 +495,32 @@ const aller = async (page, url) => {
       const m=document.querySelector('#pack-prix .montant');
       return !!(m && /\d/.test(m.textContent) && document.querySelector('#pack-prix [data-order]'));
     }));
+ /* Le dock remplace la barre des quatre packs : trois destinations, et il se
+    range dès qu'une feuille de commande s'ouvre — mesuré, l'ancienne barre
+    occupait les 70 derniers pixels de chaque écran. */
+ const dock = await mp.evaluate(()=>{
+   const d = document.getElementById('dock'), k = document.getElementById('kiosk');
+   const b = d ? d.getBoundingClientRect() : null;
+   return {existe:!!d, liens:d?d.querySelectorAll('a').length:0,
+           visible: !!b && b.top < innerHeight && getComputedStyle(d).opacity !== '0',
+           hauteurTactile: d ? Math.round(d.querySelector('a').getBoundingClientRect().height) : 0,
+           barrePacks: k ? getComputedStyle(k).display : 'absente'};
+ });
+ ck('mobile : la barre des quatre packs a disparu',
+    dock.barrePacks === 'none', 'display du kiosque : ' + dock.barrePacks);
+ ck('mobile : un dock de navigation la remplace, avec des cibles de 44 px au moins',
+    dock.existe && dock.liens === 3 && dock.visible && dock.hauteurTactile >= 44,
+    dock.liens + ' destination(s), cible ' + dock.hauteurTactile + ' px');
+ await mp.evaluate(()=>document.querySelector('#carte [data-order]').click());
+ await mp.waitForTimeout(600);
+ ck('mobile : le dock se range quand la feuille de commande s\'ouvre',
+    await mp.evaluate(()=>{
+      const d = document.getElementById('dock');
+      return d.classList.contains('range') || d.getBoundingClientRect().top >= innerHeight;
+    }));
+ await mp.evaluate(()=>{ const b=document.querySelector('.sheet-close'); if(b) b.click(); });
+ await mp.waitForTimeout(400);
+
  await mp.click('#mobile-menu-btn'); await mp.waitForTimeout(300);
  ck('mobile : menu ouvrable et langues accessibles', await mp.evaluate(()=>document.getElementById('main-nav').classList.contains('mobile-open') && document.querySelectorAll('#main-nav .langset button').length===4));
  await mp.click('#main-nav a[href="#club"]'); await mp.waitForTimeout(500);

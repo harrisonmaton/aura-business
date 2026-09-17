@@ -1,32 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080" role="img" aria-label="Ce soir">
-<defs>
-    <radialGradient id="halo-trattoria-2" cx="50%" cy="28%" r="78%">
-      <stop offset="0" stop-color="#FF6B4A" stop-opacity=".40"/>
-      <stop offset="1" stop-color="#FF6B4A" stop-opacity="0"/>
-    </radialGradient>
-    <linearGradient id="fond-trattoria-2" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#120A18"/><stop offset="1" stop-color="#0A0710"/>
-    </linearGradient>
-    <filter id="grain-trattoria-2"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2"/>
-      <feColorMatrix type="saturate" values="0"/>
-      <feComponentTransfer><feFuncA type="linear" slope=".055"/></feComponentTransfer>
-    </filter>
-  </defs>
-<rect width="1080" height="1080" fill="url(#fond-trattoria-2)"/>
-<rect width="1080" height="1080" fill="url(#halo-trattoria-2)"/>
-<rect x="56" y="56" width="968" height="968" fill="#1B1320" opacity=".55"/>
-<rect x="56" y="56" width="968" height="968" fill="none" stroke="#D9B978" stroke-width="1.5" opacity=".45"/>
-<text x="120" y="190" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="24" font-weight="600" letter-spacing="10" fill="#FF6B4A">LA CARTE</text>
-<text x="120" y="310" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="104" fill="#F4F1EA">Ce soir</text>
-<text x="120" y="430" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="52" fill="#F4F1EA">Antipasti della casa</text>
-      <text x="960" y="430" text-anchor="end" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="44" fill="#FF6B4A">9 €</text>
-      <line x1="120" y1="456" x2="960" y2="456" stroke="#D9B978" stroke-width="1" opacity=".22" stroke-dasharray="3 7"/><text x="120" y="534" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="52" fill="#F4F1EA">Cacio e pepe</text>
-      <text x="960" y="534" text-anchor="end" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="44" fill="#FF6B4A">14 €</text>
-      <line x1="120" y1="560" x2="960" y2="560" stroke="#D9B978" stroke-width="1" opacity=".22" stroke-dasharray="3 7"/><text x="120" y="638" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="52" fill="#F4F1EA">Ossobuco, polenta</text>
-      <text x="960" y="638" text-anchor="end" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="44" fill="#FF6B4A">19 €</text>
-      <line x1="120" y1="664" x2="960" y2="664" stroke="#D9B978" stroke-width="1" opacity=".22" stroke-dasharray="3 7"/><text x="120" y="742" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="52" fill="#F4F1EA">Tiramisu maison</text>
-      <text x="960" y="742" text-anchor="end" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="44" fill="#FF6B4A">7 €</text>
-      <line x1="120" y1="768" x2="960" y2="768" stroke="#D9B978" stroke-width="1" opacity=".22" stroke-dasharray="3 7"/>
-<text x="120" y="940" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="28" fill="#CFC7BC" opacity=".85">Service de 19 h à 23 h · sur place et à emporter</text>
-<rect width="1080" height="1080" filter="url(#grain-trattoria-2)" opacity=".55"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080" role="img" aria-label="La carte du soir de la Trattoria Mezzanotte, quatre plats et leurs prix">
+<rect width="1080" height="1080" fill="#F4EADB"/>
+<image href="creations/photos/trattoria-pates.webp" x="0" y="0" width="1080" height="264" preserveAspectRatio="xMidYMid slice"/>
+<rect x="0" y="259" width="1080" height="5" fill="#B5472A"/>
+<text x="64" y="360" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="23" font-weight="600" letter-spacing="9" fill="#B5472A">LA CARTE DU SOIR</text>
+<text x="64" y="444" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="46" fill="#231A15">Antipasti della casa</text><text x="64" y="480" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="24" fill="#5E6247">Charcuterie, olives, focaccia</text><text x="1016" y="444" text-anchor="end" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="46" fill="#B5472A">9 €</text><rect x="64" y="502" width="952" height="1" fill="#E4D5BF"/><text x="64" y="570" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="46" fill="#231A15">Cacio e pepe</text><text x="64" y="606" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="24" fill="#5E6247">Pâtes fraîches, pecorino romano</text><text x="1016" y="570" text-anchor="end" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="46" fill="#B5472A">14 €</text><rect x="64" y="628" width="952" height="1" fill="#E4D5BF"/><text x="64" y="696" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="46" fill="#231A15">Ossobuco, polenta</text><text x="64" y="732" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="24" fill="#5E6247">Mijoté trois heures</text><text x="1016" y="696" text-anchor="end" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="46" fill="#B5472A">19 €</text><rect x="64" y="754" width="952" height="1" fill="#E4D5BF"/><text x="64" y="822" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="46" fill="#231A15">Tiramisu maison</text><text x="64" y="858" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="24" fill="#5E6247">Mascarpone, café ristretto</text><text x="1016" y="822" text-anchor="end" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="46" fill="#B5472A">7 €</text><rect x="64" y="880" width="952" height="1" fill="#E4D5BF"/>
+<text x="64" y="944" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="26" fill="#231A15">Service de 19 h à 23 h · sur place et à emporter</text>
+<g>
+    <rect x="64" y="979" width="151.20000000000002" height="1.6" fill="#7A2E18" opacity=".7"/>
+    <text x="64" y="1016"  font-family="Bodoni Moda, Didot, Georgia, serif" font-size="21" letter-spacing="2.9" fill="#7A2E18">TRATTORIA</text>
+    <text x="64" y="1035.95"  font-family="Bodoni Moda, Didot, Georgia, serif" font-size="18.06" font-style="italic" letter-spacing="1.3" fill="#7A2E18">Mezzanotte</text>
+    <rect x="64" y="1044.35" width="151.20000000000002" height="1.6" fill="#7A2E18" opacity=".7"/>
+  </g>
+<text x="1016" y="1046" text-anchor="end" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="17" letter-spacing="0.5" fill="#231A15" opacity=".62">ENSEIGNE FICTIVE · CONCEPT DE DÉMONSTRATION</text>
 </svg>

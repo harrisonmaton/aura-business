@@ -14,6 +14,38 @@ for (const [src,out] of [['vitrine.html','vitrine.html'],['back-office.html','ba
 fs.cpSync(path.join(__dirname,'..','src','fonts'), path.join(__dirname,'..','preview','fonts'), {recursive:true});
 /* Les photographies sont référencées par les SVG en ligne via un chemin
    relatif au document : elles doivent exister à côté de la page. */
+/* Le moteur 3D et le showroom sont copiés tels quels : chargés en différé par
+   la page, ils ne doivent jamais retarder l'affichage du contenu commercial. */
+const moteur = path.join(__dirname,'..','src','moteur');
+if (fs.existsSync(moteur)) fs.cpSync(moteur, path.join(__dirname,'..','preview','moteur'), {recursive:true});
+fs.copyFileSync(path.join(__dirname,'..','src','showroom.js'),
+                path.join(__dirname,'..','preview','showroom.js'));
+
+/* Les photographies utilisées par le showroom sont inlinées en data URI à la
+   CONSTRUCTION, dans un fichier chargé avec le moteur. À l'exécution, un SVG
+   transformé en blob perd sa base d'URL, et `fetch` sur file:// est refusé par
+   la politique d'origine : le panneau principal sortait noir. Une intégration
+   au build fonctionne dans les deux cas, hors ligne compris, et ne coûte rien
+   au parcours commercial puisqu'elle n'est chargée qu'avec la scène. */
+{
+  const dossier = path.join(__dirname,'..','src','creations','photos');
+  const carte = {};
+  if (fs.existsSync(dossier)) {
+    for (const f of fs.readdirSync(dossier)) {
+      if (!/\.(webp|png|jpe?g)$/i.test(f)) continue;
+      const type = /\.webp$/i.test(f) ? 'image/webp'
+                 : /\.png$/i.test(f)  ? 'image/png' : 'image/jpeg';
+      carte['creations/photos/' + f] =
+        'data:' + type + ';base64,' + fs.readFileSync(path.join(dossier,f)).toString('base64');
+    }
+  }
+  fs.writeFileSync(path.join(__dirname,'..','preview','photos-showroom.js'),
+    'var PHOTOS_SHOWROOM = ' + JSON.stringify(carte) + ';\n');
+  const n = Object.keys(carte).length;
+  const ko = (fs.statSync(path.join(__dirname,'..','preview','photos-showroom.js')).size/1024).toFixed(0);
+  console.log('  photos du showroom inlinées : ' + n + ' fichier(s), ' + ko + ' Ko');
+}
+
 const photos = path.join(__dirname,'..','src','creations','photos');
 if (fs.existsSync(photos)) fs.cpSync(photos, path.join(__dirname,'..','preview','creations','photos'), {recursive:true});
 console.log("preview/ régénéré depuis src/ (polices incluses ; l'image d'accueil est une composition en ligne)");

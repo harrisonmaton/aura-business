@@ -1,28 +1,29 @@
 {
  "vitrine@320": {
   "layout-transition": 3,
-  "wide-tracking": 4,
+  "ai-color-palette": 1,
+  "wide-tracking": 2,
   "kicker-above-heading": 5,
-  "shape-assembled-illustration": 1,
-  "text-occlusion": 1
+  "shape-assembled-illustration": 1
  },
  "vitrine@390": {
   "layout-transition": 3,
-  "wide-tracking": 4,
+  "ai-color-palette": 1,
+  "wide-tracking": 2,
   "kicker-above-heading": 5,
-  "shape-assembled-illustration": 1,
-  "text-occlusion": 1
+  "shape-assembled-illustration": 1
  },
  "vitrine@768": {
   "layout-transition": 3,
-  "wide-tracking": 4,
+  "ai-color-palette": 1,
+  "wide-tracking": 2,
   "kicker-above-heading": 5,
-  "shape-assembled-illustration": 1,
-  "text-occlusion": 3
+  "shape-assembled-illustration": 1
  },
  "vitrine@1440": {
   "layout-transition": 3,
-  "wide-tracking": 4,
+  "ai-color-palette": 1,
+  "wide-tracking": 2,
   "kicker-above-heading": 5,
   "shape-assembled-illustration": 1
  },

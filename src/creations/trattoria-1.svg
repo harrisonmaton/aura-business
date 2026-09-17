@@ -1,33 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080" role="img" aria-label="FAIT MAISON — Cacio">
-<defs>
-    <radialGradient id="halo-trattoria-1" cx="50%" cy="28%" r="78%">
-      <stop offset="0" stop-color="#FF6B4A" stop-opacity=".40"/>
-      <stop offset="1" stop-color="#FF6B4A" stop-opacity="0"/>
-    </radialGradient>
-    <linearGradient id="fond-trattoria-1" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#120A18"/><stop offset="1" stop-color="#0A0710"/>
-    </linearGradient>
-    <filter id="grain-trattoria-1"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2"/>
-      <feColorMatrix type="saturate" values="0"/>
-      <feComponentTransfer><feFuncA type="linear" slope=".055"/></feComponentTransfer>
-    </filter>
-  </defs>
-<defs><linearGradient id="voile-trattoria-1" x1="0" y1="0" x2="0" y2="1">
-         <stop offset="0" stop-color="#0A0710" stop-opacity=".82"/>
-         <stop offset=".45" stop-color="#0A0710" stop-opacity=".18"/>
-         <stop offset="1" stop-color="#0A0710" stop-opacity=".88"/>
-       </linearGradient></defs>
-<image href="creations/photos/trattoria-pates.webp" x="0" y="0" width="1080" height="1080" preserveAspectRatio="xMidYMid slice"/>
-       <rect width="1080" height="1080" fill="#0A0710" opacity=".34"/>
-       <rect width="1080" height="1080" fill="url(#voile-trattoria-1)"/>
-<rect x="64" y="64" width="952" height="952" fill="none" stroke="#D9B978" stroke-width="1.5" opacity=".42"/>
-<rect x="78" y="78" width="924" height="924" fill="none" stroke="#D9B978" stroke-width="1" opacity=".18"/>
-<text x="112" y="182" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="26" font-weight="600" letter-spacing="9" fill="#FF6B4A">FAIT MAISON</text>
-<text x="112" y="430" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="150" fill="#F4F1EA">Cacio</text>
-<text x="112" y="530" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="88" font-style="italic" fill="#FF6B4A">e pepe</text>
-<rect x="112" y="600" width="300" height="1.5" fill="#D9B978" opacity="0.5"/><rect x="112" y="614" width="300" height="1.5" fill="#D9B978" opacity="0.5"/><rect x="112" y="628" width="300" height="1.5" fill="#D9B978" opacity="0.5"/>
-<text x="112" y="740" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="34" fill="#CFC7BC">Pâtes fraîches tous les matins.</text>
-<rect x="112" y="880" width="168" height="58" fill="#FF6B4A"/>
-<text x="126" y="919" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="26" font-weight="700" letter-spacing="3" fill="#0A0710">CE SOIR</text>
-<rect width="1080" height="1080" filter="url(#grain-trattoria-1)" opacity=".55"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080" role="img" aria-label="Assiette de cacio e pepe, publication de la Trattoria Mezzanotte">
+<defs><linearGradient id="pl-trattoria-1" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="#140E0A" stop-opacity="0"/>
+  <stop offset="1" stop-color="#140E0A" stop-opacity=".55"/>
+</linearGradient></defs>
+<rect width="1080" height="1080" fill="#140E0A"/>
+<image href="creations/photos/trattoria-pates.webp" x="0" y="0" width="1080" height="808" preserveAspectRatio="xMidYMid slice"/>
+<rect x="0" y="628" width="1080" height="180" fill="url(#pl-trattoria-1)"/>
+<rect x="0" y="808" width="1080" height="272" fill="#F4EADB"/>
+<rect x="0" y="808" width="1080" height="5" fill="#B5472A"/>
+<text x="64" y="896" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="74" fill="#231A15">Cacio e pepe</text>
+<text x="64" y="944" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="27" fill="#5E6247">Pecorino, poivre noir, pâtes fraîches du matin.</text>
+<text x="1016" y="896" text-anchor="end" font-family="Bodoni Moda, Didot, Georgia, serif" font-size="66" fill="#B5472A">14 €</text>
+<g>
+    <rect x="64" y="981" width="151.20000000000002" height="1.6" fill="#7A2E18" opacity=".7"/>
+    <text x="64" y="1018"  font-family="Bodoni Moda, Didot, Georgia, serif" font-size="21" letter-spacing="2.9" fill="#7A2E18">TRATTORIA</text>
+    <text x="64" y="1037.95"  font-family="Bodoni Moda, Didot, Georgia, serif" font-size="18.06" font-style="italic" letter-spacing="1.3" fill="#7A2E18">Mezzanotte</text>
+    <rect x="64" y="1046.35" width="151.20000000000002" height="1.6" fill="#7A2E18" opacity=".7"/>
+  </g>
+<text x="1016" y="1046" text-anchor="end" font-family="Archivo, Helvetica Neue, Arial, sans-serif" font-size="17" letter-spacing="0.5" fill="#231A15" opacity=".62">ENSEIGNE FICTIVE · CONCEPT DE DÉMONSTRATION</text>
 </svg>

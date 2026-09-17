@@ -392,17 +392,158 @@ ${[120, 560, 900].map(x=>`<g opacity=".8">
 
 /* ─── Contenu : trois commerces fictifs ────────────────────────────────── */
 
+
+/* ══════════════════════════════════════════════════════════════════════════
+   SÉRIE RESTAURANT — Trattoria Mezzanotte (enseigne fictive)
+
+   Reproche mesuré sur la version précédente : les compositions étaient
+   principalement typographiques. La photographie servait de fond sous un voile,
+   et le sujet réel — le plat, la carte, les horaires — passait derrière du
+   texte décoratif.
+
+   Ici le sujet est le sujet. Le plat occupe le cadre. La carte se lit comme
+   une carte. La réservation donne une heure et un moyen de joindre.
+
+   La marque qui signe est celle du RESTAURANT, pas Aura : ces créations sont
+   destinées à être publiées par le commerce. Aura est le studio qui les
+   présente, et n'apparaît que dans la vitrine, autour de l'image.
+
+   Palette propre à l'enseigne — terre cuite et crème — volontairement
+   distincte du laiton de nuit d'Aura.
+   ══════════════════════════════════════════════════════════════════════════ */
+const RESTO = {
+  terre:'#B5472A', terreFonce:'#7A2E18', creme:'#F4EADB', cremeOmbre:'#E4D5BF',
+  olive:'#5E6247', encre:'#231A15', nuit:'#140E0A'
+};
+
+/* Signature de l'enseigne : son nom, filets au-dessus et au-dessous. */
+function enseigneResto(x, y, couleur, taille, ancrage){
+  const l = taille * 7.2;
+  return `<g>
+    <rect x="${ancrage === 'middle' ? x - l/2 : x}" y="${y - taille - 16}" width="${l}" height="1.6" fill="${couleur}" opacity=".7"/>
+    <text x="${x}" y="${y}" ${ancrage === 'middle' ? 'text-anchor="middle"' : ''} font-family="${SERIF}" font-size="${taille}" letter-spacing="${(taille*0.14).toFixed(1)}" fill="${couleur}">TRATTORIA</text>
+    <text x="${x}" y="${y + taille*0.95}" ${ancrage === 'middle' ? 'text-anchor="middle"' : ''} font-family="${SERIF}" font-size="${taille*0.86}" font-style="italic" letter-spacing="${(taille*0.06).toFixed(1)}" fill="${couleur}">Mezzanotte</text>
+    <rect x="${ancrage === 'middle' ? x - l/2 : x}" y="${y + taille*1.35}" width="${l}" height="1.6" fill="${couleur}" opacity=".7"/>
+  </g>`;
+}
+
+/* Mention obligatoire : l'enseigne et les informations sont inventées. */
+function mentionFictive(x, y, couleur, ancrage){
+  return `<text x="${x}" y="${y}" ${ancrage ? 'text-anchor="' + ancrage + '"' : ''} font-family="${SANS}" font-size="17" letter-spacing="0.5" fill="${couleur}" opacity=".62">ENSEIGNE FICTIVE · CONCEPT DE DÉMONSTRATION</text>`;
+}
+
+/* 1 — LE PLAT. La photographie occupe le cadre ; le texte se retire en bas,
+   sur une bande pleine, pour ne rien recouvrir du sujet. */
+function restoPlat({id, photo}){
+  const W=1080,H=1080, bande=272;
+  if(!photo) return null;                    /* pas de photo, pas de publication */
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Assiette de cacio e pepe, publication de la Trattoria Mezzanotte">
+<defs><linearGradient id="pl-${id}" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="${RESTO.nuit}" stop-opacity="0"/>
+  <stop offset="1" stop-color="${RESTO.nuit}" stop-opacity=".55"/>
+</linearGradient></defs>
+<rect width="${W}" height="${H}" fill="${RESTO.nuit}"/>
+<image href="${photo}" x="0" y="0" width="${W}" height="${H - bande}" preserveAspectRatio="xMidYMid slice"/>
+<rect x="0" y="${H - bande - 180}" width="${W}" height="180" fill="url(#pl-${id})"/>
+<rect x="0" y="${H - bande}" width="${W}" height="${bande}" fill="${RESTO.creme}"/>
+<rect x="0" y="${H - bande}" width="${W}" height="5" fill="${RESTO.terre}"/>
+<text x="64" y="${H - bande + 88}" font-family="${SERIF}" font-size="74" fill="${RESTO.encre}">Cacio e pepe</text>
+<text x="64" y="${H - bande + 136}" font-family="${SANS}" font-size="27" fill="${RESTO.olive}">Pecorino, poivre noir, pâtes fraîches du matin.</text>
+<text x="${W-64}" y="${H - bande + 88}" text-anchor="end" font-family="${SERIF}" font-size="66" fill="${RESTO.terre}">14 €</text>
+${enseigneResto(64, H - 62, RESTO.terreFonce, 21)}
+${mentionFictive(W-64, H-34, RESTO.encre, 'end')}
+</svg>`;
+}
+
+/* 2 — LA CARTE. Fond clair : après quatre sections sombres, la carte respire
+   et se lit comme une vraie carte. Le plat revient en bandeau, en rappel. */
+function restoCarte({id, photo}){
+  const W=1080,H=1080, bandeau=264;
+  const plats = [
+    ['Antipasti della casa', 'Charcuterie, olives, focaccia', '9 €'],
+    ['Cacio e pepe',         'Pâtes fraîches, pecorino romano', '14 €'],
+    ['Ossobuco, polenta',    'Mijoté trois heures',             '19 €'],
+    ['Tiramisu maison',      'Mascarpone, café ristretto',      '7 €']
+  ];
+  let lignes = '';
+  plats.forEach((x, i) => {
+    const y = bandeau + 180 + i*126;
+    lignes += `<text x="64" y="${y}" font-family="${SERIF}" font-size="46" fill="${RESTO.encre}">${esc(x[0])}</text>`
+            + `<text x="64" y="${y+36}" font-family="${SANS}" font-size="24" fill="${RESTO.olive}">${esc(x[1])}</text>`
+            + `<text x="${W-64}" y="${y}" text-anchor="end" font-family="${SERIF}" font-size="46" fill="${RESTO.terre}">${esc(x[2])}</text>`
+            + `<rect x="64" y="${y+58}" width="${W-128}" height="1" fill="${RESTO.cremeOmbre}"/>`;
+  });
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="La carte du soir de la Trattoria Mezzanotte, quatre plats et leurs prix">
+<rect width="${W}" height="${H}" fill="${RESTO.creme}"/>
+${photo ? `<image href="${photo}" x="0" y="0" width="${W}" height="${bandeau}" preserveAspectRatio="xMidYMid slice"/>` : ''}
+<rect x="0" y="${bandeau-5}" width="${W}" height="5" fill="${RESTO.terre}"/>
+<text x="64" y="${bandeau + 96}" font-family="${SANS}" font-size="23" font-weight="600" letter-spacing="9" fill="${RESTO.terre}">LA CARTE DU SOIR</text>
+${lignes}
+<text x="64" y="${H - 136}" font-family="${SANS}" font-size="26" fill="${RESTO.encre}">Service de 19 h à 23 h · sur place et à emporter</text>
+${enseigneResto(64, H - 64, RESTO.terreFonce, 21)}
+${mentionFictive(W-64, H-34, RESTO.encre, 'end')}
+</svg>`;
+}
+
+/* 3 — LA RÉSERVATION. L'information utile est le sujet : le jour, l'heure, le
+   moyen de joindre. Photo à gauche, panneau d'information à droite. */
+function restoReservation({id, photo}){
+  const W=1080,H=1080, colonne=440;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Réservation à la Trattoria Mezzanotte, horaires et contact">
+<rect width="${W}" height="${H}" fill="${RESTO.terre}"/>
+${photo ? `<image href="${photo}" x="0" y="0" width="${colonne}" height="${H}" preserveAspectRatio="xMidYMid slice"/>`
+        : `<rect width="${colonne}" height="${H}" fill="${RESTO.terreFonce}"/>`}
+<rect x="${colonne}" y="0" width="6" height="${H}" fill="${RESTO.creme}" opacity=".9"/>
+<text x="${colonne+64}" y="128" font-family="${SANS}" font-size="23" font-weight="600" letter-spacing="9" fill="${RESTO.creme}" opacity=".85">RÉSERVATION</text>
+<text x="${colonne+64}" y="266" font-family="${SERIF}" font-size="96" fill="${RESTO.creme}">Ce soir</text>
+<text x="${colonne+64}" y="360" font-family="${SERIF}" font-size="62" font-style="italic" fill="${RESTO.cremeOmbre}">il reste</text>
+<text x="${colonne+64}" y="516" font-family="${SERIF}" font-size="132" fill="${RESTO.creme}">4</text>
+<text x="${colonne+190}" y="516" font-family="${SERIF}" font-size="62" font-style="italic" fill="${RESTO.cremeOmbre}">tables</text>
+<rect x="${colonne+64}" y="574" width="180" height="2" fill="${RESTO.creme}" opacity=".6"/>
+<text x="${colonne+64}" y="650" font-family="${SANS}" font-size="30" fill="${RESTO.creme}">Service 19 h à 23 h</text>
+<text x="${colonne+64}" y="700" font-family="${SANS}" font-size="30" fill="${RESTO.creme}">Dernière commande 22 h 30</text>
+<rect x="${colonne+64}" y="752" width="${W - colonne - 128}" height="104" fill="${RESTO.creme}"/>
+<text x="${colonne + 64 + (W-colonne-128)/2}" y="818" text-anchor="middle" font-family="${SANS}" font-size="30" font-weight="700" letter-spacing="3" fill="${RESTO.terreFonce}">01 23 45 67 89</text>
+<text x="${colonne+64}" y="912" font-family="${SANS}" font-size="25" fill="${RESTO.cremeOmbre}">Ou un message privé : réponse dans l’heure.</text>
+${enseigneResto(colonne+64, H - 90, RESTO.creme, 21)}
+${mentionFictive(colonne+64, H-34, RESTO.creme, null)}
+</svg>`;
+}
+
+/* 4 — LA STORY 9:16. Photo en haut, information en bas : le pouce reste sur
+   la moitié basse, c'est là que l'heure et le bouton doivent être. */
+function restoStory({id, photo}){
+  const W=1080,H=1920, hautPhoto=1060;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Story de la Trattoria Mezzanotte, ouvert ce soir">
+<defs><linearGradient id="st-${id}" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0" stop-color="${RESTO.terreFonce}" stop-opacity="0"/>
+  <stop offset="1" stop-color="${RESTO.terreFonce}" stop-opacity=".9"/>
+</linearGradient></defs>
+<rect width="${W}" height="${H}" fill="${RESTO.terreFonce}"/>
+${photo ? `<image href="${photo}" x="0" y="0" width="${W}" height="${hautPhoto}" preserveAspectRatio="xMidYMid slice"/>` : ''}
+<rect x="0" y="${hautPhoto-260}" width="${W}" height="260" fill="url(#st-${id})"/>
+${enseigneResto(W/2, 148, RESTO.creme, 30, 'middle')}
+<text x="${W/2}" y="${hautPhoto + 130}" text-anchor="middle" font-family="${SANS}" font-size="26" font-weight="600" letter-spacing="11" fill="${RESTO.cremeOmbre}">CE SOIR</text>
+<text x="${W/2}" y="${hautPhoto + 300}" text-anchor="middle" font-family="${SERIF}" font-size="150" fill="${RESTO.creme}">Ouvert</text>
+<text x="${W/2}" y="${hautPhoto + 410}" text-anchor="middle" font-family="${SERIF}" font-size="88" font-style="italic" fill="${RESTO.cremeOmbre}">19 h à 23 h</text>
+<rect x="${W/2-110}" y="${hautPhoto + 466}" width="220" height="2" fill="${RESTO.creme}" opacity=".55"/>
+<text x="${W/2}" y="${hautPhoto + 556}" text-anchor="middle" font-family="${SANS}" font-size="30" fill="${RESTO.creme}">Dernière commande à 22 h 30.</text>
+<rect x="150" y="${hautPhoto + 640}" width="${W-300}" height="118" rx="59" fill="${RESTO.creme}"/>
+<text x="${W/2}" y="${hautPhoto + 716}" text-anchor="middle" font-family="${SANS}" font-size="34" font-weight="700" letter-spacing="3" fill="${RESTO.terreFonce}">RÉSERVER</text>
+${mentionFictive(W/2, H-58, RESTO.creme, 'middle')}
+</svg>`;
+}
+
+
 const SERIES = [
   { id:'trattoria', secteur:'Restaurant italien', enseigne:'Trattoria Mezzanotte',
     teinte:C.corail, second:C.laiton, pack:2,
     resume:'Trois publications, une story et les textes pour une trattoria de quartier.',
     pieces:[
-      {k:'post', f:posteTypo,  n:'Les pâtes',    photo:'trattoria-pates.webp',
-       a:{sur:'FAIT MAISON', titre:'Cacio', sousTitre:'e pepe', bas:'Pâtes fraîches tous les matins.', badge:'CE SOIR'}},
-      {k:'post', f:posteCarte, n:'La carte',     a:{sur:'LA CARTE', titre:'Ce soir', pied:'Service de 19 h à 23 h · sur place et à emporter',
-          lignes:[['Antipasti della casa','9 €'],['Cacio e pepe','14 €'],['Ossobuco, polenta','19 €'],['Tiramisu maison','7 €']]}},
-      {k:'post', f:posteBloc,  n:'Réserver',     a:{second:C.laiton, mot1:'Une', mot2:'table ?', sur:'RÉSERVATION', bas:'Message privé · réponse dans l’heure'}},
-      {k:'story',f:story,      n:'Story · ce soir', a:{sur:'CE SOIR', titre:'Ouvert', sousTitre:'19 h – 23 h', bas:'Dernière commande à 22 h 30.', action:'RÉSERVER'}}
+      {k:'post', f:restoPlat,        n:'Le plat',    photo:'trattoria-pates.webp', a:{}},
+      {k:'post', f:restoCarte,       n:'La carte',   photo:'trattoria-pates.webp', a:{}},
+      {k:'post', f:restoReservation, n:'Réserver',   photo:'trattoria-pates.webp', a:{}},
+      {k:'story',f:restoStory,       n:'Story · ce soir', photo:'trattoria-pates.webp', a:{}}
     ],
     textes:['Cacio e pepe, trois ingrédients et zéro raccourci. Ce soir au menu.',
             'La carte du soir est en ligne. Antipasti, pâtes fraîches, ossobuco.',
