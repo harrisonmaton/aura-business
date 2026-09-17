@@ -1,0 +1,81 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Jetons du système visuel Aura OS
+
+   Extraits de la vitrine existante, pas inventés à côté : si l'application et
+   le site commercial divergent, la marque se fissure. Une seule échelle
+   d'espacement, une seule de rayons, une seule de typographie.
+
+   Mobile d'abord, littéralement : les valeurs par défaut sont celles du
+   téléphone, et c'est le grand écran qui est l'exception.
+   ═══════════════════════════════════════════════════════════════════════════ */
+:root{
+  --encre:#0A0D1A; --encre-2:#111524; --papier:#FFF5E8; --estompe:#A8A49C;
+  --filet:#232838; --rose:#E01B6A; --violet:#8E37D6; --turquoise:#36D6D0;
+  --succes:#2FB673; --alerte:#E0A13B; --erreur:#E05252;
+
+  --e1:.25rem; --e2:.5rem; --e3:.75rem; --e4:1rem; --e5:1.5rem; --e6:2rem; --e7:3rem;
+  --r1:6px; --r2:10px; --r3:16px; --rond:99px;
+
+  --police:'Archivo',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --ombre-1:0 1px 2px rgba(0,0,0,.28);
+  --ombre-2:0 8px 24px -8px rgba(0,0,0,.5);
+
+  /* Cible tactile minimale. 44 px est le seuil en dessous duquel un pouce
+     rate le bouton — ce n'est pas une préférence esthétique. */
+  --touche:44px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--encre); color:var(--papier);
+  font-family:var(--police); font-size:16px; line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3{line-height:1.12; letter-spacing:-.02em; margin:0}
+a{color:inherit}
+button,input,select,textarea{font:inherit}
+
+.enveloppe{max-width:min(100% - 2rem, 68rem); margin-inline:auto}
+
+.bouton{
+  display:inline-flex; align-items:center; justify-content:center; gap:var(--e2);
+  min-height:var(--touche); padding:0 var(--e5); border:0; border-radius:var(--rond);
+  background:linear-gradient(92deg,var(--rose),var(--violet)); color:#fff;
+  font-weight:600; font-size:.9rem; cursor:pointer; text-decoration:none;
+  box-shadow:var(--ombre-2);
+}
+.bouton:disabled{opacity:.5; cursor:not-allowed}
+.bouton--fantome{background:none; border:1px solid var(--filet); box-shadow:none}
+
+.carte{
+  background:var(--encre-2); border:1px solid var(--filet);
+  border-radius:var(--r2); padding:var(--e5);
+}
+
+.champ{display:flex; flex-direction:column; gap:var(--e2); margin-bottom:var(--e4)}
+.champ label{font-size:.82rem; color:var(--estompe)}
+.champ input,.champ select,.champ textarea{
+  min-height:var(--touche); padding:0 var(--e3);
+  background:var(--encre); color:var(--papier);
+  border:1px solid var(--filet); border-radius:var(--r1);
+}
+.champ textarea{padding:var(--e3); min-height:7rem; resize:vertical}
+.champ input:focus-visible,.champ textarea:focus-visible,.bouton:focus-visible{
+  outline:2px solid var(--turquoise); outline-offset:2px;
+}
+.champ .erreur{color:var(--erreur); font-size:.8rem}
+
+/* État vide : il doit proposer l'action suivante, pas constater l'absence. */
+.vide{text-align:center; padding:var(--e7) var(--e4); color:var(--estompe)}
+.vide h3{color:var(--papier); margin-bottom:var(--e2)}
+
+.squelette{
+  background:linear-gradient(90deg,var(--encre-2),#1a1f30,var(--encre-2));
+  background-size:200% 100%; border-radius:var(--r1);
+  animation:glisse 1.4s ease-in-out infinite;
+}
+@keyframes glisse{to{background-position:-200% 0}}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important; transition-duration:.01ms !important}
+}

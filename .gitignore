@@ -6,3 +6,10 @@ livrables/
 # Archive du produit : reconstruite par `npm run build:collection` à partir
 # des fichiers de src/collections/<nom>/. Dérivée, donc non versionnée.
 src/collections/*.zip
+
+# Aura OS
+aura-os/node_modules/
+aura-os/.next/
+aura-os/dist-test/
+aura-os/tsconfig.tsbuildinfo
+aura-os/.env*.local
