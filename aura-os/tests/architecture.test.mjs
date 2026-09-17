@@ -63,14 +63,21 @@ describe('règles d’architecture', () => {
     assert.deepEqual(fautifs, []);
   });
 
-  test('l’autorisation ne s’appuie jamais sur getSession()', () => {
-    /* getSession() lit le cookie et le croit sur parole ; getUser() revalide
-       le jeton auprès de Supabase. Pour décider d'un droit d'accès, seule la
-       seconde a une valeur — la première dit qui l'utilisateur PRÉTEND être. */
-    const fautifs = fichiers(path.join(RACINE, 'src'))
+  test('les routes n’utilisent pas getSession() pour décider d’un accès', () => {
+    /* Trois méthodes, trois usages — les confondre coûte cher :
+         getClaims()  protéger une page ; vérifie le jeton LOCALEMENT via
+                      WebCrypto et un JWKS en cache, donc sans réseau ;
+         getUser()    seulement si la fiche à jour est nécessaire — un
+                      aller-retour réseau qu'on ne paie que si on s'en sert ;
+         getSession() jetons bruts uniquement. Elle lit le stockage local sans
+                      revalider : elle dit qui l'utilisateur PRÉTEND être.
+       Dans une route, les seules raisons de lire l'authentification sont la
+       protection ou la fiche. Le jeton brut relève d'un module de service. */
+    const fautifs = fichiers(path.join(RACINE, 'src/app'))
       .filter(f => /auth\.getSession\(\)/.test(readFileSync(f, 'utf8')))
       .map(f => path.relative(RACINE, f));
-    assert.deepEqual(fautifs, [], 'utiliser getUser(), qui revalide le jeton');
+    assert.deepEqual(fautifs, [],
+      'utiliser getClaims() pour protéger, getUser() pour la fiche à jour');
   });
 
   test('les routes qui lisent une session ne sont jamais pré-rendues', () => {
@@ -79,7 +86,11 @@ describe('règles d’architecture', () => {
     const fautifs = [];
     for (const f of fichiers(path.join(RACINE, 'src/app'))) {
       const t = readFileSync(f, 'utf8');
-      const litSession = /utilisateurVerifie|clientServeur|auth\.getUser/.test(t);
+      /* Les noms suivis sont ceux qui lisent une identité. Renommer une
+         fonction sans mettre ce motif à jour désarmerait le garde-fou en
+         silence — c'est déjà arrivé une fois. */
+      const litSession =
+        /identiteVerifiee|ficheUtilisateur|clientServeur|auth\.get(User|Claims|Session)/.test(t);
       if (litSession && !/export const dynamic\s*=\s*['"]force-dynamic['"]/.test(t)) {
         fautifs.push(path.relative(RACINE, f));
       }

@@ -70,12 +70,41 @@ export function clientServeur(magasin: {
   });
 }
 
-/* ── L'identité, vérifiée ──────────────────────────────────────────────────
-   `getUser()` et non `getSession()` : getSession lit le cookie et le croit sur
-   parole, getUser revalide le jeton auprès de Supabase. Pour décider d'un
-   droit d'accès, seule la seconde a une valeur — la première dit qui
-   l'utilisateur PRÉTEND être. */
-export async function utilisateurVerifie(sb: SupabaseClient) {
+/* ── L'identité : trois méthodes, trois usages ─────────────────────────────
+
+   Ne pas les confondre est une question de sécurité ET de performance.
+
+   getClaims()  → PROTÉGER une page ou des données. C'est le défaut.
+                  Vérifie le jeton LOCALEMENT (WebCrypto + JWKS mis en cache)
+                  quand le projet utilise des clés de signature asymétriques,
+                  ce qui est le cas par défaut des nouveaux projets. Donc
+                  aucune requête réseau sur le chemin critique.
+
+   getUser()    → quand on a besoin de la FICHE utilisateur à jour côté Auth
+                  (e-mail confirmé, métadonnées modifiées ailleurs). Coûte un
+                  aller-retour réseau : on ne le paie que si on en a besoin.
+
+   getSession() → uniquement pour les jetons BRUTS, par exemple pour les
+                  transmettre à un autre service. Jamais comme autorité
+                  d'autorisation : la session vient du stockage local et n'est
+                  pas revalidée — elle dit qui l'utilisateur PRÉTEND être.
+
+   La version précédente de ce fichier remplaçait getSession() par getUser()
+   partout. C'était mieux, mais grossier : on payait un appel réseau à chaque
+   page protégée pour une information qu'on n'utilisait pas. */
+
+export interface Identite { userId: string; email?: string; }
+
+/* Le contrôle d'accès par défaut. */
+export async function identiteVerifiee(sb: SupabaseClient): Promise<Identite | null> {
+  const { data, error } = await sb.auth.getClaims();
+  if (error || !data?.claims?.sub) return null;
+  const c = data.claims as { sub: string; email?: string };
+  return { userId: c.sub, email: c.email };
+}
+
+/* À n'appeler que si la fiche à jour est réellement nécessaire. */
+export async function ficheUtilisateur(sb: SupabaseClient) {
   const { data, error } = await sb.auth.getUser();
   if (error || !data?.user) return null;
   return data.user;
