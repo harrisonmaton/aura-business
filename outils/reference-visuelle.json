@@ -9,34 +9,34 @@
  },
  "vitrine@320": {
   "layout-transition": 3,
+  "dark-glow": 5,
+  "ai-color-palette": 8,
   "gradient-text": 6,
-  "ai-color-palette": 5,
-  "dark-glow": 3,
   "wide-tracking": 2,
   "kicker-above-heading": 7
  },
  "vitrine@390": {
   "layout-transition": 3,
+  "dark-glow": 5,
+  "ai-color-palette": 8,
   "gradient-text": 6,
-  "ai-color-palette": 5,
-  "dark-glow": 3,
   "wide-tracking": 2,
   "kicker-above-heading": 7
  },
  "vitrine@768": {
   "layout-transition": 3,
+  "dark-glow": 5,
+  "ai-color-palette": 8,
   "gradient-text": 6,
-  "ai-color-palette": 5,
-  "dark-glow": 3,
   "wide-tracking": 2,
   "line-length": 1,
   "kicker-above-heading": 7
  },
  "vitrine@1440": {
   "layout-transition": 3,
+  "dark-glow": 5,
+  "ai-color-palette": 8,
   "gradient-text": 6,
-  "ai-color-palette": 5,
-  "dark-glow": 3,
   "wide-tracking": 2,
   "kicker-above-heading": 7
  },

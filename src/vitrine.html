@@ -303,8 +303,12 @@ p{margin:0;}
    sous le seuil de lisibilité. Les deux bornes sont descendues jusqu'à passer
    4,5:1 en blanc (4,63:1 côté rose, 5,75:1 côté violet) sans perdre le néon.
    La lueur portée, elle, ne touche pas le texte : elle reste. */
+/* Pilules, comme la référence : les boutons d'appel à l'action du premier
+   écran, de l'en-tête et de l'appel final. Les boutons de commande des
+   fiches gardent leur forme, ils appartiennent à un autre registre. */
 .btn-aura{background:linear-gradient(92deg,#E01B6A,#8E37D6); color:#fff;
-  border:0; box-shadow:0 10px 30px -8px rgba(224,27,106,.5);}
+  border:0; border-radius:99px; box-shadow:0 10px 30px -8px rgba(224,27,106,.5);}
+.hero-actions .btn,.final-actions .btn,.cote-club .btn{border-radius:99px;}
 .btn-aura:hover{filter:brightness(1.12); box-shadow:0 14px 38px -8px rgba(224,27,106,.66);}
 
 /* ── Indicateurs ──────────────────────────────────────────────────────────
@@ -336,6 +340,40 @@ p{margin:0;}
      exactement comme dans la référence. */
   .signature{margin-left:auto; text-align:left;}
 }
+
+/* Le CTA permanent de l'en-tête. Il disparaît sous 1000 px : à cette largeur
+   la barre doit garder le logo, le menu et les langues, et le quai du bas
+   (#dock) porte déjà la même action à portée de pouce. */
+/* Deux sélecteurs, pas un : la règle générale `.btn` est déclarée plus bas
+   dans la feuille et impose border-radius:0 et min-height:50px. À
+   spécificité égale, c'est la dernière qui gagne — le bouton d'en-tête
+   revenait donc carré et haut de 50 px dans une barre de 76. */
+.btn.btn-topbar{align-self:center; min-height:0; padding:.68rem 1.2rem;
+  font-size:.72rem; letter-spacing:.1em; white-space:nowrap; line-height:1;
+  border-radius:99px;}
+@media (max-width:1000px){ .btn-topbar{display:none;} }
+
+/* ── Appel final ───────────────────────────────────────────────────────── */
+#final{position:relative; overflow:hidden; text-align:center;
+  padding-block:clamp(3.4rem,7vw,6rem);}
+.final-bg{position:absolute; inset:0; z-index:0;}
+.final-bg img{width:100%; height:100%; object-fit:cover; object-position:center 30%;
+  display:block; opacity:.46;}
+.final-bg::after{content:""; position:absolute; inset:0;
+  background:radial-gradient(ellipse at 50% 45%, rgba(8,11,14,.58), rgba(8,11,14,.92) 72%);}
+#final>.shell{position:relative; z-index:1;}
+.final-in{max-width:56ch; margin-inline:auto;}
+.final-t{margin:0; font-family:var(--display); font-weight:700; line-height:1.02;
+  font-size:clamp(1.9rem,4vw,3.3rem); letter-spacing:-.025em; color:var(--paper);}
+.final-t em{font-style:normal; display:block;
+  background:linear-gradient(92deg,#FF6FB5,#C86BFF);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  -webkit-text-fill-color:transparent;}
+.final-p{margin:1.3rem auto 0; max-width:50ch; font-size:.95rem; line-height:1.62;
+  color:#D8D2C8;}
+.final-actions{justify-content:center; margin-top:1.9rem;}
+.final-note{margin-top:1.4rem; font-size:.78rem; line-height:1.55; color:var(--faint);
+  max-width:48ch; margin-inline:auto;}
 
 /* ── V∞ : la bande à trois temps ───────────────────────────────────────────
    C'est la signature structurelle de la référence, et ce qui lui donne sa
@@ -1324,6 +1362,9 @@ footer a[href*="instagram"], footer a[href*="ig.me"]{ display:inline-flex; align
         <a href="#club" data-i18n="nav.club">Le club</a>
         <a href="#questions" data-i18n="nav.questions">Questions</a>
       </nav>
+      <!-- L'appel à l'action de la référence, présent en permanence dans
+           l'en-tête : le visiteur n'a jamais à remonter pour démarrer. -->
+      <a href="#carte" class="btn btn-aura btn-topbar" data-i18n="vinf.cta1">Parler de votre projet</a>
       <div class="langset" role="group" aria-label="Langue">
         <button data-lang="fr" aria-pressed="true">FR</button>
         <button data-lang="en" aria-pressed="false">EN</button>
@@ -1604,6 +1645,27 @@ footer a[href*="instagram"], footer a[href*="ig.me"]{ display:inline-flex; align
       <div class="display-row"><h2 data-i18n="questions.title">Questions</h2></div>
     </div>
     <div class="qa reveal" data-d="1" id="qa"></div>
+  </div>
+</section>
+
+<!-- ═══════════════ APPEL FINAL ═══════════════
+     Le dernier écran avant le pied de page. Il redit l'action principale et,
+     juste en dessous, comment elle se passe vraiment : le message se prépare
+     ici et part du compte du visiteur. Promettre l'envoi automatique serait
+     faux, et le découvrir après coup coûte la confiance. -->
+<section class="band" id="final">
+  <div class="final-bg" aria-hidden="true"></div>
+  <div class="shell">
+    <div class="final-in reveal">
+      <h2 class="final-t"><span data-i18n="fin.t1">Votre commerce mérite</span>
+        <em data-i18n="fin.t2">mieux qu'un post improvisé.</em></h2>
+      <p class="final-p" data-i18n="fin.p"></p>
+      <div class="hero-actions final-actions">
+        <button class="btn btn-aura" id="final-cta" data-i18n="fin.cta">Parler de votre projet</button>
+        <a href="#carte" class="btn btn-ghost" data-i18n="fin.cta2">Voir la carte</a>
+      </div>
+      <p class="final-note" data-i18n="fin.note"></p>
+    </div>
   </div>
 </section>
 
@@ -2257,6 +2319,41 @@ var PIED_COPY = {
  }
 };
 Object.keys(PIED_COPY).forEach(function(l){Object.assign(STR[l],PIED_COPY[l]);});
+var FIN_COPY = {
+ "fr": {
+  "fin.t1": "Votre commerce mérite",
+  "fin.t2": "mieux qu'un post improvisé.",
+  "fin.p": "Dites-nous votre activité et ce que vous voulez montrer. Vous recevez une proposition de pack, un prix ferme et un délai — avant tout paiement.",
+  "fin.cta": "Parler de votre projet",
+  "fin.cta2": "Voir la carte",
+  "fin.note": "Le message se prépare ici et part depuis votre compte Instagram. Rien n'est envoyé automatiquement."
+ },
+ "en": {
+  "fin.t1": "Your business deserves",
+  "fin.t2": "better than an improvised post.",
+  "fin.p": "Tell us your trade and what you want to show. You get a pack proposal, a firm price and a turnaround — before any payment.",
+  "fin.cta": "Talk about your project",
+  "fin.cta2": "See the menu",
+  "fin.note": "The message is drafted here and sent from your own Instagram account. Nothing is sent automatically."
+ },
+ "es": {
+  "fin.t1": "Tu negocio merece",
+  "fin.t2": "más que un post improvisado.",
+  "fin.p": "Cuéntanos tu actividad y qué quieres mostrar. Recibes una propuesta de pack, un precio firme y un plazo, antes de cualquier pago.",
+  "fin.cta": "Hablar de tu proyecto",
+  "fin.cta2": "Ver la carta",
+  "fin.note": "El mensaje se prepara aquí y sale desde tu cuenta de Instagram. No se envía nada automáticamente."
+ },
+ "it": {
+  "fin.t1": "La tua attività merita",
+  "fin.t2": "più di un post improvvisato.",
+  "fin.p": "Raccontaci la tua attività e cosa vuoi mostrare. Ricevi una proposta di pack, un prezzo fermo e tempi certi, prima di qualsiasi pagamento.",
+  "fin.cta": "Parliamo del tuo progetto",
+  "fin.cta2": "Vedi il menu",
+  "fin.note": "Il messaggio si prepara qui e parte dal tuo account Instagram. Nulla viene inviato automaticamente."
+ }
+};
+Object.keys(FIN_COPY).forEach(function(l){Object.assign(STR[l],FIN_COPY[l]);});
 
 /* V5 : la page s'ouvre sur le travail livré, plus sur un décor. */
 var V5_COPY = {
@@ -2809,6 +2906,10 @@ var PICTOS = {
   m5:'<path d="M12 3.5l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5L4.8 8.8l5-.7z"/>',
   m6:'<circle cx="9" cy="8.5" r="3.2"/><path d="M3.6 19.5c0-3 2.4-5.4 5.4-5.4s5.4 2.4 5.4 5.4"/><path d="M16 7.2l1.5 3 3 .5-2.2 2.1.5 3-2.8-1.5"/>'
 };
+function renderFinal(){
+  var fond = $(".final-bg");
+  if(fond && !fond.firstElementChild) fond.innerHTML = sceneImg("hero", "final-img");
+}
 function renderMetiers(){
   var hote = $("#metiers"); if(!hote) return;
   hote.innerHTML = [1,2,3,4,5,6].map(function(n){
@@ -3388,7 +3489,7 @@ function applyLang(){
   $$("[data-i18n]").forEach(function(el){ el.textContent = t(el.getAttribute("data-i18n")); });
   $$("[data-i18n-ph]").forEach(function(el){ el.setAttribute("placeholder", t(el.getAttribute("data-i18n-ph"))); });
   $$(".langset button").forEach(function(b){ b.setAttribute("aria-pressed", String(b.getAttribute("data-lang") === LANG)); });
-  renderIndicateurs(); renderMetiers(); renderRailPacks(); renderFeature(); renderMenuRows(); renderSecteurs(); renderReady(); renderSteps();
+  renderIndicateurs(); renderFinal(); renderMetiers(); renderRailPacks(); renderFeature(); renderMenuRows(); renderSecteurs(); renderReady(); renderSteps();
   renderProtocolList(); renderMissions(); renderQA(); renderKiosk(); renderAmbiences();
   renderPass(); tickClock(); renderGalerie();
   if(order.pack) fillSheet();
@@ -3971,8 +4072,8 @@ document.addEventListener("click", function(e){
     if(!open){ item.classList.add("open"); el.setAttribute("aria-expanded", "true"); }
     return;
   }
-  if(e.target.closest("#dm-btn") || e.target.closest("#dm-btn-2")){
-    track("cta_click", {from:"dm"});
+  if(e.target.closest("#dm-btn") || e.target.closest("#dm-btn-2") || e.target.closest("#final-cta")){
+    track("cta_click", {from: e.target.closest("#final-cta") ? "final" : "dm"});
     if(isTouch()) window.location.href = IG_URL; else window.open(IG_URL, "_blank", "noopener");
     return;
   }
