@@ -155,6 +155,46 @@ const aller = async (page, url) => {
     !/livraison directe|entrega directa|consegna diretta|direct delivery|fichier part|file ships|archivo sale|file parte/i.test(etatReady.texte));
  ck('état « en préparation » affiché au visiteur',
     (await p.locator('.ready-row.is-soon').count())===etatReady.sansFichier.length);
+ /* ── Par secteur ──────────────────────────────────────────────────────────
+    La bande la plus tentante à mal écrire du site : montrer cinq belles
+    images de commerces et laisser croire que ce sont des clients. Aucun
+    commerce n'a encore été livré. Ces contrôles ne vérifient pas seulement
+    qu'un avertissement existe — ils vérifient qu'il est VISIBLE, et qu'aucune
+    formulation de preuve sociale n'apparaît dans la bande. */
+ const secteurs = await p.evaluate(()=>{
+   const b=document.getElementById('secteurs');
+   if(!b || b.hidden) return {absente:true};
+   const cartes=[...b.querySelectorAll('.secteur')];
+   const note=b.querySelector('.secteurs-note');
+   const etiquette=b.querySelector('.band-head .label');
+   const visible=e=>{const r=e.getBoundingClientRect();
+     return r.width>0 && r.height>0 && getComputedStyle(e).visibility!=='hidden'
+            && parseFloat(getComputedStyle(e).opacity)>0;};
+   return {
+     cartes: cartes.length,
+     adossees: cartes.filter(c=>{
+       const i=c.querySelector('img');
+       return i && /^scenes\//.test(i.getAttribute('src')||'');
+     }).length,
+     noteVisible: !!(note && note.textContent.trim() && visible(note)),
+     etiquette: etiquette ? etiquette.textContent.trim() : '',
+     texte: b.textContent
+   };
+ });
+ ck('par secteur : cinq études, chacune adossée à une scène du dépôt',
+    !secteurs.absente && secteurs.cartes===5 && secteurs.adossees===5,
+    secteurs.absente ? 'bande absente' : secteurs.adossees+'/'+secteurs.cartes+' adossée(s)');
+ ck('par secteur : l\'avertissement « aucun client réel » est affiché, pas seulement présent',
+    !secteurs.absente && secteurs.noteVisible
+    && /aucun client réel|no real client|ningún cliente real|nessun cliente reale/i.test(secteurs.etiquette),
+    secteurs.etiquette || '(aucune étiquette)');
+ /* Un chiffre de clients, une note sur cinq, un témoignage : autant de preuves
+    qu'on ne peut pas produire. Aucun ne doit apparaître ici. */
+ ck('par secteur : aucune preuve sociale inventée',
+    !secteurs.absente &&
+    !/\b\d+\s*(clients?|commerces?|businesses|avis|reviews|reseñas|recensioni)\b/i.test(secteurs.texte) &&
+    !/témoignage|testimonial|testimonio|testimonianza|★|⭐|\b\d[,.]\d\s*\/\s*5\b/i.test(secteurs.texte));
+
  /* La mention légale affirmait que tous les visuels étaient générés. C'est vrai
     des compositions SVG, pas de hero.webp dont la provenance n'est pas établie. */
  ck('mention légale : aucune affirmation sur l\'origine de l\'image d\'accueil',

@@ -275,6 +275,24 @@ p{margin:0;}
 .menu-row .rm{width:96px; height:64px; border-radius:6px; overflow:hidden; flex:none;
   border:1px solid var(--rule); background:var(--ink-2);}
 .menu-row .rm img{width:100%; height:100%; object-fit:cover; display:block;}
+/* ── Par secteur ───────────────────────────────────────────────────────── */
+.secteurs{display:grid; gap:clamp(.8rem,1.4vw,1.2rem);
+  grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); margin-top:clamp(2rem,4vw,3rem);}
+.secteur{position:relative; overflow:hidden; border:1px solid var(--rule);
+  background:var(--ink-2); display:flex; flex-direction:column;}
+.secteur-art{position:relative; aspect-ratio:4/5; overflow:hidden;}
+.secteur-art img{width:100%; height:100%; object-fit:cover; display:block;}
+.secteur-art::after{content:""; position:absolute; inset:0;
+  background:linear-gradient(0deg, rgba(8,11,14,.86) 4%, rgba(8,11,14,.12) 52%, transparent);}
+.secteur-nom{position:absolute; left:1rem; right:1rem; bottom:.85rem; z-index:1;
+  font-family:var(--display); font-weight:700; font-size:1.35rem; color:var(--paper);
+  letter-spacing:-.01em;}
+.secteur-t{padding:.9rem 1rem 1.1rem; font-size:.84rem; line-height:1.55; color:var(--faint);}
+.secteurs-note{margin-top:1.4rem; font-size:.78rem; line-height:1.6; color:var(--faint);
+  max-width:66ch;}
+@media (max-width:760px){ .secteurs{grid-template-columns:repeat(2,1fr);}
+  .secteur-nom{font-size:1.05rem;} .secteur-t{font-size:.78rem;} }
+
 /* Le club est la seule bande à porter une scène en fond : c'est une invitation,
    pas une fiche produit. Elle reste très en retrait — le protocole et les
    chiffres doivent se lire sans effort. */
@@ -1142,6 +1160,7 @@ footer a[href*="instagram"], footer a[href*="ig.me"]{ display:inline-flex; align
     <div class="navset">
       <button id="mobile-menu-btn" aria-expanded="false" aria-controls="main-nav" aria-label="Menu">☰</button><nav id="main-nav" class="navlinks" aria-label="Sections">
         <a href="#carte" data-i18n="nav.carte">La carte</a>
+        <a href="#secteurs" data-i18n="nav.secteurs">Par secteur</a>
         <a href="#ready" data-i18n="nav.ready">Déjà prêt</a>
         <a href="#club" data-i18n="nav.club">Le club</a>
         <a href="#questions" data-i18n="nav.questions">Questions</a>
@@ -1255,7 +1274,7 @@ footer a[href*="instagram"], footer a[href*="ig.me"]{ display:inline-flex; align
     <div class="band-head reveal">
       <div class="hair"></div>
       <div class="display-row">
-        <span class="section-no">01 /</span><h2 data-i18n="carte.title">La carte</h2>
+        <span class="section-no">02 /</span><h2 data-i18n="carte.title">La carte</h2>
         <p class="label" data-i18n="carte.hint">Un numéro · un paiement · un fichier</p>
       </div>
     </div>
@@ -1266,13 +1285,31 @@ footer a[href*="instagram"], footer a[href*="ig.me"]{ display:inline-flex; align
   </div>
 </section>
 
+<!-- ═══════════════ PAR SECTEUR ═══════════════
+     Des études, pas des références clients : la bande le dit dans son
+     chapeau et le répète sous les vignettes. -->
+<section class="band" id="secteurs">
+  <div class="shell">
+    <div class="band-head reveal">
+      <div class="hair"></div>
+      <div class="display-row">
+        <span class="section-no">03 /</span><h2 data-i18n="sect.title">Par secteur</h2>
+        <p class="label" data-i18n="sect.hint">Études de style · aucun client réel</p>
+      </div>
+      <p class="lede" data-i18n="sect.lede"></p>
+    </div>
+    <div class="secteurs reveal" data-d="1" id="secteurs-liste"></div>
+    <p class="secteurs-note" data-i18n="sect.note"></p>
+  </div>
+</section>
+
 <!-- ═══════════════ DÉJÀ PRÊT ═══════════════ -->
 <section class="band" id="ready">
   <div class="shell">
     <div class="band-head reveal">
       <div class="hair"></div>
       <div class="display-row">
-        <span class="section-no">02 /</span><h2 data-i18n="ready.title">Déjà prêt</h2>
+        <span class="section-no">04 /</span><h2 data-i18n="ready.title">Déjà prêt</h2>
         <p class="etat-collection" id="ready-hint">En préparation · pas encore disponible</p>
       </div>
       <p class="lede" id="ready-lede">Ces collections ne sont pas encore composées. Aucune n'est commandable pour l'instant : les packs sur brief ci-dessus, eux, sont ouverts.</p>
@@ -1300,7 +1337,7 @@ footer a[href*="instagram"], footer a[href*="ig.me"]{ display:inline-flex; align
     <div class="band-head reveal">
       <div class="hair"></div>
       <div class="display-row">
-        <span class="section-no">04 /</span><h2 data-i18n="club.title">Le club</h2>
+        <span class="section-no">05 /</span><h2 data-i18n="club.title">Le club</h2>
         <p class="label" data-i18n="club.hint">Crew · 50/50</p>
       </div>
       <p class="lede" data-i18n="club.lede">Les mêmes packs. Vous amenez le client, la maison produit et livre, vous touchez la moitié. On vend le fichier, pas le community management.</p>
@@ -1780,6 +1817,57 @@ var ASSETS_COPY = {
      "footer.legal":"Contenuti Instagram via @polakpl_f44. Prezzi in euro IVA inclusa. Prezzo, tempi e condizioni confermati in privato prima del pagamento. Le miniature e le composizioni decorative sono generate dal codice della pagina. L'immagine di copertina è un'immagine d'atmosfera: non rappresenta né un cliente reale né i file di un pack. Nessun risultato commerciale garantito. Pagamento, produzione e consegna gestiti fuori dal sito."}
 };
 Object.keys(ASSETS_COPY).forEach(function(l){Object.assign(STR[l],ASSETS_COPY[l]);});
+
+/* ── Par secteur ───────────────────────────────────────────────────────────
+   Le mandat demande des « réalisations ». Il n'y en a pas : aucun commerce
+   n'a encore été livré. Cette bande montre donc des ÉTUDES par secteur, et
+   le dit en toutes lettres — nom de commerce inventé, aucun chiffre, aucun
+   témoignage. Écrire « nos clients » au-dessus d'images fabriquées ici
+   serait une fausse preuve sociale, et le mandat l'interdit autant que
+   l'honnêteté. */
+var SECTEUR_COPY = {
+ fr:{"nav.secteurs":"Par secteur",
+     "sect.title":"Par secteur",
+     "sect.hint":"Études de style · aucun client réel",
+     "sect.lede":"Chaque métier a sa lumière, son vocabulaire et ses moments de publication. Voici la direction que prend une série selon l'activité — des études produites par la maison, pas des travaux livrés.",
+     "sect.cafe":"Café","sect.cafe.t":"Ouverture, carte du jour, ambiance de fin d'après-midi.",
+     "sect.resto":"Restaurant","sect.resto.t":"Le plat, la carte du soir, la réservation.",
+     "sect.boutique":"Boutique","sect.boutique.t":"Arrivages, pièces isolées, univers de marque.",
+     "sect.beauty":"Institut","sect.beauty.t":"Avant/après, soins, prise de rendez-vous.",
+     "sect.event":"Événement","sect.event.t":"Annonce, compte à rebours, lendemain de soirée.",
+     "sect.note":"Ces images sont des décors composés par le code du site. Elles situent une ambiance ; elles ne montrent ni un commerce existant ni les fichiers d'un pack."},
+ en:{"nav.secteurs":"By trade",
+     "sect.title":"By trade",
+     "sect.hint":"Style studies · no real client",
+     "sect.lede":"Every trade has its own light, vocabulary and posting moments. Here is the direction a series takes depending on the business — studies produced in-house, not delivered work.",
+     "sect.cafe":"Café","sect.cafe.t":"Opening, daily menu, late-afternoon mood.",
+     "sect.resto":"Restaurant","sect.resto.t":"The dish, the evening menu, the booking.",
+     "sect.boutique":"Boutique","sect.boutique.t":"New arrivals, single pieces, brand world.",
+     "sect.beauty":"Beauty studio","sect.beauty.t":"Before/after, treatments, booking.",
+     "sect.event":"Event","sect.event.t":"Announcement, countdown, morning after.",
+     "sect.note":"These images are backdrops composed by the site's own code. They set a mood; they show neither an existing business nor the files of a pack."},
+ es:{"nav.secteurs":"Por sector",
+     "sect.title":"Por sector",
+     "sect.hint":"Estudios de estilo · ningún cliente real",
+     "sect.lede":"Cada oficio tiene su luz, su vocabulario y sus momentos de publicación. Esta es la dirección de una serie según la actividad: estudios de la casa, no trabajos entregados.",
+     "sect.cafe":"Cafetería","sect.cafe.t":"Apertura, carta del día, ambiente de media tarde.",
+     "sect.resto":"Restaurante","sect.resto.t":"El plato, la carta de la noche, la reserva.",
+     "sect.boutique":"Tienda","sect.boutique.t":"Novedades, piezas sueltas, universo de marca.",
+     "sect.beauty":"Centro de belleza","sect.beauty.t":"Antes/después, tratamientos, reservas.",
+     "sect.event":"Evento","sect.event.t":"Anuncio, cuenta atrás, día después.",
+     "sect.note":"Estas imágenes son decorados compuestos por el propio código del sitio. Sitúan un ambiente; no muestran un negocio existente ni los archivos de un pack."},
+ it:{"nav.secteurs":"Per settore",
+     "sect.title":"Per settore",
+     "sect.hint":"Studi di stile · nessun cliente reale",
+     "sect.lede":"Ogni mestiere ha la sua luce, il suo lessico e i suoi momenti di pubblicazione. Ecco la direzione di una serie secondo l'attività: studi della casa, non lavori consegnati.",
+     "sect.cafe":"Caffè","sect.cafe.t":"Apertura, menu del giorno, atmosfera del tardo pomeriggio.",
+     "sect.resto":"Ristorante","sect.resto.t":"Il piatto, il menu della sera, la prenotazione.",
+     "sect.boutique":"Boutique","sect.boutique.t":"Novità, pezzi singoli, mondo del marchio.",
+     "sect.beauty":"Centro estetico","sect.beauty.t":"Prima/dopo, trattamenti, prenotazione.",
+     "sect.event":"Evento","sect.event.t":"Annuncio, conto alla rovescia, giorno dopo.",
+     "sect.note":"Queste immagini sono scenografie composte dal codice del sito. Suggeriscono un'atmosfera; non mostrano un'attività esistente né i file di un pack."}
+};
+Object.keys(SECTEUR_COPY).forEach(function(l){Object.assign(STR[l],SECTEUR_COPY[l]);});
 
 /* V5 : la page s'ouvre sur le travail livré, plus sur un décor. */
 var V5_COPY = {
@@ -2322,6 +2410,31 @@ function sceneImg(id, classe, priorite){
     + ' decoding="async"' + (priorite ? '' : ' loading="lazy"') + '>';
 }
 
+/* Les cinq secteurs sont adossés aux scènes réellement construites : si une
+   scène manque, le secteur ne s'affiche pas. Pas de cadre vide. */
+var SECTEURS = [
+  {cle:"cafe", scene:"real-cafe"}, {cle:"resto", scene:"real-resto"},
+  {cle:"boutique", scene:"real-boutique"}, {cle:"beauty", scene:"real-beauty"},
+  {cle:"event", scene:"real-event"}
+];
+function renderSecteurs(){
+  var hote = $("#secteurs-liste"); if(!hote) return;
+  var cartes = SECTEURS.filter(function(s){
+    return typeof SCENES !== "undefined" && SCENES[s.scene];
+  }).map(function(s){
+    return '<article class="secteur">'
+      + '<div class="secteur-art">' + sceneImg(s.scene, "secteur-img")
+        + '<p class="secteur-nom">' + esc(t("sect." + s.cle)) + '</p></div>'
+      + '<p class="secteur-t">' + esc(t("sect." + s.cle + ".t")) + '</p>'
+    + '</article>';
+  });
+  hote.innerHTML = cartes.join("");
+  /* Une bande de secteurs vide n'a aucun intérêt : on la retire plutôt que
+     d'afficher un titre au-dessus du néant. */
+  var bande = $("#secteurs");
+  if(bande) bande.hidden = cartes.length === 0;
+}
+
 function renderFeature(){
   var p = PACKS.filter(function(x){ return x.featured; })[0];
   var el = $("#feature-pack");
@@ -2812,7 +2925,7 @@ function applyLang(){
   $$("[data-i18n]").forEach(function(el){ el.textContent = t(el.getAttribute("data-i18n")); });
   $$("[data-i18n-ph]").forEach(function(el){ el.setAttribute("placeholder", t(el.getAttribute("data-i18n-ph"))); });
   $$(".langset button").forEach(function(b){ b.setAttribute("aria-pressed", String(b.getAttribute("data-lang") === LANG)); });
-  renderFeature(); renderMenuRows(); renderReady(); renderSteps();
+  renderFeature(); renderMenuRows(); renderSecteurs(); renderReady(); renderSteps();
   renderProtocolList(); renderMissions(); renderQA(); renderKiosk(); renderAmbiences();
   renderPass(); tickClock(); renderGalerie();
   if(order.pack) fillSheet();
