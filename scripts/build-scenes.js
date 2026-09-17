@@ -660,11 +660,23 @@ for (const s of SCENES) {
   };
 }
 const bloc = DEB + '\n<script>var SCENES = ' + JSON.stringify(catalogue) + ';</script>\n' + FIN;
-if (html.includes(DEB)) html = html.replace(new RegExp(DEB + '[\\s\\S]*?' + FIN), bloc);
-else {
-  const i = html.indexOf('<script>');
-  if (i < 0) throw new Error('aucun <script> dans src/vitrine.html');
+if (html.includes(DEB)) {
+  html = html.replace(new RegExp(DEB + '[\\s\\S]*?' + FIN), bloc);
+} else {
+  /* On se place AVANT le bloc des créations, pas avant le premier <script>.
+     Le premier <script> du fichier est justement celui des créations, qui se
+     trouve à l'intérieur de ses propres balises : s'insérer là déposait le
+     bloc des scènes entre CREATIONS:DEBUT et son script, et la construction
+     suivante des créations l'emportait avec son propre remplacement. La page
+     retombait alors silencieusement sur l'ancienne image d'accueil — sans
+     erreur, sans test rouge, juste le mauvais visuel. */
+  const ancre = html.indexOf('<!--CREATIONS:DEBUT-->');
+  const i = ancre >= 0 ? ancre : html.indexOf('<script>');
+  if (i < 0) throw new Error('aucun point d’ancrage dans src/vitrine.html');
   html = html.slice(0, i) + bloc + '\n' + html.slice(i);
+}
+if (!/SCENES:DEBUT[\s\S]*?var SCENES[\s\S]*?SCENES:FIN/.test(html)) {
+  throw new Error('le catalogue des scènes n’est pas dans src/vitrine.html après injection');
 }
 fs.writeFileSync(cible, html);
 console.log(`scènes : ${SCENES.length} composition(s), ${(total / 1024).toFixed(1)} Ko`);

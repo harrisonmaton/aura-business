@@ -31,9 +31,18 @@ const aller = async (page, url) => {
 
  /* hero.webp est retiré : l'image d'accueil est une composition du dépôt,
     dont la provenance est documentée dans le manifeste. */
+ /* Deux formes acceptées, une seule exigence : l'image vient du dépôt et son
+    script de fabrication est nommé. Composition en ligne (créations) ou
+    fichier construit (scènes) — dans les deux cas l'adresse doit être
+    relative, donc servie avec la page, jamais chargée d'un tiers. */
  ck('image d\'accueil : composition du dépôt, pas hero.webp', await p.evaluate(()=>{
    const c=document.getElementById('cinema-image');
-   return !!(c && c.querySelector('svg') && c.dataset.provenance);
+   if(!c || !c.dataset.provenance) return false;
+   if(!/^scripts\/build-[a-z]+\.js$/.test(c.dataset.provenance)) return false;
+   if(c.querySelector('svg')) return true;
+   const img=c.querySelector('img');
+   const src=img && img.getAttribute('src');
+   return !!src && !/^(https?:)?\/\//.test(src) && /^scenes\//.test(src);
  }));
  /* Ce qui compte n'est pas la mention du nom dans un commentaire d'historique,
     mais qu'aucun élément ni aucune règle CSS ne charge encore ce fichier. */
