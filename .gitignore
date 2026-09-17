@@ -2,3 +2,7 @@ node_modules/
 
 # Captures et vidéos de recette : preuves de livraison, pas des sources.
 livrables/
+
+# Archive du produit : reconstruite par `npm run build:collection` à partir
+# des fichiers de src/collections/<nom>/. Dérivée, donc non versionnée.
+src/collections/*.zip

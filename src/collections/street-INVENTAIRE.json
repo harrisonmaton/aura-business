@@ -1,0 +1,49 @@
+{
+ "collection": "street",
+ "genere": "2026-09-17",
+ "visuels": 4,
+ "textes": 4,
+ "fichiers": [
+  {
+   "nom": "01-legende.txt",
+   "octets": 717
+  },
+  {
+   "nom": "01-ouvert.png",
+   "octets": 1187031
+  },
+  {
+   "nom": "02-legende.txt",
+   "octets": 724
+  },
+  {
+   "nom": "02-nouveau.png",
+   "octets": 1184922
+  },
+  {
+   "nom": "03-legende.txt",
+   "octets": 707
+  },
+  {
+   "nom": "03-merci.png",
+   "octets": 1188855
+  },
+  {
+   "nom": "04-ce-soir.png",
+   "octets": 1189487
+  },
+  {
+   "nom": "04-legende.txt",
+   "octets": 682
+  },
+  {
+   "nom": "LISEZ-MOI.txt",
+   "octets": 1651
+  }
+ ],
+ "archive": {
+  "nom": "street.zip",
+  "octets": 4754124
+ },
+ "provenance": "Compositions produites par scripts/build-collection.js. Aucune photographie, aucun élément tiers, aucune génération payante."
+}

@@ -1,0 +1,44 @@
+AURA BUSINESS — COLLECTION STREET
+=================================
+
+CE QUE VOUS AVEZ TÉLÉCHARGÉ
+
+  01-ouvert.png     1080 × 1080   à publier n'importe quel jour d'ouverture
+  02-nouveau.png    1080 × 1080   quand vous ajoutez quelque chose
+  03-merci.png      1080 × 1080   après une bonne semaine
+  04-ce-soir.png    1080 × 1080   en fin de journée, avant la fermeture
+
+  01-legende.txt    le texte qui va avec le visuel 01
+  02-legende.txt    le texte qui va avec le visuel 02
+  03-legende.txt    le texte qui va avec le visuel 03
+  04-legende.txt    le texte qui va avec le visuel 04
+
+COMMENT S'EN SERVIR
+
+  1. Ouvrez Instagram, appuyez sur +, choisissez le fichier.
+  2. Ouvrez le fichier -legende.txt du même numéro, copiez, collez.
+  3. Publiez.
+
+  Les images font 1080 × 1080 : c'est le format carré d'Instagram.
+  Aucune retouche n'est nécessaire.
+
+CE QUE VOUS POUVEZ EN FAIRE
+
+  Ces fichiers sont à vous. Publiez-les autant de fois que vous voulez,
+  sur les comptes de votre commerce. Modifiez les textes si vous préférez
+  vos propres mots.
+
+  Vous ne pouvez pas les revendre ni les redistribuer comme collection.
+
+CE QUE CETTE COLLECTION N'EST PAS
+
+  Ce n'est pas du sur-mesure : les textes sur les images sont fixes et
+  ne portent pas le nom de votre commerce. Si vous voulez des visuels
+  à votre nom, avec votre activité et votre public, c'est un pack sur
+  brief — à partir de 50 €.
+
+PROVENANCE
+
+  Ces quatre visuels sont des compositions produites par le code de
+  scripts/build-collection.js. Aucune photographie, aucun élément sous
+  licence tierce, aucune image générée par un service extérieur.

@@ -3,15 +3,87 @@
   "_assets": "ready[].assets = nombre de fichiers livrables réellement présents dans le dépôt. À 0, la collection ne peut pas être vendue en livraison immédiate : la vitrine la marque « en préparation » et le back-office la signale assets_missing. Vérifié par tests/catalogue.js.",
   "_delai": "delay = délai annoncé au client. Il vit ici et nulle part ailleurs : recopié dans une page ou dans un visuel, il finit par diverger et par promettre un délai qui n'est plus le bon.",
   "brief": [
-    {"id":1,"name":"Essentiel","price":50,"visuals":8,"texts":8,"messages":4,"bio":false,"stories":false,"delay":"24–48 h"},
-    {"id":2,"name":"Signature","price":90,"visuals":12,"texts":12,"messages":6,"bio":true,"stories":false,"delay":"48 h"},
-    {"id":3,"name":"Atelier","price":150,"visuals":18,"texts":18,"messages":10,"bio":true,"stories":false,"delay":"48–72 h"},
-    {"id":4,"name":"Maison","price":250,"visuals":24,"texts":24,"messages":12,"bio":true,"stories":true,"delay":"72 h"}
+    {
+      "id": 1,
+      "name": "Essentiel",
+      "price": 50,
+      "visuals": 8,
+      "texts": 8,
+      "messages": 4,
+      "bio": false,
+      "stories": false,
+      "delay": "24–48 h"
+    },
+    {
+      "id": 2,
+      "name": "Signature",
+      "price": 90,
+      "visuals": 12,
+      "texts": 12,
+      "messages": 6,
+      "bio": true,
+      "stories": false,
+      "delay": "48 h"
+    },
+    {
+      "id": 3,
+      "name": "Atelier",
+      "price": 150,
+      "visuals": 18,
+      "texts": 18,
+      "messages": 10,
+      "bio": true,
+      "stories": false,
+      "delay": "48–72 h"
+    },
+    {
+      "id": 4,
+      "name": "Maison",
+      "price": 250,
+      "visuals": 24,
+      "texts": 24,
+      "messages": 12,
+      "bio": true,
+      "stories": true,
+      "delay": "72 h"
+    }
   ],
   "ready": [
-    {"id":1,"name":"Street","price":40,"assets":0,"visuals":4,"texts":4,"bio":false},
-    {"id":2,"name":"Night","price":80,"assets":0,"visuals":8,"texts":8,"bio":false},
-    {"id":3,"name":"Heat","price":120,"assets":0,"visuals":12,"texts":12,"bio":false},
-    {"id":4,"name":"House","price":200,"assets":0,"visuals":20,"texts":20,"bio":true}
+    {
+      "id": 1,
+      "name": "Street",
+      "price": 40,
+      "assets": 4,
+      "visuals": 4,
+      "texts": 4,
+      "bio": false
+    },
+    {
+      "id": 2,
+      "name": "Night",
+      "price": 80,
+      "assets": 0,
+      "visuals": 8,
+      "texts": 8,
+      "bio": false
+    },
+    {
+      "id": 3,
+      "name": "Heat",
+      "price": 120,
+      "assets": 0,
+      "visuals": 12,
+      "texts": 12,
+      "bio": false
+    },
+    {
+      "id": 4,
+      "name": "House",
+      "price": 200,
+      "assets": 0,
+      "visuals": 20,
+      "texts": 20,
+      "bio": true
+    }
   ]
 }

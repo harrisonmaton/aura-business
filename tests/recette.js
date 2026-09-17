@@ -38,7 +38,18 @@ const aller = async (page, url) => {
      .some(e=>/hero\.webp/.test(getComputedStyle(e).backgroundImage||''));
    return !attr && !css;
  }));
- ck('contenu complet rendu', await p.locator('.menu-row').count()===3 && await p.locator('.ready-row').count()===4 && await p.locator('.qa-item').count()===5);
+ /* Les quatre collections sont toujours présentées, mais plus sous la même
+    forme : celle qui a ses fichiers devient une fiche produit, les autres
+    restent des lignes d'annonce. Le total, lui, ne bouge pas. */
+ const presentation = await p.evaluate(()=>({
+   fiches: document.querySelectorAll('.collection-fiche').length,
+   annonces: document.querySelectorAll('.ready-row.is-soon').length
+ }));
+ ck('contenu complet rendu',
+    await p.locator('.menu-row').count()===3
+    && presentation.fiches + presentation.annonces === 4
+    && await p.locator('.qa-item').count()===5,
+    presentation.fiches + ' fiche(s) livrable(s) · ' + presentation.annonces + ' annonce(s)');
  ck('lien d\'évitement présent (a11y)', await p.locator('.skip-link').count()===1);
  /* Une couverture n'est pas un pack livré. Tant qu'une collection n'a aucun
     fichier, elle n'a droit à aucune vignette : une belle image posée là se lit
@@ -46,18 +57,28 @@ const aller = async (page, url) => {
     réellement peinte pour ce qui est livrable, aucune vignette pour le reste.
     L'angle mort de la recette précédente était l'inverse : elle exigeait quatre
     vignettes, y compris pour des collections vides. */
+ /* Une couverture n'est pas un pack livré. Une collection livrable montre ses
+    VRAIS fichiers — un aperçu par visuel promis, réellement peint ; une
+    collection sans fichier ne montre aucune image du tout. */
+ const livrablesCat = CAT.ready.filter(r=>r.assets>0);
  const vignettes = await p.evaluate(()=>{
-   const dispo = [...document.querySelectorAll('.ready-row[data-ready]')].length;
-   const soon  = [...document.querySelectorAll('.ready-row.is-soon')].length;
-   const peintes = [...document.querySelectorAll('.ready-thumb')]
-     .filter(e=>{ const s=e.querySelector('svg'); return s && s.getBoundingClientRect().width>40; }).length;
-   const vignetteChezSoon = [...document.querySelectorAll('.ready-row.is-soon .ready-thumb')].length;
-   return {dispo, soon, peintes, vignetteChezSoon};
+   const peint = e=>{ const s=e.querySelector('svg'); return !!s && s.getBoundingClientRect().width>60; };
+   return {
+     fiches: [...document.querySelectorAll('.collection-fiche')].map(f=>({
+       vues: [...f.querySelectorAll('.col-vue')].length,
+       peintes: [...f.querySelectorAll('.col-vue')].filter(peint).length,
+       commande: !!f.querySelector('[data-ready]')
+     })),
+     imagesChezSoon: document.querySelectorAll('.ready-row.is-soon svg, .ready-row.is-soon img').length
+   };
  });
- ck('Déjà prêt : une vignette par collection livrable, aucune pour les autres',
-    vignettes.peintes === vignettes.dispo && vignettes.vignetteChezSoon === 0
-    && vignettes.dispo + vignettes.soon === 4,
-    `livrables ${vignettes.dispo} · en préparation ${vignettes.soon} · vignettes peintes ${vignettes.peintes}`);
+ ck('Déjà prêt : la collection livrable montre ses vrais fichiers',
+    vignettes.fiches.length === livrablesCat.length
+    && vignettes.fiches.every((f,i)=>f.peintes === f.vues
+         && f.vues === livrablesCat[i].visuals && f.commande),
+    JSON.stringify(vignettes.fiches) + ' attendu ' + livrablesCat.map(r=>r.visuals));
+ ck('Déjà prêt : aucune image pour une collection sans fichier',
+    vignettes.imagesChezSoon === 0, vignettes.imagesChezSoon + ' image(s)');
  /* Le contenu annoncé doit venir du catalogue, pas d'une saisie décorative. */
  ck('Déjà prêt : le contenu annoncé vient du catalogue', await p.evaluate(()=>{
    const l = [...document.querySelectorAll('.ready-row.is-soon .rt span')].map(e=>e.textContent.trim());
@@ -92,7 +113,9 @@ const aller = async (page, url) => {
  const sansFichier = CAT.ready.filter(r=>!(r.assets>0)).map(r=>r.id);
  const etatReady = Object.assign({sansFichier}, await p.evaluate(()=>({
    commandables: [...document.querySelectorAll('[data-ready]')].map(e=>Number(e.getAttribute('data-ready'))),
-   boutons     : [...document.querySelectorAll('.ready-row')].filter(e=>e.tagName==='BUTTON').length,
+   boutonsCommande : [...document.querySelectorAll('#ready [data-ready]')]
+                       .filter(e=>e.tagName==='BUTTON' && !e.disabled).length,
+   boutonsChezSoon : document.querySelectorAll('.ready-row.is-soon button, .ready-row.is-soon [data-ready]').length,
    texte       : document.getElementById('ready').textContent,
    etatHint    : document.getElementById('ready-hint').getAttribute('data-state'),
    etatLede    : document.getElementById('ready-lede').getAttribute('data-state')
@@ -100,8 +123,12 @@ const aller = async (page, url) => {
  ck('collection sans fichier : aucun chemin de commande',
     etatReady.sansFichier.every(id=>!etatReady.commandables.includes(id)),
     'sans fichier ['+etatReady.sansFichier+'] commandables ['+etatReady.commandables+']');
+ /* Le chemin d'achat est un bouton, et il n'en existe qu'autant que de
+    collections réellement livrables. Une ligne d'annonce n'en porte aucun. */
  ck('collection sans fichier : pas de bouton cliquable',
-    etatReady.boutons===CAT.ready.length-etatReady.sansFichier.length, etatReady.boutons+' bouton(s)');
+    etatReady.boutonsCommande === CAT.ready.length - etatReady.sansFichier.length
+    && etatReady.boutonsChezSoon === 0,
+    etatReady.boutonsCommande + ' bouton(s) de commande · ' + etatReady.boutonsChezSoon + ' chez les non livrables');
  /* Deux angles : l'état déclaré de la section, et l'absence de la formule
     commerciale. Le premier tient quelle que soit la langue ou la rédaction. */
  const attendu = etatReady.sansFichier.length===CAT.ready.length ? 'soon' : 'available';

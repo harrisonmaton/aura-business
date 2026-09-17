@@ -364,11 +364,14 @@ var SHARE = {1:25, 2:45, 3:75, 4:125};      /* part Crew par pack sur brief, 50 
 /* assets = fichiers livrables réellement présents dans le dépôt. À 0, la
    collection est en assets_missing : rien à envoyer si quelqu'un paie.
    Source unique : src/catalog.json, cohérence vérifiée par tests/catalogue.js. */
+/* Aligné sur src/catalog.json, vérifié par tests/catalogue.js : une
+   divergence ici ferait afficher « assets_missing » sur un produit
+   réellement livrable, ou l'inverse. */
 var READY = [
-  {id:1, name:"Street", price:40,  assets:0},
-  {id:2, name:"Night",  price:80,  assets:0},
-  {id:3, name:"Heat",   price:120, assets:0},
-  {id:4, name:"House",  price:200, assets:0}
+  {id:1, name:"Street", price:40, assets:4},
+  {id:2, name:"Night", price:80, assets:0},
+  {id:3, name:"Heat", price:120, assets:0},
+  {id:4, name:"House", price:200, assets:0},
 ];
 var readyById = function(id){ return READY.filter(function(p){ return p.id === Number(id); })[0] || READY[1]; };
 function catalogue(kind){ return kind === "ready" ? READY : PACKS; }

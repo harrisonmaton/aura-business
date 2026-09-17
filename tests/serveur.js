@@ -32,13 +32,30 @@ function magasinNeuf(){
 
 /* Une collection complète, fabriquée sur disque pour la durée du test.
    On n'invente pas un inventaire : on en crée un vrai, puis on le retire. */
-function avecCollectionComplete(nom, nb, fn){
+/* Fabrique une collection de test sur le disque. Deux règles :
+   — elle REFUSE d'écrire dans un dossier existant, pour ne jamais polluer un
+     produit réellement livrable (l'ancienne version ajoutait ses fichiers dans
+     le vrai dossier Street dès que celui-ci a existé) ;
+   — elle produit des fichiers que le contrôle d'inventaire accepte : un PNG
+     doit porter sa signature et peser plus de 8 Ko, une légende doit contenir
+     du texte. Écrire huit fichiers vides ne doit rien débloquer. */
+function avecCollection(nom, {visuels = 0, textes = 0, pngValide = true, poidsPng = 12 * 1024} = {}, fn){
   const dossier = path.join(__dirname, '..', 'src', 'collections', nom.toLowerCase());
-  const existait = fs.existsSync(dossier);
+  if(fs.existsSync(dossier))
+    throw new Error('refus : ' + dossier + ' existe déjà — une fixture ne doit pas écrire dans un vrai produit');
   fs.mkdirSync(dossier, {recursive:true});
-  for(let i = 1; i <= nb; i++) fs.writeFileSync(path.join(dossier, `piece-${i}.txt`), 'contenu ' + i);
-  try { return fn(); }
-  finally { if(!existait) fs.rmSync(dossier, {recursive:true, force:true}); }
+  const SIGNATURE = Buffer.from([0x89,0x50,0x4E,0x47,0x0D,0x0A,0x1A,0x0A]);
+  try {
+    for(let i = 1; i <= visuels; i++){
+      const tete = pngValide ? SIGNATURE : Buffer.from('PAS UN PNG');
+      fs.writeFileSync(path.join(dossier, `0${i}-visuel.png`),
+        Buffer.concat([tete, Buffer.alloc(poidsPng)]));
+    }
+    for(let i = 1; i <= textes; i++)
+      fs.writeFileSync(path.join(dossier, `0${i}-legende.txt`),
+        'Légende de démonstration numéro ' + i + ', assez longue pour être acceptée.');
+    return fn();
+  } finally { fs.rmSync(dossier, {recursive:true, force:true}); }
 }
 
 function evenement(session, {id, type = 'checkout.session.completed', livemode = false} = {}){
@@ -61,25 +78,55 @@ ck('le prix vient du serveur, jamais du client', () => {
     `montant ${commande.montantCentimes} au lieu de ${signature.price * 100}`);
 });
 
+/* Street est devenue livrable : le cas « aucun fichier » se vérifie sur une
+   collection qui l'est encore, sinon le contrôle testerait le contraire de son
+   intention sans rougir. */
 ck('une collection sans fichier ne peut pas être commandée', () => {
+  const cat = B.chargerCatalogue();
+  const vide = cat.ready.find(r => !(r.assets > 0));
+  assert.ok(vide, 'aucune collection vide dans le catalogue : ce contrôle n\'a plus de sujet');
   const m = magasinNeuf();
-  const r = B.creerCommande(m, {genre:'ready', produitId:1, client:CLIENT});
+  const r = B.creerCommande(m, {genre:'ready', produitId:vide.id, client:CLIENT});
   assert.strictEqual(r.erreur, 'assets_missing', 'erreur reçue : ' + JSON.stringify(r));
   assert.ok(!r.commande, 'une commande a été créée malgré un inventaire vide');
 });
 
 ck('un inventaire partiel bloque aussi la vente', () => {
-  avecCollectionComplete('Street', 3, () => {          /* Street en promet 8 */
+  const cat = B.chargerCatalogue();
+  const nuit = cat.ready.find(r => r.name === 'Night');   /* en promet 8 + 8 */
+  avecCollection('Night', {visuels:3, textes:3}, () => {
     const m = magasinNeuf();
-    const r = B.creerCommande(m, {genre:'ready', produitId:1, client:CLIENT});
+    const r = B.creerCommande(m, {genre:'ready', produitId:nuit.id, client:CLIENT});
     assert.strictEqual(r.erreur, 'inventaire_incomplet', JSON.stringify(r));
+  });
+});
+
+/* Le mandat le demande explicitement : vérifier le format et le contenu, pas
+   seulement le nombre. Ces deux contrôles échouaient avant le renforcement. */
+ck('le bon nombre de fichiers ne suffit pas : un PNG invalide bloque la vente', () => {
+  const cat = B.chargerCatalogue();
+  const nuit = cat.ready.find(r => r.name === 'Night');
+  avecCollection('Night', {visuels:nuit.visuals, textes:nuit.texts, pngValide:false}, () => {
+    const inv = B.inventaire('ready', nuit.id);
+    assert.ok(!inv.vendable, 'des PNG sans signature ont été acceptés');
+    assert.ok(inv.defauts.some(d => d.motif === 'png_invalide'), JSON.stringify(inv.defauts));
+  });
+});
+
+ck('un PNG de quelques octets ne compte pas comme un visuel', () => {
+  const cat = B.chargerCatalogue();
+  const nuit = cat.ready.find(r => r.name === 'Night');
+  avecCollection('Night', {visuels:nuit.visuals, textes:nuit.texts, poidsPng:200}, () => {
+    const inv = B.inventaire('ready', nuit.id);
+    assert.ok(!inv.vendable, 'des PNG de 200 octets ont été acceptés comme visuels');
+    assert.ok(inv.defauts.some(d => d.motif === 'png_trop_leger'), JSON.stringify(inv.defauts));
   });
 });
 
 ck('une collection complète devient commandable', () => {
   const cat = B.chargerCatalogue();
   const street = cat.ready.find(r => r.name === 'Street');
-  avecCollectionComplete('Street', street.visuals + street.texts, () => {
+  (() => {
     const m = magasinNeuf();
     const {commande, erreur} = B.creerCommande(m, {genre:'ready', produitId:street.id, client:CLIENT});
     assert.ok(!erreur, 'erreur : ' + erreur);
@@ -152,23 +199,45 @@ function parcoursPaye(){
   return {m, commande, res, street, corps};
 }
 
+/* Ce contrôle ne s'appuie plus sur une fixture : il achète la collection Street
+   réellement présente sur le disque, et vérifie que ce sont SES fichiers qui
+   sont livrés — pas un nombre, les noms. */
 ck('paiement confirmé : commande payée et accès accordé', () => {
   const cat = B.chargerCatalogue();
   const street = cat.ready.find(r => r.name === 'Street');
-  avecCollectionComplete('Street', street.visuals + street.texts, () => {
-    const {m, commande, res} = parcoursPaye();
-    assert.ok(res.ok, res.motif);
-    assert.strictEqual(m.lireCommande(commande.id).etat, 'livree');
-    const acces = m.accesDeCommande(commande.id);
-    assert.strictEqual(acces.length, 1, acces.length + ' accès');
-    assert.strictEqual(acces[0].fichiers.length, street.visuals + street.texts);
-  });
+  const {m, commande, res} = parcoursPaye();
+  assert.ok(res.ok, res.motif);
+  assert.strictEqual(m.lireCommande(commande.id).etat, 'livree');
+  const acces = m.accesDeCommande(commande.id);
+  assert.strictEqual(acces.length, 1, acces.length + ' accès');
+  const f = acces[0].fichiers;
+  assert.ok(f.filter(x => /\.png$/.test(x)).length >= street.visuals,
+    'visuels livrés : ' + f.filter(x => /\.png$/.test(x)).length);
+  assert.ok(f.filter(x => /-legende\.txt$/.test(x)).length >= street.texts,
+    'légendes livrées : ' + f.filter(x => /-legende\.txt$/.test(x)).length);
+  assert.ok(f.includes('LISEZ-MOI.txt'), 'mode d\'emploi absent : ' + f.join(', '));
+});
+
+/* Le client doit recevoir CE qu'il a payé. Un accès qui livrerait les fichiers
+   d'une autre collection passerait tous les contrôles de nombre. */
+ck('l\'accès livre les fichiers du produit acheté, pas ceux d\'un autre', () => {
+  const cat = B.chargerCatalogue();
+  const street = cat.ready.find(r => r.name === 'Street');
+  const {m, commande} = parcoursPaye();
+  const acces = m.accesDeCommande(commande.id)[0];
+  const surDisque = fs.readdirSync(
+    path.join(__dirname, '..', 'src', 'collections', 'street')).filter(f => !f.startsWith('.')).sort();
+  assert.deepStrictEqual(acces.fichiers.slice().sort(), surDisque,
+    'livré : ' + acces.fichiers.join(', ') + '\nsur disque : ' + surDisque.join(', '));
+  assert.strictEqual(acces.produit, street.name, 'produit livré : ' + acces.produit);
+  assert.strictEqual(acces.genre, 'ready', 'genre livré : ' + acces.genre);
+  assert.strictEqual(acces.produitId, street.id);
 });
 
 ck('événement dupliqué : aucun second accès, aucune double livraison', () => {
   const cat = B.chargerCatalogue();
   const street = cat.ready.find(r => r.name === 'Street');
-  avecCollectionComplete('Street', street.visuals + street.texts, () => {
+  (() => {
     const {m, commande, corps} = parcoursPaye();
     const rejeu = B.traiterEvenement(m, corps, B.signerPourTest(corps, SECRET_WH), SECRET_WH,
       {livemodeAttendu:false});
@@ -180,7 +249,7 @@ ck('événement dupliqué : aucun second accès, aucune double livraison', () =>
 ck('montant manipulé dans l\'événement : refus, aucun accès', () => {
   const cat = B.chargerCatalogue();
   const street = cat.ready.find(r => r.name === 'Street');
-  avecCollectionComplete('Street', street.visuals + street.texts, () => {
+  (() => {
     const m = magasinNeuf();
     const {commande} = B.creerCommande(m,
       {genre:'ready', produitId:street.id, client:CLIENT, sessionPaiement:'cs_x'});
@@ -196,7 +265,7 @@ ck('montant manipulé dans l\'événement : refus, aucun accès', () => {
 ck('paiement refusé ou en attente : aucun accès', () => {
   const cat = B.chargerCatalogue();
   const street = cat.ready.find(r => r.name === 'Street');
-  avecCollectionComplete('Street', street.visuals + street.texts, () => {
+  (() => {
     const m = magasinNeuf();
     const {commande} = B.creerCommande(m,
       {genre:'ready', produitId:street.id, client:CLIENT, sessionPaiement:'cs_np'});
@@ -223,7 +292,7 @@ ck('un événement du mauvais environnement est refusé', () => {
 ck('le lien de téléchargement expire', () => {
   const cat = B.chargerCatalogue();
   const street = cat.ready.find(r => r.name === 'Street');
-  avecCollectionComplete('Street', street.visuals + street.texts, () => {
+  (() => {
     const {m, commande} = parcoursPaye();
     const acces = m.accesDeCommande(commande.id)[0];
     const {jeton} = B.creerLien(acces, SECRET_LIEN, {duree:1000});
@@ -235,7 +304,7 @@ ck('le lien de téléchargement expire', () => {
 ck('un autre client ne peut pas ouvrir le lien, même valide', () => {
   const cat = B.chargerCatalogue();
   const street = cat.ready.find(r => r.name === 'Street');
-  avecCollectionComplete('Street', street.visuals + street.texts, () => {
+  (() => {
     const {m, commande} = parcoursPaye();
     const acces = m.accesDeCommande(commande.id)[0];
     const {jeton} = B.creerLien(acces, SECRET_LIEN);
@@ -250,7 +319,7 @@ ck('un autre client ne peut pas ouvrir le lien, même valide', () => {
 ck('un jeton falsifié est refusé', () => {
   const cat = B.chargerCatalogue();
   const street = cat.ready.find(r => r.name === 'Street');
-  avecCollectionComplete('Street', street.visuals + street.texts, () => {
+  (() => {
     const {m, commande} = parcoursPaye();
     const acces = m.accesDeCommande(commande.id)[0];
     const {jeton} = B.creerLien(acces, SECRET_LIEN);
@@ -264,7 +333,7 @@ ck('un jeton falsifié est refusé', () => {
 ck('l\'accès porte la version achetée, pas la version courante', () => {
   const cat = B.chargerCatalogue();
   const street = cat.ready.find(r => r.name === 'Street');
-  avecCollectionComplete('Street', street.visuals + street.texts, () => {
+  (() => {
     const {m, commande} = parcoursPaye();
     const acces = m.accesDeCommande(commande.id)[0];
     assert.strictEqual(acces.version, commande.versionAchetee);
@@ -277,7 +346,7 @@ ck('l\'accès porte la version achetée, pas la version courante', () => {
 ck('email en panne : l\'achat reste récupérable', () => {
   const cat = B.chargerCatalogue();
   const street = cat.ready.find(r => r.name === 'Street');
-  avecCollectionComplete('Street', street.visuals + street.texts, () => {
+  (() => {
     const {m, commande} = parcoursPaye();
     const enPanne = () => { throw new Error('SMTP indisponible'); };
     const r = B.envoyerConfirmation(m, m.lireCommande(commande.id), enPanne);
@@ -295,7 +364,7 @@ ck('email en panne : l\'achat reste récupérable', () => {
 ck('une reprise après échec d\'email ne duplique pas l\'accès', () => {
   const cat = B.chargerCatalogue();
   const street = cat.ready.find(r => r.name === 'Street');
-  avecCollectionComplete('Street', street.visuals + street.texts, () => {
+  (() => {
     const {m, commande} = parcoursPaye();
     B.envoyerConfirmation(m, m.lireCommande(commande.id), () => { throw new Error('panne'); });
     const ok = B.envoyerConfirmation(m, m.lireCommande(commande.id), () => ({ok:true}));
@@ -308,7 +377,7 @@ ck('une reprise après échec d\'email ne duplique pas l\'accès', () => {
 ck('chaque étape est journalisée', () => {
   const cat = B.chargerCatalogue();
   const street = cat.ready.find(r => r.name === 'Street');
-  avecCollectionComplete('Street', street.visuals + street.texts, () => {
+  (() => {
     const {m} = parcoursPaye();
     const etapes = m.journal().map(x => x.etape);
     ['commande_creee','paiement_confirme','acces_accorde'].forEach(e =>

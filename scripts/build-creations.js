@@ -575,6 +575,22 @@ for(const [id, f] of ETAPES){
   manifeste.etapes.push({fichier:`creations/${id}.svg`, role:'Scène du protocole'});
 }
 
+/* Collections réellement livrables : leurs visuels rejoignent la carte des
+   compositions pour que la vitrine puisse les montrer. Ils sont écrits par
+   scripts/build-collection.js ; s'ils ne sont pas là, il n'y a rien à montrer
+   et rien n'est inventé. */
+const DOSSIER_APERCUS = path.join(RACINE, 'src', 'apercus');
+manifeste.collections = [];
+if(fs.existsSync(DOSSIER_APERCUS)){
+  for(const nom of fs.readdirSync(DOSSIER_APERCUS)){
+    const vect = path.join(DOSSIER_APERCUS, nom);
+    if(!fs.statSync(vect).isDirectory()) continue;
+    const pieces = fs.readdirSync(vect).filter(f => f.endsWith('.svg')).sort();
+    for(const f of pieces) inline[f.replace(/\.svg$/,'')] = fs.readFileSync(path.join(vect,f),'utf8');
+    manifeste.collections.push({collection:nom, pieces:pieces.map(f=>f.replace(/\.svg$/,''))});
+  }
+}
+
 /* Image d'accueil : remplace hero.webp, de provenance inconnue. */
 const svgAccueil = accueil();
 fs.writeFileSync(path.join(SORTIE, 'accueil.svg'), svgAccueil);
@@ -614,6 +630,7 @@ const bloc = DEB + '\n<script>var CREATIONS = '
   + ';\nvar SERIES_DEMO = ' + JSON.stringify(manifeste.series.map(s=>({
       id:s.id, secteur:s.secteur, enseigne:s.enseigne, resume:s.resume,
       packSuggere:s.packSuggere, pieces:s.pieces, textes:s.textes})))
+  + ';\nvar COLLECTIONS = ' + JSON.stringify(manifeste.collections)
   + ';</script>\n' + FIN;
 
 /* Le bloc doit précéder le script principal : celui-ci lit SERIES_DEMO dès

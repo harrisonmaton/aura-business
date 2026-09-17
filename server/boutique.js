@@ -48,14 +48,41 @@ function inventaire(genre, id, catalogue){
     return {vendable:true, livraisonImmediate:false, fichiers:[], produit:p};
   }
   const dossier = path.join(RACINE, 'src', 'collections', p.name.toLowerCase());
-  const fichiers = fs.existsSync(dossier)
+  const entrees = fs.existsSync(dossier)
     ? fs.readdirSync(dossier).filter(f => !f.startsWith('.')).sort()
     : [];
-  const attendus = (p.visuals || 0) + (p.texts || 0);
-  if(fichiers.length === 0)   return {vendable:false, motif:'assets_missing', fichiers, produit:p};
-  if(fichiers.length < attendus)
-    return {vendable:false, motif:'inventaire_incomplet', fichiers, attendus, produit:p};
-  return {vendable:true, livraisonImmediate:true, fichiers, produit:p};
+  /* Compter n'établit rien : neuf fichiers vides passeraient. On vérifie le
+     format ET le contenu de chacun — un PNG doit commencer par sa signature et
+     faire un poids plausible, une légende doit contenir du texte. Un dossier
+     rempli de fichiers de zéro octet n'est pas un produit livrable. */
+  const fichiers = [], defauts = [];
+  for(const f of entrees){
+    const chemin = path.join(dossier, f);
+    if(!fs.statSync(chemin).isFile()){ defauts.push({f, motif:'pas_un_fichier'}); continue; }
+    const taille = fs.statSync(chemin).size;
+    if(/\.png$/i.test(f)){
+      const tete = Buffer.alloc(8);
+      const fd = fs.openSync(chemin, 'r');
+      fs.readSync(fd, tete, 0, 8, 0);
+      fs.closeSync(fd);
+      const SIGNATURE = Buffer.from([0x89,0x50,0x4E,0x47,0x0D,0x0A,0x1A,0x0A]);
+      if(!tete.equals(SIGNATURE)){ defauts.push({f, motif:'png_invalide'}); continue; }
+      if(taille < 8 * 1024){ defauts.push({f, motif:'png_trop_leger', taille}); continue; }
+    } else if(/\.txt$/i.test(f)){
+      if(fs.readFileSync(chemin, 'utf8').trim().length < 40){
+        defauts.push({f, motif:'texte_vide'}); continue;
+      }
+    }
+    fichiers.push(f);
+  }
+  const visuels = fichiers.filter(f => /\.png$/i.test(f)).length;
+  const textes  = fichiers.filter(f => /-legende\.txt$/i.test(f)).length;
+  if(fichiers.length === 0)
+    return {visuels, textes, vendable:false, motif:'assets_missing', fichiers, defauts, produit:p};
+  if(visuels < (p.visuals || 0) || textes < (p.texts || 0))
+    return {visuels, textes, vendable:false, motif:'inventaire_incomplet', fichiers, defauts,
+            attendus:{visuels:p.visuals || 0, textes:p.texts || 0}, produit:p};
+  return {visuels, textes, vendable:true, livraisonImmediate:true, fichiers, defauts, produit:p};
 }
 
 /* ── 2. Magasin : persistance remplaçable ─────────────────────────────────── */
@@ -240,6 +267,11 @@ function accorderAcces(magasin, commande){
     commande: commande.id,
     client: commande.client.id,
     produit: commande.produit,
+    /* Le genre voyage avec l'accès : « Street » seul ne dit pas s'il s'agit
+       d'une collection ou d'une prestation sur brief, et c'est sur cette
+       distinction que repose la livraison automatique. */
+    genre: commande.genre,
+    produitId: commande.produitId,
     version: commande.versionAchetee,           /* la version achetée, pas la courante */
     fichiers: inv.fichiers,
     accordeLe: Date.now()
