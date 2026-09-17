@@ -1,31 +1,33 @@
 {
+ "_justifications": {
+  "_lire": "Comptes de défauts acceptés, par vue. Une entrée nouvelle n'est pas un défaut disparu : c'est un défaut jugé. La raison s'écrit ici.",
+  "repeated-container-text @ vitrine 320/390": "« TRATTORIA » et « Mezzanotte » apparaissent quatre fois dans le panneau d'accueil parce que les quatre créations de la série portent l'enseigne du même commerce — c'est le principe d'une série de marque, pas une duplication de gabarit. Ce défaut n'existait pas dans la référence précédente pour une mauvaise raison : sur téléphone, le panneau était ENTIÈREMENT INVISIBLE (le showroom se déclarait actif alors que la feuille de style le masquait sous 760 px). Le détecteur ne mesurait donc rien. L'entrée apparaît parce que le défaut a été corrigé, pas introduit."
+ },
  "vitrine@320": {
   "layout-transition": 3,
   "ai-color-palette": 1,
   "wide-tracking": 2,
   "kicker-above-heading": 5,
-  "shape-assembled-illustration": 1
+  "repeated-container-text": 3
  },
  "vitrine@390": {
   "layout-transition": 3,
   "ai-color-palette": 1,
   "wide-tracking": 2,
   "kicker-above-heading": 5,
-  "shape-assembled-illustration": 1
+  "repeated-container-text": 3
  },
  "vitrine@768": {
   "layout-transition": 3,
   "ai-color-palette": 1,
   "wide-tracking": 2,
-  "kicker-above-heading": 5,
-  "shape-assembled-illustration": 1
+  "kicker-above-heading": 5
  },
  "vitrine@1440": {
   "layout-transition": 3,
   "ai-color-palette": 1,
   "wide-tracking": 2,
-  "kicker-above-heading": 5,
-  "shape-assembled-illustration": 1
+  "kicker-above-heading": 5
  },
  "back-office@320": {
   "dark-glow": 1,

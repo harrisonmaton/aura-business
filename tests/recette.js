@@ -177,7 +177,11 @@ const aller = async (page, url) => {
        return i && /^scenes\//.test(i.getAttribute('src')||'');
      }).length,
      noteVisible: !!(note && note.textContent.trim() && visible(note)),
-     etiquette: etiquette ? etiquette.textContent.trim() : '',
+     /* L'avertissement est cherché dans le texte VISIBLE de la bande, pas
+        dans une étiquette précise : il doit être lu par le visiteur, peu
+        importe la ligne qui le porte. */
+     avertissement: [etiquette, note].filter(Boolean)
+       .filter(visible).map(e => e.textContent).join(' '),
      texte: b.textContent
    };
  });
@@ -186,8 +190,8 @@ const aller = async (page, url) => {
     secteurs.absente ? 'bande absente' : secteurs.adossees+'/'+secteurs.cartes+' adossée(s)');
  ck('par secteur : l\'avertissement « aucun client réel » est affiché, pas seulement présent',
     !secteurs.absente && secteurs.noteVisible
-    && /aucun client réel|no real client|ningún cliente real|nessun cliente reale/i.test(secteurs.etiquette),
-    secteurs.etiquette || '(aucune étiquette)');
+    && /aucun client réel|no real client|ningún cliente real|nessun cliente reale/i.test(secteurs.avertissement),
+    (secteurs.avertissement || '(aucun avertissement visible)').slice(0, 70));
  /* Un chiffre de clients, une note sur cinq, un témoignage : autant de preuves
     qu'on ne peut pas produire. Aucun ne doit apparaître ici. */
  ck('par secteur : aucune preuve sociale inventée',

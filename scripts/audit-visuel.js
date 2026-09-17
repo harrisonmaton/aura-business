@@ -98,9 +98,16 @@ async function scanner(nav, fichier, l, h) {
   console.log('\n═══ ' + total + ' défaut(s) sur ' + Object.keys(resultat).length + ' vues ═══');
   if (process.argv.includes('--figer')) {
     const fige = {};
+    /* Les clés commençant par « _ » sont des notes écrites à la main : elles
+       disent POURQUOI un défaut est accepté. Sans elles, figer une référence
+       revient à faire disparaître un défaut sans jamais l'avoir jugé, et
+       personne ne sait six mois plus tard si c'était un choix ou un oubli.
+       Elles survivent donc au gel, qui ne réécrit que les comptes. */
+    if (ref) Object.keys(ref).forEach(k => { if (k[0] === '_') fige[k] = ref[k]; });
     Object.keys(resultat).forEach(k => { fige[k] = resultat[k].compte; });
     fs.writeFileSync(REFERENCE, JSON.stringify(fige, null, 1) + '\n');
     console.log('Référence écrite dans ' + path.relative(RACINE, REFERENCE) + '.');
+    console.log('Toute entrée nouvelle doit être justifiée dans _justifications.');
     process.exit(0);
   }
   if (!ref) { console.log('Aucune référence : lancer `npm run audit:figer` pour en créer une.'); process.exit(0); }
