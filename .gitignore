@@ -6,3 +6,12 @@ livrables/
 # Archive du produit : reconstruite par `npm run build:collection` à partir
 # des fichiers de src/collections/<nom>/. Dérivée, donc non versionnée.
 src/collections/*.zip
+
+# Connecteurs MCP déclarés par le projet. Un .mcp.json versionné propose à
+# TOUTE personne qui clone le dépôt de lancer les serveurs qu'il contient —
+# ici OmniRoute, une passerelle IA personnelle qui détient des clés d'API.
+# Ça n'a pas sa place dans un dépôt produit qu'un client peut ouvrir.
+# L'outillage personnel se déclare en portée utilisateur :
+#   claude mcp add -s user omniroute -- omniroute --mcp
+# Si un connecteur devient un choix d'équipe assumé, retirer cette ligne.
+.mcp.json
