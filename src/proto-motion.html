@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Aura — prototype de chorégraphie, scènes 01 à 03</title>
+<meta name="description" content="Prototype de mouvement. Trois scènes : construction du A, révélation de la marque, Aura OS.">
+
+<!-- Polices auto-hébergées, déjà présentes dans le dépôt. Aucun appel réseau. -->
+<style>
+@font-face{font-family:'Archivo';font-style:normal;font-weight:300 700;font-display:swap;
+  src:url(fonts/archivo-latin.woff2) format('woff2');}
+@font-face{font-family:'Bodoni Moda';font-style:normal;font-weight:400 700;font-display:swap;
+  src:url(fonts/bodoni-moda-latin.woff2) format('woff2');}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Palette — AURA-MOTION-BIBLE.md §7
+   ═══════════════════════════════════════════════════════════════════════════ */
+:root{
+  --obsidienne:#07060A;
+  --ivoire:#F2EFE9;
+  --magenta:#E01B6A;
+  --violet:#8E37D6;
+  --cyan:#3BE8E0;
+  --chrome:#D8D4CC;
+
+  /* Durées calculées par le plafond de vitesse : amplitude / 480 × 1,6.
+     Voir AURA-MOTION-BIBLE.md §2. Ce ne sont pas des valeurs de goût. */
+  --bascule-pleine:380ms;   /* amplitude ~190 */
+  --bascule-demie:190ms;    /* amplitude ~90  */
+  --courbe-sortie:cubic-bezier(.22,.61,.36,1);   /* ≈ power2.out */
+  --courbe-entree:cubic-bezier(.55,.09,.68,.53); /* ≈ power2.in  */
+  --courbe-pose:cubic-bezier(.16,1,.3,1);        /* ≈ power3.out */
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:auto}
+body{
+  background:var(--obsidienne);
+  color:var(--chrome);
+  font-family:'Archivo',system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   La piste — un cadre fixe, et un couloir de défilement derrière lui.
+
+   C'est la mécanique centrale : la page défile, mais rien ne défile
+   visuellement. La position de défilement pilote la timeline ; la timeline
+   déplace les objets. AURA-MOTION-TIMELINE.md §4.
+   ═══════════════════════════════════════════════════════════════════════════ */
+#couloir{height:270vh}               /* 60 + 70 + 140 vh */
+#piste{
+  position:fixed;inset:0;
+  overflow:hidden;
+  perspective:1200px;
+  perspective-origin:50% 45%;
+}
+
+.scene{
+  position:absolute;inset:0;
+  display:grid;place-items:center;
+  transform-style:preserve-3d;
+  visibility:hidden;                  /* pas opacity : on ne peint rien d'inactif */
+}
+.scene[data-actif]{visibility:visible}
+
+/* Plans de profondeur — AURA-MOTION-BIBLE.md §5 */
+.plan-decor{position:absolute;inset:0;transform:translateZ(-1200px) scale(2);}
+.plan-fond {position:absolute;inset:0;transform:translateZ(-600px) scale(1.5);}
+.plan-scene{position:absolute;inset:0;}
+.plan-avant{position:absolute;inset:0;transform:translateZ(300px) scale(.78);}
+
+/* ── Interface : jamais animée par la timeline ─────────────────────────────
+   AURA-MOTION-BIBLE.md §5. Le CTA doit être atteignable à tout instant. */
+#interface{
+  position:fixed;inset:0;z-index:50;pointer-events:none;
+  display:flex;flex-direction:column;justify-content:space-between;
+  padding:clamp(16px,3vw,32px);
+}
+#interface a,#interface button{pointer-events:auto}
+.barre{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.marque-petite{
+  font-weight:700;letter-spacing:.42em;font-size:13px;
+  color:var(--ivoire);text-decoration:none;
+}
+.cta{
+  display:inline-block;padding:11px 22px;border-radius:999px;
+  background:linear-gradient(97deg,var(--magenta),var(--violet));
+  color:#fff;font-size:13px;font-weight:600;letter-spacing:.06em;
+  text-decoration:none;white-space:nowrap;
+}
+.jauge{height:2px;background:rgba(216,212,204,.16);border-radius:2px;overflow:hidden}
+.jauge span{
+  display:block;height:100%;width:calc(var(--t,0) * 100%);
+  background:linear-gradient(90deg,var(--magenta),var(--cyan));
+}
+.etiquette{
+  font-size:10px;letter-spacing:.28em;color:rgba(216,212,204,.72);
+  text-transform:uppercase;margin-top:10px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SCÈNE 01 — Construction du A
+   Six filets se tracent depuis six directions et convergent. SVG, pas de
+   WebGL : ce sont des lignes. AURA-MOTION-TIMELINE.md §2.
+   ═══════════════════════════════════════════════════════════════════════════ */
+#treillis{width:min(92vw,720px);aspect-ratio:1;overflow:visible}
+#treillis path{
+  fill:none;stroke:var(--chrome);stroke-width:1.1;vector-effect:non-scaling-stroke;
+  stroke-dasharray:var(--long);
+  stroke-dashoffset:calc(var(--long) * (1 - var(--tracer,0)));
+}
+#treillis .faible{stroke:rgba(216,212,204,.28)}
+#treillis g{
+  transform:rotate(calc(var(--p,0) * 3deg - 1.5deg));
+  transform-origin:50% 50%;
+}
+#lueur{
+  position:absolute;width:5px;height:5px;border-radius:50%;
+  background:var(--cyan);box-shadow:0 0 22px 7px rgba(59,232,224,.62);
+  opacity:calc(max(0, var(--p,0) - .68) * 3.1);
+}
+.legende-01{
+  position:absolute;bottom:14vh;left:50%;transform:translateX(-50%);
+  font-size:11px;letter-spacing:.34em;text-transform:uppercase;
+  /* .42 donnait 4,0:1 sur l'obsidienne — sous le seuil de la Motion Bible. */
+  color:rgba(216,212,204,.74);white-space:nowrap;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SCÈNE 02 — Révélation de la marque
+   ═══════════════════════════════════════════════════════════════════════════ */
+#portail{
+  position:absolute;width:52vmin;height:52vmin;border-radius:50%;
+  background:radial-gradient(circle at 50% 50%,
+    #fff 0%, #dff6ff 26%, var(--cyan) 46%, var(--violet) 68%, transparent 76%);
+  transform:scale(var(--portail,.02));
+  opacity:var(--portail-op,0);
+  filter:blur(calc(var(--portail,0) * 6px));
+}
+/* La surexposition. Sans elle, le portail se lit comme une boule posée sur du
+   noir, et non comme un cadre qui sature. C'est cette saturation qui couvre
+   l'arrivée du wordmark — exactement ce que fait la référence entre 0,73 s et
+   0,80 s. Amplitude ~80, donc ~0,20 s (Motion Bible §2). */
+#saturation{
+  position:absolute;inset:0;background:#fff;
+  opacity:var(--saturation,0);pointer-events:none;
+}
+.marque{
+  position:relative;text-align:center;
+  transform:scale(var(--marque-ech,2.5));
+  filter:blur(calc(var(--marque-flou,24) * 1px));
+  opacity:var(--marque-op,0);
+}
+.marque h1{
+  font-size:clamp(58px,15.5vw,210px);
+  font-weight:700;letter-spacing:.06em;line-height:.9;
+  background:linear-gradient(168deg,#fff 6%,var(--chrome) 34%,var(--magenta) 62%,var(--cyan) 94%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  /* Le dégradé balaie le wordmark — la « réfraction » en repli sans WebGL. */
+  background-size:100% 260%;
+  background-position:0 calc(var(--balayage,0) * 100%);
+}
+.lignes{margin-top:clamp(14px,2.4vw,26px)}
+.ligne{overflow:hidden}
+.ligne b{
+  display:block;font-weight:400;
+  font-size:clamp(15px,2.9vw,30px);letter-spacing:.2em;color:var(--ivoire);
+  transform:translateY(calc((1 - var(--r,0)) * 108%));
+}
+.ligne:nth-child(2) b{color:rgba(242,239,233,.72)}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SCÈNE 03 — Aura OS
+   ═══════════════════════════════════════════════════════════════════════════ */
+#bandeau{
+  position:absolute;top:50%;left:0;width:200%;
+  transform:translate(calc(var(--bande,0) * -50%),-50%);
+  display:flex;gap:6vw;white-space:nowrap;
+  font-size:clamp(56px,15vw,200px);font-weight:700;letter-spacing:.02em;
+  color:rgba(216,212,204,.055);
+}
+.grille-fond{
+  position:absolute;inset:-20%;
+  background-image:
+    linear-gradient(rgba(142,55,214,.14) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(142,55,214,.14) 1px,transparent 1px);
+  background-size:7vmin 7vmin;
+  transform:translateZ(-1200px) scale(2.4) rotateX(58deg);
+}
+.surface{
+  position:absolute;border-radius:12px;overflow:hidden;
+  background:rgba(12,10,18,.94);
+  border:1px solid rgba(216,212,204,.13);
+  box-shadow:0 30px 90px rgba(0,0,0,.6);
+}
+/* Chaque surface porte sa propre profondeur et sa propre arrivée. */
+#tableau{
+  width:min(60vw,640px);aspect-ratio:16/10;
+  transform:translate3d(-9%,-4%,calc(-800px + var(--e1,0) * 800px)) rotateY(11deg);
+  opacity:var(--e1,0);
+}
+#mobile{
+  width:min(19vw,186px);aspect-ratio:9/19;border-radius:20px;
+  transform:translate3d(58%,7%,calc(-600px + var(--e2,0) * 900px)) rotateY(-15deg);
+  opacity:var(--e2,0);
+}
+#qr{
+  width:min(13vw,128px);aspect-ratio:1;
+  transform:translate3d(-62%,25%,calc(-500px + var(--e3,0) * 880px)) rotateY(17deg);
+  opacity:var(--e3,0);display:grid;place-items:center;background:var(--ivoire);
+}
+#qr svg{width:74%;height:74%}
+
+/* Tableau de bord : du VRAI HTML sur une surface, pas une capture.
+   AURA-MOTION-TIMELINE.md §5. */
+.tb{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;padding:13px;height:100%;
+    grid-template-rows:auto 1fr;font-size:11px}
+.tb header{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;
+    color:rgba(242,239,233,.55);font-size:10px;letter-spacing:.14em;text-transform:uppercase}
+.tuile{background:rgba(216,212,204,.05);border:1px solid rgba(216,212,204,.09);
+    border-radius:8px;padding:9px;display:flex;flex-direction:column;justify-content:space-between}
+.tuile i{font-style:normal;font-size:9px;letter-spacing:.13em;text-transform:uppercase;
+    color:rgba(242,239,233,.42)}
+.tuile strong{font-size:clamp(15px,2.1vw,25px);color:var(--ivoire);font-weight:700}
+.tuile em{font-style:normal;font-size:9px;color:var(--cyan)}
+.mob{padding:9px;height:100%;display:flex;flex-direction:column;gap:6px;font-size:9px}
+.mob .photo{height:38%;border-radius:9px;
+  background:linear-gradient(140deg,var(--magenta),var(--violet))}
+.mob b{color:var(--ivoire);font-size:11px}
+.mob span{background:rgba(216,212,204,.08);border-radius:5px;padding:4px 6px;
+  color:rgba(242,239,233,.72)}
+
+.titre-03{
+  position:absolute;left:50%;bottom:11vh;transform:translateX(-50%);
+  text-align:center;width:90vw;
+}
+.titre-03 h2{
+  font-size:clamp(22px,4.6vw,52px);font-weight:700;letter-spacing:.1em;
+  color:var(--ivoire);
+}
+.titre-03 p{
+  margin-top:9px;font-size:clamp(12px,1.6vw,16px);
+  color:rgba(216,212,204,.62);letter-spacing:.04em;
+}
+
+/* Le verre : un canvas monté uniquement pour les scènes qui en ont besoin.
+   AURA-MOTION-BIBLE.md §8 — pas un canvas plein écran permanent. */
+#verre{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;
+  opacity:var(--verre-op,0);transition:opacity 260ms linear}
+
+/* ── Repli sans WebGL : le monogramme redevient un SVG à dégradé ─────────── */
+#verre-repli{position:absolute;width:44vmin;height:44vmin;opacity:var(--verre-op,0);
+  display:none}
+html[data-webgl="non"] #verre{display:none}
+html[data-webgl="non"] #verre-repli{display:block}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Repli sans JavaScript — le document reste un document.
+   AURA-MOTION-BIBLE.md §9. Sans JS, .scene n'a jamais data-actif, donc rien
+   n'est visible : on rétablit tout et on empile.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.sans-js #couloir{display:none}
+.sans-js #piste{position:static;height:auto;perspective:none}
+.sans-js .scene{position:relative;visibility:visible;min-height:78vh;padding:9vh 5vw}
+.sans-js .marque{transform:none;filter:none;opacity:1}
+.sans-js .ligne b{transform:none}
+.sans-js .surface{position:relative;transform:none;opacity:1;margin:18px auto}
+.sans-js #portail,.sans-js #saturation,.sans-js #verre,.sans-js #bandeau{display:none}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Mouvement réduit — la chorégraphie ne joue pas, tout est à l'état final.
+   ═══════════════════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion:reduce){
+  #couloir{display:none}
+  #piste{position:static;height:auto;perspective:none}
+  .scene{position:relative;visibility:visible;min-height:76vh;padding:9vh 5vw}
+  .marque{transform:none!important;filter:none!important;opacity:1!important}
+  .ligne b{transform:none!important}
+  .surface{position:relative;transform:none!important;opacity:1!important;margin:18px auto}
+  #portail,#saturation,#verre,#verre-repli,#bandeau{display:none}
+  .jauge{display:none}
+}
+</style>
+</head>
+
+<body class="sans-js">
+
+<!-- Le couloir ne contient rien : il ne sert qu'à produire de la hauteur. -->
+<div id="couloir" aria-hidden="true"></div>
+
+<main id="piste">
+
+  <!-- ══ SCÈNE 01 ══════════════════════════════════════════════════════════ -->
+  <section class="scene" data-scene="01" data-debut="0" data-fin=".070" aria-label="Aura">
+    <svg id="treillis" viewBox="0 0 400 400" aria-hidden="true">
+      <g>
+        <path class="faible" d="M -140 470 L 540 -70"/>
+        <path class="faible" d="M 540 470 L -140 -70"/>
+        <path class="faible" d="M -140 262 L 540 262"/>
+        <path d="M 200 52 L 46 348"/>
+        <path d="M 200 52 L 354 348"/>
+        <path d="M 112 262 L 288 262"/>
+      </g>
+    </svg>
+    <div id="lueur"></div>
+    <p class="legende-01">Le système déjà construit pour votre métier</p>
+  </section>
+
+  <!-- ══ SCÈNE 02 ══════════════════════════════════════════════════════════ -->
+  <section class="scene" data-scene="02" data-debut=".070" data-fin=".150">
+    <div id="portail" aria-hidden="true"></div>
+    <div id="saturation" aria-hidden="true"></div>
+    <div class="marque">
+      <h1>AURA</h1>
+      <div class="lignes">
+        <div class="ligne"><b>YOUR BUSINESS.</b></div>
+        <div class="ligne"><b>ALREADY BUILT.</b></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SCÈNE 03 ══════════════════════════════════════════════════════════ -->
+  <section class="scene" data-scene="03" data-debut=".150" data-fin=".310">
+    <div class="grille-fond" aria-hidden="true"></div>
+    <div id="bandeau" aria-hidden="true">
+      <span>LEADS</span><span>BOOKINGS</span><span>REVIEWS</span>
+      <span>LEADS</span><span>BOOKINGS</span><span>REVIEWS</span>
+    </div>
+
+    <canvas id="verre" aria-hidden="true"></canvas>
+    <svg id="verre-repli" viewBox="0 0 200 200" aria-hidden="true">
+      <defs><linearGradient id="gv" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#3BE8E0" stop-opacity=".82"/>
+        <stop offset="1" stop-color="#E01B6A" stop-opacity=".55"/>
+      </linearGradient></defs>
+      <path d="M100 26 L168 172 L32 172 Z" fill="url(#gv)" stroke="#D8D4CC" stroke-width="1.4"/>
+    </svg>
+
+    <article class="surface" id="tableau">
+      <div class="tb">
+        <header><span>Tableau de bord</span><span>30 derniers jours</span></header>
+        <div class="tuile"><i>Demandes</i><strong>24</strong><em>+12 %</em></div>
+        <div class="tuile"><i>Réservations</i><strong>8</strong><em>+33 %</em></div>
+        <div class="tuile"><i>Scans QR</i><strong>142</strong><em>+27 %</em></div>
+      </div>
+    </article>
+
+    <article class="surface" id="mobile">
+      <div class="mob">
+        <div class="photo"></div>
+        <b>Sunset Scoops</b>
+        <span>Voir le menu</span><span>Réserver</span><span>WhatsApp</span>
+      </div>
+    </article>
+
+    <article class="surface" id="qr">
+      <svg viewBox="0 0 21 21" aria-hidden="true" shape-rendering="crispEdges">
+        <rect width="21" height="21" fill="#F2EFE9"/>
+        <g fill="#07060A">
+          <rect x="1" y="1" width="5" height="5"/><rect x="15" y="1" width="5" height="5"/>
+          <rect x="1" y="15" width="5" height="5"/>
+          <rect x="2.5" y="2.5" width="2" height="2" fill="#F2EFE9"/>
+          <rect x="16.5" y="2.5" width="2" height="2" fill="#F2EFE9"/>
+          <rect x="2.5" y="16.5" width="2" height="2" fill="#F2EFE9"/>
+          <rect x="8" y="2" width="1" height="1"/><rect x="10" y="4" width="1" height="1"/>
+          <rect x="9" y="8" width="1" height="1"/><rect x="12" y="9" width="1" height="1"/>
+          <rect x="8" y="11" width="1" height="1"/><rect x="14" y="12" width="1" height="1"/>
+          <rect x="10" y="14" width="1" height="1"/><rect x="16" y="9" width="1" height="1"/>
+          <rect x="6" y="9" width="1" height="1"/><rect x="12" y="16" width="1" height="1"/>
+        </g>
+      </svg>
+    </article>
+
+    <div class="titre-03">
+      <h2>AURA OS</h2>
+      <p>Page, menu, QR, demandes, WhatsApp, avis, analytique — déjà branchés.</p>
+    </div>
+  </section>
+</main>
+
+<!-- Interface : hors timeline, toujours atteignable. -->
+<div id="interface">
+  <div class="barre">
+    <a class="marque-petite" href="#">AURA</a>
+    <a class="cta" href="#">START FREE →</a>
+  </div>
+  <div>
+    <div class="jauge"><span></span></div>
+    <p class="etiquette" id="etiquette">Scène 01 — construction</p>
+  </div>
+</div>
+
+<script>
+document.body.classList.remove('sans-js');
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOTEUR DE TIMELINE
+
+   Deux mécaniques, jamais mélangées — AURA-MOTION-TIMELINE.md §4.1 :
+
+     SCRUBBÉ    un mouvement continu suit la position de défilement.
+     DÉCLENCHÉ  une bascule se joue sur sa propre horloge, jusqu'au bout,
+                même si le défilement s'arrête au milieu.
+
+   Un demi-blanc figé à l'écran n'est pas un état, c'est un bug visible.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+var racine = document.documentElement;
+var piste  = document.getElementById('piste');
+var scenes = [].map.call(document.querySelectorAll('.scene'), function(el){
+  return { el:el, debut:parseFloat(el.dataset.debut), fin:parseFloat(el.dataset.fin),
+           nom:el.dataset.scene, actif:false };
+});
+
+function borne(v,a,b){ return v<a?a:(v>b?b:v); }
+function palier(p,a,b){ return borne((p-a)/(b-a),0,1); }      /* sous-fenêtre */
+function sortie(x){ return 1-Math.pow(1-x,2); }               /* ≈ power2.out */
+function entree(x){ return x*x; }                             /* ≈ power2.in  */
+function pose(x){ return 1-Math.pow(1-x,3); }                 /* ≈ power3.out */
+
+/* Longueur réelle de chaque filet, pour que le tracé parte bien de zéro. */
+[].forEach.call(document.querySelectorAll('#treillis path'), function(p){
+  p.style.setProperty('--long', p.getTotalLength());
+});
+
+/* Les fenêtres `t` des scènes sont celles de la timeline maîtresse du site
+   complet — neuf scènes, 890 vh (AURA-MOTION-TIMELINE.md §1). Ce prototype
+   n'en contient que trois, soit 270 vh. Son défilement couvre donc la PART
+   correspondante de la timeline, pas sa totalité : sans ce report, la scène
+   01 recevrait 7 % du défilement disponible au lieu de la totalité de la
+   sienne. Les fenêtres restent écrites telles qu'elles sont documentées. */
+var PART = .310;
+
+var tGlobal = 0;
+
+function peindre(){
+  var h = document.documentElement.scrollHeight - window.innerHeight;
+  tGlobal = h > 0 ? borne(window.scrollY / h, 0, 1) * PART : 0;
+  racine.style.setProperty('--t', tGlobal / PART);
+
+  for (var i=0;i<scenes.length;i++){
+    var s = scenes[i];
+    /* Marge de 1,5 % de part et d'autre : la scène est montée juste avant
+       d'être vue, démontée juste après. Sinon on peint dans le vide. */
+    var vu = tGlobal >= s.debut - .015 && tGlobal <= s.fin + .015;
+    if (vu !== s.actif){
+      s.actif = vu;
+      if (vu) s.el.setAttribute('data-actif',''); else s.el.removeAttribute('data-actif');
+      if (s.nom === '03') verre.basculer(vu);
+    }
+    if (!vu) continue;
+
+    var p = palier(tGlobal, s.debut, s.fin);
+    s.el.style.setProperty('--p', p);
+
+    if (s.nom === '01') scene01(s.el, p);
+    if (s.nom === '02') scene02(s.el, p);
+    if (s.nom === '03') scene03(s.el, p);
+  }
+
+  var nom = tGlobal < .070 ? 'Scène 01 — construction'
+          : tGlobal < .150 ? 'Scène 02 — révélation'
+          : tGlobal < .310 ? 'Scène 03 — Aura OS'
+          : 'Fin du prototype';
+  var et = document.getElementById('etiquette');
+  if (et.textContent !== nom) et.textContent = nom;
+}
+
+/* ── Scène 01 ─────────────────────────────────────────────────────────────
+   Six filets, décalés de 60 ms l'un sur l'autre. La référence ne montre pas
+   sa propre construction (elle est déjà tracée à la première frame) : ce
+   tracé est notre décision, pas une reprise. */
+function scene01(el, p){
+  var filets = el.querySelectorAll('#treillis path');
+  for (var i=0;i<filets.length;i++){
+    var decalage = i * .06;
+    filets[i].style.setProperty('--tracer', pose(palier(p, decalage, decalage + .5)));
+  }
+}
+
+/* ── Scène 02 ─────────────────────────────────────────────────────────────
+   Le portail grandit et sature ; le wordmark est DÉJÀ là derrière, à 250 %,
+   et redescend. Les deux lignes arrivent décalées de 80 ms — c'est ce
+   décalage qui fait la chorégraphie. */
+function scene02(el, p){
+  var st = el.style;
+  /* Le portail doit RECOUVRIR le cadre à son sommet : c'est sa surexposition
+     qui cache l'arrivée du wordmark. À 1,5× il ne couvrait rien, et on voyait
+     le wordmark flou pendant 30 % de la scène — un texte illisible à l'arrêt,
+     donc une infraction à la Motion Bible §6.4. */
+  var pt = entree(palier(p, 0, .32));
+  st.setProperty('--portail', .02 + pt * 4.2);
+  st.setProperty('--portail-op', palier(p,0,.08) * (1 - palier(p,.32,.44)));
+
+  /* Montée jusqu'au sommet, puis retombée immédiate : une saturation, pas un
+     fondu. Elle culmine à p = .30, là où le wordmark est déjà en place. */
+  st.setProperty('--saturation',
+    entree(palier(p,.14,.30)) * (1 - sortie(palier(p,.30,.46))));
+
+  /* Le wordmark n'existe qu'à partir du moment où la saturation le couvre. */
+  st.setProperty('--marque-op', palier(p, .22, .28));
+
+  var ech = sortie(palier(p, .26, .58));
+  st.setProperty('--marque-ech', 2.5 - ech * 1.5);
+  /* Le flou se résorbe AVANT l'échelle : le mot devient lisible avant d'être
+     posé. L'inverse donne un texte net trop tard. */
+  st.setProperty('--marque-flou', 24 * (1 - sortie(palier(p, .26, .50))));
+  st.setProperty('--balayage', palier(p, .58, 1));
+
+  var lignes = el.querySelectorAll('.ligne b');
+  lignes[0].style.setProperty('--r', pose(palier(p, .62, .78)));
+  lignes[1].style.setProperty('--r', pose(palier(p, .70, .88)));
+}
+
+/* ── Scène 03 ─────────────────────────────────────────────────────────────
+   La seule vraie caméra du site : une traversée du monogramme. Ensuite les
+   surfaces arrivent en Z, décalées, et le bandeau défile en continu. */
+function scene03(el, p){
+  var st = el.style;
+  st.setProperty('--bande', palier(p, 0, 1));
+  st.setProperty('--verre-op', palier(p,0,.14) * (1 - palier(p,.42,.62)));
+
+  /* La traversée : on pousse la piste entière vers l'avant sur 18 % de la
+     scène, puis on relâche. C'est un vrai push-in, pas un scale. */
+  var trav = palier(p, 0, .18);
+  piste.style.perspectiveOrigin = '50% ' + (45 + trav * 4) + '%';
+  el.style.setProperty('--traversee', trav);
+
+  st.setProperty('--e1', pose(palier(p, .15, .45)));
+  st.setProperty('--e2', pose(palier(p, .40, .72)));
+  st.setProperty('--e3', pose(palier(p, .46, .78)));
+
+  verre.avancer(p);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   LE VERRE — le seul WebGL du prototype.
+
+   Monté quand la scène 03 approche, démonté quand elle sort. Un seul contexte,
+   jamais deux. Si le contexte est refusé, on bascule sur le repli SVG et on
+   ne réessaie pas. AURA-MOTION-BIBLE.md §8.
+   ═══════════════════════════════════════════════════════════════════════════ */
+var verre = (function(){
+  var pret=false, echoue=false, chargement=null;
+  var rendu, scene, cam, maille, horloge=0, boucle=null;
+  var toile = document.getElementById('verre');
+
+  function charger(){
+    if (chargement) return chargement;
+    chargement = new Promise(function(res,rej){
+      var s=document.createElement('script');
+      s.src='moteur/three.min.js'; s.onload=res; s.onerror=rej;
+      document.head.appendChild(s);
+    });
+    return chargement;
+  }
+
+  function batir(){
+    if (!window.THREE) throw new Error('three absent');
+    rendu = new THREE.WebGLRenderer({canvas:toile, alpha:true, antialias:true});
+    rendu.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));  /* DPR adaptatif */
+    rendu.setSize(toile.clientWidth, toile.clientHeight, false);
+
+    scene = new THREE.Scene();
+    cam = new THREE.PerspectiveCamera(42, toile.clientWidth/toile.clientHeight, .1, 100);
+    cam.position.set(0,0,7);
+
+    /* Le A, en volume : un triangle extrudé, percé de son contre-poinçon. */
+    var f = new THREE.Shape();
+    f.moveTo(0,1.55); f.lineTo(1.5,-1.35); f.lineTo(-1.5,-1.35); f.closePath();
+    var creux = new THREE.Path();
+    creux.moveTo(0,.62); creux.lineTo(.62,-.62); creux.lineTo(-.62,-.62); creux.closePath();
+    f.holes.push(creux);
+
+    var geo = new THREE.ExtrudeGeometry(f, {depth:.46, bevelEnabled:true,
+      bevelThickness:.06, bevelSize:.06, bevelSegments:3, curveSegments:6});
+    geo.center();
+
+    /* Un environnement minimal, fabriqué en mémoire : sans lui, une matière
+       à transmission n'a rien à réfracter et paraît plate. */
+    var c = document.createElement('canvas'); c.width=32; c.height=16;
+    var g = c.getContext('2d');
+    var dg = g.createLinearGradient(0,0,0,16);
+    dg.addColorStop(0,'#2a1140'); dg.addColorStop(.5,'#E01B6A'); dg.addColorStop(1,'#3BE8E0');
+    g.fillStyle=dg; g.fillRect(0,0,32,16);
+    var tex = new THREE.CanvasTexture(c);
+    tex.mapping = THREE.EquirectangularReflectionMapping;
+    var pmrem = new THREE.PMREMGenerator(rendu);
+    var env = pmrem.fromEquirectangular(tex).texture;
+    scene.environment = env;
+    pmrem.dispose(); tex.dispose();
+
+    maille = new THREE.Mesh(geo, new THREE.MeshPhysicalMaterial({
+      transmission:1, thickness:1.3, roughness:.13, ior:1.45,
+      metalness:0, clearcoat:1, clearcoatRoughness:.16,
+      color:0xffffff, attenuationColor:0xE01B6A, attenuationDistance:2.6,
+      transparent:true, opacity:.96
+    }));
+    scene.add(maille);
+    scene.add(new THREE.PointLight(0x3BE8E0, 22, 22).translateX(-4).translateY(2));
+    scene.add(new THREE.PointLight(0xE01B6A, 22, 22).translateX(4).translateY(-2));
+    pret = true;
+  }
+
+  function dimensionner(){
+    if(!pret) return;
+    var l=toile.clientWidth, h=toile.clientHeight;
+    if(!l||!h) return;
+    rendu.setSize(l,h,false); cam.aspect=l/h; cam.updateProjectionMatrix();
+  }
+
+  function image(){
+    if(!pret) return;
+    maille.rotation.y = horloge * .9 + Math.sin(horloge * .6) * .16;
+    maille.rotation.x = Math.sin(horloge * .42) * .1;
+    rendu.render(scene,cam);
+  }
+
+  return {
+    basculer:function(actif){
+      /* Le test de contexte a déjà eu lieu au chargement. Si WebGL est absent,
+         on ne charge même pas three : sa tentative de créer un contexte écrit
+         une erreur dans la console avant de lever, et une console propre fait
+         partie de ce qu'on livre. */
+      if (echoue || racine.getAttribute('data-webgl') === 'non') return;
+      if (actif){
+        charger().then(function(){
+          if(!pret) batir();
+          dimensionner();
+          if(!boucle) boucle = setInterval(image, 1000/60);
+        }).catch(function(){
+          echoue = true;
+          racine.setAttribute('data-webgl','non');
+        });
+      } else if (boucle){
+        clearInterval(boucle); boucle=null;
+      }
+    },
+    avancer:function(p){ horloge = p * 5.2; if(pret) image(); },
+    redimensionner:dimensionner
+  };
+})();
+
+/* ── Boucle de défilement ─────────────────────────────────────────────────
+   On ne recalcule qu'à la frame d'affichage. Si le défilement traverse deux
+   scènes en une frame, les états intermédiaires sont SAUTÉS, pas mis en
+   file : la page ne continue jamais de bouger après l'arrêt.
+   AURA-MOTION-TIMELINE.md §4.3. */
+var enAttente = false;
+function demander(){
+  if (enAttente) return;
+  enAttente = true;
+  requestAnimationFrame(function(){ enAttente=false; peindre(); });
+}
+addEventListener('scroll', demander, {passive:true});
+addEventListener('resize', function(){ verre.redimensionner(); demander(); });
+
+/* Test de WebGL, une seule fois, avant même de charger three. */
+(function(){
+  try{
+    var t=document.createElement('canvas');
+    if(!(t.getContext('webgl2')||t.getContext('webgl'))) racine.setAttribute('data-webgl','non');
+  }catch(e){ racine.setAttribute('data-webgl','non'); }
+})();
+
+peindre();
+</script>
+</body>
+</html>
