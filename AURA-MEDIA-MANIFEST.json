@@ -1,6 +1,6 @@
 {
   "_lire": "Le système média d'Aura. Six plans d'un même film, pas six images. Ce fichier est la source de vérité : un plan qui n'y figure pas ne doit pas entrer dans le site, et un plan qui y figure doit pouvoir être régénéré à l'identique par quelqu'un d'autre que moi.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "etabli_le": "2026-09-18",
   "_blocage": {
     "resume": "Aucun des six plans n'a pu être produit depuis cette session. Deux obstacles indépendants, tous deux vérifiés, aucun contournable par le code.",
@@ -20,7 +20,13 @@
       "Harrison génère les six plans depuis l'interface Higgsfield avec les prompts ci-dessous, puis dépose les fichiers dans src/medias/. C'est le chemin le plus court et il ne dépend d'aucun déblocage.",
       "Le proxy autorise le CDN Higgsfield, et le compte passe sur un plan payant. Je reprends alors la chaîne complète depuis ici.",
       "On produit les six plans autrement — photographie, banque d'images sous licence, ou un autre générateur accessible — en respectant la direction artistique de ce fichier."
-    ]
+    ],
+    "decision_du_18_septembre": {
+      "z_image": "ABANDONNÉ. Aucun crédit supplémentaire n est dépensé sur un modèle sous la barre visuelle. Économiser quelques euros sur le moteur qui fabrique les plans maîtres serait absurde au regard du niveau visé.",
+      "verification_independante": "Harrison a confirmé le blocage depuis son propre connecteur : compte Free, 9,85 crédits, essai de 100 crédits en attente sans effet sur les restrictions de plan. Seedream 4.5 et Nano Banana 2 Lite renvoient eux aussi « Requires basic plan or higher ».",
+      "chemin_retenu": "Higgsfield Basic → AURA FOOD master → validation → cinq déclinaisons référencées → scène 04.",
+      "qui_genere": "Harrison, depuis son connecteur, avec les prompts de ce fichier. Le prompt n est pas improvisé au moment de la génération."
+    }
   },
   "direction_artistique": {
     "_lire": "Ce bloc est hérité par les six plans. C'est lui, et non les sujets, qui fait qu'ils appartiennent au même film. Toute génération qui ne le reprend pas produira une image incohérente avec les cinq autres.",
@@ -158,7 +164,8 @@
         "job_id": "c9ca7b90-8b63-4464-8ae4-b768baff8c16",
         "raison": "seul modèle accessible sur le plan gratuit",
         "resultat": "non récupérable — le CDN est bloqué par le proxy",
-        "verdict": "à ne pas retenir : modèle étiqueté « stylized », hors cible photoréaliste"
+        "verdict": "à ne pas retenir : modèle étiqueté « stylized », hors cible photoréaliste",
+        "decision": "abandonné le 18 septembre 2026 ; ne pas relancer sur z_image"
       },
       "crop_mobile": {
         "x": 0.3,
@@ -166,7 +173,8 @@
         "l": 0.7,
         "h": 1,
         "note": "sujet à droite — on garde les 70 % droits"
-      }
+      },
+      "statut_special": "MASTER — fixe la direction artistique des cinq autres plans."
     },
     {
       "id": "aura-beauty",
@@ -209,7 +217,9 @@
         "l": 0.7,
         "h": 1,
         "note": "sujet à gauche — on garde les 70 % gauches"
-      }
+      },
+      "reference_obligatoire": "aura-food",
+      "bloque_par": "aura-food doit être produit et validé avant ce plan."
     },
     {
       "id": "aura-automotive",
@@ -252,7 +262,9 @@
         "l": 0.7,
         "h": 1,
         "note": "sujet à droite — on garde les 70 % droits"
-      }
+      },
+      "reference_obligatoire": "aura-food",
+      "bloque_par": "aura-food doit être produit et validé avant ce plan."
     },
     {
       "id": "aura-property",
@@ -295,7 +307,9 @@
         "l": 0.7,
         "h": 1,
         "note": "sujet à gauche — on garde les 70 % gauches"
-      }
+      },
+      "reference_obligatoire": "aura-food",
+      "bloque_par": "aura-food doit être produit et validé avant ce plan."
     },
     {
       "id": "aura-services",
@@ -338,7 +352,9 @@
         "l": 0.7,
         "h": 1,
         "note": "sujet à droite — on garde les 70 % droits"
-      }
+      },
+      "reference_obligatoire": "aura-food",
+      "bloque_par": "aura-food doit être produit et validé avant ce plan."
     },
     {
       "id": "aura-os",
@@ -404,5 +420,39 @@
     "poids_total_ko": 1320,
     "format": "WebP, qualité 82, 1600 px de large pour le desktop, 900 px pour le mobile",
     "decodage_simultane": "2 maximum — la scène 04 n'affiche jamais plus de deux plans en pleine résolution, les autres sont en version basse"
+  },
+  "maj_le": "2026-09-18",
+  "master": {
+    "_lire": "Décision de Harrison du 18 septembre 2026, après vérification indépendante du blocage de plan depuis son propre connecteur Higgsfield.",
+    "plan_maitre": "aura-food",
+    "principe": "On ne produit pas six images. On produit UN master excellent, puis on construit la famille autour. On change le monde, pas la caméra artistique.",
+    "parametres_verrouilles_par_le_master": [
+      "lumière — position, nombre et ordre des sources",
+      "contraste",
+      "science des couleurs",
+      "niveau des noirs",
+      "grain",
+      "profondeur de champ",
+      "sensation optique (focale, distorsion, flare)",
+      "matière et traitement des surfaces",
+      "traitement de l environnement",
+      "intensité du cyan",
+      "intensité du magenta",
+      "température de la clé tungstène",
+      "niveau de réalisme",
+      "densité atmosphérique",
+      "traitement des reflets"
+    ],
+    "regle_de_derivation": "Beauty, Automotive, Property et Services doivent passer aura-food en image de référence lorsque le modèle le permet. Sans référence, ces quatre plans ne doivent pas être produits : quatre prompts indépendants donneront quatre films différents, et le défaut ne se verra qu une fois les quatre payés.",
+    "exception": "aura-os ne dérive pas du master par référence d image — son sujet est fabriqué, pas un lieu. Il hérite en revanche de toute la signature lumineuse, et ses écrans restent éteints.",
+    "ordre_de_production": [
+      "aura-food (master, à valider)",
+      "aura-beauty",
+      "aura-automotive",
+      "aura-property",
+      "aura-services",
+      "aura-os"
+    ],
+    "regle_de_cadence": "Un panneau et une transition validés avant d en multiplier. Aucun développement en masse."
   }
 }
