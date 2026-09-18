@@ -1,0 +1,13 @@
+gsap 3.15.0 + ScrollTrigger
+Licence « Standard no-charge » — https://gsap.com/standard-license
+
+Depuis 2025 GSAP et l'ensemble de ses plugins sont gratuits, y compris pour un
+usage commercial sur des sites et applications web. La restriction résiduelle
+vise la fabrication d'un concurrent direct au constructeur visuel d'animations
+de Webflow. Aura est un système commercial pour commerçants : hors périmètre.
+
+Décision prise par Harrison le 18 septembre 2026, après lecture de la licence —
+je n'avais pas pu y accéder depuis cet environnement et j'avais refusé de
+l'affirmer de mémoire.
+
+Vendorisé le 18 septembre 2026 — aucun appel réseau à l'exécution.

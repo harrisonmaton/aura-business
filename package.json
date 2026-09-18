@@ -4,7 +4,7 @@
   "version": "0.6.0",
   "scripts": {
     "build:preview": "node scripts/build-preview.js",
-    "test": "npm run build:creations && npm run build:scenes && npm run build:preview && node tests/catalogue.js && node tests/serveur.js && node tests/recette.js && node tests/parcours-complet.js && node tests/showroom.js && node tests/registre-avec-runtime-simule.js && node tests/motion.js",
+    "test": "npm run build:creations && npm run build:scenes && npm run build:preview && node tests/catalogue.js && node tests/serveur.js && node tests/recette.js && node tests/parcours-complet.js && node tests/showroom.js && node tests/registre-avec-runtime-simule.js && node tests/medias.js && node tests/motion.js",
     "build:creations": "node scripts/build-creations.js",
     "test:serveur": "node tests/serveur.js",
     "audit": "node scripts/audit-visuel.js",
@@ -12,12 +12,14 @@
     "build:collection": "node scripts/build-collection.js",
     "build:scenes": "node scripts/build-scenes.js",
     "test:motion": "node tests/motion.js",
-    "reference": "node scripts/depouiller-reference.js"
+    "reference": "node scripts/depouiller-reference.js",
+    "test:medias": "node tests/medias.js"
   },
   "devDependencies": {
     "playwright": "^1.56.0"
   },
   "dependencies": {
+    "gsap": "^3.15.0",
     "three": "^0.160.0"
   }
 }

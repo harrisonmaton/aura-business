@@ -1,0 +1,408 @@
+{
+  "_lire": "Le système média d'Aura. Six plans d'un même film, pas six images. Ce fichier est la source de vérité : un plan qui n'y figure pas ne doit pas entrer dans le site, et un plan qui y figure doit pouvoir être régénéré à l'identique par quelqu'un d'autre que moi.",
+  "version": "1.0.0",
+  "etabli_le": "2026-09-18",
+  "_blocage": {
+    "resume": "Aucun des six plans n'a pu être produit depuis cette session. Deux obstacles indépendants, tous deux vérifiés, aucun contournable par le code.",
+    "obstacle_1_plan": {
+      "constat": "Le compte Higgsfield est sur le plan gratuit, 10 crédits, aucune génération illimitée disponible.",
+      "mesure": "gpt_image_2_5 et soul_location renvoient tous deux « Requires basic plan or higher » au lancement, alors que leur préchiffrage passe (1 crédit et 0,12 crédit respectivement). Le préchiffrage ne contrôle pas le plan.",
+      "seul_modele_accessible": "z_image — étiqueté « fast, budget, stylized ». Une génération a réussi (job c9ca7b90-8b63-4464-8ae4-b768baff8c16). « Stylisé » est exactement ce qu'on ne veut pas pour du photoréalisme premium.",
+      "consequence": "Les modèles qui atteindraient le niveau visé — gpt_image_2_5 en qualité haute, seedream_v5_pro, nano_banana_pro, cinematic_studio_2_5 — exigent un plan payant."
+    },
+    "obstacle_2_reseau": {
+      "constat": "Le CDN qui héberge les images produites est refusé par le proxy sortant de cet environnement.",
+      "mesure": "d8j0ntlcm91z4.cloudfront.net, higgsfield.ai et api.higgsfield.ai renvoient tous CONNECT tunnel failed, response 403.",
+      "consequence": "Même en résolvant l'obstacle du plan, le fichier produit ne peut pas descendre dans le dépôt depuis ici. La génération passe par le relais MCP ; le téléchargement passerait par le proxy, qui refuse."
+    },
+    "ce_que_ca_implique": "La scène 04 n'est pas construite. Le mandat dit de ne pas la développer avec des placeholders médiocres, et c'est la bonne consigne : sa mécanique entière — profondeur par variation de taille et de vitesse, masques, surfaces qui traversent — ne se juge qu'avec de vraies images. La bâtir sur des rectangles gris donnerait un résultat qu'on ne pourrait ni valider ni invalider.",
+    "chemins_possibles": [
+      "Harrison génère les six plans depuis l'interface Higgsfield avec les prompts ci-dessous, puis dépose les fichiers dans src/medias/. C'est le chemin le plus court et il ne dépend d'aucun déblocage.",
+      "Le proxy autorise le CDN Higgsfield, et le compte passe sur un plan payant. Je reprends alors la chaîne complète depuis ici.",
+      "On produit les six plans autrement — photographie, banque d'images sous licence, ou un autre générateur accessible — en respectant la direction artistique de ce fichier."
+    ]
+  },
+  "direction_artistique": {
+    "_lire": "Ce bloc est hérité par les six plans. C'est lui, et non les sujets, qui fait qu'ils appartiennent au même film. Toute génération qui ne le reprend pas produira une image incohérente avec les cinq autres.",
+    "optique": {
+      "focale_equivalente": "40 mm",
+      "ouverture": "f/2,0",
+      "profondeur": "courte — le sujet net, l'arrière-plan fondu sans bokeh clinquant",
+      "distorsion": "légère courbure de bord, type anamorphique",
+      "flare": "horizontal, discret, jamais au centre du cadre"
+    },
+    "lumiere": {
+      "_regle": "Trois sources, toujours les mêmes, toujours dans cet ordre d'importance. C'est la signature lumineuse d'Aura.",
+      "cle": {
+        "temperature": "2900 K, tungstène chaud",
+        "intensite": "100 %",
+        "provenance": "toujours DEPUIS le sujet ou une ouverture du sujet — une vitrine, un écran, une baie, un capot ouvert. Jamais un projecteur extérieur."
+      },
+      "contre": {
+        "temperature": "6500 K, cyan froid",
+        "intensite": "20 % de la clé",
+        "provenance": "rasant, sur l'arête opposée à la clé, pour détacher le sujet du fond"
+      },
+      "rebond": {
+        "temperature": "magenta",
+        "intensite": "8 %",
+        "provenance": "lointain, dans la brume atmosphérique, jamais sur le sujet"
+      }
+    },
+    "valeur": {
+      "noirs": "écrasés, aucun relevé d'ombre",
+      "hautes_lumieres": "contrôlées ; aucun blanc brûlé sauf sur une source de lumière réelle dans le cadre",
+      "contraste": "élevé mais lisible — on doit distinguer la matière dans les ombres",
+      "grain": "fin, filmique, présent"
+    },
+    "matiere": {
+      "_regle": "Au moins une surface humide ou polie réfléchissante par plan. C'est ce qui donne la profondeur sans rien ajouter à la scène.",
+      "exemples": [
+        "béton mouillé",
+        "verre",
+        "métal brossé",
+        "chrome",
+        "laque",
+        "eau"
+      ]
+    },
+    "cadre": {
+      "_regle": "Le sujet occupe un tiers. La moitié opposée reste vide. Cette zone vide n'est pas du vide : c'est l'emplacement de la typographie, et elle est spécifiée plan par plan.",
+      "horizon": "bas — environ 38 % de la hauteur, pour laisser respirer le haut"
+    },
+    "palette": {
+      "obsidienne": "#07060A",
+      "chrome": "#D8D4CC",
+      "ambre": "accent chaud de la clé",
+      "magenta": "#E01B6A",
+      "cyan": "#3BE8E0",
+      "_regle": "Magenta et cyan sont des ACCENTS. Dès qu'ils deviennent la dominante d'un plan, le plan est raté."
+    },
+    "interdits_communs": [
+      "aucun texte, aucun logo, aucune enseigne lisible — la typographie est posée par le site, pas par l'image",
+      "aucun visage net : le sujet est le commerce, pas une personne, et un visage généré vieillit mal",
+      "aucune saturation touristique, aucun coucher de soleil orange saturé",
+      "aucun palmier hors du plan 01 — Miami est un moment du film, pas un filtre appliqué aux 890 vh",
+      "aucune voiture de sport clinquante hors du plan 03, et même là comme objet sculptural",
+      "aucun rendu 3D visible : ce sont des photographies",
+      "aucune composition symétrique centrée — le sujet est toujours décentré"
+    ]
+  },
+  "geometrie": {
+    "_lire": "Zones exprimées en fractions du cadre, origine en haut à gauche. Elles permettent de vérifier automatiquement qu'un recadrage ne coupe pas le sujet et ne mange pas la zone de texte.",
+    "ratio_source": "16:9",
+    "crop_desktop": {
+      "x": 0,
+      "y": 0,
+      "l": 1,
+      "h": 1,
+      "note": "plein cadre"
+    },
+    "crop_mobile_defaut": {
+      "x": 0.3,
+      "y": 0,
+      "l": 0.7,
+      "h": 1,
+      "ratio_resultant": "≈ 4:5 après recadrage vertical",
+      "note": "Défaut pour un sujet à DROITE : on garde les 70 % droits."
+    },
+    "crop_mobile_miroir": {
+      "x": 0,
+      "y": 0,
+      "l": 0.7,
+      "h": 1,
+      "ratio_resultant": "≈ 4:5 après recadrage vertical",
+      "note": "Pour un sujet à GAUCHE : on garde les 70 % gauches."
+    },
+    "_correction": "La première version de ce fichier n'avait qu'un seul recadrage mobile, fixé sur les 70 % droits — alors que la galerie fait volontairement alterner le sujet à gauche et à droite d'un plan à l'autre. Il aurait coupé Beauty et Property en deux. Chaque plan porte donc désormais son propre `crop_mobile`, et un contrôle automatique vérifie qu'il n'ampute aucun sujet. Sur mobile, la typographie ne passe jamais à côté de l'image : elle passe dessous.",
+    "_regle": "Chaque média déclare son `crop_mobile`. tests/medias.js refuse tout plan dont le recadrage mobile n'englobe pas intégralement sa zone sujet."
+  },
+  "medias": [
+    {
+      "id": "aura-food",
+      "index": 1,
+      "titre": "AURA FOOD",
+      "etat": "a_produire",
+      "role_du_plan": "Ouvrir la galerie des métiers. C'est le plan le plus chaleureux du film et le seul qui assume Miami. Il doit donner envie avant de démontrer quoi que ce soit.",
+      "role_timeline": "Scène 04, panneau 1 sur 6. Également réutilisé en plan principal de la scène 06 (Aura Food), en recadrage plus serré.",
+      "destination": "src/medias/aura-food.webp",
+      "cadrage": "Plan large, caméra à hauteur d'épaule, horizon bas. Le camion occupe le TIERS DROIT. Léger contre-plongée de 5° pour lui donner de la présence.",
+      "premier_plan": "Béton mouillé réfléchissant, en bas du cadre, qui capte la lumière de la vitrine. Une borne ou un plot sombre en amorce à l'extrême gauche, flou.",
+      "arriere_plan": "Architecture minimaliste sombre, hors foyer. Brume atmosphérique dans laquelle vit le rebond magenta. Deux ou trois palmiers en silhouette, très sombres, jamais éclairés.",
+      "zone_texte": {
+        "x": 0.02,
+        "y": 0.18,
+        "l": 0.44,
+        "h": 0.52
+      },
+      "zone_sujet": {
+        "x": 0.58,
+        "y": 0.28,
+        "l": 0.4,
+        "h": 0.58
+      },
+      "mouvement_futur": "Entre par la droite du cadre, traverse vers la gauche à vitesse constante, agrandi de 8 % au passage du centre. Doit supporter un translateX de -140 % sans révéler de bord, donc la composition ne doit rien avoir de critique sur les 15 % extrêmes de chaque côté.",
+      "prompt": "Cinematic night exterior photograph. A premium artisanal ice-cream truck parked on wet polished concrete in front of dark minimalist architecture. Shot on a 40mm anamorphic lens at f/2, shallow depth of field, slight barrel distortion at the edges, subtle horizontal lens flare off-centre. Lighting, in strict order: a dominant warm 2900K tungsten key spilling OUT of the truck's open service window onto the wet ground; a cold 6500K cyan rim light raking the truck's left edge at one fifth the key's intensity; a distant magenta bounce at eight percent, living only in the background haze, never touching the subject. Crushed blacks with no lifted shadows, controlled highlights, no blown whites except the service window itself. Fine filmic grain. Brushed metal and chrome with tight specular highlights; standing water reflecting the amber light. The truck sits in the RIGHT THIRD of the frame, shot from 5 degrees below eye level; the LEFT HALF is empty dark atmosphere. Low horizon at roughly 38 percent of the frame height. Two or three palm trees as pure dark silhouettes in the far background, never lit. No text, no logos, no signage lettering, no readable writing anywhere. No people. No sharp faces. Restrained palette: obsidian black, chrome grey, warm amber, a controlled cyan accent and a faint magenta haze. Luxury editorial photography, high dynamic range.",
+      "modele_recommande": "gpt_image_2_5",
+      "parametres": {
+        "quality": "high",
+        "resolution": "2k",
+        "aspect_ratio": "16:9",
+        "variant": "flare"
+      },
+      "seed": null,
+      "job_id": null,
+      "coherence": "Plan de référence de la série : c'est lui qui fixe la lumière. Les cinq autres doivent être générés APRÈS lui et, si le modèle le permet, en le passant en image de référence. Sans cela, six prompts indépendants donneront six films différents.",
+      "essai_realise": {
+        "modele": "z_image",
+        "job_id": "c9ca7b90-8b63-4464-8ae4-b768baff8c16",
+        "raison": "seul modèle accessible sur le plan gratuit",
+        "resultat": "non récupérable — le CDN est bloqué par le proxy",
+        "verdict": "à ne pas retenir : modèle étiqueté « stylized », hors cible photoréaliste"
+      },
+      "crop_mobile": {
+        "x": 0.3,
+        "y": 0,
+        "l": 0.7,
+        "h": 1,
+        "note": "sujet à droite — on garde les 70 % droits"
+      }
+    },
+    {
+      "id": "aura-beauty",
+      "index": 2,
+      "titre": "AURA BEAUTY",
+      "etat": "a_produire",
+      "role_du_plan": "Montrer que le même système habille un métier à l'opposé du camion de glaces. C'est le plan le plus calme et le plus matériel de la série.",
+      "role_timeline": "Scène 04, panneau 2 sur 6.",
+      "destination": "src/medias/aura-beauty.webp",
+      "cadrage": "Intérieur, plan large serré. Un fauteuil de salon et un miroir rond occupent le TIERS GAUCHE — inversion volontaire par rapport au plan 01, pour que la galerie respire.",
+      "premier_plan": "Une desserte en verre avec des flacons sombres, floue, à l'extrême droite.",
+      "arriere_plan": "Mur en béton ciré ou plâtre teinté, hors foyer. Une baie sombre laissant passer le contre-jour cyan.",
+      "zone_texte": {
+        "x": 0.54,
+        "y": 0.2,
+        "l": 0.44,
+        "h": 0.5
+      },
+      "zone_sujet": {
+        "x": 0.04,
+        "y": 0.22,
+        "l": 0.42,
+        "h": 0.62
+      },
+      "mouvement_futur": "Même traversée latérale. Le miroir rond sert de point de fuite : il doit rester dans le cadre pendant toute la traversée, donc pas plus loin que 40 % depuis la gauche.",
+      "prompt": "Cinematic interior photograph of a minimalist luxury beauty studio at night. Shot on a 40mm anamorphic lens at f/2, shallow depth of field, slight edge curvature, discreet off-centre horizontal flare. Lighting, in strict order: a dominant warm 2900K tungsten key coming from a concealed strip behind a large round mirror, washing the wall; a cold 6500K cyan rim at one fifth intensity raking in from a dark window bay; a distant magenta bounce at eight percent in the background air only. Crushed blacks, no lifted shadows, controlled highlights, fine filmic grain. Materials: polished glass, waxed concrete, brushed metal, a single wet-looking lacquered surface catching the amber light. A styling chair and a large round mirror occupy the LEFT THIRD of the frame; the RIGHT HALF is empty wall and dark air. Low horizon at roughly 38 percent. Out-of-focus glass shelf with dark bottles in the extreme right foreground. No text, no logos, no readable writing. No people, no faces. No pink, no pastel, no girly styling — this is architectural and editorial. Restrained palette: obsidian black, ivory, chrome grey, warm amber, a controlled cyan accent. Luxury editorial photography, high dynamic range.",
+      "modele_recommande": "gpt_image_2_5",
+      "parametres": {
+        "quality": "high",
+        "resolution": "2k",
+        "aspect_ratio": "16:9",
+        "variant": "flare"
+      },
+      "seed": null,
+      "job_id": null,
+      "coherence": "Sujet à GAUCHE, en miroir du plan 01. La galerie alterne les côtés pour que la traversée ne devienne pas mécanique. Même lumière, matière plus douce, aucune couleur nouvelle.",
+      "crop_mobile": {
+        "x": 0,
+        "y": 0,
+        "l": 0.7,
+        "h": 1,
+        "note": "sujet à gauche — on garde les 70 % gauches"
+      }
+    },
+    {
+      "id": "aura-automotive",
+      "index": 3,
+      "titre": "AURA AUTOMOTIVE",
+      "etat": "a_produire",
+      "role_du_plan": "Le plan le plus sombre et le plus sculptural. Il fait monter le contraste au milieu de la galerie.",
+      "role_timeline": "Scène 04, panneau 3 sur 6.",
+      "destination": "src/medias/aura-automotive.webp",
+      "cadrage": "Plan rapproché sur une AILE et un passage de roue, pas sur une voiture entière. La carrosserie occupe le TIERS DROIT et sort du cadre — on ne montre jamais le véhicule en entier.",
+      "premier_plan": "Sol d'atelier en résine noire, réfléchissant.",
+      "arriere_plan": "Atelier plongé dans le noir, structure à peine devinée.",
+      "zone_texte": {
+        "x": 0.03,
+        "y": 0.22,
+        "l": 0.46,
+        "h": 0.5
+      },
+      "zone_sujet": {
+        "x": 0.56,
+        "y": 0.12,
+        "l": 0.44,
+        "h": 0.76
+      },
+      "mouvement_futur": "Traversée latérale, et c'est le seul panneau qui reçoit un léger rotateY de 6° — la courbure de la carrosserie rend la rotation lisible, ce qui n'est pas vrai des autres plans.",
+      "prompt": "Cinematic close photograph of a car's rear quarter panel and wheel arch in a dark detailing workshop at night. Not the whole vehicle — the bodywork is cropped by the frame and treated as a sculptural object. Shot on a 40mm anamorphic lens at f/2, shallow depth of field, slight edge curvature, discreet horizontal flare. Lighting, in strict order: a dominant warm 2900K tungsten key skimming along the body line and revealing its curvature; a cold 6500K cyan rim at one fifth intensity along the opposite edge; a distant magenta bounce at eight percent in the background darkness only. Crushed blacks, no lifted shadows, highlights controlled so the paint reads as depth rather than glare. Fine filmic grain. Materials: deep black paint with a wet clear coat, brushed metal, black resin floor reflecting the key light. The bodywork occupies the RIGHT THIRD and exits the frame; the LEFT HALF is near-black workshop air. No text, no logos, no badges, no brand marks, no number plates, no readable writing anywhere. No people. Nothing flashy, no supercar styling cliché. Restrained palette: obsidian black, graphite, chrome, warm amber, a controlled cyan accent. Luxury automotive editorial photography, high dynamic range.",
+      "modele_recommande": "gpt_image_2_5",
+      "parametres": {
+        "quality": "high",
+        "resolution": "2k",
+        "aspect_ratio": "16:9",
+        "variant": "flare"
+      },
+      "seed": null,
+      "job_id": null,
+      "coherence": "C'est le point le plus sombre de la galerie. Il est encadré par Beauty et Property, tous deux plus clairs : la courbe de valeur de la scène 04 descend puis remonte.",
+      "crop_mobile": {
+        "x": 0.3,
+        "y": 0,
+        "l": 0.7,
+        "h": 1,
+        "note": "sujet à droite — on garde les 70 % droits"
+      }
+    },
+    {
+      "id": "aura-property",
+      "index": 4,
+      "titre": "AURA PROPERTY",
+      "etat": "a_produire",
+      "role_du_plan": "Le plan qui respire. Après l'atelier noir, il ouvre l'espace et remonte la valeur.",
+      "role_timeline": "Scène 04, panneau 4 sur 6.",
+      "destination": "src/medias/aura-property.webp",
+      "cadrage": "Extérieur nuit, villa architecturale vue depuis le bord d'une piscine. La baie vitrée éclairée occupe le TIERS GAUCHE. Beaucoup de ciel et d'eau.",
+      "premier_plan": "L'eau de la piscine, immobile, sur le tiers bas du cadre, qui reflète la baie.",
+      "arriere_plan": "Ciel nuit profond, sans étoile, avec une brume magenta très lointaine.",
+      "zone_texte": {
+        "x": 0.52,
+        "y": 0.14,
+        "l": 0.46,
+        "h": 0.48
+      },
+      "zone_sujet": {
+        "x": 0.02,
+        "y": 0.26,
+        "l": 0.44,
+        "h": 0.46
+      },
+      "mouvement_futur": "Traversée latérale plus lente que les autres — 0,8× la vitesse — parce que c'est le plan le plus large. La différence de vitesse EST la profondeur : c'est le mécanisme central de la scène 04.",
+      "prompt": "Cinematic night exterior photograph of a modern architectural villa seen from the far edge of a still swimming pool. Shot on a 40mm anamorphic lens at f/2, shallow depth of field, slight edge curvature, discreet horizontal flare. Lighting, in strict order: a dominant warm 2900K tungsten key glowing OUT of the villa's full-height glass bay and spilling across the water; a cold 6500K cyan rim at one fifth intensity along the concrete edge of the pool; a distant magenta bounce at eight percent in the far night haze only. Crushed blacks, no lifted shadows, controlled highlights, no blown whites except the glass bay itself. Fine filmic grain. Materials: perfectly still water acting as a mirror, raw concrete, glass, a lacquered dark timber soffit. The lit glass bay occupies the LEFT THIRD; the RIGHT HALF is empty night sky and water. Low horizon at roughly 38 percent, the bottom third given to the water and its reflection. Deep starless night sky. No text, no logos, no readable writing. No people. No orange saturated sunset, no travel-brochure look, no stock real-estate styling. Restrained palette: obsidian black, concrete grey, warm amber, a controlled cyan accent, a faint magenta haze. Architectural editorial photography, high dynamic range, calm and quiet.",
+      "modele_recommande": "gpt_image_2_5",
+      "parametres": {
+        "quality": "high",
+        "resolution": "2k",
+        "aspect_ratio": "16:9",
+        "variant": "flare"
+      },
+      "seed": null,
+      "job_id": null,
+      "coherence": "Sujet à gauche, comme Beauty. Le rythme des côtés sur la galerie est donc : droite, gauche, droite, gauche, droite, centre. Le dernier plan casse l'alternance, et c'est voulu — il annonce la fin de la série.",
+      "crop_mobile": {
+        "x": 0,
+        "y": 0,
+        "l": 0.7,
+        "h": 1,
+        "note": "sujet à gauche — on garde les 70 % gauches"
+      }
+    },
+    {
+      "id": "aura-services",
+      "index": 5,
+      "titre": "AURA SERVICES",
+      "etat": "a_produire",
+      "role_du_plan": "Le plan le plus sobre. Il doit être crédible plutôt que spectaculaire : c'est celui auquel un consultant ou un cabinet doit se reconnaître.",
+      "role_timeline": "Scène 04, panneau 5 sur 6.",
+      "destination": "src/medias/aura-services.webp",
+      "cadrage": "Intérieur de bureau contemporain, nuit. Une table de travail en bois sombre occupe le TIERS DROIT, vue de trois quarts. Un écran allumé, mais de dos ou de biais — on ne lit jamais ce qu'il affiche.",
+      "premier_plan": "Le bord de la table, flou, en amorce basse.",
+      "arriere_plan": "Bibliothèque ou cloison sombre, hors foyer, et une baie donnant sur la nuit.",
+      "zone_texte": {
+        "x": 0.03,
+        "y": 0.2,
+        "l": 0.44,
+        "h": 0.52
+      },
+      "zone_sujet": {
+        "x": 0.56,
+        "y": 0.3,
+        "l": 0.42,
+        "h": 0.54
+      },
+      "mouvement_futur": "Traversée latérale standard. Aucun effet particulier : ce plan sert de respiration avant le plan produit.",
+      "prompt": "Cinematic interior photograph of a contemporary consultant's office at night. Shot on a 40mm anamorphic lens at f/2, shallow depth of field, slight edge curvature, discreet horizontal flare. Lighting, in strict order: a dominant warm 2900K tungsten key from a single desk lamp and from a glowing screen turned away from camera; a cold 6500K cyan rim at one fifth intensity entering from a dark window bay; a distant magenta bounce at eight percent in the background air only. Crushed blacks, no lifted shadows, controlled highlights. Fine filmic grain. Materials: dark oiled timber, glass, brushed metal, a polished desk surface catching the lamp. A three-quarter view of a dark wooden work table occupies the RIGHT THIRD of the frame; the LEFT HALF is dark room and empty air. The screen is seen edge-on or from behind — its content is never readable. Out-of-focus table edge entering low in the foreground. Low horizon at roughly 38 percent. No text, no logos, no readable writing, no legible interface. No people, no faces. Credible and restrained, not a luxury cliché. Restrained palette: obsidian black, walnut, chrome grey, warm amber, a controlled cyan accent. Business editorial photography, high dynamic range.",
+      "modele_recommande": "gpt_image_2_5",
+      "parametres": {
+        "quality": "high",
+        "resolution": "2k",
+        "aspect_ratio": "16:9",
+        "variant": "flare"
+      },
+      "seed": null,
+      "job_id": null,
+      "coherence": "Le plan le plus discret de la série. S'il attire l'œil plus que Food ou Property, il est raté.",
+      "crop_mobile": {
+        "x": 0.3,
+        "y": 0,
+        "l": 0.7,
+        "h": 1,
+        "note": "sujet à droite — on garde les 70 % droits"
+      }
+    },
+    {
+      "id": "aura-os",
+      "index": 6,
+      "titre": "AURA OS",
+      "etat": "a_produire_autrement",
+      "role_du_plan": "Ce n'est pas un métier. C'est le produit qui relie les cinq précédents. Il clôt la galerie et fait la jonction avec la scène 07.",
+      "role_timeline": "Scène 04, panneau 6 sur 6, puis scène 07 (mur produit).",
+      "destination": "src/medias/aura-os.webp",
+      "cadrage": "Scène produit, pas lifestyle. Un portable ouvert au centre-droit, un téléphone posé devant à gauche, un chevalet QR en verre au premier plan gauche. Vue de trois quarts, légère contre-plongée.",
+      "premier_plan": "Le chevalet QR, net, et une surface en pierre sombre.",
+      "arriere_plan": "Noir profond, structure à peine suggérée, brume magenta lointaine.",
+      "zone_texte": {
+        "x": 0.02,
+        "y": 0.08,
+        "l": 0.26,
+        "h": 0.3
+      },
+      "zone_sujet": {
+        "x": 0.3,
+        "y": 0.24,
+        "l": 0.68,
+        "h": 0.62
+      },
+      "mouvement_futur": "Ne traverse pas. Il ARRIVE au centre et s'y arrête : c'est le point de convergence de la scène 04 et le pivot vers la scène 07.",
+      "avertissement_majeur": "C'EST LE SEUL PLAN QUI NE DOIT PAS ÊTRE GÉNÉRÉ AVEC UNE INTERFACE INVENTÉE. Le mandat achat-livraison interdit d'afficher une fonctionnalité qui n'existe pas, et une capture d'interface est une promesse. Un modèle d'image produira une interface plausible mais fausse : faux chiffres, faux libellés, fausses fonctions.",
+      "methode_retenue": "Générer UNIQUEMENT le décor, les appareils éteints et la lumière — écrans noirs. Les écrans sont ensuite remplis par du VRAI HTML posé en CSS 3D sur les surfaces, exactement comme la scène 03 du prototype le fait déjà. On obtient une image nette à toute échelle, juste par construction, et qui restera juste quand le produit changera.",
+      "prompt": "Cinematic product photograph, not lifestyle. An open laptop seen in three-quarter view sits centre-right on a dark stone surface; a phone lies flat in front of it to the left; a small clear acrylic table stand sits sharp in the left foreground. ALL SCREENS ARE COMPLETELY BLACK AND OFF — no interface, no glow from the displays, no content whatsoever. Shot on a 40mm anamorphic lens at f/2, shallow depth of field, slight edge curvature, discreet horizontal flare. Lighting, in strict order: a dominant warm 2900K tungsten key from the upper left raking across the laptop's aluminium edge and the stone; a cold 6500K cyan rim at one fifth intensity along the right edges of the devices; a distant magenta bounce at eight percent in the background darkness only. Crushed blacks, no lifted shadows, controlled specular highlights on the metal. Fine filmic grain. Materials: anodised aluminium, dark stone with visible grain, clear acrylic, glass. Deep black background with barely suggested structure. Slight low angle. No text, no logos, no brand marks, no readable writing, no user interface anywhere. No people, no hands. Restrained palette: obsidian black, aluminium grey, warm amber, a controlled cyan accent. Premium product photography, high dynamic range.",
+      "modele_recommande": "gpt_image_2_5",
+      "parametres": {
+        "quality": "high",
+        "resolution": "2k",
+        "aspect_ratio": "16:9",
+        "variant": "flare"
+      },
+      "seed": null,
+      "job_id": null,
+      "coherence": "Même lumière que les cinq autres, mais un sujet fabriqué au lieu d'un lieu. C'est ce qui le désigne comme le plan produit sans qu'on ait à l'écrire.",
+      "crop_mobile": {
+        "x": 0.3,
+        "y": 0,
+        "l": 0.7,
+        "h": 1,
+        "note": "sujet à droite — on garde les 70 % droits"
+      },
+      "_note_geometrie": "La zone de texte s'arrête à 28 % : le sujet produit commence à 30 %. Une première version la poussait à 36 % et mordait sur le portable — le titre se serait posé sur l'écran."
+    }
+  ],
+  "controles_avant_integration": {
+    "_lire": "Un plan n'entre dans le site que s'il passe ces contrôles. Ils sont mécanisables et le seront.",
+    "liste": [
+      "La zone de texte déclarée est-elle réellement vide sur l'image ? Mesure : luminance moyenne du rectangle sous 40, et écart-type sous 25 — sinon la typographie sera illisible par-dessus.",
+      "Le recadrage mobile conserve-t-il l'intégralité de la zone sujet ? Mesure : intersection du crop_mobile et de zone_sujet égale à zone_sujet.",
+      "Le plan contient-il du texte ou un logo ? Contrôle visuel obligatoire — les modèles en ajoutent spontanément, et une enseigne inventée est un risque juridique.",
+      "La dominante est-elle bien ambre et non magenta ou cyan ? Mesure : teinte moyenne des 20 % de pixels les plus clairs, entre 20° et 50°.",
+      "Les noirs sont-ils écrasés ? Mesure : au moins 25 % des pixels sous une luminance de 20.",
+      "Le plan est-il cohérent avec aura-food ? Mesure : écart de teinte moyenne inférieur à 12°, écart de luminance moyenne inférieur à 18 points.",
+      "Poids après conversion en WebP : 220 Ko maximum par plan en 1600 px de large."
+    ]
+  },
+  "budget": {
+    "poids_par_plan_ko": 220,
+    "poids_total_ko": 1320,
+    "format": "WebP, qualité 82, 1600 px de large pour le desktop, 900 px pour le mobile",
+    "decodage_simultane": "2 maximum — la scène 04 n'affiche jamais plus de deux plans en pleine résolution, les autres sont en version basse"
+  }
+}
