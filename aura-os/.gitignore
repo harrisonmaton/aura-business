@@ -1,0 +1,17 @@
+# Artefacts de compilation — jamais versionnés.
+# Sans ce fichier, `git status` sur cette branche affiche plus de 10 000
+# fichiers non suivis, et le seul vrai changement s'y noie.
+node_modules/
+.next/
+dist-test/
+*.tsbuildinfo
+
+# Secrets et état local
+.env
+.env.local
+.env*.local
+
+# Scratch de la CLI Supabase : contient l'identifiant du projet lié et des
+# jetons de session. Rien de tout cela n'a sa place dans le dépôt.
+supabase/.temp/
+supabase/.branches/
