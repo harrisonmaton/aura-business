@@ -65,6 +65,27 @@ function conforme() {
   return b;
 }
 
+/* Hors seuils mais structurellement saine : le cas qui compte le plus.
+   Une image peut rater des cibles d'appréciation — noirs pas assez écrasés,
+   zone de texte plus claire que la cible — tout en restant parfaitement
+   utilisable : bon ratio, bonne définition, sujet entier, texte posable.
+
+   C'est exactement la photographie exceptionnelle qu'un seuil mathématique
+   condamnerait à tort. L'outil doit dire REVISE et sortir en 0, jamais
+   REJECT. */
+function horsSeuils() {
+  const b = conforme();
+  /* On relève le plancher : les noirs ne sont plus écrasés et la zone de texte
+     passe au-dessus de la cible des 40 — sans atteindre les 110 qui la
+     rendraient réellement inexploitable. */
+  for (let i = 0; i < b.length; i += 3) {
+    b[i] = Math.min(255, b[i] + 58);
+    b[i + 1] = Math.min(255, b[i + 1] + 52);
+    b[i + 2] = Math.min(255, b[i + 2] + 48);
+  }
+  return b;
+}
+
 /* Non conforme : zone de texte encombrée, image levée, dominante cyan,
    sujet plat. Quatre défauts distincts, qui doivent être nommés séparément. */
 function nonConforme() {
@@ -100,27 +121,42 @@ try {
   encoder(conforme(), bon);
   encoder(nonConforme(), mauvais);
 
+  const tiede = path.join(tmp, 'hors-seuils.webp');
+  encoder(horsSeuils(), tiede);
+
   const a = passer(bon);
-  const echecsA = (a.out.match(/ÉCHEC/g) || []).length;
-  ck('un plan conforme passe tous les contrôles', echecsA === 0 && a.code === 0,
-     echecsA + ' échec(s), code ' + a.code);
+  ck('un plan conforme obtient QA PASSED', /VERDICT AUTOMATIQUE : QA PASSED/.test(a.out) && a.code === 0,
+     'code ' + a.code);
+  ck('la machine ne prononce jamais MASTER APPROVED', !/VERDICT AUTOMATIQUE : MASTER APPROVED/.test(a.out),
+     /MASTER APPROVED ne peut|IL RESTE DEUX REVUES/.test(a.out) ? 'les deux revues humaines sont rappelées' : 'rappel absent');
+
+  /* Le cœur de la correction : un écart d'appréciation n'est pas un rejet. */
+  const t = passer(tiede);
+  ck('un écart d’appréciation donne REVISE, pas REJECT',
+     /VERDICT AUTOMATIQUE : REVISE/.test(t.out) && !/VERDICT AUTOMATIQUE : REJECT/.test(t.out),
+     (t.out.match(/VERDICT AUTOMATIQUE : (\w+)/) || [, '?'])[1]);
+  ck('un écart d’appréciation ne fait pas sortir en erreur', t.code === 0, 'code ' + t.code);
+  ck('aucun rejet structurel sur un plan seulement hors seuils',
+     !/REJET —/.test(t.out), (t.out.match(/REJET —/g) || []).length + ' rejet(s)');
+  ck('les écarts sont bien signalés malgré tout', (t.out.match(/⚠/g) || []).length >= 2,
+     (t.out.match(/⚠/g) || []).length + ' avertissement(s)');
 
   const b = passer(mauvais);
-  const echecsB = (b.out.match(/ÉCHEC/g) || []).length;
-  ck('un plan non conforme est refusé', b.code !== 0, 'code ' + b.code);
-  ck('les défauts sont nommés séparément', echecsB >= 4, echecsB + ' défauts relevés');
+  ck('un plan structurellement inutilisable est rejeté',
+     /VERDICT AUTOMATIQUE : REJECT/.test(b.out) && b.code !== 0, 'code ' + b.code);
 
-  /* Chaque défaut fabriqué doit être attribué au bon contrôle : un outil qui
-     échoue pour la mauvaise raison ne guide pas la correction. */
-  const attendus = [
-    ['zone de texte encombrée', /ÉCHEC.*zone de texte assez sombre/],
-    ['sujet non détaché', /ÉCHEC.*se détache du fond/],
-    ['noirs non écrasés', /ÉCHEC.*noirs écrasés/],
-    ['dominante hors ambre', /ÉCHEC.*dominante ambre/],
+  /* Le rejet doit venir du bon motif, et les autres défauts rester des
+     signaux : un outil qui rejette pour la mauvaise raison ne guide pas. */
+  ck('le rejet porte sur la zone de texte inexploitable',
+     /REJET — zone de texte exploitable/.test(b.out));
+  const signaux = [
+    ['sujet non détaché', /⚠.*se détache du fond/],
+    ['noirs non écrasés', /⚠.*noirs écrasés/],
+    ['dominante hors ambre', /⚠.*dominante ambre/],
   ];
-  const rates = attendus.filter(([, re]) => !re.test(b.out)).map(([n]) => n);
-  ck('chaque défaut est attribué au bon contrôle', rates.length === 0,
-     rates.length ? 'non détecté : ' + rates.join(', ') : '4/4');
+  const rates = signaux.filter(([, re]) => !re.test(b.out)).map(([n]) => n);
+  ck('les autres défauts restent des appréciations', rates.length === 0,
+     rates.length ? 'non signalé : ' + rates.join(', ') : '3/3');
 
   /* Le piège numérique qui a déjà mordu : une zone parfaitement unie. */
   ck('aucune mesure ne rend NaN sur une zone unie', !/NaN/.test(a.out),

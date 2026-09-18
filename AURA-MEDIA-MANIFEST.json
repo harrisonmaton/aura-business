@@ -1,6 +1,6 @@
 {
   "_lire": "Le système média d'Aura. Six plans d'un même film, pas six images. Ce fichier est la source de vérité : un plan qui n'y figure pas ne doit pas entrer dans le site, et un plan qui y figure doit pouvoir être régénéré à l'identique par quelqu'un d'autre que moi.",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "etabli_le": "2026-09-18",
   "_blocage": {
     "resume": "Aucun des six plans n'a pu être produit depuis cette session. Deux obstacles indépendants, tous deux vérifiés, aucun contournable par le code.",
@@ -404,16 +404,55 @@
     }
   ],
   "controles_avant_integration": {
-    "_lire": "Un plan n'entre dans le site que s'il passe ces contrôles. Ils sont mécanisables et le seront.",
-    "liste": [
-      "La zone de texte déclarée est-elle réellement vide sur l'image ? Mesure : luminance moyenne du rectangle sous 40, et écart-type sous 25 — sinon la typographie sera illisible par-dessus.",
-      "Le recadrage mobile conserve-t-il l'intégralité de la zone sujet ? Mesure : intersection du crop_mobile et de zone_sujet égale à zone_sujet.",
-      "Le plan contient-il du texte ou un logo ? Contrôle visuel obligatoire — les modèles en ajoutent spontanément, et une enseigne inventée est un risque juridique.",
-      "La dominante est-elle bien ambre et non magenta ou cyan ? Mesure : teinte moyenne des 20 % de pixels les plus clairs, entre 20° et 50°.",
-      "Les noirs sont-ils écrasés ? Mesure : au moins 25 % des pixels sous une luminance de 20.",
-      "Le plan est-il cohérent avec aura-food ? Mesure : écart de teinte moyenne inférieur à 12°, écart de luminance moyenne inférieur à 18 points.",
-      "Poids après conversion en WebP : 220 Ko maximum par plan en 1600 px de large."
-    ]
+    "_lire": "Correction du 18 septembre 2026. La première version faisait de chaque mesure un verdict — un plan qui ratait un seuil de teinte ou de luminance était recalé. C était faux : une photographie exceptionnelle peut rater un seuil et rester meilleure que la conforme. L outil est un instrument de diagnostic, pas un directeur artistique.",
+    "structurel_bloquant": {
+      "_lire": "Des faits, pas des goûts. Un plan qui échoue ici ne peut pas entrer, quelle que soit sa beauté.",
+      "liste": [
+        "le fichier se décode",
+        "définition ≥ 1600 px de large",
+        "ratio 16:9",
+        "le recadrage mobile n ampute pas la zone sujet",
+        "la zone de texte reste exploitable — luminance moyenne sous 110, au-delà de quoi du texte clair disparaît",
+        "poids sous la limite critique de 440 Ko",
+        "aucun texte, logo ou enseigne lisible dans l image — BLOQUANT, mais vérifié par un humain : un OCR qui se trompe est pire qu une case à cocher"
+      ]
+    },
+    "appreciation_indicatif": {
+      "_lire": "Des signaux portés à l œil humain. Ils ne condamnent jamais et ne font jamais sortir l outil en erreur.",
+      "liste": [
+        "luminance de la zone de texte, cible sous 40",
+        "uniformité de la zone de texte, écart-type cible sous 25",
+        "poids dans le budget de 220 Ko",
+        "densité de contours du sujet contre la zone vide, cible au moins double",
+        "niveau des noirs, cible au moins 25 % des pixels sous 20",
+        "température — dominante des hautes lumières, cible entre 20° et 50°",
+        "écart de teinte avec le master, cible sous 12°",
+        "écart de luminance avec le master, cible sous 18"
+      ]
+    },
+    "verdicts": {
+      "REJECT": "au moins un point structurel en échec. Le plan ne peut pas entrer en l état.",
+      "REVISE": "aucun point structurel en échec, mais des écarts d appréciation. À trancher à l œil.",
+      "QA PASSED": "aucun écart mesuré. Ce n est PAS une approbation.",
+      "MASTER_APPROVED": "ne peut être prononcé QUE par un humain, après VISUAL REVIEW et MOTION FITNESS REVIEW. La machine ne l écrit jamais."
+    },
+    "revues_humaines": {
+      "visual_review": [
+        "aucun texte ou logo généré",
+        "la clé vient-elle du sujet",
+        "cadrage et respiration",
+        "profondeur réelle",
+        "niveau de luxe",
+        "est-ce le même film que le master"
+      ],
+      "motion_fitness_review": [
+        "supporte la traversée sans révéler de bord",
+        "reste lisible agrandi de 8 %",
+        "la zone de texte tient pendant le déplacement",
+        "le recadrage mobile raconte encore la même chose"
+      ]
+    },
+    "integration": "Un asset validé n entre PAS automatiquement dans la scène 04. L intégration attend la validation humaine du master."
   },
   "budget": {
     "poids_par_plan_ko": 220,
