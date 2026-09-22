@@ -1,0 +1,339 @@
+{
+  "instagram": {
+    "handle": "@polakpl_f44",
+    "url": "https://www.instagram.com/polakpl_f44/"
+  },
+  "zones": [
+    "Estinnes",
+    "Mons",
+    "Binche",
+    "La Louvière"
+  ],
+  "_regle": "AUCUN prix, AUCUNE référence fournisseur, AUCUN nom, logo ou marquage de marque tierce. `accroche` décrit l'apparence, jamais une caractéristique technique. `specs` ne contient QUE ce qui est confirmé pour CE modèle (clés : base, mouvement, verre, materiaux, diametre, etancheite ; vide = non affiché). `base` : renseigner « Seiko mod » uniquement si la pièce est réellement montée sur base ou mouvement Seiko. `visuel` : « illustration » tant que la photo est un rendu AURA, « reelle » une fois remplacée par une photo de la pièce effectivement vendue.",
+  "modeles": [
+    {
+      "n": "01",
+      "slug": "lagoon",
+      "nom": "AURA LAGOON",
+      "ligne": "Sport • Bleu glacier",
+      "accroche": [
+        "Un bleu clair presque liquide.",
+        "Une silhouette sportive au contraste net."
+      ],
+      "specs": {
+        "mouvement": "Automatique",
+        "verre": "Saphir traité anti-rayures et antireflet",
+        "materiaux": "Acier inoxydable",
+        "diametre": "41 mm",
+        "etancheite": "10 bar / 100 m"
+      },
+      "visuel": "illustration"
+    },
+    {
+      "n": "02",
+      "slug": "obsidian",
+      "nom": "AURA OBSIDIAN",
+      "ligne": "Sport • Noir argent",
+      "accroche": [
+        "Noir profond sur lignes argentées.",
+        "Une présence sobre et graphique."
+      ],
+      "specs": {
+        "mouvement": "Automatique",
+        "verre": "Saphir traité anti-rayures et antireflet",
+        "materiaux": "Acier inoxydable",
+        "diametre": "41 mm",
+        "etancheite": "10 bar / 100 m"
+      },
+      "visuel": "illustration"
+    },
+    {
+      "n": "03",
+      "slug": "sunset",
+      "nom": "AURA SUNSET",
+      "ligne": "Sport • Orange",
+      "accroche": [
+        "Un orange franc, presque solaire.",
+        "Le noir du cadran calme l'ensemble."
+      ],
+      "specs": {
+        "mouvement": "Automatique",
+        "verre": "Saphir traité anti-rayures et antireflet",
+        "materiaux": "Acier inoxydable",
+        "diametre": "41 mm",
+        "etancheite": "10 bar / 100 m"
+      },
+      "visuel": "illustration"
+    },
+    {
+      "n": "04",
+      "slug": "cacao",
+      "nom": "AURA CACAO",
+      "ligne": "Sport • Brun argent",
+      "accroche": [
+        "Des tons bruns doux et profonds.",
+        "L'argent apporte une touche plus froide."
+      ],
+      "specs": {
+        "mouvement": "Automatique",
+        "verre": "Saphir traité anti-rayures et antireflet",
+        "materiaux": "Acier inoxydable",
+        "diametre": "41 mm",
+        "etancheite": "10 bar / 100 m"
+      },
+      "visuel": "illustration"
+    },
+    {
+      "n": "05",
+      "slug": "late",
+      "nom": "AURA LATE",
+      "ligne": "Habillée • Graphique",
+      "accroche": [
+        "Un cadran blanc volontairement décalé.",
+        "Le trait bleu lui donne son caractère."
+      ],
+      "specs": {
+        "mouvement": "Automatique",
+        "verre": "Saphir traité anti-rayures et antireflet",
+        "materiaux": "Acier inoxydable",
+        "diametre": "39 mm",
+        "etancheite": "10 bar / 100 m"
+      },
+      "visuel": "illustration"
+    },
+    {
+      "n": "06",
+      "slug": "emerald",
+      "nom": "AURA EMERALD",
+      "ligne": "Habillée • Vert arabe",
+      "accroche": [
+        "Un vert intense ponctué de chiffres arabes.",
+        "La date crée un détail plus technique."
+      ],
+      "specs": {
+        "mouvement": "Automatique",
+        "verre": "Saphir traité anti-rayures et antireflet",
+        "materiaux": "Acier inoxydable",
+        "diametre": "39 mm",
+        "etancheite": "10 bar / 100 m"
+      },
+      "visuel": "illustration"
+    },
+    {
+      "n": "07",
+      "slug": "azur",
+      "nom": "AURA AZUR",
+      "ligne": "Habillée • Bleu arabe",
+      "accroche": [
+        "Un bleu profond rythmé de chiffres arabes.",
+        "Le cadran reste net et très présent."
+      ],
+      "specs": {
+        "mouvement": "Automatique",
+        "verre": "Saphir traité anti-rayures et antireflet",
+        "materiaux": "Acier inoxydable",
+        "diametre": "39 mm",
+        "etancheite": "10 bar / 100 m"
+      },
+      "visuel": "illustration"
+    },
+    {
+      "n": "08",
+      "slug": "jade",
+      "nom": "AURA JADE",
+      "ligne": "Habillée • Vert soleillé",
+      "accroche": [
+        "Un vert soleillé qui change avec la lumière.",
+        "Les chiffres arabes gardent l'ensemble singulier."
+      ],
+      "specs": {
+        "mouvement": "Automatique",
+        "verre": "Saphir traité anti-rayures et antireflet",
+        "materiaux": "Acier inoxydable",
+        "diametre": "39 mm",
+        "etancheite": "10 bar / 100 m"
+      },
+      "visuel": "illustration"
+    },
+    {
+      "n": "09",
+      "slug": "carre-ivory",
+      "nom": "AURA CARRÉ IVORY",
+      "ligne": "Carrée • Blanc",
+      "accroche": [
+        "Un cadran blanc encadré de lignes droites.",
+        "Chiffres romains, aiguilles bleuies."
+      ],
+      "specs": {
+        "mouvement": "Automatique",
+        "verre": "Saphir traité anti-rayures et antireflet",
+        "materiaux": "Acier inoxydable",
+        "diametre": "42 mm",
+        "etancheite": "10 bar / 100 m"
+      },
+      "visuel": "reelle"
+    },
+    {
+      "n": "10",
+      "slug": "carre-noir",
+      "nom": "AURA CARRÉ NOIR",
+      "ligne": "Carrée • Noir intégral",
+      "accroche": [
+        "Une architecture carrée entièrement noire.",
+        "Les chiffres romains apparaissent en contraste."
+      ],
+      "specs": {
+        "mouvement": "Automatique",
+        "verre": "Saphir traité anti-rayures et antireflet",
+        "materiaux": "Acier inoxydable",
+        "diametre": "42 mm",
+        "etancheite": "10 bar / 100 m"
+      },
+      "visuel": "illustration"
+    },
+    {
+      "n": "11",
+      "slug": "ocean-blue",
+      "nom": "AURA OCEAN BLUE",
+      "ligne": "Sport chic • Bleu",
+      "accroche": [
+        "Un bleu nuit dégradé, traversé de lignes horizontales.",
+        "La silhouette intégrée reste très fluide."
+      ],
+      "specs": {
+        "mouvement": "Automatique",
+        "verre": "Saphir traité anti-rayures et antireflet",
+        "materiaux": "Acier inoxydable",
+        "diametre": "41 mm",
+        "etancheite": "10 bar / 100 m"
+      },
+      "visuel": "reelle"
+    },
+    {
+      "n": "12",
+      "slug": "polar",
+      "nom": "AURA POLAR",
+      "ligne": "Sport chic • Blanc",
+      "accroche": [
+        "Un cadran blanc à la présence très lumineuse.",
+        "La silhouette intégrée reste nette et épurée."
+      ],
+      "specs": {
+        "mouvement": "Automatique",
+        "verre": "Saphir traité anti-rayures et antireflet",
+        "materiaux": "Acier inoxydable",
+        "diametre": "41 mm",
+        "etancheite": "10 bar / 100 m"
+      },
+      "visuel": "illustration"
+    },
+    {
+      "n": "13",
+      "slug": "open-rose",
+      "nom": "AURA OPEN ROSE",
+      "ligne": "Open heart • Rose noir",
+      "accroche": [
+        "Une teinte rose chaude autour d'un cadran noir.",
+        "L'ouverture révèle un détail mécanique au centre du regard."
+      ],
+      "specs": {
+        "mouvement": "Automatique",
+        "verre": "Saphir traité anti-rayures et antireflet",
+        "materiaux": "Acier inoxydable",
+        "diametre": "41 mm",
+        "etancheite": "10 bar / 100 m"
+      },
+      "visuel": "illustration"
+    },
+    {
+      "n": "14",
+      "slug": "octa-noir",
+      "nom": "AURA OCTA NOIR",
+      "ligne": "Octogonale • Noir",
+      "accroche": [
+        "Un cadran noir dans une géométrie octogonale.",
+        "L'ensemble reste dense et monochrome."
+      ],
+      "specs": {
+        "mouvement": "Automatique",
+        "verre": "Saphir traité anti-rayures et antireflet",
+        "materiaux": "Acier inoxydable",
+        "diametre": "41 mm",
+        "etancheite": "10 bar / 100 m"
+      },
+      "visuel": "illustration"
+    },
+    {
+      "n": "15",
+      "slug": "octa-blue",
+      "nom": "AURA OCTA BLUE",
+      "ligne": "Octogonale • Bleu",
+      "accroche": [
+        "Un bleu profond dans un cadre octogonal.",
+        "Les surfaces argentées accrochent la lumière."
+      ],
+      "specs": {
+        "mouvement": "Automatique",
+        "verre": "Saphir traité anti-rayures et antireflet",
+        "materiaux": "Acier inoxydable",
+        "diametre": "41 mm",
+        "etancheite": "10 bar / 100 m"
+      },
+      "visuel": "illustration"
+    },
+    {
+      "n": "16",
+      "slug": "skeleton-black",
+      "nom": "AURA SKELETON BLACK",
+      "ligne": "Squelette • Noir",
+      "accroche": [
+        "Un boîtier tonneau noir au cadran ouvert.",
+        "Les rouages deviennent le décor."
+      ],
+      "specs": {
+        "mouvement": "Automatique",
+        "verre": "Saphir traité anti-rayures et antireflet",
+        "materiaux": "Acier inoxydable",
+        "diametre": "42 mm",
+        "etancheite": "10 bar / 100 m"
+      },
+      "visuel": "illustration"
+    },
+    {
+      "n": "17",
+      "slug": "skull-blue",
+      "nom": "AURA SKULL BLUE",
+      "ligne": "Squelette • Bleu",
+      "accroche": [
+        "Noir mat, bleu électrique et motif skull.",
+        "Une pièce volontairement spectaculaire."
+      ],
+      "specs": {
+        "mouvement": "Automatique",
+        "verre": "Saphir traité anti-rayures et antireflet",
+        "materiaux": "Acier inoxydable",
+        "diametre": "42 mm",
+        "etancheite": "10 bar / 100 m"
+      },
+      "visuel": "illustration"
+    },
+    {
+      "n": "18",
+      "slug": "skull-silver",
+      "nom": "AURA SKULL SILVER",
+      "ligne": "Squelette • Argent",
+      "accroche": [
+        "Argent froid, noir profond et motif skull.",
+        "Le cadran ajouré concentre toute l'attention."
+      ],
+      "specs": {
+        "mouvement": "Automatique",
+        "verre": "Saphir traité anti-rayures et antireflet",
+        "materiaux": "Acier inoxydable",
+        "diametre": "42 mm",
+        "etancheite": "10 bar / 100 m"
+      },
+      "visuel": "illustration"
+    }
+  ]
+}
