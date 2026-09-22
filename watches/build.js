@@ -19,13 +19,16 @@ const titreModele = nom => nom.replace(/^AURA /, '');
 
 const SPEC_LIBELLES = { base: 'Base', mouvement: 'Mouvement', verre: 'Verre', materiaux: 'Matériaux', diametre: 'Diamètre', etancheite: 'Étanchéité' };
 
-function tete({ titre, description, base, image, jsonld }) {
+/* Showroom privé : partagé par lien, jamais indexé. Aucune donnée structurée SEO. */
+function tete({ titre, description, base, image }) {
   return `<!doctype html>
 <html lang="fr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>${esc(titre)}</title>
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="googlebot" content="noindex, nofollow">
 <meta name="description" content="${esc(description)}">
 <meta name="theme-color" content="#070609">
 <meta property="og:type" content="website">
@@ -39,7 +42,6 @@ function tete({ titre, description, base, image, jsonld }) {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Mrs+Saint+Delafield&display=swap">
 <link rel="stylesheet" href="${base}assets/aura.css">
-<script type="application/ld+json">${JSON.stringify(jsonld)}</script>
 </head>`;
 }
 
@@ -57,7 +59,7 @@ function entete(base, accueil) {
 function pied(base) {
   return `<footer class="pied">
   <div>
-    <p class="sign">More than time. A lifestyle called Aura.</p>
+    <p class="sign">Private showroom • By appointment • ${esc(HANDLE)}</p>
     <p style="margin-top:18px">AURA WATCHES est une maison indépendante de montres custom, dont des Seiko mods lorsque la pièce est montée sur base ou mouvement Seiko, préparées sur commande via un atelier partenaire. Aucune pièce n’est présentée comme une montre d’une autre maison, et aucune ne porte de logo ou de marquage d’une marque tierce. La pièce remise correspond à celle présentée. Tarif, disponibilité et délai communiqués individuellement, en privé. Remise en main propre uniquement : ${D.zones.join(', ')}.</p>
   </div>
   <a class="lien" href="${IG}" target="_blank" rel="noopener">${esc(HANDLE)} ↗</a>
@@ -88,29 +90,20 @@ function carte(m, base, classe = '') {
 }
 
 /* Demande privée : lien réel vers le profil + copie du message par aura.js. */
-function demande(m, libelle = 'Demander le prix', classe = 'cta') {
+function demande(m, libelle = 'Demander les détails en privé', classe = 'cta') {
   const attr = m ? esc(m.nom) : '';
   return `<a class="${classe}" href="${IG}" target="_blank" rel="noopener" data-demande="${attr}">${libelle} <span aria-hidden="true">→</span></a>`;
 }
 
-const ORGA = { '@type': 'Organization', name: 'AURA WATCHES', sameAs: [IG] };
 
 /* ─── Accueil ────────────────────────────────────────────────────────── */
 function accueil() {
   const base = '';
   const trois = ['ocean-blue', 'carre-ivory', 'open-rose'].map(s => parSlug[s]);
   const finale = aPhoto('open-rose') ? parSlug['open-rose'] : (M.find(m => aPhoto(m.slug)) || parSlug['open-rose']);
-  const jsonld = {
-    '@context': 'https://schema.org',
-    '@graph': [
-      ORGA,
-      { '@type': 'ItemList', name: 'The Aura Edit', itemListElement: M.map((m, i) => ({
-        '@type': 'ListItem', position: i + 1, url: `montre/${m.slug}.html`, name: m.nom })) }
-    ]
-  };
   const faq = [
     ['Pourquoi le tarif n’est-il pas affiché ?', 'Chaque demande est traitée individuellement. Disponibilité, tarif et délai sont confirmés en privé avant validation.'],
-    ['Comment faire une demande ?', `Ouvrez la pièce qui vous parle et touchez « Demander le prix ». Un message est copié, notre profil Instagram ${HANDLE} s’ouvre : collez-le dans la conversation.`],
+    ['Comment faire une demande ?', `Ouvrez la pièce qui vous parle et touchez « Demander les détails en privé ». Un message est copié, notre profil Instagram ${HANDLE} s’ouvre : collez-le dans la conversation.`],
     ['Comment se passe le paiement ?', 'Paiement intégral par virement bancaire, uniquement après confirmation en privé de la pièce, du tarif et du délai. Aucun paiement sur ce site.'],
     ['Quel est le délai ?', 'Chaque pièce est préparée sur commande. Un délai indicatif vous est communiqué avant validation.'],
     ['Où a lieu la remise ?', `En main propre uniquement : ${D.zones.join(', ')}. Pas d’envoi postal.`],
@@ -120,9 +113,9 @@ function accueil() {
   ];
 
   return tete({
-    titre: 'AURA WATCHES — Sélection privée de montres custom',
-    description: 'Sélection privée de montres custom. Des pièces choisies pour leur présence. Disponibilité et tarif communiqués en privé. Remise en main propre à Estinnes, Mons, Binche et La Louvière.',
-    base, image: 'bg-hero.webp', jsonld
+    titre: 'AURA WATCHES — Private Selection',
+    description: 'Private showroom AURA WATCHES. Une sélection de pièces custom présentée uniquement sur invitation.',
+    base, image: 'bg-hero.webp'
   }) + `
 <body>
 ${entete(base, true)}
@@ -135,13 +128,13 @@ ${entete(base, true)}
   <div class="hero__corps">
     <h1>AURA<span>WATCHES</span></h1>
     <div class="hero__droite">
-      <p class="display">Sélection privée<br>de montres custom</p>
-      <p class="texte">Des pièces choisies pour leur présence.<br>Disponibilité et tarif communiqués en privé.</p>
+      <p class="display">Private<br>Selection</p>
+      <p class="texte">Une sélection de pièces custom présentée uniquement sur invitation.</p>
       <div class="hero__actions">
-        <a class="cta" href="#selection">Découvrir la sélection <span aria-hidden="true">→</span></a>
+        <a class="cta" href="#selection">Entrer dans la sélection <span aria-hidden="true">→</span></a>
         <a class="lien" href="${IG}" target="_blank" rel="noopener">Instagram ↗</a>
       </div>
-      <p class="hero__micro">Sur commande<b>•</b>Remise en main propre</p>
+      <p class="hero__micro">Sur invitation<b>•</b>Remise en main propre</p>
     </div>
   </div>
 </section>
@@ -203,7 +196,7 @@ ${M.map(m => carte(m, base)).join('\n')}
   </div>
   <div class="etapes revele">
     <div class="etape"><b>01</b><h3>Découvrir</h3><p>Parcourez la sélection et ouvrez la pièce qui vous parle.</p></div>
-    <div class="etape"><b>02</b><h3>Demander en privé</h3><p>« Demander le prix » ouvre ${esc(HANDLE)}, message prêt à coller.</p></div>
+    <div class="etape"><b>02</b><h3>Demander en privé</h3><p>« Demander les détails en privé » ouvre ${esc(HANDLE)}, message prêt à coller.</p></div>
     <div class="etape"><b>03</b><h3>Confirmer</h3><p>Disponibilité, tarif, caractéristiques, délai et conditions, en privé. Puis virement intégral.</p></div>
     <div class="etape"><b>04</b><h3>Recevoir</h3><p>Préparation par l’atelier partenaire, contrôle AURA, remise en main propre.</p></div>
   </div>
@@ -258,7 +251,7 @@ ${['lagoon', 'emerald', 'carre-ivory', 'octa-blue', 'skull-silver'].map(k => par
     <span class="sur">Find your Aura</span>
     <h2 class="titre" id="t-final" style="margin-top:24px">Find your <em>Aura.</em></h2>
     <p class="texte" style="margin:28px 0 40px">Découvrez votre prochaine pièce.</p>
-    ${demande(null, 'Demander le prix en privé', 'cta cta--xxl')}
+    ${demande(null, 'Demander les détails en privé', 'cta cta--xxl')}
     <p class="final__sous"><a href="${IG}" target="_blank" rel="noopener">${esc(HANDLE)}</a><br>Disponibilité • tarif • délai<br>confirmés individuellement.</p>
   </div>
   <div class="final__piece revele">${visuel(finale, '', 'loading="lazy"')}</div>
@@ -279,18 +272,10 @@ function fiche(m) {
   const i = M.indexOf(m);
   const autres = [1, 2, 3].map(k => M[(i + k) % M.length]);
   const specs = Object.entries(m.specs || {}).filter(([k, v]) => SPEC_LIBELLES[k] && String(v).trim());
-  const jsonld = {
-    '@context': 'https://schema.org',
-    '@type': 'Product',
-    name: m.nom,
-    description: m.accroche.join(' '),
-    image: `${base}img/${m.slug}.webp`,
-    brand: { '@type': 'Brand', name: 'AURA WATCHES' }
-  };
   return tete({
     titre: `${m.nom} — AURA WATCHES`,
     description: `${m.nom}. ${m.accroche.join(' ')} Tarif et disponibilité communiqués en privé.`,
-    base, image: `${m.slug}.webp`, jsonld
+    base, image: `${m.slug}.webp`
   }) + `
 <body>
 ${entete(base, false)}
@@ -307,7 +292,7 @@ ${entete(base, false)}
     <h1 class="titre" style="margin-top:22px">AURA<br><em>${esc(titreModele(m.nom))}</em></h1>
     <p class="ligne">${esc(m.ligne.replace(' • ', ' / '))}</p>
     <p class="fiche__accroche">${m.accroche.map(esc).join('<br>')}</p>
-    <div data-barre-apres>${demande(m, 'Demander le prix', 'cta cta--xxl')}</div>
+    <div data-barre-apres>${demande(m, 'Demander les détails en privé', 'cta cta--xxl')}</div>
     <p class="fiche__micro">Tarif &amp; disponibilité communiqués en privé.<br>Le message est copié : collez-le dans la conversation Instagram.</p>
     <p style="margin-top:28px"><a class="lien" href="${IG}" target="_blank" rel="noopener">Voir notre Instagram ↗</a></p>
   </div>
@@ -346,12 +331,13 @@ ${autres.map(a => carte(a, base)).join('\n')}
 
 <div class="barre" aria-label="Demande privée" data-toujours>
   <span class="barre__nom">${esc(m.nom)}</span>
-  ${demande(m, 'Demander le prix')}
+  ${demande(m, 'Détails en privé')}
 </div>
 ` + pied(base);
 }
 
 fs.writeFileSync(path.join(RACINE, 'index.html'), accueil());
+fs.writeFileSync(path.join(RACINE, 'robots.txt'), 'User-agent: *\nDisallow: /\n');
 for (const m of M) fs.writeFileSync(path.join(RACINE, 'montre', `${m.slug}.html`), fiche(m));
 console.log(`AURA WATCHES : accueil + ${M.length} fiches générés.`);
 if (MANQUANTES.length) console.log(`Photos AURA manquantes (${MANQUANTES.length}) : ${MANQUANTES.join(', ')}`);

@@ -1,5 +1,7 @@
 # AURA WATCHES — showroom privé
 
+Partagé uniquement par lien privé : `noindex, nofollow` sur chaque page, `robots.txt` qui interdit tout, aucune donnée structurée SEO.
+
 Site statique, sans panier, sans paiement, sans aucun prix affiché. La vente se fait en message privé sur Instagram.
 
 - `data/modeles.json` : **source unique**. Handle Instagram, zones de remise, les dix modèles.

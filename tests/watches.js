@@ -55,6 +55,22 @@ for (const f of sources) {
   ck(`aucune trace fournisseur ni panier — ${rel}`, com.length === 0, com.join(' ') || undefined);
 }
 
+/* Showroom privé : jamais indexé, aucune route de paiement, aucune promesse de stock. */
+const robots = fs.existsSync(path.join(RACINE, 'robots.txt')) ? fs.readFileSync(path.join(RACINE, 'robots.txt'), 'utf8') : '';
+const robotsOk = /User-agent:\s*\*[\s\S]*Disallow:\s*\/\s*$/m.test(robots);
+ck('robots.txt : tout est interdit aux moteurs', robotsOk, robotsOk ? undefined : (robots.trim().replace(/\n/g, ' | ') || 'absent'));
+const ROUTES_PAIEMENT = /checkout|panier|cart|basket|paiement|payment|commande-en-ligne/i;
+const routes = fichiers(RACINE, ['.html', '.js', '.json']).map(f => path.relative(RACINE, f)).filter(r => ROUTES_PAIEMENT.test(r));
+ck('aucune route publique de paiement', routes.length === 0, routes.join(' ') || undefined);
+for (const f of pages) {
+  const t = fs.readFileSync(f, 'utf8');
+  const rel = path.relative(RACINE, f);
+  ck(`robots noindex, nofollow — ${rel}`, /<meta name="robots" content="[^"]*noindex[^"]*nofollow/.test(t));
+  ck(`aucune donnée structurée SEO — ${rel}`, !/application\/ld\+json|itemtype=|schema\.org/i.test(t));
+  ck(`aucune promesse de stock — ${rel}`, !/en stock|stock garanti|disponible immédiatement|expédi|livraison (rapide|immédiate|gratuite)/i.test(t));
+  ck(`aucun lien vers une route de paiement — ${rel}`, ![...t.matchAll(/href="([^"]+)"/g)].some(m => ROUTES_PAIEMENT.test(m[1])));
+}
+
 let liensIg = 0;
 for (const f of pages) {
   const t = fs.readFileSync(f, 'utf8');
@@ -120,7 +136,7 @@ const serveur = http.createServer((q, r) => {
         const [onglet] = await Promise.all([ctx.waitForEvent('page', { timeout: 5000 }).catch(() => null), cta.click()]);
         if (onglet) await onglet.waitForLoadState().catch(() => {});
         const copie = await page.evaluate(() => navigator.clipboard.readText());
-        const attendu = `Salut 👋 Je voudrais avoir le prix et vérifier la disponibilité de l’${m.nom}.`;
+        const attendu = `Salut 👋 Je voudrais recevoir les détails en privé de l’${m.nom} (prix et disponibilité).`;
         ck(`${profil} — ${m.nom} : message copié`, copie === attendu, copie);
         ck(`${profil} — ${m.nom} : toast affiché`, (await page.locator('.toast.visible').textContent().catch(() => '')) === 'Message copié — envoyez-le-nous sur Instagram.');
         ck(`${profil} — ${m.nom} : ouvre exactement le profil`, !!onglet && onglet.url() === IG, onglet && onglet.url());

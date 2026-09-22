@@ -8,7 +8,7 @@
 
   function message(modele) {
     return modele
-      ? 'Salut 👋 Je voudrais avoir le prix et vérifier la disponibilité de l’' + modele + '.'
+      ? 'Salut 👋 Je voudrais recevoir les détails en privé de l’' + modele + ' (prix et disponibilité).'
       : 'Salut 👋 Je voudrais découvrir la sélection AURA et connaître les disponibilités.';
   }
 
