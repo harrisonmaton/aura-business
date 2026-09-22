@@ -1,0 +1,125 @@
+{
+  "instagram": {
+    "handle": "@polakpl_f44",
+    "url": "https://www.instagram.com/polakpl_f44/"
+  },
+  "zones": [
+    "Estinnes",
+    "Mons",
+    "Binche",
+    "La Louvière"
+  ],
+  "_regle": "AUCUN prix, AUCUNE référence fournisseur. `accroche` décrit l'apparence (couleurs, formes), jamais un matériau ou un mouvement. `specs` ne contient QUE des caractéristiques confirmées pour CE modèle : vide = section non affichée. Clés possibles : mouvement, verre, materiaux, diametre, etancheite.",
+  "modeles": [
+    {
+      "n": "01",
+      "slug": "ruby",
+      "nom": "AURA RUBY",
+      "ligne": "Chronographe • Statement",
+      "accroche": [
+        "Une présence radicale.",
+        "Noir profond et éclat ruby."
+      ],
+      "specs": {}
+    },
+    {
+      "n": "02",
+      "slug": "black-chrono",
+      "nom": "AURA BLACK CHRONO",
+      "ligne": "Chronographe • Noir",
+      "accroche": [
+        "Le noir, sans concession.",
+        "Lunette sombre, lecture nette."
+      ],
+      "specs": {}
+    },
+    {
+      "n": "03",
+      "slug": "batman-gmt",
+      "nom": "AURA BATMAN GMT",
+      "ligne": "GMT • Bleu & noir",
+      "accroche": [
+        "Deux fuseaux, une allure.",
+        "Bleu nuit et noir."
+      ],
+      "specs": {}
+    },
+    {
+      "n": "04",
+      "slug": "pepsi-gmt",
+      "nom": "AURA PEPSI GMT",
+      "ligne": "GMT • Rouge & bleu",
+      "accroche": [
+        "Le voyageur en couleurs.",
+        "Rouge couchant, bleu océan."
+      ],
+      "specs": {}
+    },
+    {
+      "n": "05",
+      "slug": "sub-black",
+      "nom": "AURA SUB BLACK",
+      "ligne": "Plongée • Noir",
+      "accroche": [
+        "L'essentiel, en profondeur.",
+        "Une lunette noire, rien de trop."
+      ],
+      "specs": {}
+    },
+    {
+      "n": "06",
+      "slug": "arabic-green",
+      "nom": "AURA ARABIC GREEN",
+      "ligne": "Trois aiguilles • Vert",
+      "accroche": [
+        "Le vert, en toute discrétion.",
+        "Chiffres arabes, cadran soleillé."
+      ],
+      "specs": {}
+    },
+    {
+      "n": "07",
+      "slug": "santos-steel",
+      "nom": "AURA SANTOS STEEL",
+      "ligne": "Carrée • Argent",
+      "accroche": [
+        "La ligne droite.",
+        "Boîtier carré, chiffres romains."
+      ],
+      "specs": {}
+    },
+    {
+      "n": "08",
+      "slug": "nautilus-blue",
+      "nom": "AURA NAUTILUS BLUE",
+      "ligne": "Sport chic • Bleu",
+      "accroche": [
+        "Le calme du large.",
+        "Cadran bleu strié, finition argentée."
+      ],
+      "specs": {}
+    },
+    {
+      "n": "09",
+      "slug": "rainbow",
+      "nom": "AURA RAINBOW",
+      "ligne": "Chronographe • Rose doré",
+      "accroche": [
+        "Toute la lumière de Miami.",
+        "Teinte rose dorée, lunette arc-en-ciel."
+      ],
+      "specs": {}
+    },
+    {
+      "n": "10",
+      "slug": "skeleton",
+      "nom": "AURA SKELETON",
+      "ligne": "Squelette • Noir",
+      "accroche": [
+        "Le cœur à nu.",
+        "Boîtier noir, cadran ajouré."
+      ],
+      "specs": {}
+    }
+  ]
+}
