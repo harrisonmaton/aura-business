@@ -17,7 +17,7 @@ if (IG !== 'https://www.instagram.com/polakpl_f44/') throw new Error('URL Instag
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const titreModele = nom => nom.replace(/^AURA /, '');
 
-const SPEC_LIBELLES = { mouvement: 'Mouvement', verre: 'Verre', materiaux: 'Matériaux', diametre: 'Diamètre', etancheite: 'Étanchéité' };
+const SPEC_LIBELLES = { base: 'Base', mouvement: 'Mouvement', verre: 'Verre', materiaux: 'Matériaux', diametre: 'Diamètre', etancheite: 'Étanchéité' };
 
 function tete({ titre, description, base, image, jsonld }) {
   return `<!doctype html>
@@ -58,7 +58,7 @@ function pied(base) {
   return `<footer class="pied">
   <div>
     <p class="sign">More than time. A lifestyle called Aura.</p>
-    <p style="margin-top:18px">AURA WATCHES est une maison indépendante qui sélectionne des montres custom, préparées sur commande via un atelier partenaire. Sans affiliation avec aucune manufacture horlogère. Tarif, disponibilité et délai communiqués individuellement, en privé. Remise en main propre uniquement : ${D.zones.join(', ')}.</p>
+    <p style="margin-top:18px">AURA WATCHES est une maison indépendante de montres custom, dont des Seiko mods lorsque la pièce est montée sur base ou mouvement Seiko, préparées sur commande via un atelier partenaire. Aucune pièce n’est présentée comme une montre d’une autre maison, et aucune ne porte de logo ou de marquage d’une marque tierce. La pièce remise correspond à celle présentée. Tarif, disponibilité et délai communiqués individuellement, en privé. Remise en main propre uniquement : ${D.zones.join(', ')}.</p>
   </div>
   <a class="lien" href="${IG}" target="_blank" rel="noopener">${esc(HANDLE)} ↗</a>
 </footer>
@@ -114,7 +114,8 @@ function accueil() {
     ['Comment se passe le paiement ?', 'Paiement intégral par virement bancaire, uniquement après confirmation en privé de la pièce, du tarif et du délai. Aucun paiement sur ce site.'],
     ['Quel est le délai ?', 'Chaque pièce est préparée sur commande. Un délai indicatif vous est communiqué avant validation.'],
     ['Où a lieu la remise ?', `En main propre uniquement : ${D.zones.join(', ')}. Pas d’envoi postal.`],
-    ['S’agit-il de montres de grandes maisons ?', 'Non. AURA sélectionne des montres custom, préparées via un atelier partenaire spécialisé. Elles ne sont affiliées à aucune manufacture horlogère.'],
+    ['Qu’est-ce qu’une montre AURA ?', 'Une montre custom, préparée sur commande par un atelier partenaire. Certaines sont des Seiko mods : la base de chaque pièce est précisée sur sa fiche ou en privé. Une montre AURA ne se présente jamais comme une pièce d’une autre maison et ne porte aucun logo ni marquage d’une marque tierce.'],
+    ['La pièce remise est-elle celle du site ?', 'Oui. Avant toute validation, vous recevez en privé des photos réelles de la pièce qui vous sera remise. Elle correspond à celle présentée, cadran compris.'],
     ['Et si le modèle que je cherche n’est pas ici ?', 'D’autres modèles sont disponibles sur demande. Écrivez-nous sur Instagram.']
   ];
 
@@ -160,7 +161,8 @@ ${trois.map(m => carte(m, base)).join('\n')}
 <section class="section" id="selection" aria-labelledby="t-dix" style="padding-top:calc(var(--section) * .6)">
   <div class="entete-section revele">
     <div><span class="sur">La sélection</span><h2 class="titre" id="t-dix">The Aura <em>Edit.</em></h2></div>
-    <p class="texte">${M.length} pièces. Chacune sur commande, chacune confirmée en privé.</p>
+    <p class="texte">${M.length} pièces. Chacune sur commande, chacune confirmée en privé.${M.some(m => m.visuel !== 'reelle')
+      ? '<br><small class="note-visuel">Visuels d’illustration AURA : les photos réelles de chaque pièce vous sont envoyées en privé avant validation.</small>' : ''}</p>
   </div>
   <div class="dix">
 ${M.map(m => carte(m, base)).join('\n')}
@@ -298,6 +300,7 @@ ${entete(base, false)}
   <div class="fiche__vue">
     <span class="fiche__n" aria-hidden="true">${m.n}</span>
     ${visuel(m, '../', 'fetchpriority="high" width="1664" height="2080"')}
+    ${aPhoto(m.slug) && m.visuel !== 'reelle' ? '<p class="fiche__legende">Visuel d’illustration AURA · photos réelles de votre pièce envoyées en privé avant validation</p>' : ''}
   </div>
   <div class="fiche__texte">
     <span class="sur">The Aura Edit — ${m.n}/${M.length}</span>

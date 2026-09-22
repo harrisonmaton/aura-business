@@ -11,6 +11,12 @@ Site statique, sans panier, sans paiement, sans aucun prix affiché. La vente se
 - `tests/watches.js` (`npm run test:watches`) : sort en code 1 si un prix, une trace fournisseur, un panier ou un autre lien
   Instagram apparaît, ou si la copie et l'ouverture du profil échouent (bureau, iPhone, navigateur Instagram), ou si une page déborde à 360 px.
 
+## Règle produit
+Montres custom, dont des Seiko mods **uniquement** quand la pièce est réellement montée sur base ou mouvement Seiko
+(champ `specs.base`). Aucune pièce présentée comme une montre d'une autre maison, aucun logo ni marquage de marque tierce
+(le test échoue si un nom de manufacture apparaît). La pièce remise doit correspondre à celle montrée : tant qu'un visuel
+est un rendu (`"visuel": "illustration"`), la fiche l'annonce ; passer à `"reelle"` quand il est remplacé par une photo de la vraie pièce.
+
 ## Images
 - `img/<slug>.webp` : packshots **AURA** générés (ElevenLabs, gpt-image-2, 4:5, 1664×2080), cadran stérile, aucun logo.
   Tant qu'un modèle n'a pas sa photo, la carte et la fiche affichent un cartouche « Photo en préparation ».

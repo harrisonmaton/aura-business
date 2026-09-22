@@ -9,7 +9,7 @@
     "Binche",
     "La Louvière"
   ],
-  "_regle": "AUCUN prix, AUCUNE référence fournisseur. `accroche` décrit l'apparence (couleurs, formes), jamais une caractéristique technique. `specs` ne contient QUE des caractéristiques confirmées pour CE modèle : vide = section non affichée. Clés possibles : mouvement, verre, materiaux, diametre, etancheite. Aucun nom de marque ou de modèle tiers.",
+  "_regle": "AUCUN prix, AUCUNE référence fournisseur, AUCUN nom, logo ou marquage de marque tierce. `accroche` décrit l'apparence, jamais une caractéristique technique. `specs` ne contient QUE ce qui est confirmé pour CE modèle (clés : base, mouvement, verre, materiaux, diametre, etancheite ; vide = non affiché). `base` : renseigner « Seiko mod » uniquement si la pièce est réellement montée sur base ou mouvement Seiko. `visuel` : « illustration » tant que la photo est un rendu AURA, « reelle » une fois remplacée par une photo de la pièce effectivement vendue.",
   "modeles": [
     {
       "n": "01",
@@ -26,7 +26,8 @@
         "materiaux": "Acier inoxydable",
         "diametre": "41 mm",
         "etancheite": "10 bar / 100 m"
-      }
+      },
+      "visuel": "illustration"
     },
     {
       "n": "02",
@@ -43,7 +44,8 @@
         "materiaux": "Acier inoxydable",
         "diametre": "41 mm",
         "etancheite": "10 bar / 100 m"
-      }
+      },
+      "visuel": "illustration"
     },
     {
       "n": "03",
@@ -60,7 +62,8 @@
         "materiaux": "Acier inoxydable",
         "diametre": "41 mm",
         "etancheite": "10 bar / 100 m"
-      }
+      },
+      "visuel": "illustration"
     },
     {
       "n": "04",
@@ -77,7 +80,8 @@
         "materiaux": "Acier inoxydable",
         "diametre": "41 mm",
         "etancheite": "10 bar / 100 m"
-      }
+      },
+      "visuel": "illustration"
     },
     {
       "n": "05",
@@ -94,7 +98,8 @@
         "materiaux": "Acier inoxydable",
         "diametre": "39 mm",
         "etancheite": "10 bar / 100 m"
-      }
+      },
+      "visuel": "illustration"
     },
     {
       "n": "06",
@@ -111,7 +116,8 @@
         "materiaux": "Acier inoxydable",
         "diametre": "39 mm",
         "etancheite": "10 bar / 100 m"
-      }
+      },
+      "visuel": "illustration"
     },
     {
       "n": "07",
@@ -128,7 +134,8 @@
         "materiaux": "Acier inoxydable",
         "diametre": "39 mm",
         "etancheite": "10 bar / 100 m"
-      }
+      },
+      "visuel": "illustration"
     },
     {
       "n": "08",
@@ -145,7 +152,8 @@
         "materiaux": "Acier inoxydable",
         "diametre": "39 mm",
         "etancheite": "10 bar / 100 m"
-      }
+      },
+      "visuel": "illustration"
     },
     {
       "n": "09",
@@ -162,7 +170,8 @@
         "materiaux": "Acier inoxydable",
         "diametre": "42 mm",
         "etancheite": "10 bar / 100 m"
-      }
+      },
+      "visuel": "illustration"
     },
     {
       "n": "10",
@@ -179,7 +188,8 @@
         "materiaux": "Acier inoxydable",
         "diametre": "42 mm",
         "etancheite": "10 bar / 100 m"
-      }
+      },
+      "visuel": "illustration"
     },
     {
       "n": "11",
@@ -196,7 +206,8 @@
         "materiaux": "Acier inoxydable",
         "diametre": "41 mm",
         "etancheite": "10 bar / 100 m"
-      }
+      },
+      "visuel": "illustration"
     },
     {
       "n": "12",
@@ -213,7 +224,8 @@
         "materiaux": "Acier inoxydable",
         "diametre": "41 mm",
         "etancheite": "10 bar / 100 m"
-      }
+      },
+      "visuel": "illustration"
     },
     {
       "n": "13",
@@ -230,7 +242,8 @@
         "materiaux": "Acier inoxydable",
         "diametre": "41 mm",
         "etancheite": "10 bar / 100 m"
-      }
+      },
+      "visuel": "illustration"
     },
     {
       "n": "14",
@@ -247,7 +260,8 @@
         "materiaux": "Acier inoxydable",
         "diametre": "41 mm",
         "etancheite": "10 bar / 100 m"
-      }
+      },
+      "visuel": "illustration"
     },
     {
       "n": "15",
@@ -264,7 +278,8 @@
         "materiaux": "Acier inoxydable",
         "diametre": "41 mm",
         "etancheite": "10 bar / 100 m"
-      }
+      },
+      "visuel": "illustration"
     },
     {
       "n": "16",
@@ -281,7 +296,8 @@
         "materiaux": "Acier inoxydable",
         "diametre": "42 mm",
         "etancheite": "10 bar / 100 m"
-      }
+      },
+      "visuel": "illustration"
     },
     {
       "n": "17",
@@ -298,7 +314,8 @@
         "materiaux": "Acier inoxydable",
         "diametre": "42 mm",
         "etancheite": "10 bar / 100 m"
-      }
+      },
+      "visuel": "illustration"
     },
     {
       "n": "18",
@@ -315,7 +332,8 @@
         "materiaux": "Acier inoxydable",
         "diametre": "42 mm",
         "etancheite": "10 bar / 100 m"
-      }
+      },
+      "visuel": "illustration"
     }
   ]
 }

@@ -39,8 +39,14 @@ const INTERDITS_PRIX = [/€/, /\bEUR\b/, /\d+\s?(euros?)\b/i, /à partir de/i, 
   /priceCurrency/i, /prix barré/i, /\bpromo(tion)?\b/i, /réduction/i, /\bsolde/i, /(?<!-)\bmarge\b/i, /coût d.achat/i];
 const INTERDITS_COMMERCE = [/felli/i, /\bsku\b/i, /fournisseur/i, /panier/i, /checkout/i, /stripe/i, /paypal/i, /apple pay/i,
   /shop now/i, /best.?seller/i, /livraison gratuite/i, /<form/i, /type="checkbox"/i];
+// Aucune marque tierce nommée sur le site. « Seiko » reste permis : il décrit la base réelle d'un Seiko mod.
+const MARQUES_TIERCES = [/rolex/i, /oyster/i, /daytona/i, /cosmograph/i, /superlative/i, /submariner/i, /datejust/i, /day-date/i,
+  /gmt[- ]?master/i, /cartier/i, /santos/i, /patek/i, /nautilus/i, /aquanaut/i, /audemars/i, /royal oak/i, /richard mille/i,
+  /\bRM\s?\d/, /omega/i, /hublot/i, /tudor/i, /g-shock/i, /casio/i];
 for (const f of sources) {
   const rel = path.relative(RACINE, f);
+  const marques = MARQUES_TIERCES.filter(r => r.test(fs.readFileSync(f, 'utf8'))).map(String);
+  ck(`aucune marque tierce — ${rel}`, marques.length === 0, marques.join(' ') || undefined);
   // La règle interne du fichier de données cite les mots interdits pour les interdire.
   const t = fs.readFileSync(f, 'utf8').replace(/"_regle":\s*"[^"]*"/, '');
   const prix = INTERDITS_PRIX.filter(r => r.test(t)).map(String);
@@ -68,6 +74,8 @@ for (const m of D.modeles) {
   // Photo AURA, ou cartouche explicite « Photo en préparation » : jamais une image étrangère au modèle.
   const photo = fs.existsSync(path.join(RACINE, 'img', m.slug + '.webp'));
   ck(`fiche ${m.nom} : photo AURA ou cartouche`, photo ? t.includes(`img/${m.slug}.webp`) : t.includes('Photo en préparation'), photo ? 'photo' : 'cartouche');
+  ck(`fiche ${m.nom} : un visuel d'illustration est annoncé comme tel`,
+    !photo || m.visuel === 'reelle' || t.includes('Visuel d’illustration AURA'));
   ck(`fiche ${m.nom} : aucune caractéristique inventée`,
     Object.keys(m.specs).length > 0 || t.includes('Nous n’affichons que ce qui est confirmé'));
 }
