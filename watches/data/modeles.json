@@ -9,117 +9,313 @@
     "Binche",
     "La Louvière"
   ],
-  "_regle": "AUCUN prix, AUCUNE référence fournisseur. `accroche` décrit l'apparence (couleurs, formes), jamais un matériau ou un mouvement. `specs` ne contient QUE des caractéristiques confirmées pour CE modèle : vide = section non affichée. Clés possibles : mouvement, verre, materiaux, diametre, etancheite.",
+  "_regle": "AUCUN prix, AUCUNE référence fournisseur. `accroche` décrit l'apparence (couleurs, formes), jamais une caractéristique technique. `specs` ne contient QUE des caractéristiques confirmées pour CE modèle : vide = section non affichée. Clés possibles : mouvement, verre, materiaux, diametre, etancheite. Aucun nom de marque ou de modèle tiers.",
   "modeles": [
     {
       "n": "01",
-      "slug": "ruby",
-      "nom": "AURA RUBY",
-      "ligne": "Chronographe • Statement",
+      "slug": "lagoon",
+      "nom": "AURA LAGOON",
+      "ligne": "Sport • Bleu glacier",
       "accroche": [
-        "Une présence radicale.",
-        "Noir profond et éclat ruby."
+        "Un bleu clair presque liquide.",
+        "Une silhouette sportive au contraste net."
       ],
-      "specs": {}
+      "specs": {
+        "mouvement": "Automatique",
+        "verre": "Saphir traité anti-rayures et antireflet",
+        "materiaux": "Acier inoxydable",
+        "diametre": "41 mm",
+        "etancheite": "10 bar / 100 m"
+      }
     },
     {
       "n": "02",
-      "slug": "black-chrono",
-      "nom": "AURA BLACK CHRONO",
-      "ligne": "Chronographe • Noir",
+      "slug": "obsidian",
+      "nom": "AURA OBSIDIAN",
+      "ligne": "Sport • Noir argent",
       "accroche": [
-        "Le noir, sans concession.",
-        "Lunette sombre, lecture nette."
+        "Noir profond sur lignes argentées.",
+        "Une présence sobre et graphique."
       ],
-      "specs": {}
+      "specs": {
+        "mouvement": "Automatique",
+        "verre": "Saphir traité anti-rayures et antireflet",
+        "materiaux": "Acier inoxydable",
+        "diametre": "41 mm",
+        "etancheite": "10 bar / 100 m"
+      }
     },
     {
       "n": "03",
-      "slug": "batman-gmt",
-      "nom": "AURA BATMAN GMT",
-      "ligne": "GMT • Bleu & noir",
+      "slug": "sunset",
+      "nom": "AURA SUNSET",
+      "ligne": "Sport • Orange",
       "accroche": [
-        "Deux fuseaux, une allure.",
-        "Bleu nuit et noir."
+        "Un orange franc, presque solaire.",
+        "Le noir du cadran calme l'ensemble."
       ],
-      "specs": {}
+      "specs": {
+        "mouvement": "Automatique",
+        "verre": "Saphir traité anti-rayures et antireflet",
+        "materiaux": "Acier inoxydable",
+        "diametre": "41 mm",
+        "etancheite": "10 bar / 100 m"
+      }
     },
     {
       "n": "04",
-      "slug": "pepsi-gmt",
-      "nom": "AURA PEPSI GMT",
-      "ligne": "GMT • Rouge & bleu",
+      "slug": "cacao",
+      "nom": "AURA CACAO",
+      "ligne": "Sport • Brun argent",
       "accroche": [
-        "Le voyageur en couleurs.",
-        "Rouge couchant, bleu océan."
+        "Des tons bruns doux et profonds.",
+        "L'argent apporte une touche plus froide."
       ],
-      "specs": {}
+      "specs": {
+        "mouvement": "Automatique",
+        "verre": "Saphir traité anti-rayures et antireflet",
+        "materiaux": "Acier inoxydable",
+        "diametre": "41 mm",
+        "etancheite": "10 bar / 100 m"
+      }
     },
     {
       "n": "05",
-      "slug": "sub-black",
-      "nom": "AURA SUB BLACK",
-      "ligne": "Plongée • Noir",
+      "slug": "late",
+      "nom": "AURA LATE",
+      "ligne": "Habillée • Graphique",
       "accroche": [
-        "L'essentiel, en profondeur.",
-        "Une lunette noire, rien de trop."
+        "Un cadran blanc volontairement décalé.",
+        "Le trait bleu lui donne son caractère."
       ],
-      "specs": {}
+      "specs": {
+        "mouvement": "Automatique",
+        "verre": "Saphir traité anti-rayures et antireflet",
+        "materiaux": "Acier inoxydable",
+        "diametre": "39 mm",
+        "etancheite": "10 bar / 100 m"
+      }
     },
     {
       "n": "06",
-      "slug": "arabic-green",
-      "nom": "AURA ARABIC GREEN",
-      "ligne": "Trois aiguilles • Vert",
+      "slug": "emerald",
+      "nom": "AURA EMERALD",
+      "ligne": "Habillée • Vert arabe",
       "accroche": [
-        "Le vert, en toute discrétion.",
-        "Chiffres arabes, cadran soleillé."
+        "Un vert intense ponctué de chiffres arabes.",
+        "La date crée un détail plus technique."
       ],
-      "specs": {}
+      "specs": {
+        "mouvement": "Automatique",
+        "verre": "Saphir traité anti-rayures et antireflet",
+        "materiaux": "Acier inoxydable",
+        "diametre": "39 mm",
+        "etancheite": "10 bar / 100 m"
+      }
     },
     {
       "n": "07",
-      "slug": "santos-steel",
-      "nom": "AURA SANTOS STEEL",
-      "ligne": "Carrée • Argent",
+      "slug": "azur",
+      "nom": "AURA AZUR",
+      "ligne": "Habillée • Bleu arabe",
       "accroche": [
-        "La ligne droite.",
-        "Boîtier carré, chiffres romains."
+        "Un bleu profond rythmé de chiffres arabes.",
+        "Le cadran reste net et très présent."
       ],
-      "specs": {}
+      "specs": {
+        "mouvement": "Automatique",
+        "verre": "Saphir traité anti-rayures et antireflet",
+        "materiaux": "Acier inoxydable",
+        "diametre": "39 mm",
+        "etancheite": "10 bar / 100 m"
+      }
     },
     {
       "n": "08",
-      "slug": "nautilus-blue",
-      "nom": "AURA NAUTILUS BLUE",
-      "ligne": "Sport chic • Bleu",
+      "slug": "jade",
+      "nom": "AURA JADE",
+      "ligne": "Habillée • Vert soleillé",
       "accroche": [
-        "Le calme du large.",
-        "Cadran bleu strié, finition argentée."
+        "Un vert soleillé qui change avec la lumière.",
+        "Les chiffres arabes gardent l'ensemble singulier."
       ],
-      "specs": {}
+      "specs": {
+        "mouvement": "Automatique",
+        "verre": "Saphir traité anti-rayures et antireflet",
+        "materiaux": "Acier inoxydable",
+        "diametre": "39 mm",
+        "etancheite": "10 bar / 100 m"
+      }
     },
     {
       "n": "09",
-      "slug": "rainbow",
-      "nom": "AURA RAINBOW",
-      "ligne": "Chronographe • Rose doré",
+      "slug": "carre-ivory",
+      "nom": "AURA CARRÉ IVORY",
+      "ligne": "Carrée • Ivoire",
       "accroche": [
-        "Toute la lumière de Miami.",
-        "Teinte rose dorée, lunette arc-en-ciel."
+        "Un cadran ivoire encadré de lignes droites.",
+        "Les chiffres romains structurent le visage."
       ],
-      "specs": {}
+      "specs": {
+        "mouvement": "Automatique",
+        "verre": "Saphir traité anti-rayures et antireflet",
+        "materiaux": "Acier inoxydable",
+        "diametre": "42 mm",
+        "etancheite": "10 bar / 100 m"
+      }
     },
     {
       "n": "10",
-      "slug": "skeleton",
-      "nom": "AURA SKELETON",
+      "slug": "carre-noir",
+      "nom": "AURA CARRÉ NOIR",
+      "ligne": "Carrée • Noir intégral",
+      "accroche": [
+        "Une architecture carrée entièrement noire.",
+        "Les chiffres romains apparaissent en contraste."
+      ],
+      "specs": {
+        "mouvement": "Automatique",
+        "verre": "Saphir traité anti-rayures et antireflet",
+        "materiaux": "Acier inoxydable",
+        "diametre": "42 mm",
+        "etancheite": "10 bar / 100 m"
+      }
+    },
+    {
+      "n": "11",
+      "slug": "ocean-blue",
+      "nom": "AURA OCEAN BLUE",
+      "ligne": "Sport chic • Bleu",
+      "accroche": [
+        "Un bleu royal traversé de lignes horizontales.",
+        "La silhouette intégrée reste très fluide."
+      ],
+      "specs": {
+        "mouvement": "Automatique",
+        "verre": "Saphir traité anti-rayures et antireflet",
+        "materiaux": "Acier inoxydable",
+        "diametre": "41 mm",
+        "etancheite": "10 bar / 100 m"
+      }
+    },
+    {
+      "n": "12",
+      "slug": "polar",
+      "nom": "AURA POLAR",
+      "ligne": "Sport chic • Blanc",
+      "accroche": [
+        "Un cadran blanc à la présence très lumineuse.",
+        "La silhouette intégrée reste nette et épurée."
+      ],
+      "specs": {
+        "mouvement": "Automatique",
+        "verre": "Saphir traité anti-rayures et antireflet",
+        "materiaux": "Acier inoxydable",
+        "diametre": "41 mm",
+        "etancheite": "10 bar / 100 m"
+      }
+    },
+    {
+      "n": "13",
+      "slug": "open-rose",
+      "nom": "AURA OPEN ROSE",
+      "ligne": "Open heart • Rose noir",
+      "accroche": [
+        "Une teinte rose chaude autour d'un cadran noir.",
+        "L'ouverture révèle un détail mécanique au centre du regard."
+      ],
+      "specs": {
+        "mouvement": "Automatique",
+        "verre": "Saphir traité anti-rayures et antireflet",
+        "materiaux": "Acier inoxydable",
+        "diametre": "41 mm",
+        "etancheite": "10 bar / 100 m"
+      }
+    },
+    {
+      "n": "14",
+      "slug": "octa-noir",
+      "nom": "AURA OCTA NOIR",
+      "ligne": "Octogonale • Noir",
+      "accroche": [
+        "Un cadran noir dans une géométrie octogonale.",
+        "L'ensemble reste dense et monochrome."
+      ],
+      "specs": {
+        "mouvement": "Automatique",
+        "verre": "Saphir traité anti-rayures et antireflet",
+        "materiaux": "Acier inoxydable",
+        "diametre": "41 mm",
+        "etancheite": "10 bar / 100 m"
+      }
+    },
+    {
+      "n": "15",
+      "slug": "octa-blue",
+      "nom": "AURA OCTA BLUE",
+      "ligne": "Octogonale • Bleu",
+      "accroche": [
+        "Un bleu profond dans un cadre octogonal.",
+        "Les surfaces argentées accrochent la lumière."
+      ],
+      "specs": {
+        "mouvement": "Automatique",
+        "verre": "Saphir traité anti-rayures et antireflet",
+        "materiaux": "Acier inoxydable",
+        "diametre": "41 mm",
+        "etancheite": "10 bar / 100 m"
+      }
+    },
+    {
+      "n": "16",
+      "slug": "skeleton-black",
+      "nom": "AURA SKELETON BLACK",
       "ligne": "Squelette • Noir",
       "accroche": [
-        "Le cœur à nu.",
-        "Boîtier noir, cadran ajouré."
+        "Un boîtier tonneau noir au cadran ouvert.",
+        "Les rouages deviennent le décor."
       ],
-      "specs": {}
+      "specs": {
+        "mouvement": "Automatique",
+        "verre": "Saphir traité anti-rayures et antireflet",
+        "materiaux": "Acier inoxydable",
+        "diametre": "42 mm",
+        "etancheite": "10 bar / 100 m"
+      }
+    },
+    {
+      "n": "17",
+      "slug": "skull-blue",
+      "nom": "AURA SKULL BLUE",
+      "ligne": "Squelette • Bleu",
+      "accroche": [
+        "Noir mat, bleu électrique et motif skull.",
+        "Une pièce volontairement spectaculaire."
+      ],
+      "specs": {
+        "mouvement": "Automatique",
+        "verre": "Saphir traité anti-rayures et antireflet",
+        "materiaux": "Acier inoxydable",
+        "diametre": "42 mm",
+        "etancheite": "10 bar / 100 m"
+      }
+    },
+    {
+      "n": "18",
+      "slug": "skull-silver",
+      "nom": "AURA SKULL SILVER",
+      "ligne": "Squelette • Argent",
+      "accroche": [
+        "Argent froid, noir profond et motif skull.",
+        "Le cadran ajouré concentre toute l'attention."
+      ],
+      "specs": {
+        "mouvement": "Automatique",
+        "verre": "Saphir traité anti-rayures et antireflet",
+        "materiaux": "Acier inoxydable",
+        "diametre": "42 mm",
+        "etancheite": "10 bar / 100 m"
+      }
     }
   ]
 }

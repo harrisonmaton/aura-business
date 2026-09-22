@@ -1,5 +1,5 @@
 'use strict';
-/* AURA WATCHES — génère l'accueil et les dix fiches depuis data/modeles.json.
+/* AURA WATCHES — génère l'accueil et les fiches depuis data/modeles.json.
    node watches/build.js
    Règle absolue : aucun prix, nulle part — ni en texte, ni en données structurées. */
 const fs = require('fs');
@@ -68,9 +68,18 @@ function pied(base) {
 `;
 }
 
+/* Une pièce sans photo AURA validée affiche un cartouche typographique, jamais une image de remplacement. */
+const aPhoto = slug => fs.existsSync(path.join(RACINE, 'img', slug + '.webp'));
+const MANQUANTES = M.filter(m => !aPhoto(m.slug)).map(m => m.slug);
+function visuel(m, base, attrs) {
+  return aPhoto(m.slug)
+    ? `<img src="${base}img/${m.slug}.webp" alt="${esc(m.nom)}" ${attrs}>`
+    : `<div class="attente" role="img" aria-label="${esc(m.nom)} — photo en préparation"><span>${esc(titreModele(m.nom))}</span><small>Photo en préparation</small></div>`;
+}
+
 function carte(m, base, classe = '') {
   return `<a class="piece revele${classe}" href="${base}montre/${m.slug}.html">
-  <div class="piece__cadre"><span class="piece__n">${m.n}</span><img src="${base}img/${m.slug}.webp" alt="${esc(m.nom)}" loading="lazy" decoding="async" width="510" height="800"></div>
+  <div class="piece__cadre"><span class="piece__n">${m.n}</span>${visuel(m, base, 'loading="lazy" decoding="async" width="1664" height="2080"')}</div>
   <div class="piece__info">
     <div><h3 class="piece__nom">${esc(m.nom)}</h3><div class="piece__ligne">${esc(m.ligne)}</div></div>
     <span class="piece__go">Découvrir →</span>
@@ -89,12 +98,13 @@ const ORGA = { '@type': 'Organization', name: 'AURA WATCHES', sameAs: [IG] };
 /* ─── Accueil ────────────────────────────────────────────────────────── */
 function accueil() {
   const base = '';
-  const trois = ['ruby', 'black-chrono', 'batman-gmt'].map(s => parSlug[s]);
+  const trois = ['lagoon', 'open-rose', 'skull-blue'].map(s => parSlug[s]);
+  const finale = aPhoto('open-rose') ? parSlug['open-rose'] : (M.find(m => aPhoto(m.slug)) || parSlug['open-rose']);
   const jsonld = {
     '@context': 'https://schema.org',
     '@graph': [
       ORGA,
-      { '@type': 'ItemList', name: 'The Aura Ten', itemListElement: M.map((m, i) => ({
+      { '@type': 'ItemList', name: 'The Aura Edit', itemListElement: M.map((m, i) => ({
         '@type': 'ListItem', position: i + 1, url: `montre/${m.slug}.html`, name: m.nom })) }
     ]
   };
@@ -149,8 +159,8 @@ ${trois.map(m => carte(m, base)).join('\n')}
 <!-- 03 — THE AURA TEN -->
 <section class="section" id="selection" aria-labelledby="t-dix" style="padding-top:calc(var(--section) * .6)">
   <div class="entete-section revele">
-    <div><span class="sur">La sélection</span><h2 class="titre" id="t-dix">The Aura <em>Ten.</em></h2></div>
-    <p class="texte">Dix pièces. Chacune sur commande, chacune confirmée en privé.</p>
+    <div><span class="sur">La sélection</span><h2 class="titre" id="t-dix">The Aura <em>Edit.</em></h2></div>
+    <p class="texte">${M.length} pièces. Chacune sur commande, chacune confirmée en privé.</p>
   </div>
   <div class="dix">
 ${M.map(m => carte(m, base)).join('\n')}
@@ -168,7 +178,9 @@ ${M.map(m => carte(m, base)).join('\n')}
 <!-- 05 — THE DETAILS -->
 <section class="section" aria-labelledby="t-details">
   <div class="details">
-    <figure class="revele"><img src="img/trio-signature.webp" alt="Trois pièces AURA posées sur du marbre noir" loading="lazy" width="1380" height="720"></figure>
+    <figure class="revele">${fs.existsSync(path.join(RACINE, 'img', 'details.webp'))
+      ? '<img src="img/details.webp" alt="Pièces AURA posées sur du marbre noir" loading="lazy">'
+      : '<img src="img/bg-night.webp" alt="" loading="lazy">'}</figure>
     <div class="revele">
       <span class="sur">The Details</span>
       <h2 class="titre" id="t-details" style="font-size:clamp(40px,5.4vw,80px);margin-top:22px">Le détail, <em>confirmé.</em></h2>
@@ -231,11 +243,8 @@ ${faq.map(([q, r]) => `    <details class="revele"><summary>${esc(q)}</summary><
     </div>
     <div class="mosaique revele" aria-label="Aperçu éditorial de la sélection">
       <a class="grand" href="${IG}" target="_blank" rel="noopener" aria-label="Instagram ${esc(HANDLE)}"><img src="img/bg-hero.webp" alt="" loading="lazy"></a>
-      <a class="piece-ig" href="montre/ruby.html"><img src="img/ruby.webp" alt="AURA RUBY" loading="lazy"></a>
-      <a class="piece-ig" href="montre/nautilus-blue.html"><img src="img/nautilus-blue.webp" alt="AURA NAUTILUS BLUE" loading="lazy"></a>
-      <a class="piece-ig" href="montre/rainbow.html"><img src="img/rainbow.webp" alt="AURA RAINBOW" loading="lazy"></a>
-      <a class="piece-ig" href="montre/arabic-green.html"><img src="img/arabic-green.webp" alt="AURA ARABIC GREEN" loading="lazy"></a>
-      <a class="piece-ig" href="montre/skeleton.html"><img src="img/skeleton.webp" alt="AURA SKELETON" loading="lazy"></a>
+${['lagoon', 'emerald', 'carre-ivory', 'octa-blue', 'skull-silver'].map(k => parSlug[k]).map(m =>
+      `      <a class="piece-ig" href="montre/${m.slug}.html">${visuel(m, '', 'loading="lazy"')}</a>`).join('\n')}
     </div>
   </div>
 </section>
@@ -250,7 +259,7 @@ ${faq.map(([q, r]) => `    <details class="revele"><summary>${esc(q)}</summary><
     ${demande(null, 'Demander le prix en privé', 'cta cta--xxl')}
     <p class="final__sous"><a href="${IG}" target="_blank" rel="noopener">${esc(HANDLE)}</a><br>Disponibilité • tarif • délai<br>confirmés individuellement.</p>
   </div>
-  <div class="final__piece revele"><img src="img/ruby.webp" alt="AURA RUBY" loading="lazy"></div>
+  <div class="final__piece revele">${visuel(finale, '', 'loading="lazy"')}</div>
 </section>
 
 </main>
@@ -288,10 +297,10 @@ ${entete(base, false)}
   <a class="fiche__retour lien" href="../index.html#selection">← La sélection</a>
   <div class="fiche__vue">
     <span class="fiche__n" aria-hidden="true">${m.n}</span>
-    <img src="../img/${m.slug}.webp" alt="${esc(m.nom)}" fetchpriority="high" width="510" height="800">
+    ${visuel(m, '../', 'fetchpriority="high" width="1664" height="2080"')}
   </div>
   <div class="fiche__texte">
-    <span class="sur">The Aura Ten — ${m.n}/10</span>
+    <span class="sur">The Aura Edit — ${m.n}/${M.length}</span>
     <h1 class="titre" style="margin-top:22px">AURA<br><em>${esc(titreModele(m.nom))}</em></h1>
     <p class="ligne">${esc(m.ligne.replace(' • ', ' / '))}</p>
     <p class="fiche__accroche">${m.accroche.map(esc).join('<br>')}</p>
@@ -342,3 +351,4 @@ ${autres.map(a => carte(a, base)).join('\n')}
 fs.writeFileSync(path.join(RACINE, 'index.html'), accueil());
 for (const m of M) fs.writeFileSync(path.join(RACINE, 'montre', `${m.slug}.html`), fiche(m));
 console.log(`AURA WATCHES : accueil + ${M.length} fiches générés.`);
+if (MANQUANTES.length) console.log(`Photos AURA manquantes (${MANQUANTES.length}) : ${MANQUANTES.join(', ')}`);

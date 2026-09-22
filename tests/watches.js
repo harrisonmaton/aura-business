@@ -31,8 +31,9 @@ function fichiers(dir, ext) {
 /* ── 1-3. Contrôles statiques ─────────────────────────────────────────── */
 const pages = fichiers(RACINE, ['.html']);
 const sources = fichiers(RACINE, ['.html', '.js', '.json', '.css']);
-ck('accueil + 10 fiches générés', pages.length === 11, pages.length);
-ck('The Aura Ten : exactement dix modèles', D.modeles.length === 10, D.modeles.map(m => m.nom).join(', '));
+ck(`accueil + ${D.modeles.length} fiches générés`, pages.length === D.modeles.length + 1, pages.length);
+ck('sélection entre 10 et 24 modèles', D.modeles.length >= 10 && D.modeles.length <= 24, D.modeles.length);
+ck('slugs uniques', new Set(D.modeles.map(m => m.slug)).size === D.modeles.length);
 
 const INTERDITS_PRIX = [/€/, /\bEUR\b/, /\d+\s?(euros?)\b/i, /à partir de/i, /\bdès\s+\d/i, /starting at/i, /"price"/i, /"offers"/i,
   /priceCurrency/i, /prix barré/i, /\bpromo(tion)?\b/i, /réduction/i, /\bsolde/i, /(?<!-)\bmarge\b/i, /coût d.achat/i];
@@ -59,18 +60,20 @@ for (const f of pages) {
   ck(`chaque « demande » est un vrai lien vers le profil — ${rel}`,
     demandes.length > 0 && demandes.every(a => a.includes(`href="${IG}"`) && a.includes('target="_blank"')), demandes.length);
 }
-ck('liens Instagram présents sur tout le site', liensIg >= 11 * 3, liensIg);
+ck('liens Instagram présents sur tout le site', liensIg >= pages.length * 3, liensIg);
 
 for (const m of D.modeles) {
   const t = fs.readFileSync(path.join(RACINE, 'montre', m.slug + '.html'), 'utf8');
   ck(`fiche ${m.nom} : CTA « Demander le prix » lié au modèle`, (t.match(new RegExp(`data-demande="${m.nom}"`, 'g')) || []).length === 2);
-  ck(`fiche ${m.nom} : image présente`, fs.existsSync(path.join(RACINE, 'img', m.slug + '.webp')));
+  // Photo AURA, ou cartouche explicite « Photo en préparation » : jamais une image étrangère au modèle.
+  const photo = fs.existsSync(path.join(RACINE, 'img', m.slug + '.webp'));
+  ck(`fiche ${m.nom} : photo AURA ou cartouche`, photo ? t.includes(`img/${m.slug}.webp`) : t.includes('Photo en préparation'), photo ? 'photo' : 'cartouche');
   ck(`fiche ${m.nom} : aucune caractéristique inventée`,
     Object.keys(m.specs).length > 0 || t.includes('Nous n’affichons que ce qui est confirmé'));
 }
 const accueil = fs.readFileSync(path.join(RACINE, 'index.html'), 'utf8');
 const cartesAccueil = [...accueil.matchAll(/<a class="piece revele"[\s\S]*?<\/a>/g)].map(m => m[0]);
-ck('cartes : nom + « Découvrir », sans mention de prix', cartesAccueil.length === 13 &&
+ck('cartes : nom + « Découvrir », sans mention de prix', cartesAccueil.length === D.modeles.length + 3 &&
   cartesAccueil.every(c => /Découvrir/.test(c) && !/prix|tarif/i.test(c)), cartesAccueil.length);
 
 /* ── 4-5. Navigateur ──────────────────────────────────────────────────── */
@@ -117,10 +120,10 @@ const serveur = http.createServer((q, r) => {
       }
 
       if (opts.isMobile) {
-        await page.goto(BASE + 'montre/ruby.html', { waitUntil: 'load' });
+        await page.goto(BASE + 'montre/' + D.modeles[0].slug + '.html', { waitUntil: 'load' });
         await page.waitForTimeout(300);
         ck(`${profil} — barre fixe visible dès l'arrivée sur une fiche`, await page.locator('.barre.visible').isVisible());
-        const barre = page.locator('.barre [data-demande="AURA RUBY"]');
+        const barre = page.locator(`.barre [data-demande="${D.modeles[0].nom}"]`);
         const [o2] = await Promise.all([ctx.waitForEvent('page', { timeout: 5000 }).catch(() => null), barre.click()]);
         ck(`${profil} — barre fixe : ouvre le profil`, !!o2 && o2.url() === IG, o2 && o2.url());
         if (o2) await o2.close();
