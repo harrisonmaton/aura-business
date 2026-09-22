@@ -18,12 +18,12 @@ Montres custom, dont des Seiko mods **uniquement** quand la pièce est réelleme
 est un rendu (`"visuel": "illustration"`), la fiche l'annonce ; passer à `"reelle"` quand il est remplacé par une photo de la vraie pièce.
 
 ## Images
-- `img/<slug>.webp` : packshots **AURA** générés (ElevenLabs, gpt-image-2, 4:5, 1664×2080), cadran stérile, aucun logo.
+- `img/<slug>.webp` : photo de la pièce, détourée sur fond sombre 4:5 (1664×2080). Uniquement des cadrans sans marquage de marque tierce.
   Tant qu'un modèle n'a pas sa photo, la carte et la fiche affichent un cartouche « Photo en préparation ».
   `npm run build:watches` liste les photos manquantes.
 - Les prompts des 18 packshots sont prêts dans le flow ElevenLabs « AURA WATCHES — packshots » : même préfixe de style, seule la description de la montre change.
 - `img/bg-hero.webp`, `img/bg-night.webp` : générées, sans texte ni logo.
-- Aucune photo fournisseur : ses mentions légales interdisent la reproduction sans autorisation écrite.
+- CARRÉ IVORY et OCEAN BLUE : photos transmises par le propriétaire (`"visuel": "reelle"`). Vérifier l’autorisation écrite de réutilisation auprès de l’atelier.
 
 ## Mise en ligne
 N'importe quel hébergeur statique (Netlify, Vercel, GitHub Pages, Cloudflare Pages) : publier le dossier `watches/` tel quel.

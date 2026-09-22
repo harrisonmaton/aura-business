@@ -159,10 +159,10 @@
       "n": "09",
       "slug": "carre-ivory",
       "nom": "AURA CARRÉ IVORY",
-      "ligne": "Carrée • Ivoire",
+      "ligne": "Carrée • Blanc",
       "accroche": [
-        "Un cadran ivoire encadré de lignes droites.",
-        "Les chiffres romains structurent le visage."
+        "Un cadran blanc encadré de lignes droites.",
+        "Chiffres romains, aiguilles bleuies."
       ],
       "specs": {
         "mouvement": "Automatique",
@@ -171,7 +171,7 @@
         "diametre": "42 mm",
         "etancheite": "10 bar / 100 m"
       },
-      "visuel": "illustration"
+      "visuel": "reelle"
     },
     {
       "n": "10",
@@ -197,7 +197,7 @@
       "nom": "AURA OCEAN BLUE",
       "ligne": "Sport chic • Bleu",
       "accroche": [
-        "Un bleu royal traversé de lignes horizontales.",
+        "Un bleu nuit dégradé, traversé de lignes horizontales.",
         "La silhouette intégrée reste très fluide."
       ],
       "specs": {
@@ -207,7 +207,7 @@
         "diametre": "41 mm",
         "etancheite": "10 bar / 100 m"
       },
-      "visuel": "illustration"
+      "visuel": "reelle"
     },
     {
       "n": "12",

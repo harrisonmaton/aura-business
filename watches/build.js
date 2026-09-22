@@ -98,7 +98,7 @@ const ORGA = { '@type': 'Organization', name: 'AURA WATCHES', sameAs: [IG] };
 /* ─── Accueil ────────────────────────────────────────────────────────── */
 function accueil() {
   const base = '';
-  const trois = ['lagoon', 'open-rose', 'skull-blue'].map(s => parSlug[s]);
+  const trois = ['ocean-blue', 'carre-ivory', 'open-rose'].map(s => parSlug[s]);
   const finale = aPhoto('open-rose') ? parSlug['open-rose'] : (M.find(m => aPhoto(m.slug)) || parSlug['open-rose']);
   const jsonld = {
     '@context': 'https://schema.org',
@@ -161,7 +161,7 @@ ${trois.map(m => carte(m, base)).join('\n')}
 <section class="section" id="selection" aria-labelledby="t-dix" style="padding-top:calc(var(--section) * .6)">
   <div class="entete-section revele">
     <div><span class="sur">La sélection</span><h2 class="titre" id="t-dix">The Aura <em>Edit.</em></h2></div>
-    <p class="texte">${M.length} pièces. Chacune sur commande, chacune confirmée en privé.${M.some(m => m.visuel !== 'reelle')
+    <p class="texte">${M.length} pièces. Chacune sur commande, chacune confirmée en privé.${M.some(m => aPhoto(m.slug) && m.visuel !== 'reelle')
       ? '<br><small class="note-visuel">Visuels d’illustration AURA : les photos réelles de chaque pièce vous sont envoyées en privé avant validation.</small>' : ''}</p>
   </div>
   <div class="dix">
