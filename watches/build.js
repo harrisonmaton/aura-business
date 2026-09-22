@@ -21,7 +21,7 @@ const SPEC_LIBELLES = { mouvement: 'Mouvement', verre: 'Verre', materiaux: 'Mat√
 
 function tete({ titre, description, base, image, jsonld }) {
   return `<!doctype html>
-<html lang="fr" class="no-js">
+<html lang="fr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">

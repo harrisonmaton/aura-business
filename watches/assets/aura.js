@@ -5,7 +5,6 @@
 (function () {
   'use strict';
   var IG = 'https://www.instagram.com/polakpl_f44/';
-  document.documentElement.classList.remove('no-js');
 
   function message(modele) {
     return modele
@@ -89,13 +88,18 @@
   }
 
   /* Révélations douces. */
-  var aReveler = document.querySelectorAll('.revele');
+  /* Seuls les blocs sous la ligne de flottaison au chargement attendent :
+     le premier écran est toujours visible tel quel. */
+  var aReveler = [].filter.call(document.querySelectorAll('.revele'), function (el) {
+    return el.getBoundingClientRect().top > window.innerHeight;
+  });
+  aReveler.forEach(function (el) { el.classList.add('attend'); });
   if ('IntersectionObserver' in window) {
     var io = new IntersectionObserver(function (en) {
-      en.forEach(function (x) { if (x.isIntersecting) { x.target.classList.add('vu'); io.unobserve(x.target); } });
+      en.forEach(function (x) { if (x.isIntersecting) { x.target.classList.remove('attend'); io.unobserve(x.target); } });
     }, { rootMargin: '0px 0px -8% 0px' });
     aReveler.forEach(function (el) { io.observe(el); });
   } else {
-    aReveler.forEach(function (el) { el.classList.add('vu'); });
+    aReveler.forEach(function (el) { el.classList.remove('attend'); });
   }
 })();
