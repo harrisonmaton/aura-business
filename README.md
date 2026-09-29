@@ -10,6 +10,7 @@ C'est une reconstitution assumée, pas une histoire réelle.
 
 - `src/` — les deux pages publiées
 - `preview/` — généré par `npm run build:preview` (squelette identique à la publication)
+- `omega/` — JARVIS Ω, moteur de décision « où est mon meilleur prochain euro ? » (`npm run omega`, voir `OMEGA.md`)
 - `tests/` — recette Playwright ; **sortie en code 1 si une assertion échoue**
 - `.github/workflows/ci.yml` — exécute `npm test` à chaque push
 

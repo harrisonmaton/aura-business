@@ -29,6 +29,8 @@ mentir :
 | Webhook de confirmation | ✅ | ❌ | ❌ | ❌ |
 | Hébergement | ❌ | ❌ | ❌ | ❌ |
 | Bibliothèque de prompts (`PROMPTS/`) | ✅ | ✅ | ❌ | ❌ |
+| JARVIS Ω — « meilleur prochain euro » (`omega/`, voir `OMEGA.md`) | ✅ | ✅ | ✅ 31 contrôles | ❌ local |
+| JARVIS Ω — signaux publics en direct | ✅ | ✅ | ⚠️ faux `fetch` seulement | ❌ réseau refusé |
 
 **Rien n'est publié.** Ce qui existe est une *preview* construite dans le
 dépôt et consultable en local. Aucun visiteur extérieur ne peut atteindre ce

@@ -1,0 +1,272 @@
+{
+  "_comment": "Registre réel de JARVIS Ω. Chaque preuve cite un fichier du dépôt ou une observation datée. Aucun prix n'est recopié ici : il est lu dans src/catalog.json. Toute estimation est déclarée dans economie.estimations et remonte dans la recommandation qui l'utilise. Aucune donnée DEMO n'est admise dans ce fichier (validerRegistre refuse).",
+  "_ressources": "null = inconnu. JARVIS ne devine pas la trésorerie ni le temps du propriétaire : tant qu'ils sont null, seuls les tests à 0 € sont admis et une valeur horaire par défaut est utilisée ET signalée.",
+
+  "ressources": {
+    "tresorerie": null,
+    "depensesMensuelles": null,
+    "heuresParSemaine": null,
+    "tauxHoraire": null,
+    "horizonMois": 6,
+    "ratioRisqueMax": 0.05
+  },
+
+  "portes": {
+    "entite-tva": {
+      "libelle": "entité vendeuse, TVA et mentions légales définies",
+      "statut": "inconnue",
+      "source": "documents/BRIEF-PRODUIT.md §10.7",
+      "humain": "le propriétaire (et un comptable si nécessaire)"
+    },
+    "conditions-vente": {
+      "libelle": "droits cédés, révisions incluses et remboursement écrits",
+      "statut": "inconnue",
+      "source": "documents/BRIEF-PRODUIT.md §10.1–6",
+      "humain": "le propriétaire"
+    },
+    "hebergement": {
+      "libelle": "hébergement public ouvert (création de compte)",
+      "statut": "a_franchir",
+      "source": "ÉTAT.md §6.2 ; AUDIT-AURA-OS.md §B",
+      "humain": "le propriétaire — création de compte, conditions d'utilisation"
+    },
+    "stripe-sandbox": {
+      "libelle": "sandbox Stripe ouvert et autorisé",
+      "statut": "a_franchir",
+      "source": "server/LISEZ-MOI.md « Pour connecter Stripe sandbox »",
+      "humain": "le propriétaire — authentification Stripe"
+    },
+    "contrat-apporteur": {
+      "libelle": "contrat écrit avec les apporteurs du Crew",
+      "statut": "a_franchir",
+      "source": "documents/BRIEF-PRODUIT.md §7, réserve 2",
+      "humain": "le propriétaire"
+    },
+    "avis-juridique-apport": {
+      "libelle": "régime belge de la rémunération d'apport vérifié par un juriste",
+      "statut": "a_franchir",
+      "source": "documents/BRIEF-PRODUIT.md §7, réserve 3",
+      "humain": "un juriste"
+    }
+  },
+
+  "opportunites": [
+    {
+      "id": "signature-en-direct",
+      "titre": "Vendre le pack Signature en direct, sans attendre le site",
+      "preuves": [
+        {"nature": "fait", "date": "2026-09-15", "source": "documents/BRIEF-PRODUIT.md §5",
+         "fait": "Le parcours de vente réel ne passe par aucun encaissement en ligne : confirmation et paiement se font en message privé. Ni l'hébergement ni Stripe ne sont nécessaires pour vendre."},
+        {"nature": "fait", "date": "2026-09-15", "source": "PROMPTS/LISEZ-MOI.md",
+         "fait": "Les cinq fiches de production d'un pack existent et sont utilisables à la main."},
+        {"nature": "fait", "date": "2026-09-15", "source": "documents/BRIEF-PRODUIT.md §6",
+         "fait": "Le propriétaire déclare 15 ans de vente et 13 ans d'infographie."},
+        {"nature": "fait", "date": "2026-09-17", "source": "ÉTAT.md §4",
+         "fait": "Aucun client n'a acheté, ni même vu le site."}
+      ],
+      "contreArgument": "La série de démonstration repose sur une seule photographie (ÉTAT.md §2) : un commerçant peut juger le rendu générique. Et chaque pack vendu consomme le temps du propriétaire, seul goulot déclaré (BRIEF §6) — ce revenu ne se multiplie pas sans délégation.",
+      "incertitudes": [
+        "temps réel de production d'un Signature : la fiche de chronométrage est vide",
+        "consentement à payer 90 € : jamais demandé à un commerçant",
+        "conditions de vente non écrites (droits, révisions, remboursement)"
+      ],
+      "portes": ["entite-tva", "conditions-vente"],
+      "economie": {
+        "prix": {"genre": "brief", "id": 2},
+        "heuresParVente": 3,
+        "coutsVariables": 2,
+        "ventesMoisSiSucces": 3,
+        "delaiPremierEuroJours": 14,
+        "estimations": {
+          "heuresParVente": "3 h par pack — NON MESURÉ, la fiche de chronométrage est vide",
+          "ventesMoisSiSucces": "3 ventes par mois si le test réussit — hypothèse, aucune vente passée",
+          "coutsVariables": "2 € d'outils IA par pack — hypothèse"
+        }
+      },
+      "prochainTest": {
+        "type": "valider",
+        "action": "Présenter la série de démonstration à 20 commerces de quartier, un par un (en personne ou message direct personnalisé), proposer Signature à 90 € payé avant production, et chronométrer le premier pack vendu avec documents/FICHE-CHRONOMETRAGE.md.",
+        "coutCash": 0,
+        "heures": 8,
+        "dureeJours": 14,
+        "pEstimee": 0.3,
+        "succes": "au moins 1 pack payé avant production (niveau 4 — achat)",
+        "arret": "0 paiement après 20 conversations réelles : on change l'offre ou la cible, on n'insiste pas"
+      }
+    },
+    {
+      "id": "street-en-direct",
+      "titre": "Proposer la collection Street, déjà livrable, en direct",
+      "preuves": [
+        {"nature": "fait", "date": "2026-09-17", "source": "src/collections/street-INVENTAIRE.json",
+         "fait": "Street est la seule collection dont les fichiers existent : 4 visuels et 4 légendes, contrôlés par l'inventaire serveur."},
+        {"nature": "fait", "date": "2026-09-17", "source": "ÉTAT.md §4",
+         "fait": "Aucun client n'a acheté, ni même vu le site."}
+      ],
+      "contreArgument": "Quatre visuels génériques, pensés pour n'importe quel commerce : c'est précisément ce que la fiche client existe pour éviter (PROMPTS/LISEZ-MOI.md). À 40 €, même un succès rapporte peu.",
+      "incertitudes": [
+        "un commerçant achète-t-il des visuels qui ne portent pas son nom ?",
+        "Street cannibalise-t-il la vente d'un pack sur brief plus rentable ?"
+      ],
+      "portes": ["entite-tva", "conditions-vente"],
+      "economie": {
+        "prix": {"genre": "ready", "id": 1},
+        "heuresParVente": 0.25,
+        "coutsVariables": 0,
+        "ventesMoisSiSucces": 2,
+        "delaiPremierEuroJours": 14,
+        "estimations": {
+          "ventesMoisSiSucces": "2 ventes par mois si le test réussit — hypothèse, aucune vente passée"
+        }
+      },
+      "prochainTest": {
+        "type": "valider",
+        "action": "Présenter Street à 20 commerces de quartier comme pack d'entrée à 40 €, livré le jour même (peut se mener dans les mêmes conversations que le test Signature).",
+        "coutCash": 0,
+        "heures": 5,
+        "dureeJours": 14,
+        "pEstimee": 0.2,
+        "succes": "au moins 1 Street payé",
+        "arret": "0 Street payé et au moins 3 refus motivés par « pas à mon nom » : retirer Street de l'offre directe"
+      }
+    },
+    {
+      "id": "aura-food-prevente",
+      "titre": "Aura Food : vérifier qu'un commerce food paierait avant d'écrire l'application",
+      "preuves": [
+        {"nature": "fait", "date": "2026-09-17", "source": "AUDIT-AURA-OS.md §H",
+         "fait": "La V1 représente 12 lots de construction ; aucun n'est engagé."},
+        {"nature": "fait", "date": "2026-09-17", "source": "AUDIT-AURA-OS.md §I",
+         "fait": "Le seul pilote prévu est la camionnette du propriétaire : il valide l'ergonomie, pas le marché."}
+      ],
+      "contreArgument": "Un entretien n'est pas un achat : les gens disent oui à une idée gratuite. Seul un acompte compte, et il est difficile à obtenir pour un produit qui n'existe pas.",
+      "incertitudes": [
+        "aucun prix d'abonnement n'a été décidé",
+        "le besoin (page + QR + demandes) est-il ressenti, ou seulement plausible ?"
+      ],
+      "portes": ["entite-tva"],
+      "economie": {
+        "prixMensuel": 29,
+        "heuresParVente": 0.5,
+        "coutsVariables": 3,
+        "ventesMoisSiSucces": 3,
+        "delaiPremierEuroJours": 45,
+        "estimations": {
+          "prixMensuel": "29 €/mois — AUCUN prix décidé dans le dépôt, hypothèse de travail",
+          "ventesMoisSiSucces": "3 abonnés si le test réussit — hypothèse",
+          "delaiPremierEuroJours": "45 jours : il faut encore construire le minimum avant d'encaisser"
+        }
+      },
+      "prochainTest": {
+        "type": "valider",
+        "action": "Mener 10 entretiens avec des commerces food (camionnettes, snacks) sur leur façon de recevoir des demandes, puis proposer un pilote payant avec acompte.",
+        "coutCash": 0,
+        "heures": 6,
+        "dureeJours": 21,
+        "pEstimee": 0.2,
+        "succes": "au moins 2 acomptes pour un pilote (niveau 3)",
+        "arret": "aucun acompte après 10 entretiens : Aura Food reste une option, pas un chantier"
+      }
+    },
+    {
+      "id": "aura-food-construire",
+      "titre": "Aura Food : construire les lots 1 à 9 de l'audit",
+      "preuves": [
+        {"nature": "fait", "date": "2026-09-17", "source": "AUDIT-AURA-OS.md §H",
+         "fait": "Plan en 12 lots, les lots 1 à 9 ne dépendent d'aucune décision du propriétaire."}
+      ],
+      "contreArgument": "L'audit le dit lui-même (§I) : le risque n°1 est de construire le tableau de bord complet avant qu'un seul commerce ait reçu une demande.",
+      "incertitudes": ["le marché existe-t-il ?", "prix d'abonnement non décidé"],
+      "portes": ["hebergement"],
+      "economie": {
+        "prixMensuel": 29,
+        "heuresParVente": 0.5,
+        "coutsVariables": 3,
+        "ventesMoisSiSucces": 5,
+        "delaiPremierEuroJours": 90,
+        "estimations": {
+          "prixMensuel": "29 €/mois — AUCUN prix décidé, hypothèse",
+          "ventesMoisSiSucces": "5 abonnés — hypothèse"
+        }
+      },
+      "prochainTest": {
+        "type": "construire",
+        "action": "Squelette applicatif, comptes, onboarding, page publique, menu, demandes, QR, tableau de bord.",
+        "coutCash": 0,
+        "heures": 120,
+        "dureeJours": 60,
+        "pEstimee": 0.3,
+        "succes": "un commerce extérieur reçoit une vraie demande par QR",
+        "arret": "aucun commerce pilote après 60 jours"
+      }
+    },
+    {
+      "id": "street-en-ligne",
+      "titre": "Encaisser Street en ligne sur la vitrine",
+      "preuves": [
+        {"nature": "fait", "date": "2026-09-17", "source": "server/LISEZ-MOI.md",
+         "fait": "La chaîne commande → paiement → livraison est écrite et prouvée en simulation locale (23 contrôles)."},
+        {"nature": "fait", "date": "2026-09-17", "source": "ÉTAT.md §2",
+         "fait": "Aucun hébergement, aucune clé Stripe : le webhook ne peut pas être appelé."}
+      ],
+      "contreArgument": "Automatiser l'encaissement d'un produit que personne n'a encore acheté optimise une étape qui n'a jamais eu lieu.",
+      "incertitudes": ["conversion d'un visiteur inconnu en acheteur", "provenance du trafic"],
+      "portes": ["hebergement", "stripe-sandbox", "entite-tva", "conditions-vente"],
+      "economie": {
+        "prix": {"genre": "ready", "id": 1},
+        "heuresParVente": 0,
+        "coutsVariables": 1.5,
+        "ventesMoisSiSucces": 3,
+        "delaiPremierEuroJours": 30,
+        "estimations": {
+          "ventesMoisSiSucces": "3 ventes en ligne par mois — hypothèse, aucun trafic mesuré",
+          "coutsVariables": "1,50 € de frais de paiement — ordre de grandeur, non vérifié"
+        }
+      },
+      "prochainTest": {
+        "type": "valider",
+        "action": "Publier la vitrine, brancher le paiement sandbox puis réel, mesurer 30 jours.",
+        "coutCash": 0,
+        "heures": 10,
+        "dureeJours": 30,
+        "pEstimee": 0.15,
+        "succes": "au moins 1 paiement en ligne",
+        "arret": "0 paiement pour 200 visites"
+      }
+    },
+    {
+      "id": "crew-apport",
+      "titre": "Activer le Social Club : des apporteurs rémunérés 50/50",
+      "preuves": [
+        {"nature": "fait", "date": "2026-09-15", "source": "documents/BRIEF-PRODUIT.md §7",
+         "fait": "Programme décrit et affiché sur le site ; aucun contrat, régime belge non vérifié, « escrow » sans séquestre réel."}
+      ],
+      "contreArgument": "Partager 50 % de la marge d'un produit dont la marge n'est pas mesurée peut rendre chaque vente déficitaire en temps.",
+      "incertitudes": ["marge réelle d'un pack", "qualité des clients apportés"],
+      "portes": ["contrat-apporteur", "avis-juridique-apport", "entite-tva"],
+      "economie": {
+        "prix": {"genre": "brief", "id": 2},
+        "heuresParVente": 3,
+        "coutsVariables": 47,
+        "ventesMoisSiSucces": 4,
+        "delaiPremierEuroJours": 30,
+        "estimations": {
+          "coutsVariables": "45 € de part apporteur (BRIEF §7) + 2 € d'outils",
+          "ventesMoisSiSucces": "4 ventes apportées — hypothèse"
+        }
+      },
+      "prochainTest": {
+        "type": "valider",
+        "action": "Recruter 3 apporteurs, un contrat signé chacun, mesurer 30 jours.",
+        "coutCash": 0,
+        "heures": 6,
+        "dureeJours": 30,
+        "pEstimee": 0.2,
+        "succes": "au moins 1 client apporté et payé",
+        "arret": "0 client apporté en 30 jours"
+      }
+    }
+  ],
+
+  "resultats": []
+}
