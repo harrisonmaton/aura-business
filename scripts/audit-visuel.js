@@ -72,7 +72,7 @@ async function scanner(nav, fichier, l, h) {
 }
 
 (async () => {
-  const nav = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
+  const nav = await chromium.launch({ executablePath: (require('fs').existsSync('/opt/pw-browsers/chromium') ? '/opt/pw-browsers/chromium' : undefined) });
   const resultat = {};
   for (const [nomPage, fichier] of PAGES) {
     for (const [nomEcran, l, h] of ECRANS) {

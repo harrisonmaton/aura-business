@@ -32,7 +32,7 @@ const R = [];
 const ck = (n, c, x) => R.push((c ? 'PASS ' : 'ÉCHEC') + ' — ' + n + (x !== undefined ? '  [' + x + ']' : ''));
 
 (async () => {
-  const nav = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
+  const nav = await chromium.launch({ executablePath: (require('fs').existsSync('/opt/pw-browsers/chromium') ? '/opt/pw-browsers/chromium' : undefined) });
   const ctx = await nav.newContext({ viewport: { width: 1440, height: 900 }, locale: 'fr-FR' });
   /* La vitrine ouvre ig.me pour envoyer le message : on intercepte au lieu de
      partir sur Internet, et on récupère le texte réellement composé. */

@@ -9,5 +9,9 @@ jobs:
         with: { node-version: '22' }
       - run: npm ci || npm install
       - run: npx playwright install --with-deps chromium
+      # La recette média encode du WebP : ffmpeg est requis en CI (sans lui, elle échoue en CI
+      # et n'est « SKIPPED » qu'en local). L'archive Street n'est pas versionnée : on la reconstruit.
+      - run: command -v ffmpeg || (sudo apt-get update && sudo apt-get install -y ffmpeg)
+      - run: npm run build:collection
       # Le job échoue si une assertion échoue : les scripts sortent en code 1.
       - run: npm test   # catalogue + recette + registre ; code 1 si un seul contrôle échoue

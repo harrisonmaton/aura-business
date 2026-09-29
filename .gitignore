@@ -15,3 +15,9 @@ src/collections/*.zip
 #   claude mcp add -s user omniroute -- omniroute --mcp
 # Si un connecteur devient un choix d'équipe assumé, retirer cette ligne.
 .mcp.json
+
+# État d'exécution de JARVIS Ω : prospects réels, messages, conversations,
+# revenus. Le dépôt est PUBLIC : un commerce n'a pas à y trouver son nom et le
+# message qu'on lui destine. La durabilité vient de la machine du worker.
+omega/etat/
+omega/decisions.jsonl

@@ -55,7 +55,7 @@ async function allerA(page, fraction) {
 
 (async () => {
   const nav = await chromium.launch({
-    executablePath: '/opt/pw-browsers/chromium',
+    executablePath: (require('fs').existsSync('/opt/pw-browsers/chromium') ? '/opt/pw-browsers/chromium' : undefined),
     args: ['--use-gl=swiftshader', '--enable-unsafe-swiftshader'],
   });
 
@@ -220,7 +220,7 @@ async function allerA(page, fraction) {
      Le monogramme de verre doit se replier sur un SVG, sans laisser de trou. */
   {
     const sansGL = await chromium.launch({
-      executablePath: '/opt/pw-browsers/chromium',
+      executablePath: (require('fs').existsSync('/opt/pw-browsers/chromium') ? '/opt/pw-browsers/chromium' : undefined),
       args: ['--disable-gpu', '--disable-webgl', '--disable-3d-apis'],
     });
     const page = await ouvrir(sansGL);

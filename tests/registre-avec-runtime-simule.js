@@ -5,7 +5,7 @@ function fire(){const s={docs:[...docs.entries()].map(([id,d])=>({id,exists:true
 const coll=()=>({doc:id=>({set:async d=>{docs.set(id,d);fire();},update:async f=>{docs.set(id,Object.assign({},docs.get(id)||{},f));fire();},delete:async()=>{docs.delete(id);fire();},get:async()=>({exists:docs.has(id),data:()=>docs.get(id)})}),onSnapshot:n=>{subs.push(n);setTimeout(fire,0);return()=>{}}});
 window.claude={use:async n=>n==="db"?{collection:coll,doc:()=>({})}:n==="sample"?(async()=>({text:"ok"}))():n==="downloads"?{save:async()=>{}}:null};})();`;
 (async()=>{
- const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+ const b=await chromium.launch({executablePath:(require('fs').existsSync('/opt/pw-browsers/chromium') ? '/opt/pw-browsers/chromium' : undefined)});
  const c=await b.newContext({viewport:{width:1280,height:900}});
  await c.addInitScript(MOCK);
  const p=await c.newPage(); const errs=[]; p.on('pageerror',e=>errs.push(e.message));

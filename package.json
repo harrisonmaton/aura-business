@@ -4,7 +4,7 @@
   "version": "0.6.0",
   "scripts": {
     "build:preview": "node scripts/build-preview.js",
-    "test": "npm run build:creations && npm run build:scenes && npm run build:preview && node tests/catalogue.js && node tests/serveur.js && node tests/recette.js && node tests/parcours-complet.js && node tests/showroom.js && node tests/registre-avec-runtime-simule.js && node tests/medias.js && node tests/recette-media.js && node tests/motion.js && node tests/omega.js",
+    "test": "npm run build:creations && npm run build:scenes && npm run build:preview && node tests/catalogue.js && node tests/serveur.js && node tests/recette.js && node tests/parcours-complet.js && node tests/showroom.js && node tests/registre-avec-runtime-simule.js && node tests/medias.js && node tests/recette-media.js && node tests/motion.js && node tests/omega.js && node tests/omega-v2.js",
     "build:creations": "node scripts/build-creations.js",
     "test:serveur": "node tests/serveur.js",
     "audit": "node scripts/audit-visuel.js",
@@ -16,7 +16,13 @@
     "test:medias": "node tests/medias.js",
     "media": "node scripts/controler-media.js",
     "omega": "node omega/jarvis.js",
-    "test:omega": "node tests/omega.js"
+    "test:omega": "node tests/omega.js && node tests/omega-v2.js",
+    "omega:go": "node omega/omega.js go",
+    "omega:cli": "node omega/omega.js",
+    "omega:doctor": "node omega/doctor.js",
+    "omega:worker": "node omega/worker/worker.js --once",
+    "omega:console": "node omega/console/serveur.js",
+    "omega:brief": "node omega/omega.js brief --marquer"
   },
   "devDependencies": {
     "playwright": "^1.56.0"

@@ -34,6 +34,9 @@ const ck = (nom, fn) => {
 };
 
 const RACINE = path.join(__dirname, '..');
+/* État isolé : la CLI enrichit le registre avec l'état réel ; la recette ne doit
+   dépendre ni des prospects ni des ventes de la machine qui l'exécute. */
+process.env.OMEGA_ETAT = fs.mkdtempSync(path.join(os.tmpdir(), 'omega-v1-'));
 const REEL = JSON.parse(fs.readFileSync(path.join(RACINE, 'omega', 'registre.json'), 'utf8'));
 const CAT = chargerCatalogue();
 const DATE = '2026-09-29T12:00:00.000Z';
@@ -215,10 +218,15 @@ ck('temps : un test qui dépasse les heures disponibles est refusé', () => {
 
 /* ── 5. Honnêteté du calcul ───────────────────────────────────────────────── */
 
-ck('une probabilité sans preuve client est plafonnée à 25 %, et on le dit', () => {
+ck('hiérarchie : hypothèse plafonnée à 20 %, donnée publique à 25 %, et on le dit', () => {
   const x = reco(registre([opp('a', {prochainTest: {pEstimee: 0.9}})])).top[0];
-  assert.strictEqual(x.p, M.PLAFOND_P[-1]);
-  assert.ok(x.hypotheses.some(h => h.includes('ramenée à 25 %')));
+  assert.strictEqual(x.niveau, M.HYPOTHESE);
+  assert.strictEqual(x.p, 0.2);
+  assert.ok(x.hypotheses.some(h => h.includes('ramenée à 20 %')));
+  const pub = opp('b', {prochainTest: {pEstimee: 0.9}, preuves: [{nature: 'marche', date: '2026-09-01', source: 'SIRENE', fait: '412 établissements'}]});
+  const y = reco(registre([pub])).top[0];
+  assert.strictEqual(y.niveau, M.DONNEE_PUBLIQUE);
+  assert.strictEqual(y.p, 0.25);
 });
 
 ck('seuil horaire : τ* = A / B, vérifié à la main', () => {

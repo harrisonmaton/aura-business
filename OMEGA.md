@@ -204,3 +204,105 @@ le dit et reste prudent :
 Et après chaque test, un `resultats[]` sourcé : c'est ce qui fait monter une
 opportunité sur l'échelle, franchir les portes, et — un jour — calibrer les
 probabilités.
+
+---
+
+# V2 — FIRST REAL REVENUE PIPELINE
+
+Ajouté le 29 septembre 2026. La question n'est plus « que devrais-tu faire ? »
+mais « qu'est-ce que JARVIS a déjà fait, et où a-t-il besoin de toi ? ».
+
+## Le pipeline
+
+```
+ICP (experiments/…/experience.json)
+  → HUNTER : sources par pays, avec repli → fiches entreprises → LeadScore /100
+  → COPY : observation vérifiée → douleur en question → valeur du catalogue → CTA + retrait
+  → FILE D'APPROBATION : SEND / EDIT / SKIP  (garde-fous : ne-pas-contacter, doublons,
+                          plafond quotidien, règles par juridiction)
+  → ENVOI : message direct = lien + texte prêts, l'humain envoie et confirme
+  → CONVERSATION : réponse collée → intention + objection classées → étape suivante
+  → PAIEMENT : enregistré avec preuve, seul chemin vers WON
+  → PRODUCTION : chronomètre start / pause / stop, coûts IA / API
+  → MOTEUR : résultats réinjectés → probabilité recalculée, test réussi → suite, 20 contacts sans vente → KILL
+```
+
+| Module | Rôle |
+|---|---|
+| `omega/core/` | état en fichiers atomiques sous verrou ; bus d'événements (`LEAD_FOUND` … `REFUND`) |
+| `omega/data/` | contrat `{status, source, timestamp, jurisdiction, data, confidence, error}`, registre par pays (BE, FR, ES, reste de l'UE), repli primaire → secondaire → autre → cache → UNKNOWN, santé source par source |
+| `omega/hunter/` | ICP, fiches prospect (entreprises seulement, UNKNOWN sinon), LeadScore sur 8 composantes |
+| `omega/outreach/` | messages, file d'approbation, fournisseurs d'envoi (DM manuel, email via connecteur) |
+| `omega/crm/` | étapes NEW → WON/LOST, classification des réponses, revenus avec preuve, apprentissage par variante/segment |
+| `omega/fulfillment/chrono.js` | chronomètre intégré ; coût réel ; seuil horaire mesuré |
+| `omega/genesis/` | Genesis-Lite : offre, landing, plan de mesure, pipeline, critères, messages |
+| `omega/commerce/` | `CommerceProvider` : paiement manuel (réel), Stripe (non configuré) |
+| `omega/connecteurs/` | interfaces email, agenda, GitHub, stockage, CRM, e-commerce, paiements, analytique |
+| `omega/comptes/` | orchestrateur d'ouverture de comptes ; KYC, CAPTCHA, conditions, identité, paiement = humain |
+| `omega/worker/` | file durable, pare-feu de coût, règles de nuit, planificateur HOURLY/NIGHTLY/WEEKLY, worker auto-réparant |
+| `omega/premier-client.js` | mode FIRST CUSTOMER : entonnoir, distance, P(premier client), arbre d'actions, exécution |
+| `omega/commandes.js` | le cœur en commandes nommées : terminal, console et (plus tard) voix appellent les mêmes |
+| `omega/console/serveur.js` | Control Plane local (127.0.0.1, actions protégées par jeton) |
+| `omega/brief.js` · `omega/agents.js` · `omega/doctor.js` | WHILE YOU SLEPT · évaluation / retrait des agents · santé de l'environnement |
+
+## Commandes
+
+```
+npm run omega:go            JARVIS exécute ce qui est AUTO (chasse, préparation), puis affiche l'état
+npm run omega:cli -- file   messages à approuver (SEND / EDIT / SKIP)
+npm run omega:console       même chose dans un navigateur : http://127.0.0.1:4747
+npm run omega:worker        un cycle du worker de nuit
+npm run omega:brief         WHILE YOU SLEPT
+npm run omega:doctor        PASS / WARN / FAIL par composant et par source
+npm run omega:cli -- aide   toutes les commandes, avec leur mode AUTO / REVIEW / HUMAN
+```
+
+## Tourner sans le Mac ouvert
+
+L'état est un dossier (`OMEGA_ETAT`, par défaut `omega/etat/`) ; le worker est un
+processus Node sans dépendance. Sur un serveur :
+
+```
+# /etc/systemd/system/omega-worker.service
+[Service]
+WorkingDirectory=/srv/aura-business
+Environment=OMEGA_ETAT=/var/lib/omega
+ExecStart=/usr/bin/node omega/worker/worker.js --boucle
+Restart=always
+```
+
+Sur un Mac : un `LaunchAgent` avec `ProgramArguments = node omega/worker/worker.js --boucle`
+et `KeepAlive = true`. Un worker tué laisse ses tâches en `RUNNING` ; le bail
+expire après 10 minutes et le suivant les reprend.
+
+## Ce que la recette V2 prouve (35 contrôles, `tests/omega-v2.js`)
+
+Données jamais inventées quand tout est bloqué · repli et cache datés · BCE lue
+depuis un extrait au format open data · import refusé sans source · champs
+personnels retirés · chaîne exclue · dédoublonnage · message refusé sans
+observation · jamais envoyé sans approbation · ne-pas-contacter définitif ·
+plafond quotidien · email interdit hors juridiction connue · « STOP » → LOST +
+liste d'exclusion · WON impossible sans paiement prouvé · **une vente fait passer
+le test à sa suite ; 20 contacts sans vente le tuent ; la probabilité baisse
+dès 10 contacts sans vente** · minutes mesurées remplacent l'estimation · pare-feu
+de coût · reprise après crash · envoi, publication, dépense jamais la nuit ·
+agent coûteux sans contribution → DISABLE · brief · console protégée par jeton.
+
+Dix règles neutralisées une à une font chacune tomber la recette (envoi sans
+approbation, ne-pas-contacter, preuve de paiement, champs personnels, message
+générique, critère d'arrêt, réinjection des résultats, reprise de bail, cache,
+envoi de nuit).
+
+Trois défauts réels trouvés par cette recette pendant l'écriture : le worker
+mélangeait horloge simulée et horloge réelle (un nouvel essai partait aussitôt) ;
+un `maxCost` « obligatoire » avait une valeur par défaut ; un prospect joignable
+seulement par téléphone était « qualifié » et bloquait l'entonnoir pour toujours.
+
+## Suite globale
+
+`npm test` passe désormais de bout en bout dans ce conteneur : `recette-media`
+rend `SKIPPED — FFMPEG_MISSING` (et `FAIL` si `CI` est défini). La CI était rouge
+avant ce travail, pour une raison sans rapport avec Ω : le chemin Chromium
+`/opt/pw-browsers/chromium` codé en dur dans les recettes n'existe pas sur les
+machines GitHub. Il est maintenant utilisé seulement s'il existe ; la CI
+installe ffmpeg et reconstruit l'archive Street, non versionnée.

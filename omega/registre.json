@@ -85,13 +85,26 @@
       },
       "prochainTest": {
         "type": "valider",
-        "action": "Présenter la série de démonstration à 20 commerces de quartier, un par un (en personne ou message direct personnalisé), proposer Signature à 90 € payé avant production, et chronométrer le premier pack vendu avec documents/FICHE-CHRONOMETRAGE.md.",
+        "action": "Présenter la série de démonstration à 20 commerces de quartier, un par un (en personne ou message direct personnalisé), proposer Signature à 90 € payé avant production, et chronométrer le premier pack vendu avec le chronomètre intégré (omega chrono).",
         "coutCash": 0,
         "heures": 8,
         "dureeJours": 14,
         "pEstimee": 0.3,
         "succes": "au moins 1 pack payé avant production (niveau 4 — achat)",
-        "arret": "0 paiement après 20 conversations réelles : on change l'offre ou la cible, on n'insiste pas"
+        "arret": "0 paiement après 20 conversations réelles : on change l'offre ou la cible, on n'insiste pas",
+        "experience": "experiments/signature-first-customer",
+        "mesure": {"contacts": 20, "ventes": 1},
+        "suite": {
+          "type": "valider",
+          "action": "Répétabilité : contacter 30 nouveaux prospects du même profil avec le message gagnant, viser 3 Signature payés, chronométrer chaque production.",
+          "coutCash": 0,
+          "heures": 12,
+          "dureeJours": 30,
+          "pEstimee": 0.3,
+          "succes": "3 packs payés sur 30 prospects (niveau 5 dès qu'un client rachète)",
+          "arret": "moins de 3 ventes après 30 contacts : le premier client était une exception, revoir la cible",
+          "mesure": {"contacts": 30, "ventes": 3}
+        }
       }
     },
     {

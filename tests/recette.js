@@ -16,7 +16,7 @@ const aller = async (page, url) => {
    il tourne ; il a sa propre recette (tests/showroom.js), qui vérifie aussi
    que son absence ne retire rien. On démarre donc sans WebGL, pour mesurer le
    repli — c'est ce que verra tout visiteur sans carte graphique. */
- const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium',
+ const b=await chromium.launch({executablePath:(require('fs').existsSync('/opt/pw-browsers/chromium') ? '/opt/pw-browsers/chromium' : undefined),
    args:['--disable-gpu','--disable-webgl']}); const errs=[];
  const c=await b.newContext({viewport:{width:1440,height:900},locale:'fr-FR'});
  await c.route('**://ig.me/**',r=>r.abort());

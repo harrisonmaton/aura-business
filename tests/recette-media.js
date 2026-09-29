@@ -26,6 +26,19 @@ const CANDIDATS = [
 ];
 const FFMPEG = process.env.FFMPEG || CANDIDATS.find(existsSync) || 'ffmpeg';
 
+/* Prérequis explicite. Sans ffmpeg, cette recette ne peut pas s'exécuter :
+   elle ne rend donc ni PASS (elle n'a rien vérifié) ni une pile d'erreur
+   illisible. Hors CI : SKIPPED, visible, code 0 pour laisser tourner les
+   autres suites. En CI (variable CI définie) : FAIL, code 1 — l'intégration
+   doit fournir ffmpeg, un saut silencieux y serait une recette désactivée. */
+try { execFileSync(FFMPEG, ['-hide_banner', '-version'], {stdio: 'ignore'}); }
+catch (e) {
+  const strict = !!process.env.CI;
+  console.log((strict ? 'FAIL' : 'SKIPPED') + ' — FFMPEG_MISSING : ffmpeg introuvable (' + FFMPEG + '). 0 contrôle exécuté sur cette recette.');
+  console.log(strict ? 'CI : ffmpeg est requis, la recette média échoue.' : 'Installer ffmpeg (ou définir FFMPEG=/chemin) pour l\'exécuter. `npm run omega:doctor` le signale.');
+  process.exit(strict ? 1 : 0);
+}
+
 const R = [];
 const ck = (n, c, x) => R.push((c ? 'PASS ' : 'ÉCHEC') + ' — ' + n + (x !== undefined ? '  [' + x + ']' : ''));
 

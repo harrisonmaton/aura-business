@@ -1,0 +1,46 @@
+{
+  "_comment": "Expérience réelle « premier client Signature ». Le prix, le contenu et le délai sont lus dans src/catalog.json, jamais recopiés. Toute valeur marquée hypothese:true est une décision provisoire de JARVIS que le propriétaire peut corriger en une ligne. Aucune donnée de prospect ici : le dépôt est public, les prospects vivent dans omega/etat/ (ignoré par git).",
+
+  "id": "signature-first-customer",
+  "venture": "aura",
+  "opportunite": "signature-en-direct",
+  "statut": "ACTIVE",
+  "ouverteLe": "2026-09-29",
+
+  "offre": {
+    "catalogue": {"genre": "brief", "id": 2},
+    "positionnement": "Des publications Instagram prêtes à poster, écrites pour votre commerce, pas pour « un restaurant ». Un pack, un prix, sans abonnement.",
+    "garantie": {"texte": "Paiement après validation des deux premiers visuels : s'ils ne vous conviennent pas, vous ne payez rien.", "hypothese": true, "motif": "réduire le risque perçu d'un prestataire inconnu ; coûte au pire ~1 h de production par refus"},
+    "paiement": "virement ou lien de paiement, confirmé par le propriétaire (porte humaine)"
+  },
+
+  "icp": {
+    "industries": ["fast_food", "restaurant", "cafe", "food_truck", "ice_cream", "bar"],
+    "taille": "indépendant, 1 à 10 personnes, pas une chaîne",
+    "pays": "BE",
+    "zones": {"valeur": ["Bruxelles"], "hypothese": true, "motif": "l'exploitation est belge (BRIEF §8) et francophone ; la ville exacte du propriétaire n'est écrite nulle part"},
+    "douleurs": [
+      "publier régulièrement sur Instagram prend des soirées",
+      "les publications ne ressemblent pas au commerce, ou manquent",
+      "aucun temps pour écrire des légendes"
+    ],
+    "proxyBudget": "a déjà une présence en ligne (Instagram ou site) — donc accorde de la valeur à sa visibilité",
+    "declencheurs": ["ouverture récente", "nouvelle carte ou nouveau lieu", "dernière publication ancienne", "événement ou saison proche"],
+    "exclure": {"chaines": ["McDonald's", "Quick", "Burger King", "KFC", "Domino's", "Pizza Hut", "Exki", "Le Pain Quotidien", "Starbucks", "Subway", "Panos", "Class'croute", "Paul", "Delitraiteur"]}
+  },
+
+  "criteres": {
+    "scoreMin": 50,
+    "canalRequis": "au moins un canal public : Instagram, email professionnel ou site avec contact",
+    "fraicheurMaxJours": 180
+  },
+
+  "variantes": ["A-observation-essai", "B-question-temps"],
+
+  "limites": {"messagesParJour": 10, "recontactApresJours": 90, "cibleProspects": 20},
+
+  "succes": {"ventes": 1, "sur": 20, "niveau": 4},
+  "arret": {"contacts": 20, "ventes": 0, "action": "changer l'offre ou la cible, ne pas insister"},
+
+  "budget": {"cash": 0, "heuresProprietaire": 8, "coutIAMax": 5}
+}

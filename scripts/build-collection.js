@@ -158,7 +158,7 @@ html,body{margin:0;padding:0;background:#0A0710}svg{display:block}
 (async () => {
   fs.mkdirSync(SORTIE, { recursive: true });
   fs.mkdirSync(VECTEURS, { recursive: true });
-  const nav = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
+  const nav = await chromium.launch({ executablePath: (require('fs').existsSync('/opt/pw-browsers/chromium') ? '/opt/pw-browsers/chromium' : undefined) });
   const page = await nav.newPage({ viewport: { width: W, height: W }, deviceScaleFactor: 1 });
 
   const produits = [];

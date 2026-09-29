@@ -29,7 +29,14 @@ const opt = n => { const i = args.indexOf(n); return i < 0 ? null : (args[i + 1]
 const date = opt('--date');
 const maintenant = typeof date === 'string' ? new Date(date + 'T12:00:00Z').toISOString() : new Date().toISOString();
 
-function lireRegistre(){ return JSON.parse(fs.readFileSync(REGISTRE, 'utf8')); }
+/* Par défaut, le registre est enrichi des résultats réels (messages envoyés,
+   réponses, paiements, minutes mesurées) : c'est ce qui fait qu'un résultat
+   change la recommandation suivante. --brut : le registre versionné seul. */
+function lireRegistre(){
+  const reg = JSON.parse(fs.readFileSync(REGISTRE, 'utf8'));
+  if(args.includes('--brut') || M.validerRegistre(reg).length) return reg;
+  return require('./pipeline.js').registreEnrichi(reg);
+}
 const L = [];
 const out = s => L.push(s === undefined ? '' : s);
 const fin = code => { console.log(L.join('\n')); process.exit(code); };
@@ -141,7 +148,7 @@ function warRoom(reco, reg, id){
   out(rang >= 0 ? 'Recommandée, rang ' + (rang + 1) : 'Non recommandée aujourd\'hui');
   out();
   out('RÉALITÉ');
-  out('  preuve la plus forte : ' + (x.niveau < 0 ? 'aucune preuve client' : M.ECHELLE[x.niveau]));
+  out('  preuve la plus forte : ' + M.libelleNiveau(x.niveau));
   out();
   out('PREUVES');
   for(const p of o.preuves) out('  · [' + p.nature + '] ' + p.fait + '\n    ' + p.source + ' — ' + p.date);

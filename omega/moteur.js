@@ -22,27 +22,35 @@
 
 const crypto = require('crypto');
 
-/* ── 1. Échelle de preuve ─────────────────────────────────────────────────
-   Plus on descend, plus la preuve est forte. Une étude de marché, une
-   tendance ou un compte d'entreprises n'est PAS sur cette échelle : ce sont
-   des faits de contexte, ils ne valident aucune demande. */
+/* ── 1. Hiérarchie de preuve ──────────────────────────────────────────────
+   HYPOTHÈSE < DONNÉE PUBLIQUE < RÉPONSE DU PROSPECT < RENDEZ-VOUS
+   < INTENTION SIGNÉE < ACOMPTE < ACHAT < RACHAT (< RECOMMANDATION).
 
+   Les deux premiers niveaux ne sont PAS des preuves client : une donnée
+   publique (nombre d'établissements, tendance) dit qu'un marché existe, pas
+   que quelqu'un paiera. Ils valent un peu plus qu'une hypothèse, pas plus. */
+
+const HYPOTHESE = -2;          // seulement des faits internes et des estimations
+const DONNEE_PUBLIQUE = -1;    // au moins une preuve de nature « marche »
 const ECHELLE = [
-  'intérêt déclaré',   // 0
-  'contact laissé',    // 1
-  'rendez-vous',       // 2
-  'acompte',           // 3
-  'achat',             // 4
-  'rachat',            // 5
-  'recommandation',    // 6
+  'réponse du prospect', // 0
+  'rendez-vous',         // 1
+  'intention signée',    // 2
+  'acompte',             // 3
+  'achat',               // 4
+  'rachat',              // 5
+  'recommandation',      // 6
 ];
-const AUCUNE_PREUVE = -1;
+const AUCUNE_PREUVE = DONNEE_PUBLIQUE;
+function libelleNiveau(n){
+  return n === HYPOTHESE ? 'hypothèse (aucune preuve client)' : n === DONNEE_PUBLIQUE ? 'donnée publique (aucune preuve client)' : ECHELLE[n] + ' (niveau ' + n + '/6)';
+}
 
 /* Probabilité maximale qu'on accepte d'attribuer au succès du prochain test,
-   selon la meilleure preuve client obtenue. Une hypothèse sans aucune preuve
-   client ne peut pas se déclarer probable à plus de 25 %, quel que soit
-   l'enthousiasme de celui qui la saisit. Non calibré — voir l'en-tête. */
-const PLAFOND_P = {'-1': 0.25, 0: 0.3, 1: 0.35, 2: 0.45, 3: 0.6, 4: 0.7, 5: 0.8, 6: 0.85};
+   selon la meilleure preuve obtenue. Une hypothèse ne peut pas se déclarer
+   probable à plus de 20 %, quel que soit l'enthousiasme de celui qui la
+   saisit. Non calibré — voir l'en-tête. */
+const PLAFOND_P = {'-2': 0.2, '-1': 0.25, 0: 0.3, 1: 0.35, 2: 0.45, 3: 0.6, 4: 0.7, 5: 0.8, 6: 0.85};
 
 /* ── 2. Phases et portes ──────────────────────────────────────────────────── */
 
@@ -62,7 +70,7 @@ function phase(revenusMensuels){
    « premier euro » : on ne construit pas avant un acompte, on ne scale pas
    avant un rachat. Un test de validation, lui, est toujours admis. */
 const PORTES = {
-  valider:    {niveau: AUCUNE_PREUVE, motif: null},
+  valider:    {niveau: -Infinity, motif: null},
   construire: {niveau: 3, motif: 'construire avant un acompte : aucune preuve que quelqu\'un paiera ce qui sera construit'},
   scaler:     {niveau: 5, motif: 'accélérer avant un rachat : la répétabilité n\'est pas prouvée'},
 };
@@ -104,7 +112,10 @@ function validerRegistre(reg){
     if(!Array.isArray(o.incertitudes) || o.incertitudes.length === 0) e.push(q + ' : aucune incertitude déclarée');
     const t = o.prochainTest;
     if(!t) e.push(q + ' : pas de prochain test');
-    else {
+    for(const [nomT, tt] of [['test', t], ['suite', t && t.suite]].filter(x => x[1])){
+      const t = tt; const qo = q;
+      { const q = qo + (nomT === 'suite' ? ' (suite)' : '');
+      if(t.mesure && !(t.mesure.contacts > 0 && t.mesure.ventes > 0)) e.push(q + ' : mesure du test invalide (contacts et ventes > 0)');
       if(!t.action) e.push(q + ' : test sans action');
       if(!PORTES[t.type]) e.push(q + ' : type de test inconnu (' + t.type + ')');
       if(!(t.coutCash >= 0)) e.push(q + ' : coût cash du test non déclaré');
@@ -113,7 +124,7 @@ function validerRegistre(reg){
       if(!t.succes) e.push(q + ' : critère de succès absent');
       if(!t.arret) e.push(q + ' : critère d\'arrêt absent — un test qu\'on ne peut pas perdre ne teste rien');
       if(!(t.pEstimee > 0 && t.pEstimee <= 1)) e.push(q + ' : probabilité estimée hors ]0,1]');
-    }
+    } }
     for(const g of o.portes || []) if(!portes[g]) e.push(q + ' : porte inconnue « ' + g + ' »');
     if(!o.economie) e.push(q + ' : économie absente');
   }
@@ -129,7 +140,7 @@ function validerRegistre(reg){
 /* ── 4. Mesures ───────────────────────────────────────────────────────────── */
 
 function niveauPreuve(o, reg){
-  let n = AUCUNE_PREUVE;
+  let n = o.preuves.some(p => p.nature === 'marche') ? DONNEE_PUBLIQUE : HYPOTHESE;
   for(const p of o.preuves) if(p.nature === 'client') n = Math.max(n, p.niveau);
   for(const r of reg.resultats || []) if(r.opportunite === o.id && Number.isInteger(r.niveau)) n = Math.max(n, r.niveau);
   return n;
@@ -143,7 +154,7 @@ const JOUR = 86400000;
 function revenusVerifies(reg, maintenant){
   const t = Date.parse(maintenant);
   return (reg.resultats || [])
-    .filter(r => r.montant > 0 && r.source && t - Date.parse(r.date) <= 30 * JOUR && Date.parse(r.date) <= t)
+    .filter(r => r.montant && r.source && t - Date.parse(r.date) <= 30 * JOUR && Date.parse(r.date) <= t)
     .reduce((s, r) => s + r.montant, 0);
 }
 
@@ -159,8 +170,17 @@ function prixDe(ref, catalogue){
 /* Économie unitaire, sans valeur horaire : le temps du propriétaire est
    gardé à part (heuresParVente) pour pouvoir calculer le seuil où l'action
    cesse d'être rentable, plutôt que d'inventer ce que vaut son heure. */
-function economie(o, catalogue, hypotheses){
-  const eco = o.economie;
+function economie(o, catalogue, hypotheses, obs){
+  const eco = Object.assign({}, o.economie, {estimations: Object.assign({}, o.economie.estimations)});
+  if(obs && obs.heuresParVenteMesurees > 0){
+    eco.heuresParVente = obs.heuresParVenteMesurees;
+    delete eco.estimations.heuresParVente;
+    hypotheses.add(o.id + ' — temps de production MESURÉ : ' + arrondi(obs.heuresParVenteMesurees) + ' h par vente (' + obs.ventesMesurees + ' mesure(s))');
+  }
+  if(obs && obs.coutsVariablesMesures != null){
+    eco.coutsVariables = obs.coutsVariablesMesures;
+    delete eco.estimations.coutsVariables;
+  }
   const ref = prixDe(eco.prix, catalogue);
   if(eco.prix && !ref) return {erreur: 'prix introuvable au catalogue (' + JSON.stringify(eco.prix) + ')'};
   const prix = ref ? ref.prix : eco.prixMensuel;
@@ -173,6 +193,52 @@ function economie(o, catalogue, hypotheses){
     ventes: eco.ventesMoisSiSucces || 0,
   };
 }
+
+/* ── 4 bis. Suivi d'un test en cours ───────────────────────────────────────
+   mesure : {contacts: N, ventes: v} — le test réussit à v ventes, échoue si N
+   prospects ont été contactés sans les atteindre. Sans mesure chiffrée, un
+   test n'est jamais déclaré réussi ou échoué automatiquement. */
+
+function etatTest(t, suivi){
+  const contactes = (suivi && suivi.contactes) || 0, ventes = (suivi && suivi.ventes) || 0;
+  const detail = contactes + ' contacté(s), ' + ventes + ' vente(s)' + (t.mesure ? ' sur ' + t.mesure.contacts + ' / objectif ' + t.mesure.ventes : '');
+  if(!t.mesure) return {statut: contactes ? 'EN_COURS' : 'A_LANCER', contactes, ventes, detail};
+  if(ventes >= t.mesure.ventes) return {statut: 'REUSSI', contactes, ventes, detail};
+  if(contactes >= t.mesure.contacts) return {statut: 'ECHOUE', contactes, ventes, detail};
+  return {statut: contactes ? 'EN_COURS' : 'A_LANCER', contactes, ventes, detail};
+}
+
+/* Taux de conversion par contact r ~ Beta(a, b). A priori : le taux m qui
+   rendrait le test réussi avec la probabilité déclarée, pesant autant qu'un
+   test complet (k = N). P(au moins une vente dans les R contacts restants)
+   = 1 − E[(1−r)^R] = 1 − B(a, b+R) / B(a, b). Pour un objectif de plusieurs
+   ventes, approximation prudente : chaque vente manquante doit être obtenue
+   indépendamment sur une part égale des contacts restants. */
+function probabiliteMiseAJour(t, suivi){
+  const N = t.mesure ? t.mesure.contacts : 20;
+  const objectif = t.mesure ? t.mesure.ventes : 1;
+  const c = suivi.contactes || 0, v = suivi.ventes || 0;
+  const m = 1 - Math.pow(1 - t.pEstimee, 1 / (N * objectif));
+  const a = m * N + v, b = (1 - m) * N + Math.max(c - v, 0);
+  const manque = Math.max(objectif - v, 0);
+  if(manque === 0) return 1;
+  const R = Math.max(N - c, 0);
+  if(R === 0) return 0;
+  const part = R / manque;
+  const unique = 1 - Math.exp(lbeta(a, b + part) - lbeta(a, b));
+  return Math.pow(unique, manque);
+}
+
+function lgamma(x){
+  const g = 7, c = [0.99999999999980993, 676.5203681218851, -1259.1392167224028, 771.32342877765313,
+    -176.61502916214059, 12.507343278686905, -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7];
+  if(x < 0.5) return Math.log(Math.PI / Math.sin(Math.PI * x)) - lgamma(1 - x);
+  x -= 1; let s = c[0];
+  for(let i = 1; i < g + 2; i++) s += c[i] / (x + i);
+  const t = x + g + 0.5;
+  return 0.5 * Math.log(2 * Math.PI) + (x + 0.5) * Math.log(t) - t + Math.log(s);
+}
+function lbeta(a, b){ return lgamma(a) + lgamma(b) - lgamma(a + b); }
 
 /* ── 5. Évaluation d'une opportunité ──────────────────────────────────────── */
 
@@ -201,8 +267,23 @@ function evaluer(o, reg, catalogue, ctx){
   const hyp = new Set();
   const refus = [];
   const niveau = niveauPreuve(o, reg);
-  const t = o.prochainTest;
   const res = reg.ressources;
+  const obs = (reg.observations || {})[o.id] || null;
+
+  /* Le test en cours dépend des résultats : réussi, on passe à sa suite ;
+     critère d'arrêt atteint, l'opportunité est tuée — pas « réessayée ». */
+  const etat = etatTest(o.prochainTest, obs);
+  let t = o.prochainTest, etape = 1;
+  if(etat.statut === 'REUSSI'){
+    if(!o.prochainTest.suite)
+      return {id: o.id, titre: o.titre, niveau, executable: false, etatTest: etat,
+        refus: ['VALIDÉE — test réussi (' + etat.detail + ') ; aucune suite définie : écrire le test de répétabilité'], hypotheses: []};
+    t = o.prochainTest.suite; etape = 2;
+  }
+  const etatCourant = etape === 2 ? etatTest(t, obs && obs.suite) : etat;
+  if(etatCourant.statut === 'ECHOUE')
+    return {id: o.id, titre: o.titre, niveau, executable: false, etatTest: etatCourant,
+      refus: ['KILL — critère d\'arrêt atteint (' + etatCourant.detail + ') : ' + t.arret], hypotheses: []};
 
   /* Portes humaines : identité, compte, contrat, avis juridique. JARVIS
      prépare, le propriétaire franchit. Une porte « a_franchir » bloque ;
@@ -216,7 +297,7 @@ function evaluer(o, reg, catalogue, ctx){
   if(portesBloquantes.length) refus.push('porte humaine à franchir : ' + portesBloquantes.map(g => reg.portes[g].libelle).join(' ; '));
 
   const porte = PORTES[t.type];
-  if(niveau < porte.niveau) refus.push('PORTE ' + t.type.toUpperCase() + ' — ' + porte.motif + ' (preuve actuelle : ' + (niveau < 0 ? 'aucune' : ECHELLE[niveau]) + ')');
+  if(niveau < porte.niveau) refus.push('PORTE ' + t.type.toUpperCase() + ' — ' + porte.motif + ' (preuve actuelle : ' + libelleNiveau(niveau) + ')');
 
   if(t.coutCash > ctx.plafondCash)
     refus.push('risque : ' + t.coutCash + ' € engagés, plafond admis ' + Math.floor(ctx.plafondCash) + ' €');
@@ -225,13 +306,20 @@ function evaluer(o, reg, catalogue, ctx){
   if(ctx.urgence && (t.coutCash > 0 || (o.economie.delaiPremierEuroJours || Infinity) > 30))
     refus.push('mode urgence — seuls les tests gratuits qui rapportent sous 30 jours sont admis');
 
-  const eco = economie(o, catalogue, hyp);
+  const eco = economie(o, catalogue, hyp, obs);
   if(eco.erreur) return {id: o.id, titre: o.titre, niveau, executable: false, refus: [eco.erreur], hypotheses: [...hyp]};
 
+  /* Probabilité : l'estimation déclarée tant qu'on n'a rien mesuré ; dès que
+     des prospects ont été contactés, une mise à jour bayésienne sur le taux
+     de conversion observé. Dans les deux cas, plafonnée par la preuve. */
   const plafond = PLAFOND_P[niveau];
-  const p = Math.min(t.pEstimee, plafond);
-  if(t.pEstimee > plafond)
-    hyp.add(o.id + ' — probabilité déclarée ' + pct(t.pEstimee) + ' ramenée à ' + pct(plafond) + ' : la preuve actuelle ne soutient pas davantage');
+  const suiviCourant = etape === 2 ? (obs && obs.suite) : obs;
+  const pBrute = etatCourant.contactes > 0 ? probabiliteMiseAJour(t, suiviCourant) : t.pEstimee;
+  const p = Math.min(pBrute, plafond);
+  if(etatCourant.contactes > 0)
+    hyp.add(o.id + ' — probabilité recalculée sur ' + etatCourant.contactes + ' contact(s) et ' + etatCourant.ventes + ' vente(s) : ' + pct(pBrute));
+  if(pBrute > plafond)
+    hyp.add(o.id + ' — probabilité ' + pct(pBrute) + ' ramenée à ' + pct(plafond) + ' : la preuve actuelle ne soutient pas davantage');
 
   /* Valeur attendue du test en fonction de ce que vaut une heure (τ) :
        VE(τ) = p · H · a · ventes · (marge − heuresParVente · τ) − cash − heures · τ
@@ -253,7 +341,8 @@ function evaluer(o, reg, catalogue, ctx){
   const profitMensuel = eco.ventes * (eco.margeHorsTemps - eco.heuresParVente * tau);
 
   const pourquoi = [];
-  pourquoi.push('preuve la plus forte : ' + (niveau < 0 ? 'aucune preuve client' : ECHELLE[niveau] + ' (niveau ' + niveau + '/6)'));
+  pourquoi.push('preuve la plus forte : ' + libelleNiveau(niveau));
+  if(etatCourant.contactes > 0) pourquoi.push('test en cours' + (etape === 2 ? ' (étape 2)' : '') + ' : ' + etatCourant.detail);
   pourquoi.push('coût du test : ' + t.coutCash + ' € + ' + t.heures + ' h');
   pourquoi.push('si le test réussit : ' + eco.ventes + ' ventes/mois × ' + euros(eco.margeHorsTemps) + ' hors temps' + (eco.heuresParVente ? ', ' + eco.heuresParVente + ' h de production chacune' : '') + (eco.produit ? ' (' + eco.produit + ', ' + eco.prix + ' € au catalogue)' : ''));
   pourquoi.push('probabilité retenue : ' + pct(p));
@@ -268,7 +357,7 @@ function evaluer(o, reg, catalogue, ctx){
     p, seuilHoraire, coutTotal, ve, vpe, veParHeure: ve / Math.max(t.heures, 0.5),
     economie: Object.assign({}, eco, {profitMensuel, tauxH}), pourquoi, hypotheses: [...hyp],
     preuves: o.preuves, contreArgument: o.contreArgument, incertitudes: o.incertitudes,
-    prochainTest: t, portesInconnues,
+    prochainTest: t, etape, etatTest: etatCourant, portesInconnues,
   };
 }
 
@@ -318,6 +407,7 @@ const QUESTION = 'Où est mon meilleur prochain euro ?';
 
 function empreinte(reg){
   const pertinent = {ressources: reg.ressources, portes: reg.portes, opportunites: reg.opportunites, resultats: reg.resultats || []};
+  if(reg.observations) pertinent.observations = reg.observations;
   return 'sha256:' + crypto.createHash('sha256').update(JSON.stringify(pertinent)).digest('hex').slice(0, 16);
 }
 
@@ -330,7 +420,7 @@ function consigner(reco, reg){
     classement: reco.classement,
     choix: reco.top.map(x => ({id: x.id, seuilHoraire: arrondi(x.seuilHoraire), ve: arrondi(x.ve), p: x.p})),
     ecartees: reco.ecartees.map(x => ({id: x.id, refus: x.refus})),
-    registre: JSON.parse(JSON.stringify({ressources: reg.ressources, portes: reg.portes, opportunites: reg.opportunites, resultats: reg.resultats || []})),
+    registre: JSON.parse(JSON.stringify(Object.assign({ressources: reg.ressources, portes: reg.portes, opportunites: reg.opportunites, resultats: reg.resultats || []}, reg.observations ? {observations: reg.observations} : {}))),
   };
 }
 
@@ -358,7 +448,7 @@ function pct(x){ return Math.round(x * 100) + ' %'; }
 function euros(x){ return (x < 0 ? '−' : '') + Math.round(Math.abs(x)).toLocaleString('fr-FR') + ' €'; }
 
 module.exports = {
-  ECHELLE, PLAFOND_P, PHASES, PORTES, DEFAUTS, QUESTION,
+  ECHELLE, PLAFOND_P, HYPOTHESE, DONNEE_PUBLIQUE, libelleNiveau, etatTest, probabiliteMiseAJour, PHASES, PORTES, DEFAUTS, QUESTION,
   validerRegistre, niveauPreuve, revenusVerifies, phase, prixDe,
   recommander, empreinte, consigner, rejouer, euros, pct,
 };

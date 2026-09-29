@@ -32,7 +32,7 @@ async function commerceIntact(page) {
 (async () => {
   /* ── 1. Avec WebGL : la scène doit exister pour de vrai ────────────────── */
   const avecGL = await chromium.launch({
-    executablePath: '/opt/pw-browsers/chromium',
+    executablePath: (require('fs').existsSync('/opt/pw-browsers/chromium') ? '/opt/pw-browsers/chromium' : undefined),
     args: ['--use-gl=swiftshader', '--enable-unsafe-swiftshader']
   });
   const p1 = await avecGL.newPage({ viewport: { width: 1440, height: 900 }, locale: 'fr-FR' });
@@ -111,7 +111,7 @@ async function commerceIntact(page) {
 
   /* ── 2. Sans WebGL : rien ne doit manquer ──────────────────────────────── */
   const sansGL = await chromium.launch({
-    executablePath: '/opt/pw-browsers/chromium', args: ['--disable-gpu', '--disable-webgl']
+    executablePath: (require('fs').existsSync('/opt/pw-browsers/chromium') ? '/opt/pw-browsers/chromium' : undefined), args: ['--disable-gpu', '--disable-webgl']
   });
   const p2 = await sansGL.newPage({ viewport: { width: 1440, height: 900 }, locale: 'fr-FR' });
   const erreurs2 = [];
@@ -142,7 +142,7 @@ async function commerceIntact(page) {
 
   /* ── 3. Mouvement réduit : on ne démarre pas la scène ──────────────────── */
   const rm = await chromium.launch({
-    executablePath: '/opt/pw-browsers/chromium',
+    executablePath: (require('fs').existsSync('/opt/pw-browsers/chromium') ? '/opt/pw-browsers/chromium' : undefined),
     args: ['--use-gl=swiftshader', '--enable-unsafe-swiftshader']
   });
   const ctx = await rm.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce', locale: 'fr-FR' });
@@ -174,7 +174,7 @@ async function commerceIntact(page) {
      On mesure donc ce que le compositeur affiche : un quadrillage de points
      dans le panneau, et ce que le navigateur renvoie à chaque point. */
   const tel = await chromium.launch({
-    executablePath: '/opt/pw-browsers/chromium',
+    executablePath: (require('fs').existsSync('/opt/pw-browsers/chromium') ? '/opt/pw-browsers/chromium' : undefined),
     args: ['--use-gl=swiftshader', '--enable-unsafe-swiftshader']
   });
   const p4 = await tel.newPage({ viewport: { width: 390, height: 844 }, locale: 'fr-FR' });
